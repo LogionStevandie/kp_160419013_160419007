@@ -14,9 +14,91 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+/*bank   - no debug still dont know  belum dibuat blade nya*/
+Route::resource('bank', 'App\Http\Controllers\BankController');
+
+
+
+
+
+
+/*==================================yang belom==========================================*/ 
+//Menu (ex:master, home, pemesanan, profil, dll) 
+Route::resource('menu', 'App\Http\Controllers\MenuController');
+    
+//SubMenu (ex:barang_tambah, barang_edit, npp_tambah, po_tambah, dll   nyimpen id menu) 
+Route::resource('submenu', 'App\Http\Controllers\SubMenuController');
+
+//UserAccess (mnm dari 2 diatas) (ex:nama e tambah apa , access nya itu boolean (1 dan 0) nyimpen id submenu, dll) 
+Route::resource('userAccess', 'App\Http\Controllers\UserAccessController');
+
+
+//fixed ***********************************************************
+
+//item baru
+Route::resource('item', 'App\Http\Controllers\ItemController');//
+Route::get('/iteme/searchname/',[App\Http\Controllers\ItemController::class, 'searchItemName']); //cobak gini ta
+Route::get('/iteme/searchtag/',[App\Http\Controllers\ItemController::class, 'searchItemTagName']); //cobak gini ta
+Route::get('/iteme/searchtagmulti/',[App\Http\Controllers\ItemController::class, 'searchItemTagMulti']); //cobak gini ta
+//Route::get('/item/searchname/', [App\Http\Controllers\ItemController::class, 'searchItemName'])->name('searchItemName');
+
+
+
+//COA baru
+Route::resource('coa', 'App\Http\Controllers\COAController');
+Route::resource('coaDetail', 'App\Http\Controllers\COADetailController');
+Route::resource('coaHead', 'App\Http\Controllers\COAHeadController');
+
+
+
+
+//payment and paymentterms
+Route::resource('payment', 'App\Http\Controllers\PaymentController');
+Route::resource('paymentTerms', 'App\Http\Controllers\PaymentTermsController');
+
+
+Route::resource('itemCategory', 'App\Http\Controllers\ItemCategoryController');//selese,delete masik gbs
+
+Route::resource('ItemTag', 'App\Http\Controllers\ItemTagController');//selese,delete masik gbs
+
+Route::resource('itemTracing', 'App\Http\Controllers\ItemTracingController');//selese,delete masik gbs
+
+Route::resource('itemTransaction', 'App\Http\Controllers\ItemTransactionController');//selese,delete masik gbs
+
+Route::resource('itemType', 'App\Http\Controllers\ItemTypeController');//selese,delete masik gbs
+
+Route::resource('ItemTagValues', 'App\Http\Controllers\ItemTagValuesController');
+
+//mPulau
+Route::resource('mPulau', 'App\Http\Controllers\MPulauController');//selese
+
+//mProvinsi
+Route::resource('mProvinsi', 'App\Http\Controllers\MProvinsiController');//selese
+
+//mKota
+Route::resource('mKota', 'App\Http\Controllers\MKotaController');//selese
+
+//mPerusahaan
+Route::resource('mPerusahaan', 'App\Http\Controllers\mPerusahaanController');//selese
+
+//mGudang
+Route::resource('mGudang', 'App\Http\Controllers\MGudangController');//dikerjakan setelah item dan item values selesai
+
+//tax
+Route::resource('tax', 'App\Http\Controllers\TaxController');//selese
+
+//Purchase Request 
+Route::resource('purchaseRequest', 'App\Http\Controllers\PurchaseRequestController');
+Route::get('purchaseRequest/pdf/{purchaseRequest}',[App\Http\Controllers\PurchaseRequestController::class, 'pdf']);
+//approve purchase request
+Route::resource('approvedPurchaseRequest', 'App\Http\Controllers\ApprovedPRController');
+//Purchase Order 
+Route::resource('purchaseOrder', 'App\Http\Controllers\PurchaseOrderController');
