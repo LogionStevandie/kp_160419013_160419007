@@ -56,9 +56,9 @@ class MProvinsiController extends Controller
                 'cidprov' => $data['cid'],
                 'cname' => $data['name'],
                 'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
+                'CreatedOn'=> date("Y-m-d h:i:s"),
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdatedOn'=> date("Y-m-d h:i:s"),
             )
         );
         return redirect()->route('mProvinsi.index')->with('status','Success!!');
@@ -111,7 +111,7 @@ class MProvinsiController extends Controller
                 'cidprov' => $data['cid'],
                 'cname' => $data['name'],
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdatedOn'=> date("Y-m-d h:i:s"),
             )
         );
         return redirect()->route('mProvinsi.index')->with('status','Success!!');

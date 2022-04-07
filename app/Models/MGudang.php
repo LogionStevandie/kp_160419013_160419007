@@ -8,5 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MGudang extends Model
 {
     use HasFactory;
-     protected $primaryKey='MGudangID';
+    protected $table = 'MGudang';
+    protected $primaryKey='MGudangID';
 }

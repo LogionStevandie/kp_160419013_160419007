@@ -37,6 +37,8 @@ Perusahaan
                              <tr>
                                 <th>ID</th>
                                 <th>Nama Perusahaan</th>
+                                <th>Manager 1</th>
+                                <th>Manager 2</th>
                                 <th>Action</th>
                              </tr>
                         </thead>
@@ -44,9 +46,21 @@ Perusahaan
                             @foreach($data as $d)
                              <tr>
                                 <th>{{$d->MPerusahaanID}}</th>
-                                <td>{{$d->cname}}</td>
-                                
-                                
+                                <td>{{$d->cname}}</td>                                   
+                                <td>
+                                    @foreach($dataUser as $user)
+                                        @if($user->id == $d->UserIDManager1)
+                                            {{$user->name}}
+                                        @endif
+                                    @endforeach
+                                </td>    
+                                <td>
+                                    @foreach($dataUser as $user)
+                                        @if($user->id == $d->UserIDManager2)
+                                            {{$user->name}}
+                                        @endif
+                                    @endforeach
+                                </td>    
                                 <td>  
                               
                                     <a class="btn btn-default bg-info" href="{{route('mPerusahaan.edit',[$d->MPerusahaanID])}}">
@@ -105,6 +119,8 @@ Perusahaan
                             <tr>
                                 <th>ID</th>
                                 <th>Nama Perusahaan</th>
+                                <th>Manager 1</th>
+                                <th>Manager 2</th>
                                 <th>Action</th>
                              </tr>
                         </tfoot>

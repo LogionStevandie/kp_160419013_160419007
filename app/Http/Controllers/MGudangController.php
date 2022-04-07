@@ -24,19 +24,23 @@ class MGudangController extends Controller
         //
         $data = DB::table('MGudang')
             ->select('MGudang.*', 'MPerusahaan.cname as perusahaanName','MPerusahaan.cnames as perusahaanNames','users.name as manager', 
-            'MKota.cname as kotaName','MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName', 
-            'MGudangAreaSimpan.MGudangAreaSimpanID as gudangAreaSimpanID', 'MGudangAreaSimpan.cname as gudangAreaSimpanName')
+            'MKota.cname as kotaName','MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName')
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->leftjoin('users','MPerusahaan.UserIDManager','=','users.id')
+            ->leftjoin('users','MGudang.UserIDKepalaDivisi','=','users.id')
             ->leftjoin('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
-            ->leftjoin('MGudangValues', 'MGudang.MGudangID', '=', 'MGudangValues.MGudangID')
-            ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
+            //->leftjoin('MGudangValues', 'MGudang.MGudangID', '=', 'MGudangValues.MGudangID')
+            //->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->get();
 
-        return view('master.mGudang',[
+        $dataTag = DB::table('MGudangValues')
+            ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
+            ->get();
+        //dd($dataTag);
+        return view('master.mGudang.index',[
             'data' => $data,
+            'dataTag' => $dataTag,
         ]);
     }
 
@@ -54,10 +58,13 @@ class MGudangController extends Controller
             ->get();    
         $dataMGudangAreaSimpan = DB::table('MGudangAreaSimpan')
             ->get();     
+        $users = DB::table('users')->get();
+        
         return view('master.mGudang.tambah',[
             'dataMKota' => $dataMKota,
             'dataMPerusahaan' => $dataMPerusahaan,
             'dataMGudangAreaSimpan' => $dataMGudangAreaSimpan,
+            'users' => $users,
         ]);
     }
 
@@ -80,21 +87,22 @@ class MGudangController extends Controller
                 'cidp' => $data['perusahaan'],
                 'cidkota' => $data['kota'],
                 'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
+                'CreatedOn'=> date("Y-m-d h:i:s"),
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdatedOn'=> date("Y-m-d h:i:s"),
+                'UserIDKepalaDivisi'=> $data['kepala'],
             )
         ); 
 
-        for($i = 0; $i < count($data['gudangAreaSimpanTotal']); $i++){
+        /*for($i = 0; $i < count($data['gudangAreaSimpanTotal']); $i++){
             DB::table('MGudangValues')->insert(array(
                 'MGudangID' => $idGudang,
                 'MGudangAreaSimpanID' => $data['gudangAreaSimpanID'][$i],
                 )
             ); 
-        }
+        }*/
 
-        return redirect()->route('gudang.index')->with('status','Success!!');
+        return redirect()->route('mGudang.index')->with('status','Success!!');
 
     }
 
@@ -131,11 +139,13 @@ class MGudangController extends Controller
             ->get();    
         $dataMGudangAreaSimpan = DB::table('MGudangAreaSimpan')
             ->get();  
-        return view('master.mGudang_edit',[
+        $users = DB::table('users')->get();
+        return view('master.mGudang.edit',[
             'mGudang' =>$mGudang,
             'dataMKota' => $dataMKota,
             'dataMPerusahaan' => $dataMPerusahaan,
             'dataMGudangAreaSimpan' => $dataMGudangAreaSimpan,
+            'users' => $users,
         ]);
     }
 
@@ -152,18 +162,19 @@ class MGudangController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         DB::table('MGudang')
-            ->where('MGudangID', $mGudang['id'])
+            ->where('MGudangID', $mGudang['MGudangID'])
             ->update(array(
                 'ccode' => $data['code'],
                 'cname' => $data['name'],   
                 'cidp' => $data['perusahaan'],
                 'cidkota' => $data['kota'],
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdatedOn'=> date("Y-m-d h:i:s"),
+                'UserIDKepalaDivisi'=> $data['kepala'],
             )
         );
 
-        $dataGudangValues = DB::table('MGudangValues')
+        /*$dataGudangValues = DB::table('MGudangValues')
             ->where('MGudangID', $mGudang->MGudangID)
             ->get();
 
@@ -200,8 +211,8 @@ class MGudangController extends Controller
                     ); 
                 }
             }
-        }
-        return redirect()->route('gudang.index')->with('status','Success!!');
+        }*/
+        return redirect()->route('mGudang.index')->with('status','Success!!');
     }
 
     /**
@@ -213,12 +224,12 @@ class MGudangController extends Controller
     public function destroy(MGudang $mGudang)
     {
         //
-        $mGudang->destroy();
-        DB::table('MGudangValues')
+        $mGudang->delete();
+        /*DB::table('MGudangValues')
             ->where('MGudangID','=',$mGudang->MGudangID)
             ->delete();
-
-        return redirect()->route('gudang.index')->with('status','Success!!');
+        */
+        return redirect()->route('mGudang.index')->with('status','Success!!');
     }
 
     public function searchGudangName($gudangName)
@@ -229,7 +240,7 @@ class MGudangController extends Controller
             'MKota.cname as kotaName','MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName', 
             'MGudangAreaSimpan.MGudangAreaSimpanID as gudangAreaSimpanID', 'MGudangAreaSimpan.cname as gudangAreaSimpanName')
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->leftjoin('users','MPerusahaan.UserIDManager','=','users.id')
+            ->leftjoin('users','MGudang.UserIDKepalaDivisi','=','users.id')
             ->leftjoin('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
@@ -251,7 +262,7 @@ class MGudangController extends Controller
             'MKota.cname as kotaName','MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName', 
             'MGudangAreaSimpan.MGudangAreaSimpanID as gudangAreaSimpanID', 'MGudangAreaSimpan.cname as gudangAreaSimpanName')
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->leftjoin('users','MPerusahaan.UserIDManager','=','users.id')
+            ->leftjoin('users','MGudang.UserIDKepalaDivisi','=','users.id')
             ->leftjoin('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
@@ -273,7 +284,7 @@ class MGudangController extends Controller
             'MKota.cname as kotaName','MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName', 
             'MGudangAreaSimpan.MGudangAreaSimpanID as gudangAreaSimpanID', 'MGudangAreaSimpan.cname as gudangAreaSimpanName')
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->leftjoin('users','MPerusahaan.UserIDManager','=','users.id')
+            ->leftjoin('users','MGudang.UserIDKepalaDivisi','=','users.id')
             ->leftjoin('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')

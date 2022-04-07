@@ -42,7 +42,8 @@
   <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
   <!-- Toastr  -->
   <link rel="stylesheet" href="{{asset('assets/plugins/toastr/toastr.min.css')}}">
-
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

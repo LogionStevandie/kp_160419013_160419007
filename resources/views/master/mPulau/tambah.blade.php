@@ -28,12 +28,12 @@ Tambah Pulau
 
             <div class="form-group">
                 <label for="title">Cid pulau</label>
-                <input require type="text" name="cid" class="form-control" 
+                <input required type="text" name="cid" maxlength="5" class="form-control" 
                 value="{{old('cidpulau','')}}">
             </div>
             <div class="form-group">
                 <label for="title">Nama Pulau</label>
-                <input require type="text" name="name" class="form-control" 
+                <input required type="text" name="name" maxlength="50" class="form-control" 
                 value="{{old('cname','')}}" >
             </div>
 

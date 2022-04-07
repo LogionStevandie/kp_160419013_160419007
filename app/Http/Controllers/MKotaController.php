@@ -131,7 +131,7 @@ class MKotaController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         DB::table('MKota')
-            ->where('MKotaID', $mKota['MKotaID'])
+            ->where('MKotaID', $mKotum['MKotaID'])
             ->update(array(
                 'cidkota' => $data['cid'],
                 'ckode' => $data['kode'],
@@ -151,10 +151,10 @@ class MKotaController extends Controller
      * @param  \App\Models\MKota  $mKota
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MKota $mKota)
+    public function destroy(MKota $mKotum)
     {
         //
-        $mKota->delete();
+        $mKotum->delete();
          return redirect()->route('mKota.index')->with('status','Success!!');
     }
 

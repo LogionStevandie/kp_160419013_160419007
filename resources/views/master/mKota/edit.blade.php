@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Edit Pulau
+Edit Kota
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('mPulau.index')}}">Pulau</a></li>
+<li class="breadcrumb-item"><a href="{{route('mKota.index')}}">Kota</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 
@@ -22,27 +22,59 @@ Edit Pulau
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-    <form action="{{route('mPulau.update',[$mPulau->MPulauID])}}" method="POST" >
+    <form action="{{route('mKota.update', [$mKota->MKotaID])}}" method="POST" >
         @csrf
         @method('PUT')
         <div class="card-body">
 
             <div class="form-group">
-                <label for="title">Cid pulau</label>
-                <input require type="text" name="cid" class="form-control" 
-                value="{{old('cidpulau',$mPulau->cidpulau)}}">
+                <label for="title">Cid Kota</label>
+                <input required type="text" name="cid" maxlength="5" class="form-control" 
+                value="{{old('cidKota',$mKota->cidkota)}}">
             </div>
             <div class="form-group">
-                <label for="title">Nama Pulau</label>
-                <input require type="text" name="name" class="form-control" 
-                value="{{old('cname',$mPulau->cname)}}" >
+                <label for="title">Kode Kota</label>
+                <input required type="text" name="kode" maxlength="5" class="form-control" 
+                value="{{old('ckode',$mKota->ckode)}}" >
+            </div>
+            <div class="form-group">
+                <label for="title">Nama Kota</label>
+                <input required type="text" name="name" maxlength="50" class="form-control" 
+                value="{{old('cname',$mKota->cname)}}" >
+            </div>
+            <div class="form-group">
+                <label>Pulau</label>
+                <select required name="pulau" class="form-control select2bs4" style="width: 100%;">
+                    <option value="0">--Pilih Pulau--</option>
+                    @foreach($dataMPulau as $data)
+                        @if($data->cidpulau == $mKota->cidpulau)
+                            <option selected value="{{$data->cidpulau}}"{{$data->cname == $data->cidpulau? 'selected' :'' }}>{{$data->cname}}<nbsp>({{$data->cidpulau}})</option>
+                        @else
+                            <option value="{{$data->cidpulau}}"{{$data->cname == $data->cidpulau? 'selected' :'' }}>{{$data->cname}}<nbsp>({{$data->cidpulau}})</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Provinsi</label>
+                <select required name="prov" class="form-control select2bs4" style="width: 100%;">
+                    <option value="0">--Pilih Provinsi--</option>
+                    @foreach($dataMProvinsi as $data)
+                        @if($data->cidprov == $mKota->cidprov)
+                            <option selected value="{{$data->cidprov}}"{{$data->cname == $data->cidprov? 'selected' :'' }}>{{$data->cname}}<nbsp>({{$data->cidprov}})</option>
+                        @else
+                            <option value="{{$data->cidprov}}"{{$data->cname == $data->cidprov? 'selected' :'' }}>{{$data->cname}}<nbsp>({{$data->cidprov}})</option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
 
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
+</div>
 
 @endsection

@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Tambah Pulau
+Tambah Perusahaan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('mPulau.index')}}">Pulau</a></li>
+<li class="breadcrumb-item"><a href="{{route('mPerusahaan.index')}}">Perusahaan</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -22,30 +22,36 @@ Tambah Pulau
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-    <form action="{{route('mKota.store')}}" method="POST" >
+    <form action="{{route('mPerusahaan.store')}}" method="POST" >
         @csrf
         <div class="card-body">
 
             <div class="form-group">
-                <label for="title">Cid pulau</label>
-                <input require type="text" name="cid" class="form-control" 
-                value="{{old('cidpulau','')}}">
+                <label for="title">Nama Perusahaan</label>
+                <input required type="text" name="name" class="form-control" 
+                value="{{old('cname','')}}">
             </div>
             <div class="form-group">
-                <label for="title">Nama Pulau</label>
-                <input require type="text" name="name" class="form-control" 
-                value="{{old('cname','')}}" >
+                <label for="title">Kode Perusahaan</label>
+                <input required type="text" name="names" class="form-control" 
+                value="{{old('cnames','')}}" >
             </div>
             <div class="form-group">
-                <label>Pulau</label>
-                <select class="form-control select2bs4" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
+                <label>Manager 1</label>
+                <select name="manager1" class="form-control select2bs4" style="width: 100%;">
+                    <option value="0">--Pilih Manager 1--</option>
+                    @foreach($users as $data)
+                        <option value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Manager 2</label>
+                <select name="manager2" class="form-control select2bs4" style="width: 100%;">
+                    <option value="0">--Pilih Manager 2--</option>
+                    @foreach($users as $data)
+                        <option value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
+                    @endforeach
                 </select>
             </div>
 

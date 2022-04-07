@@ -657,6 +657,39 @@
               </li>
             </ul>
           </li>
+           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                Item
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('item.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>item</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('itemCategory.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Kategori item</p>
+                </a>
+              </li>
+
+              
+              <li class="nav-item">
+                <a href="{{route('itemTracing.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tracing item</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
           <li class="nav-item">
             <a href="iframe.html" class="nav-link">
               <i class="nav-icon fas fa-ellipsis-h"></i>

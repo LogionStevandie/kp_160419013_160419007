@@ -40,6 +40,7 @@ Gudang
                                 <th>Nama Gudang</th>
                                 <th>Nama Kota</th>
                                 <th>User Kepala Gudang</th>
+                                <th>Tag</th>
                                 <th>Action</th>
                              </tr>
                         </thead>
@@ -47,10 +48,17 @@ Gudang
                             @foreach($data as $d)
                              <tr>
                                 <th>{{$d->MGudangID}}</th>
-                                <td>{{$d->ckode}}</td>
+                                <td>{{$d->ccode}}</td>
                                 <td>{{$d->cname}}</td>
-                                <td>{{$d->provinsiName}}</td>
-                                <td>{{$d->pulauName}}</td>
+                                <td>{{$d->kotaName}}</td>
+                                <td>{{$d->manager}}</td>
+                                <td>
+                                    @foreach($dataTag as $tag)
+                                        @if($tag->MGudangID == $d->MGudangID)
+                                            <span class="badge bg-primary">{{$tag->cname}}</span>
+                                        @endif
+                                    @endforeach
+                                </td>
                                 <td>  
                                     <a class="btn btn-default bg-info" href="{{route('mGudang.show',[$d->MGudangID])}}">
                                         <i class="fas fa-eye"></i> 
@@ -61,9 +69,10 @@ Gudang
                                     <form action="{{route('mGudang.destroy',[$d->MGudangID])}}" method="POST" class="btn btn-responsive">
                                         @csrf
                                         @method('DELETE')
-                                        <a class="btn btn-default bg-danger" action="{{route('mGudang.destroy',[$d->MGudangID])}}">
+                                        <button class="btn btn-default bg-danger" action="{{route('mGudang.destroy',[$d->MGudangID])}}">
                                             <i class="fas fa-trash"></i> 
-                                        </a>
+                                        </button>
+                                       
                                     </form>  
                                 </td>
                             </tr>   
@@ -71,11 +80,12 @@ Gudang
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>CID Kota</th>
+                                <th>ID</th>
                                 <th>Kode</th>
+                                <th>Nama Gudang</th>
                                 <th>Nama Kota</th>
-                                <th>Nama Provinsi</th>
-                                <th>Nama Pulau</th>
+                                <th>User Kepala Gudang</th>
+                                <th>Tag</th>
                                 <th>Action</th>
                              </tr>
                         </tfoot>

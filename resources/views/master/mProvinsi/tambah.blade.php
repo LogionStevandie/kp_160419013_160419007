@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Tambah Pulau
+Edit Provinsi
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('mPulau.index')}}">Pulau</a></li>
+<li class="breadcrumb-item"><a href="{{route('mProvinsi.index')}}">Provinsi</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -27,14 +27,12 @@ Tambah Pulau
         <div class="card-body">
 
             <div class="form-group">
-                <label for="title">Cid pulau</label>
-                <input require type="text" name="cid" class="form-control" 
-                value="{{old('cidpulau','')}}">
+                <label for="title">Cid Provinsi</label>
+                <input required type="text" name="cid" maxlength="5" class="form-control" value="{{old('cid','')}}">
             </div>
             <div class="form-group">
-                <label for="title">Nama Pulau</label>
-                <input require type="text" name="name" class="form-control" 
-                value="{{old('cname','')}}" >
+                <label for="title">Nama Provinsi</label>
+                <input required type="text" name="name" maxlength="50" class="form-control" value="{{old('name','')}}" >
             </div>
             
 

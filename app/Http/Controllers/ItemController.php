@@ -39,6 +39,7 @@ class ItemController extends Controller
             //->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
             ->simplePaginate(10);
+            //->get();
         //dd($dataItem);
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
@@ -53,17 +54,17 @@ class ItemController extends Controller
             ->orWhere('user_access.idUsers',$user->id)
             ->get();
         */
-        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        /*$check = $this->checkAccess('item.index', $user->id, $user->idRole);
         
-        if($check){
+        if($check){*/
             return view('master.item.index',[
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
             ]);
-        }
+        /*}
         else{
             return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }
+        }*/
         
         /*$dataSatuan = DB::table('satuan')
             ->get();
@@ -95,8 +96,8 @@ class ItemController extends Controller
             ->get();
 
         
-        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){
+        /*$check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        if($check){*/
             return view('master.item.tambah',[
                 'dataType'=>$dataType,
                 'dataUnit'=>$dataUnit,
@@ -104,10 +105,10 @@ class ItemController extends Controller
                 'dataTracing'=>$dataTracing,
                 'dataTag'=>$dataTag,
             ]);
-        }
+      /*  }
         else{
             return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }
+        }*/
         
         
     }
@@ -190,8 +191,8 @@ class ItemController extends Controller
             ->get();
         $dataTracing = DB::table('ItemTracing')
             ->get();
-        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){
+      /*  $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        if($check){*/
             return view('master.item.detail',[
                 'item'=>$item,
                 'dataType'=>$dataType,
@@ -199,10 +200,10 @@ class ItemController extends Controller
                 'dataCategory'=>$dataCategory,
                 'dataTracing'=>$dataTracing,
             ]);
-        }
+       /* }
         else{
             return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }
+        }*/
         
     }
 
@@ -239,8 +240,8 @@ class ItemController extends Controller
         $dataTag = DB::table('ItemTag')
             ->get();
         
-        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){
+        /*$check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        if($check){*/
             return view('master.item.edit',[
                 'item'=>$item,
                 'dataType'=>$dataType,
@@ -249,10 +250,10 @@ class ItemController extends Controller
                 'dataTracing'=>$dataTracing,
                 'dataTag'=>$dataTag,
             ]);
-        }
+      /*  }
         else{
             return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }
+        }*/
     }
 
     /**

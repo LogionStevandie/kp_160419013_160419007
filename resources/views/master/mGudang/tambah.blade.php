@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Tambah Pulau
+Tambah Gudang
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('mPulau.index')}}">Pulau</a></li>
+<li class="breadcrumb-item"><a href="{{route('mGudang.index')}}">Gudang</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -22,30 +22,45 @@ Tambah Pulau
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-    <form action="{{route('mKota.store')}}" method="POST" >
+    <form action="{{route('mGudang.store')}}" method="POST" >
         @csrf
         <div class="card-body">
 
             <div class="form-group">
-                <label for="title">Cid pulau</label>
-                <input require type="text" name="cid" class="form-control" 
-                value="{{old('cidpulau','')}}">
+                <label for="title">Nama Gudang</label>
+                <input required type="text" name="name" maxlength="50" class="form-control" 
+                value="{{old('cname','')}}">
             </div>
             <div class="form-group">
-                <label for="title">Nama Pulau</label>
-                <input require type="text" name="name" class="form-control" 
-                value="{{old('cname','')}}" >
+                <label for="title">Kode Gudang</label>
+                <input required type="text" name="code" maxlength="8" class="form-control" 
+                value="{{old('ccode','')}}" >
             </div>
             <div class="form-group">
-                <label>Pulau</label>
-                <select class="form-control select2bs4" style="width: 100%;">
-                    <option selected="selected">Alabama</option>
-                    <option>Alaska</option>
-                    <option>California</option>
-                    <option>Delaware</option>
-                    <option>Tennessee</option>
-                    <option>Texas</option>
-                    <option>Washington</option>
+                <label>Perusahaan</label>
+                <select required name="perusahaan" class="form-control select2bs4" style="width: 100%;">
+                    <option value="0">--Pilih Perusahaan--</option>
+                    @foreach($dataMPerusahaan as $data)
+                        <option value="{{$data->MPerusahaanID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}}<nbsp>({{$data->cnames}})</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Kota</label>
+                <select required name="kota" class="form-control select2bs4" style="width: 100%;">
+                    <option value="0">--Pilih Kota--</option>
+                    @foreach($dataMKota as $data)
+                        <option value="{{$data->cidkota}}"{{$data->cname == $data->cidkota? 'selected' :'' }}>{{$data->cname}}<nbsp>({{$data->ckode}})</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Kepala Gudang</label>
+                <select name="kepala" class="form-control select2bs4" style="width: 100%;" placeholder="Optional">
+                    <option value="0">--Pilih Kepala Gudang--</option>
+                    @foreach($users as $data)
+                        <option value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
+                    @endforeach
                 </select>
             </div>
 

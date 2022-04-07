@@ -43,14 +43,6 @@ Route::resource('userAccess', 'App\Http\Controllers\UserAccessController');
 
 //fixed ***********************************************************
 
-//item baru
-Route::resource('item', 'App\Http\Controllers\ItemController');//
-Route::get('/iteme/searchname/',[App\Http\Controllers\ItemController::class, 'searchItemName']); //cobak gini ta
-Route::get('/iteme/searchtag/',[App\Http\Controllers\ItemController::class, 'searchItemTagName']); //cobak gini ta
-Route::get('/iteme/searchtagmulti/',[App\Http\Controllers\ItemController::class, 'searchItemTagMulti']); //cobak gini ta
-//Route::get('/item/searchname/', [App\Http\Controllers\ItemController::class, 'searchItemName'])->name('searchItemName');
-
-
 
 //COA baru
 Route::resource('coa', 'App\Http\Controllers\COAController');
@@ -64,10 +56,15 @@ Route::resource('coaHead', 'App\Http\Controllers\COAHeadController');
 Route::resource('payment', 'App\Http\Controllers\PaymentController');
 Route::resource('paymentTerms', 'App\Http\Controllers\PaymentTermsController');
 
-
+//item
+Route::resource('item', 'App\Http\Controllers\ItemController');//
+Route::get('/iteme/searchname/',[App\Http\Controllers\ItemController::class, 'searchItemName']); //cobak gini ta
+Route::get('/iteme/searchtag/',[App\Http\Controllers\ItemController::class, 'searchItemTagName']); //cobak gini ta
+Route::get('/iteme/searchtagmulti/',[App\Http\Controllers\ItemController::class, 'searchItemTagMulti']); //cobak gini ta
+//Route::get('/item/searchname/', [App\Http\Controllers\ItemController::class, 'searchItemName'])->name('searchItemName');
 Route::resource('itemCategory', 'App\Http\Controllers\ItemCategoryController');//selese,delete masik gbs
 
-Route::resource('ItemTag', 'App\Http\Controllers\ItemTagController');//selese,delete masik gbs
+Route::resource('itemTag', 'App\Http\Controllers\ItemTagController');//selese,delete masik gbs
 
 Route::resource('itemTracing', 'App\Http\Controllers\ItemTracingController');//selese,delete masik gbs
 
@@ -91,6 +88,7 @@ Route::resource('mPerusahaan', 'App\Http\Controllers\mPerusahaanController');//s
 
 //mGudang
 Route::resource('mGudang', 'App\Http\Controllers\MGudangController');//dikerjakan setelah item dan item values selesai
+Route::resource('tagMGudang', 'App\Http\Controllers\MGudangValuesController');//dikerjakan setelah item dan item values selesai
 
 //tax
 Route::resource('tax', 'App\Http\Controllers\TaxController');//selese

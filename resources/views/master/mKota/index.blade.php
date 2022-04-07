@@ -61,9 +61,9 @@ Kota
                                     <form action="{{route('mKota.destroy',[$d->MKotaID])}}" method="POST" class="btn btn-responsive">
                                         @csrf
                                         @method('DELETE')
-                                        <a class="btn btn-default bg-danger" action="{{route('mKota.destroy',[$d->MKotaID])}}">
+                                        <button class="btn btn-default bg-danger" action="{{route('mKota.destroy',[$d->MKotaID])}}">
                                             <i class="fas fa-trash"></i> 
-                                        </a>
+                                        </button>
                                     </form>  
                                 </td>
                             </tr>   

@@ -67,7 +67,8 @@ class MPerusahaanController extends Controller
                 'CreatedOn'=> date("Y-m-d h:i:sa"),
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                'UserIDManager' => $data['manager']
+                'UserIDManager1' => $data['manager1'],
+                'UserIDManager2' => $data['manager2'],
             )
         );
         return redirect()->route('mPerusahaan.index')->with('status','Success!!');
