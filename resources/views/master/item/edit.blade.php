@@ -45,7 +45,7 @@ Edit item
                         <div class="form-group">
                             <label for="title">Nama Item</label>
                            <input require type="text" name="nameItem" class="form-control" 
-                           value="{{old('nameItem',$item->ItemName)}}" >
+                           value="{{old('nameItem',$item->ItemName)}}"maxlength="200" >
                         </div>
 
                         <div class="form-group">
@@ -80,7 +80,7 @@ Edit item
                        <div class="form-group">
                             <label for="title">Keterangan</label>
                             <input require type="text" name="note" class="form-control" 
-                           value="{{old('note',$item->Notes)}}" >
+                           value="{{old('note',$item->Notes)}}" maxlength="256">
                         </div>
 
                         <div class="form-group">

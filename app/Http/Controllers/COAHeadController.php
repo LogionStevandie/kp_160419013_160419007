@@ -23,7 +23,7 @@ class COAHeadController extends Controller
         //
         $data = DB::table('COAHead')
             ->get();
-        return view('master.coaHead',[
+        return view('master.COAHead.index',[
             'data' => $data,
         ]);
     }
@@ -36,7 +36,7 @@ class COAHeadController extends Controller
     public function create()
     {
         //
-        return view('master.coaHead_tambah');
+        return view('master.COAHead.tambah');
     }
 
     /**
@@ -60,6 +60,7 @@ class COAHeadController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('coaHead.index')->with('status','Success!!');
     }
 
     /**
@@ -80,11 +81,11 @@ class COAHeadController extends Controller
      * @param  \App\Models\COAHead  $cOAHead
      * @return \Illuminate\Http\Response
      */
-    public function edit(COAHead $cOAHead)
+    public function edit(COAHead $coaHead)
     {
         //
-        return view('master.coa_edit',[
-            'cOAHead'=>$cOAHead,
+        return view('master.COAHead.edit',[
+            'cOAHead'=>$coaHead,
         ]);
     }
 
@@ -95,19 +96,21 @@ class COAHeadController extends Controller
      * @param  \App\Models\COAHead  $cOAHead
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, COAHead $cOAHead)
+    public function update(Request $request, COAHead $coaHead)
     {
         //
         $data = $request->collect();
         $user = Auth::user();
         DB::table('COAHead')
-            ->where('CH_ID', $cOAHead['id'])
+            ->where('CH_ID', $coaHead['CH_ID'])
             ->update(array(
                 'Nama' => $data['nama'],
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('coaHead.index')->with('status','Success!!');
+
     }
 
     /**
@@ -116,20 +119,12 @@ class COAHeadController extends Controller
      * @param  \App\Models\COAHead  $cOAHead
      * @return \Illuminate\Http\Response
      */
-    public function destroy(COAHead $cOAHead)
+    public function destroy(COAHead $coaHead)
     {
         //
-        $cOAHead->destroy();
+        $coaHead->delete();
+        return redirect()->route('coaHead.index')->with('status','Success!!');
+
     }
 
-    public function searchCoaHeadName($coaHeadName)
-    {
-        //
-        $data = DB::table('COAHead')
-            ->where('Nama','like','%'.$coaHeadName.'%')
-            ->get();
-        return view('master.coaHead',[
-            'data' => $data,
-        ]);
-    }
 }

@@ -30,13 +30,13 @@ Edit Tracing item
             <div class="form-group">
                 <label for="title">Nama Item Tracing</label>
                 <input require type="text" name="Name" class="form-control" 
-                value="{{old('Name',$itemTracing->Name)}}" >
+                value="{{old('Name',$itemTracing->Name)}}" maxlength="100">
             </div>
 
             <div class="form-group">
                 <label for="title">Notes</label>
                 <input require type="text" name="Notes" class="form-control" 
-                value="{{old('Notes',$itemTracing->Notes)}}" >
+                value="{{old('Notes',$itemTracing->Notes)}}" maxlength="300">
             </div>
 
         </div>

@@ -568,6 +568,27 @@
               </li>
             </ul>
           </li>
+
+          <!--Permintaan-->
+          <li class="nav-header">PERMINTAAN PEMBELIAN</li>
+          <li class="nav-item">
+            <a href="{{route('purchaseRequest.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Nota Permintaan Pembelian
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/kanban.html" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Nota Purchase Order
+              </p>
+            </a>
+          </li>
+          <!-- END Permintaan-->
+
           <li class="nav-header">MASTER</li>
           <li class="nav-item">
             <a href="#" class="nav-link">
@@ -608,56 +629,22 @@
                   <p>Gudang</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('mGudangAreaSimpan.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Gudang Area Simpan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('tagValuesMGudang.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tag Values Gudang</p>
+                </a>
+              </li>
             </ul>
           </li>
+
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-search"></i>
-              <p>
-                Barang
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('item.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Barang</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('itemCategory.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Kategori Barang</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('itemTag.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tag Barang</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('itemTracing.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Pelacakan Barang</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('itemTransaction.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tipe Barang</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('mGudang.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tipe Transaksi Barang</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-search"></i>
               <p>
@@ -688,20 +675,196 @@
                 </a>
               </li>
               
+              <li class="nav-item">
+                <a href="{{route('itemTag.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tag item</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('itemTransaction.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Transaction item</p>
+                </a>
+              </li>
+
+              
+              <li class="nav-item">
+                <a href="{{route('itemType.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tipe item</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('unit.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Satuan item</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('itemTagValues.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Tag Values Item</p>
+                </a>
+              </li>
             </ul>
           </li>
+
           <li class="nav-item">
-            <a href="iframe.html" class="nav-link">
-              <i class="nav-icon fas fa-ellipsis-h"></i>
-              <p>Tabbed IFrame Plugin</p>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                Tax
+                <i class="fas fa-angle-left right"></i>
+              </p>
             </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a href="{{route('tax.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>tax</p>
+                </a>
+              </li>
+              
+            </ul>
           </li>
+
           <li class="nav-item">
-            <a href="https://adminlte.io/docs/3.1/" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
-              <p>Documentation</p>
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                 Mata uang
+                <i class="fas fa-angle-left right"></i>
+              </p>
             </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a href="{{route('mCurrency.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>List Mata uang</p>
+                </a>
+              </li>
+              
+            </ul>
           </li>
+
+          <!--Payment-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                Pembayaran
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('payment.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Jenis Pembayaran</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('paymentTerms.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Ketentuan Pembayaran</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+          <!--End Payment-->
+
+           <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                 Bank
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a href="{{route('bank.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>bank</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+
+         
+
+
+          <!--Menu-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                Menu & Role
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('menu.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Menu</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('role.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Role</p>
+                </a>
+              </li>
+            </ul>
+            
+            <!--RoleAccess place-->
+
+          </li>
+          <!--End Menu-->
+
+          <!--COA-->
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                COA
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('coaHead.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>COA Head</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('coaDetail.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>COA Detail</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('coa.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>COA</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!--End COA-->
+
           <li class="nav-header">MULTI LEVEL EXAMPLE</li>
           <li class="nav-item">
             <a href="#" class="nav-link">

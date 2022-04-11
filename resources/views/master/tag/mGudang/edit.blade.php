@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Edit Tag Gudang
+Edit Tag Gudang Values
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('tagMGudang.index')}}">Tag-Gudang</a></li>
+<li class="breadcrumb-item"><a href="{{route('tagValuesMGudang.index')}}">Tag-Gudang-Values</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 
@@ -22,19 +22,19 @@ Edit Tag Gudang
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-    <form action="{{route('tagMGudang.update',[$mGudang->MGudangID])}}" method="POST" >
+    <form action="{{route('tagValuesMGudang.update',[$mGudang->MGudangID])}}" method="POST" >
         @csrf
         @method('PUT')
         <div class="card-body">
 
             <div class="form-group">
                 <label for="title">Nama Gudang</label>
-                <input disabled type="text" name="cid" maxlength="5" class="form-control" 
+                <input disabled type="text" name="cid" maxlength="50" class="form-control" 
                 value="{{old('cidpulau',$mGudang->cname)}}">
             </div>
             <div class="form-group">
-                <label>Multiple</label>
-                    <select name="gudangAreaSimpan[]" class="select2" multiple="multiple" data-placeholder="Select a State" style="width: 100%;">
+                <label>Tag</label>
+                    <select name="gudangAreaSimpan[]" class="select2" multiple="multiple" data-placeholder="Pilih Tag" style="width: 100%;">
                         @foreach($data as $d)
                             <option id="tagnya{{$d->MGudangAreaSimpanID}}" value="{{$d->MGudangAreaSimpanID}}"{{$d->cname == $d->MGudangAreaSimpanID? 'selected' :'' }}>{{$d->cname}}</option>    
                          @endforeach

@@ -124,7 +124,9 @@ class ItemTracingController extends Controller
     public function destroy(ItemTracing $itemTracing)
     {
         //
-        $itemTracing->delete();
+        //dd($itemTracing);
+        DB::table('ItemTracing')->where('ItemTracingID', $itemTracing['ItemTracingID'])->delete();
+        //$itemTracing->delete();
         return redirect()->route('itemTracing.index')->with('status','Success!!');
     }
 

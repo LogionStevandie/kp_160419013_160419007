@@ -126,7 +126,8 @@ class ItemTypeController extends Controller
     public function destroy(ItemType $itemType)
     {
         //
-        $itemType->delete();
+        //$itemType->delete();
+         DB::table('ItemType')->where('ItemTypeID', $itemType['ItemTypeID'])->delete();
         return redirect()->route('itemType.index')->with('status','Success!!');
     }
 

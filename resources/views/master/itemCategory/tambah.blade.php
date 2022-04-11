@@ -12,7 +12,7 @@ Tambah Kategori item
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('itemCategory.index')}}">Kategori item</a></li>
+<li class="breadcrumb-item"><a href="{{route('itemCategory.index')}}">Kategori-item</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 @section('content')
@@ -28,13 +28,13 @@ Tambah Kategori item
  <div class="form-group">
                            <label for="title">Nama Item Kategori</label>
                            <input require type="text" name="Name" class="form-control" 
-                           value="{{old('Name','')}}" >
+                           value="{{old('Name','')}}" maxlength="50">
                         </div>
 
                          <div class="form-group">
                            <label for="title">Remarks</label>
                            <input require type="text" name="remarks" class="form-control" 
-                           value="{{old('Remarks','')}}" >
+                           value="{{old('Remarks','')}}" maxlength="10">
                         </div>
 
                         <div class="form-group">

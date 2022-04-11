@@ -42,6 +42,10 @@
   <link rel="stylesheet" href="{{asset('assets/dist/css/adminlte.min.css')}}">
   <!-- Toastr  -->
   <link rel="stylesheet" href="{{asset('assets/plugins/toastr/toastr.min.css')}}">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="{{asset('assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
   
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -170,7 +174,8 @@
   $(function () {
     $("#example1").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print"] //  "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"] 
+      //"buttons": ["copy", "csv", "excel", "pdf", "print"] 
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"] 
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
     $('#example2').DataTable({

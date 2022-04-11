@@ -66,20 +66,20 @@ class MGudangValuesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(MGudang $tagMGudang)
+    public function edit(MGudang $tagValuesMGudang)
     {
         //
         $data = DB::table('MGudangAreaSimpan')
             ->get();
         $dataTag = DB::table('MGudangValues')
             ->rightjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
-            ->where('MGudangValues.MGudangID',$tagMGudang->MGudangID)
+            ->where('MGudangValues.MGudangID',$tagValuesMGudang->MGudangID)
             ->get();
         //dd($dataTag);
         return view('master.tag.mGudang.edit',[
             'data' =>$data,
             'dataTag' => $dataTag,
-            'mGudang' => $tagMGudang,
+            'mGudang' => $tagValuesMGudang,
         ]);
     }
 
@@ -90,24 +90,24 @@ class MGudangValuesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, MGudang $tagMGudang)
+    public function update(Request $request, MGudang $tagValuesMGudang)
     {
         //
         $data=$request->collect();
         //dd($data);
         $dataGudangValues = DB::table('MGudangValues')
-            ->where('MGudangID', $tagMGudang->MGudangID)
+            ->where('MGudangID', $tagValuesMGudang->MGudangID)
             ->get();
 
         if(count($dataGudangValues) > count($data['gudangAreaSimpan'])){
             DB::table('MGudangValues')
-                ->where('MGudangID','=',$tagMGudang->MGudangID)
+                ->where('MGudangID','=',$tagValuesMGudang->MGudangID)
                 ->delete();
 
             for($i = 0; $i < count($data['gudangAreaSimpan']); $i++){
             DB::table('MGudangValues')
                 ->insert(array(
-                    'MGudangID' => $tagMGudang->MGudangID,
+                    'MGudangID' => $tagValuesMGudang->MGudangID,
                     'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
                     )
                 ); 
@@ -117,7 +117,7 @@ class MGudangValuesController extends Controller
             for($i = 0; $i < count($data['gudangAreaSimpan']); $i++){
                 if($i < count($dataGudangValues)){
                     DB::table('MGudangValues')
-                        ->where('MGudangID', $tagMGudang->MGudangID)
+                        ->where('MGudangID', $tagValuesMGudang->MGudangID)
                         ->update(array(
                             'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
                         )
@@ -126,14 +126,14 @@ class MGudangValuesController extends Controller
                 else{
                     DB::table('MGudangValues')
                         ->insert(array(
-                            'MGudangID' => $tagMGudang->MGudangID,
+                            'MGudangID' => $tagValuesMGudang->MGudangID,
                             'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
                         )
                     ); 
                 }
             }
         }
-        return redirect()->route('tagMGudang.index')->with('status','Success!!');
+        return redirect()->route('tagValuesMGudang.index')->with('status','Success!!');
     }
 
     /**

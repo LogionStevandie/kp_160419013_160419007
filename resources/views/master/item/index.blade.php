@@ -35,8 +35,12 @@ Item
                     <table id="example1" class="table table-bordered table-striped">
                          <thead>
                             <tr>
-                              <th>#</th>
+                              <th>ID</th>
                               <th>Nama Item</th>
+                              <th>Unit</th>
+                              <th>Kategori item</th>
+                              <th>Bisa dijual</th>
+                              <th>Bisa dibeli</th>
                               <th>Tag</th>
                               <th>Handle</th>
                             </tr>
@@ -45,7 +49,25 @@ Item
                              @foreach($dataItem as $key => $data)            
                              <tr>
                                 <th scope="row">{{$data->ItemID}}</th>
-                                <td>{{$data->ItemName}}</td>                     
+                                <td>{{$data->ItemName}}</td>    
+                                <td>{{$data->unitName}}</td>       
+                                @foreach($dataCategory as $datCat) 
+                                    @if($datCat->ItemCategoryID == $data->ItemCategoryID)
+                                    <td>{{$datCat->Name}}</td>       
+                                    @endif
+                                @endforeach    
+                                
+                                @if($data->CanBeSell==0)
+                                <td>Tidak</td>      
+                                @else
+                                <td>Ya</td>     
+                                @endif 
+
+                                @if($data->CanBePurchased==0)
+                                <td>Tidak</td>      
+                                @else
+                                <td>Ya</td>     
+                                @endif 
                                 
                                 <td>
                                   @foreach($dataTag as $tag) 
@@ -69,7 +91,7 @@ Item
                                     <form action="{{route('item.destroy',[$data->ItemID])}}" method="POST" class="btn btn-responsive">
                                         @csrf
                                         @method('DELETE')
-                                          <button action="{{route('item.destroy',[$data->ItemID])}}" method="POST" class="btn btn-default bg-danger">
+                                          <button action="{{route('item.destroy',[$data->ItemID])}}" class="btn btn-default bg-danger">
                                             <i class="fas fa-trash"></i> 
                                           </button>
                                         @csrf
@@ -79,9 +101,13 @@ Item
                             @endforeach
                         </tbody>
                         <tfoot>
-                            <tr>
-                              <th>#</th>
+                             <tr>
+                              <th>ID</th>
                               <th>Nama Item</th>
+                              <th>Unit</th>
+                              <th>Kategori item</th>
+                              <th>Bisa dijual</th>
+                              <th>Bisa dibeli</th>
                               <th>Tag</th>
                               <th>Handle</th>
                             </tr>

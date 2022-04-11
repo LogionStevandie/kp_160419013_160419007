@@ -23,13 +23,19 @@ class RoleController extends Controller
     public function index()
     {
         //
-        $data = DB::table('roles')
+        /*$data = DB::table('roles')
             ->select('roles.*', 'menu.Name','menu.Url')
             ->leftjoin('role_access','roles.id','=','role_access.idRole')
             ->leftjoin('menu','role_access.idMenu','=','menu.MenuID')
             ->get();
+        */
+        $data = DB::table('roles')->get();
+        $dataAccess = DB::table('role_access')
+            ->join('menu','role_access.idMenu','=','menu.MenuID')
+            ->get();    
         return view('master.roles.index',[
             'data' => $data,
+            'dataAccess' => $dataAccess,
         ]);
     }
 
@@ -41,10 +47,8 @@ class RoleController extends Controller
     public function create()
     {
         //
-        $dataMenu = DB::table('menu')->get();
-        return view('master.roles.tambah',[
-            'dataMenu' => $dataMenu,
-        ]);
+        //$dataMenu = DB::table('menu')->get();
+        return view('master.roles.tambah');
     }
 
     /**
@@ -70,13 +74,13 @@ class RoleController extends Controller
             )
         );
 
-        for($i = 0; $i < count($data['menuTotal']); $i++){
+        /*for($i = 0; $i < count($data['menuTotal']); $i++){
             DB::table('role_access')->insert(array(
                 'idRole' => $idRole,
                 'idMenu' => $data['menuID'][$i],
                 )
            ); 
-        }
+        }*/
 
         return redirect()->route('role.index')->with('status','Success!!');
     }
@@ -104,10 +108,10 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         //
-        $dataMenu = DB::table('menu')->get();
-        return view('master.role.edit',[
+        //$dataMenu = DB::table('menu')->get();
+        return view('master.roles.edit',[
             'role'=>$role,
-            'dataMenu'=>$dataMenu,
+            //'dataMenu'=>$dataMenu,
         ]);
     }
 
@@ -133,7 +137,7 @@ class RoleController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
         ));
 
-        $dataRoleAccess = DB::table('role_access')
+        /*$dataRoleAccess = DB::table('role_access')
             ->where('idRole', $role->id)
             ->get();
 
@@ -169,7 +173,7 @@ class RoleController extends Controller
                     ); 
                 }
             }
-        }
+        }*/
 
         return redirect()->route('role.index')->with('status','Success!!');    
     }
@@ -184,9 +188,9 @@ class RoleController extends Controller
     {
         //
         $role->delete();
-        DB::table('role_access')
+        /*DB::table('role_access')
             ->where('idRole', $role->id)
-            ->delete();
+            ->delete();*/
 
         return redirect()->route('role.index')->with('status','Success!!');
     }

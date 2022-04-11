@@ -44,6 +44,10 @@ class ItemController extends Controller
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
             ->get();
+        $dataCategory = DB::table('ItemCategory')
+            ->get();
+
+
 
 
         /*$access = DB::table('menu')
@@ -60,6 +64,7 @@ class ItemController extends Controller
             return view('master.item.index',[
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
+                'dataCategory'=>$dataCategory,
             ]);
         /*}
         else{

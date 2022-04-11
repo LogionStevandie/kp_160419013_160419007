@@ -128,6 +128,7 @@ class ItemTransactionController extends Controller
     {
         //
         $itemTransaction->delete();
+        DB::table('ItemTransaction')->where('ItemTransactionID', $itemTransaction['ItemTransactionID'])->delete();
         return redirect()->route('itemTransaction.index')->with('status','Success!!');
     }
 

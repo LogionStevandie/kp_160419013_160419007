@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\MCurrency;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Auth;
 class MCurrencyController extends Controller
 {
     public function __construct()
@@ -49,7 +50,7 @@ class MCurrencyController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         
-        DB::table('ItemTransaction')
+        DB::table('MCurrency')
             ->insert(array(
                 'name' => $data['name'],
                 'code' => $data['code'],
@@ -58,9 +59,10 @@ class MCurrencyController extends Controller
                 'CreatedBy'=> $user->id,
                 'CreatedOn'=> date("Y-m-d h:i:sa"),
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdateOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
+        return redirect()->route('mCurrency.index')->with('status','Success!!');
     }
 
     /**
@@ -104,16 +106,17 @@ class MCurrencyController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         DB::table('MCurrency')
-            ->where('MCurrency', $mCurrency['MCurrencyID'])
+            ->where('MCurrencyID', $mCurrency['MCurrencyID'])
             ->update(array(
                 'name' => $data['name'],
                 'code' => $data['code'],
                 'country' => $data['country'],
                 'price' => $data['price'],
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdateOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('mCurrency.index')->with('status','Success!!');
     }
 
     /**
@@ -125,6 +128,7 @@ class MCurrencyController extends Controller
     public function destroy(MCurrency $mCurrency)
     {
         //
-        $mCurrency->destroy();
+        $mCurrency->delete();
+        return redirect()->route('mCurrency.index')->with('status','Success!!');
     }
 }

@@ -63,7 +63,7 @@ class ItemTagController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
-        return redirect()->route('ItemTag.index')->with('status','Success!!');
+        return redirect()->route('itemTag.index')->with('status','Success!!');
     }
 
     /**
@@ -72,11 +72,11 @@ class ItemTagController extends Controller
      * @param  \App\Models\ItemTag  $itemTag
      * @return \Illuminate\Http\Response
      */
-    public function show(ItemTag $ItemTag)
+    public function show(ItemTag $itemTag)
     {
         //
          return view('master.itemTag.detail',[
-            'ItemTag'=>$ItemTag
+            'ItemTag'=>$itemTag
         ]);
 
     }
@@ -87,11 +87,11 @@ class ItemTagController extends Controller
      * @param  \App\Models\ItemTag  $ItemTag
      * @return \Illuminate\Http\Response
      */
-    public function edit(ItemTag $ItemTag)
+    public function edit(ItemTag $itemTag)
     {
         //
         return view('master.itemTag.edit',[
-            'ItemTag'=>$ItemTag
+            'ItemTag'=>$itemTag
         ]);
     }
 
@@ -102,13 +102,13 @@ class ItemTagController extends Controller
      * @param  \App\Models\ItemTag  $ItemTag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ItemTag $ItemTag)
+    public function update(Request $request, ItemTag $itemTag)
     {
         //
         $data = $request->collect();
         $user = Auth::user();
         DB::table('ItemTag')
-            ->where('ItemTagID', $ItemTag['ItemTagID'])
+            ->where('ItemTagID', $itemTag['ItemTagID'])
             ->update(array(
                 'Name' => $data['Name'],
                 'Desc' => $data['Desc'],
@@ -117,7 +117,7 @@ class ItemTagController extends Controller
             )
         );
 
-       return redirect()->route('ItemTag.index')->with('status','Success!!');           
+       return redirect()->route('itemTag.index')->with('status','Success!!');           
     }
 
     /**
@@ -126,11 +126,12 @@ class ItemTagController extends Controller
      * @param  \App\Models\ItemTag  $ItemTag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ItemTag $ItemTag)
+    public function destroy(ItemTag $itemTag)
     {
         //
-        $ItemTag->delete();
-       return redirect()->route('ItemTag.index')->with('status','Success!!');
+        //$itemTag->delete();
+        DB::table('ItemTag')->where('ItemTagID', $itemTag['ItemTagID'])->delete();
+       return redirect()->route('itemTag.index')->with('status','Success!!');
     }
 
     public function searchItemTagName($tagName)

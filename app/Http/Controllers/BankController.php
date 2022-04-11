@@ -22,7 +22,7 @@ class BankController extends Controller
         //
         $datas = DB::table('bank')
             ->get();
-        return view('master.bank',[
+        return view('master.Bank.index',[
             'datas' => $datas,
         ]);
     }
@@ -35,7 +35,7 @@ class BankController extends Controller
     public function create()
     {
         //
-         return view('master.bank_tambah');
+         return view('master.Bank.tambah');
     }
 
     /**
@@ -77,7 +77,7 @@ class BankController extends Controller
     public function edit(Bank $bank)
     {
         //
-         return view('master.bank_edit',[
+         return view('master.Bank.edit',[
              'bank'=>$bank
          ]);
     }

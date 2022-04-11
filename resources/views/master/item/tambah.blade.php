@@ -38,7 +38,7 @@ Tambah item
                         <div class="form-group">
                             <label for="title">Nama Item</label>
                            <input require type="text" name="nameItem" class="form-control" 
-                           value="{{old('nameItem','')}}" >
+                           value="{{old('nameItem','')}}" maxlength="200">
                         </div>
 
                         <div class="form-group">
@@ -65,7 +65,7 @@ Tambah item
                        <div class="form-group">
                             <label for="title">Keterangan</label>
                             <input require type="text" name="note" class="form-control" 
-                           value="{{old('note','')}}" >
+                           value="{{old('note','')}}" maxlength="256">
                         </div>
 
                            <div class="form-group">

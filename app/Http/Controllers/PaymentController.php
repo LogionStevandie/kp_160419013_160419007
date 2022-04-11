@@ -24,7 +24,7 @@ class PaymentController extends Controller
         //
         $data = DB::table('Payment')
             ->get();
-        return view('master.payment',[
+        return view('master.payment.index',[
             'data' => $data,
         ]);
     }
@@ -37,7 +37,7 @@ class PaymentController extends Controller
     public function create()
     {
         //
-        return view('master.payment_tambah');
+        return view('master.payment.tambah');
     }
 
     /**
@@ -62,6 +62,7 @@ class PaymentController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('payment.index')->with('status','Success!!');
     }
 
     /**
@@ -73,7 +74,7 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         //
-        return view('master.payment_detail',[
+        return view('master.payment.detail',[
             'payment' => $payment,
         ]);
     }
@@ -87,7 +88,7 @@ class PaymentController extends Controller
     public function edit(Payment $payment)
     {
         //
-        return view('master.payment_edit',[
+        return view('master.payment.edit',[
             'payment' => $payment,
         ]);
     }
@@ -105,7 +106,7 @@ class PaymentController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         DB::table('Payment')
-            ->where('PaymentID', $payment['id'])
+            ->where('PaymentID', $payment['PaymentID'])
             ->update(array(
                 'Name' => $data['name'],
                 'Deskripsi' => $data['deskripsi'],
@@ -113,6 +114,7 @@ class PaymentController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
                 )
         );  
+        return redirect()->route('payment.index')->with('status','Success!!');
     }
 
     /**
@@ -124,6 +126,7 @@ class PaymentController extends Controller
     public function destroy(Payment $payment)
     {
         //
-        $payment->destroy();
+        $payment->delete();
+        return redirect()->route('payment.index')->with('status','Success!!');
     }
 }

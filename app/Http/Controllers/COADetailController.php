@@ -26,7 +26,7 @@ class COADetailController extends Controller
             ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
             ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
             ->get();
-        return view('master.coaDetail',[
+        return view('master.COADetail.index',[
             'data' => $data,
         ]);
     }
@@ -41,7 +41,7 @@ class COADetailController extends Controller
         //
         $dataCOAHead = DB::table('COAHead')
             ->get();
-        return view('master.coaDetail_tambah',[
+        return view('master.COADetail.tambah',[
             'dataCOAHead' => $dataCOAHead,
         ]);
     }
@@ -58,9 +58,9 @@ class COADetailController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         
-        DB::table('COAHead')
+        DB::table('COADetail')
             ->insert(array(
-                'Cdet' => $data['nama'],
+                //'Cdet' => $data['cdet'],
                 'CoaHead' => $data['coahead'],
                 'CDet_Name' => $data['cdet_name'],
                 'Keterangan' => $data['keterangan'],
@@ -70,6 +70,7 @@ class COADetailController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('coaDetail.index')->with('status','Success!!');
     }
 
     /**
@@ -78,15 +79,15 @@ class COADetailController extends Controller
      * @param  \App\Models\COADetail  $cOADetail
      * @return \Illuminate\Http\Response
      */
-    public function show(COADetail $cOADetail)
+    public function show(COADetail $coaDetail)
     {
         //
         /*$data = DB::table('COADetail')
             ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
             ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
             ->get();*/
-        return view('master.coaDetail_detail',[
-            'cOADetail' => $cOADetail,
+        return view('master.COADetail.detail',[
+            'coaDetail' => $coaDetail,
         ]);
     }
 
@@ -96,13 +97,13 @@ class COADetailController extends Controller
      * @param  \App\Models\COADetail  $cOADetail
      * @return \Illuminate\Http\Response
      */
-    public function edit(COADetail $cOADetail)
+    public function edit(COADetail $coaDetail)
     {
         //
         $dataCOAHead = DB::table('COAHead')
             ->get();
-        return view('master.coaDetail_edit',[
-            'cOADetail'=>$cOADetail,
+        return view('master.COADetail.edit',[
+            'coaDetail'=>$coaDetail,
             'dataCOAHead'=>$dataCOAHead,
 
         ]);
@@ -115,15 +116,16 @@ class COADetailController extends Controller
      * @param  \App\Models\COADetail  $cOADetail
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, COADetail $cOADetail)
+    public function update(Request $request, COADetail $coaDetail)
     {
         //
         $data = $request->collect();
+        //d//d($data);
         $user = Auth::user();
         DB::table('COADetail')
-            ->where('CoaDetailID', $cOADetail['id'])
+            ->where('Cdet', $coaDetail['Cdet'])
             ->update(array(
-                'Cdet' => $data['nama'],
+                //'Cdet' => $data['nama'],
                 'CoaHead' => $data['coahead'],
                 'CDet_Name' => $data['cdet_name'],
                 'Keterangan' => $data['keterangan'],
@@ -131,6 +133,7 @@ class COADetailController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('coaDetail.index')->with('status','Success!!');
     }
 
     /**
@@ -139,23 +142,12 @@ class COADetailController extends Controller
      * @param  \App\Models\COADetail  $cOADetail
      * @return \Illuminate\Http\Response
      */
-    public function destroy(COADetail $cOADetail)
+    public function destroy(COADetail $coaDetail)
     {
         //
-        $cOADetail->destroy();
-        
+        //dd($coaDetail);
+        $coaDetail->delete();      
+        return redirect()->route('coaDetail.index')->with('status','Success!!');
     }
 
-    public function searchCoaDetailName($namaCoaDetail)
-    {
-        //
-        $data = DB::table('COADetail')
-            ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
-            ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
-            ->where('Cdet_Name','like','%'.$namaCoaDetail.'%')
-            ->get();
-        return view('master.coaDetail',[
-            'data' => $data,
-        ]);
-    }
 }

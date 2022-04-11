@@ -6,13 +6,13 @@
 @endif
 
 @section('judul')
-Pulau
+Kategori Item
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item active">Kategori Item</li>
+<li class="breadcrumb-item active">Kategori-Item</li>
 @endsection
 
 
@@ -58,7 +58,7 @@ Pulau
                                         <div class="modal-dialog">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h4 class="modal-title">Detail Pulau</h4>
+                                                    <h4 class="modal-title">Detail Kategori Item</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button> 
@@ -83,7 +83,7 @@ Pulau
                                     <form action="{{route('itemCategory.destroy',[$tag->ItemCategoryID])}}" method="POST" class="btn btn-responsive">
                                         @csrf
                                         @method('DELETE')
-                                          <button action="{{route('itemCategory.destroy',[$tag->ItemCategoryID])}}" method="POST" class="btn btn-default bg-danger">
+                                          <button action="{{route('itemCategory.destroy',[$tag->ItemCategoryID])}}" class="btn btn-default bg-danger">
                                             <i class="fas fa-trash"></i> 
                                           </button>
                                         @csrf

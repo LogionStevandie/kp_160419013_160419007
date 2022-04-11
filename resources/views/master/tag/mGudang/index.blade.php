@@ -7,13 +7,13 @@
 @endif
 
 @section('judul')
-Tag Gudang
+Tag Gudang Values
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item active">Tag-Gudang</li>
+<li class="breadcrumb-item active">Tag-Gudang-Values</li>
 @endsection
 
 @section('content')
@@ -39,7 +39,7 @@ Tag Gudang
                         <tbody>
                             @foreach($data as $d)
                              <tr>
-                                <th>{{$d->MGudangID}}</th>
+                                <td>{{$d->MGudangID}}</td>
                                 <td>{{$d->ccode}}</td>
                                 <td>{{$d->cname}}</td>
                                 <td>
@@ -50,10 +50,10 @@ Tag Gudang
                                     @endforeach
                                 </td>
                                 <td>  
-                                    <a class="btn btn-default bg-info" href="{{route('mGudang.show',[$d->MGudangID])}}">
+                                    <a class="btn btn-default bg-info" href="{{route('tagValuesMGudang.show',[$d->MGudangID])}}">
                                         <i class="fas fa-eye"></i> 
                                     </a>
-                                    <a class="btn btn-default bg-info" href="{{route('mGudang.edit',[$d->MGudangID])}}">
+                                    <a class="btn btn-default bg-info" href="{{route('tagValuesMGudang.edit',[$d->MGudangID])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                 </td>

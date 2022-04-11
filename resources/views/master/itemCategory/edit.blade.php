@@ -12,7 +12,7 @@ Edit Kategori item
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('itemCategory.index')}}">Kategori item</a></li>
+<li class="breadcrumb-item"><a href="{{route('itemCategory.index')}}">Kategori-item</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 @section('content')
@@ -32,13 +32,13 @@ Edit Kategori item
                         <div class="form-group">
                            <label for="title">Nama Item Kategori</label>
                            <input require type="text" name="Name" class="form-control" 
-                           value="{{old('Name',$itemCategory->Name)}}" >
+                           value="{{old('Name',$itemCategory->Name)}}" maxlength="50">
                         </div>
 
                          <div class="form-group">
                            <label for="title">Remarks</label>
                            <input require type="text" name="remarks" class="form-control" 
-                           value="{{old('Remarks',$itemCategory->Remarks)}}" >
+                           value="{{old('Remarks',$itemCategory->Remarks)}}" maxlength="10">
                         </div>
 
                         <div class="form-group">

@@ -22,9 +22,8 @@ class MGudangAreaSimpanController extends Controller
     {
         //
         $data = DB::table('MGudangAreaSimpan')
-            ->where('Hapus','=',0)
             ->get();
-        return view('master.mGudangAreaSimpan',[
+        return view('master.mGudangAreaSimpan.index',[
             'data' => $data,
         ]);
     }
@@ -37,7 +36,7 @@ class MGudangAreaSimpanController extends Controller
     public function create()
     {
         //
-         return view('master.mGudangAreaSimpan_tambah');
+         return view('master.mGudangAreaSimpan.tambah');
     }
 
     /**
@@ -54,7 +53,6 @@ class MGudangAreaSimpanController extends Controller
         
         DB::table('MGudangAreaSimpan')->insert(array(
                 'cname' => $data['name'],
-                'hapus' => 0,
                 'CreatedBy'=> $user->id,
                 'CreatedOn'=> date("Y-m-d h:i:sa"),
                 'UpdatedBy'=> $user->id,
@@ -75,7 +73,7 @@ class MGudangAreaSimpanController extends Controller
         //
         $data = DB::table('MGudangAreaSimpan')
             ->get();
-        return view('master.mGudangAreaSimpan_detail',[
+        return view('master.mGudangAreaSimpan.detail',[
             'data' => $data,
         ]);
     }
@@ -89,7 +87,7 @@ class MGudangAreaSimpanController extends Controller
     public function edit(MGudangAreaSimpan $mGudangAreaSimpan)
     {
         //
-        return view('master.mGudangAreaSimpan_edit',[
+        return view('master.mGudangAreaSimpan.edit',[
             'mGudangAreaSimpan' => $mGudangAreaSimpan,
         ]);
     }
@@ -107,7 +105,7 @@ class MGudangAreaSimpanController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         DB::table('MGudangAreaSimpan')
-            ->where('MGudangAreaSimpanID', $mGudangAreaSimpan['id'])
+            ->where('MGudangAreaSimpanID', $mGudangAreaSimpan['MGudangAreaSimpanID'])
             ->update(array(
                 'cname' => $data['name'],   
                 'UpdatedBy'=> $user->id,
@@ -128,27 +126,17 @@ class MGudangAreaSimpanController extends Controller
     {
         //
         $user = Auth::user();
-        DB::table('MGudangAreaSimpan')
+        /*DB::table('MGudangAreaSimpan')
             ->where('MGudangAreaSimpanID', $mGudangAreaSimpan['id'])
             ->update(array(
                 'hapus' => 1,   
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
-        );
+        );*/
+        $mGudangAreaSimpan->delete();
         return redirect()->route('mGudangAreaSimpan.index')->with('status','Success!!');
 
     }
 
-    public function searchGudangAreaSimpanName($gudangAreaSimpanName)
-    {
-        //
-        $data = DB::table('MGudangAreaSimpan')
-            ->where('Hapus','=',0)
-            ->where('cname','like','%'.$gudangAreaSimpanName.'%')
-            ->get();
-        return view('master.mGudangAreaSimpan',[
-            'data' => $data,
-        ]);
-    }
 }

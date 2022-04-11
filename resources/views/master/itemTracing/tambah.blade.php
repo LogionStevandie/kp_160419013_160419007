@@ -28,13 +28,13 @@ Tambah Tracing item
                         <div class="form-group">
                            <label for="title">Nama Item Tracing</label>
                            <input require type="text" name="Name" class="form-control" 
-                           value="{{old('Name','')}}" >
+                           value="{{old('Name','')}}" maxlength="100">
                         </div>
 
                         <div class="form-group">
                             <label for="title">Notes</label>
                            <input require type="text" name="Notes" class="form-control" 
-                           value="{{old('Notes','')}}" >
+                           value="{{old('Notes','')}}" maxlength="300">
                         </div>
 
 

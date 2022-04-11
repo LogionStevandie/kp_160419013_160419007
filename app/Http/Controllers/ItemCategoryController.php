@@ -150,8 +150,8 @@ class ItemCategoryController extends Controller
      */
     public function destroy(ItemCategory $itemCategory)
     {
-        //
-        $itemCategory->delete();
+        //$itemCategory->delete();
+        DB::table('ItemCategory')->where('ItemCategoryID', $itemCategory['ItemCategoryID'])->delete();
         return redirect()->route('itemCategory.index')->with('status','Success!!');
     }
 

@@ -140,6 +140,21 @@ class ApprovedPOController extends Controller
                 ->update(array(
                     'proses' => 0,
                 ));
+
+
+                $podet = DB::table('purchase_order_detail')->where('idPurchaseOrder',$approvedPurchaseOrder['id'])->get();
+                foreach ($podet as $data) {
+
+                    /*DB::table('purchase_request_detail')    masih salaa
+                        ->where('id', $data['idPurchaseRequestDetail'])
+                        ->update(array(
+                            'jumlahProses' => $data['jumlah'],
+                        ));*/
+                    DB::table('purchase_request_detail')->decrement('jumlahProses', $data['jumlah'], [
+                        'id' => $data['idPurchaseRequestDetail'],
+                    ]);
+                }
+                
             }
 
         }

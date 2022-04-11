@@ -29,7 +29,7 @@ class PurchaseRequestController extends Controller
             ->where('MGudang.MGudangID', '=', $user->MGudangID)
             ->get();
         $data = DB::table('purchase_request')
-            ->select('purchase_request.*')
+            ->select('purchase_request.*', 'MGudang.cname as gudangName')
             ->join('users', 'purchase_request.created_by', '=', 'users.id')
             ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
             ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')

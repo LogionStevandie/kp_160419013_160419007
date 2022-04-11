@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class MGudangAreaSimpan extends Model
 {
     use HasFactory;
+    protected $table = 'MGudangAreaSimpan';
+    protected $primaryKey='MGudangAreaSimpanID';
 }

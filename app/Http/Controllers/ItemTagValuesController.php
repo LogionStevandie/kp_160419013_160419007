@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ItemTagValues;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
@@ -54,7 +54,7 @@ class ItemTagValuesController extends Controller
        // $check = $this->checkAccess('itemtagvalues.index', $user->id, $user->idRole);
         
        /* if($check){*/
-            return view('master.itemtagvalues.index',[
+            return view('master.tag.item.index',[
                 'dataItem' => $dataItem, //ke close ga gik lek tak close gak tab e sek
                 'dataTag' => $dataTag
             ]);
@@ -71,25 +71,7 @@ class ItemTagValuesController extends Controller
      */
     public function create()
     {
-        //
-         $user = Auth::user();
-        //
-        $dataItem = DB::table('Item')
-            ->get();
-        $dataTag = DB::table('ItemTag')
-            ->get();
-
         
-       // $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-       /* if($check){*/
-            return view('master.itemTagValues.tambah',[
-                'dataItem' => $dataItem,
-                'dataTag'=>$dataTag
-            ]);
-        //}
-        /*else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
     }
 
     /**
@@ -100,37 +82,7 @@ class ItemTagValuesController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $data = $request->collect();
-        $user = Auth::user();
         
-        $dataTag = DB::table('ItemTag')
-            ->where('Name', $data['Name'])
-            ->get();
-        if(count($dataTag) > 0){
-            DB::table('ItemTagValues')->insert(array(
-                'ItemID' => $data->idItem, //nanti di combobox nya ini
-                'ItemTagID' => $dataTag->ItemTagID,
-                )
-           );
-        }
-        else{
-            $idTag = DB::table('ItemTag')
-                ->insertGetId(array(
-                    'Name' => $data['Name'],
-                    //'Desc' => $data['Desc'],
-                    'CreatedBy'=> $user->id,
-                    'CreatedOn'=> date("Y-m-d h:i:sa"),
-                    'UpdatedBy'=> $user->id,
-                    'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                )
-            ); 
-            DB::table('ItemTagValues')->insert(array(
-                'ItemID' => $data->idItem, //nanti di combobox nya ini
-                'ItemTagID' => $idTag,
-                )
-            );
-        }
         
     }
 
@@ -151,9 +103,21 @@ class ItemTagValuesController extends Controller
      * @param  \App\Models\ItemTagValues  $itemTagValues
      * @return \Illuminate\Http\Response
      */
-    public function edit(ItemTagValues $itemTagValues)
+    public function edit(Item $itemTagValue)
     {
         //
+        $data = DB::table('ItemTag')
+            ->get();
+        $dataTag = DB::table('ItemTagValues')
+            ->rightjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
+            ->where('ItemTagValues.ItemID',$itemTagValue->ItemID)
+            ->get();
+        //dd($dataTag);
+        return view('master.tag.item.edit',[
+            'data' =>$data,
+            'dataTag' => $dataTag,
+            'itemTagValues' => $itemTagValue,
+        ]);
 
     }
 
@@ -164,17 +128,29 @@ class ItemTagValuesController extends Controller
      * @param  \App\Models\ItemTagValues  $itemTagValues
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ItemTagValues $itemTagValues)
+    public function update(Request $request, Item $itemTagValue)
     {
         //
-        $data = $request->collect();
         $user = Auth::user();
 
-        DB::table('ItemTagValues')->insert(array(
-            'ItemID' => $data->idItem, //nanti di combobox nya ini
-            'ItemTagID' => $idTag,
-            )
-        );
+        $data=$request->collect();
+        //dd($data);
+        $dataItemValues = DB::table('ItemTagValues')
+            ->where('ItemID', $itemTagValue->ItemID)
+            ->get();
+
+        DB::table('ItemTagValues')
+            ->where('ItemID','=',$itemTagValue->ItemID)
+            ->delete();
+        for($i = 0; $i < count($data['itemTag']); $i++){
+        DB::table('ItemTagValues')
+            ->insert(array(
+                'ItemID' => $itemTagValue->ItemID,
+                'ItemTagID' => $data['itemTag'][$i],
+                )
+            ); 
+        }
+        return redirect()->route('itemTagValues.index')->with('status','Success!!');
     }
 
     /**
@@ -186,9 +162,5 @@ class ItemTagValuesController extends Controller
     public function destroy(ItemTagValues $itemTagValues)
     {
         //
-        DB::table('ItemTagValues')
-            ->where('ItemID', $data->idItem)
-            ->where('ItemTagID', $data->idTag)
-            ->delete();
     }
 }

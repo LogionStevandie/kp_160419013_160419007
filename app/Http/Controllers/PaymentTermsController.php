@@ -26,7 +26,7 @@ class PaymentTermsController extends Controller
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->where('PaymentTerms.Hapus','=',0)
             ->get();
-        return view('master.paymentTerms',[
+        return view('master.paymentTerms.index',[
             'data' => $data,
         ]);
     }
@@ -41,7 +41,7 @@ class PaymentTermsController extends Controller
         //
         $dataPayment = DB::table('Payment')
             ->get();
-        return view('master.paymentTerms_tambah',[
+        return view('master.paymentTerms.tambah',[
             'dataPayment' => $dataPayment,
         ]);
     }
@@ -73,7 +73,7 @@ class PaymentTermsController extends Controller
                 'Hapus' => 0,
             )
         );
-
+        return redirect()->route('paymentTerms.index')->with('status','Success!!');
 
     }
 
@@ -86,7 +86,7 @@ class PaymentTermsController extends Controller
     public function show(PaymentTerms $paymentTerms)
     {
         //
-        return view('master.paymentTerms_detail',[
+        return view('master.paymentTerms.detail',[
             'paymentTerms' => $paymentTerms,
         ]);
     }
@@ -102,7 +102,7 @@ class PaymentTermsController extends Controller
         //
         $dataPayment = DB::table('Payment')
             ->get();
-        return view('master.paymentTerms_edit',[
+        return view('master.paymentTerms.edit',[
             'paymentTerms' => $paymentTerms,
             'dataPayment' => $dataPayment,
         ]);
@@ -121,7 +121,7 @@ class PaymentTermsController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         DB::table('PaymentTerms')
-            ->where('PaymentTermsID', $paymentTerms['id'])
+            ->where('PaymentTermsID', $paymentTerms['PaymentTermsID'])
             ->update(array(
                 'Name' => $data['name'],
                 'Deskripsi' => $data['deskripsi'],
@@ -133,6 +133,7 @@ class PaymentTermsController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
+        return redirect()->route('paymentTerms.index')->with('status','Success!!');
     }
 
     /**
@@ -147,11 +148,12 @@ class PaymentTermsController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         DB::table('PaymentTerms')
-            ->where('PaymentTermsID', $paymentTerms['id'])
+            ->where('PaymentTermsID', $paymentTerms['PaymentTermsID'])
             ->update(array(
                 'Hapus' => 1,
             )
         ); 
+        return redirect()->route('paymentTerms.index')->with('status','Success!!');
     }
 
     public function searchPaymentTermsName($termsName)
