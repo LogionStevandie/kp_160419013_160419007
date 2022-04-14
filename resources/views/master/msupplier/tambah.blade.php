@@ -58,6 +58,19 @@ Tambah Supplier
 
                         </div>
 
+               
+                                    <div class="form-group">
+                                    <label>Payment Terms</label>
+                                    <select class="form-control select2" style="width: 100%;" name="PaymentTermsID">
+                                      <option value="">--Pilih Payment Terms--</option>
+                                        @foreach($PaymentTerms as $key => $data)
+                                        <option value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}}</option>
+                                        @endforeach
+                                    </select>
+                                    </div>
+                                 
+                            
+
                         <div class="form-group">
                             <label for="title">Payment Terms</label>
                             <select name="PaymentTermsID" class="form-control">
@@ -232,32 +245,33 @@ Tambah Supplier
                                     @endforeach
                             </select>
                         </div>
-
+                          <div class="form-group">
+                            <label for="title">Petani</label><br>
+                            <div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary1" name="Petani" checked value="1"{{'1' == old('Petani','')? 'checked' :'0' }}>
+                                <label for="radioPrimary1">Ya
+                                </label>
+                            </div>
+                            <div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary2" name="Petani" value="0"{{'1' == old('Petani','')? 'checked' :'0' }}>
+                                <label for="radioPrimary2">Tidak
+                                </label>
+                            </div>
+                         </div>
 
                            <div class="form-group">
-                             <label for="title">Petani</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Petani" value="1"{{'1' == old('Petani','')? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio1">Ya</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Petani" value="0"{{'0'== old('Petani','')? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
-                            </div><br>
-                        </div>
-                       
-        
-                        <div class="form-group">
                             <label for="title">Khusus</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Khusus" value="1"{{'1' == old('Khusus','')? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio1">Ya</label>
+                            <div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary1" name="Khusus" checked value="1"{{'1' == old('Petani','')? 'checked' :'0' }}>
+                                <label for="radioPrimary1">Ya
+                                </label>
                             </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Khusus" value="0"{{'0'== old('Khusus','')? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
-                            </div><br>
-                        </div>
+                            <div class="icheck-primary d-inline">
+                                <input type="radio" id="radioPrimary2" name="Khusus" value="0"{{'1' == old('Petani','')? 'checked' :'0' }}>
+                                <label for="radioPrimary2">Tidak
+                                </label>
+                            </div>
+                         </div>
 
         </div>
         <!-- /.card-body -->

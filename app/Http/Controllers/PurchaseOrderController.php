@@ -178,6 +178,7 @@ class PurchaseOrderController extends Controller
             'name' => 'PO/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
             'idSupplier' => $data['supplier'],
             'idPaymentTerms' => $data['paymentTerms'],
+            'tanggalDibuat' => $data['tanggalDibuat'],
             'tanggal_akhir' => $data['tanggal_akhir'],
             'approved' => 0,
             'hapus' => 0,
@@ -194,6 +195,7 @@ class PurchaseOrderController extends Controller
         ); 
 
         $totalHarga = 0;
+        $subtotalHarga = 0;
 
         for($i = 0; $i < count($data['itemId']); $i++){
             DB::table('purchase_order_detail')->insert(array(
@@ -216,6 +218,7 @@ class PurchaseOrderController extends Controller
             ]);
             
             $totalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]) * (100.0 + $data['itemTaxValue'][$i]) / 100.0;
+            $subtotalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]);
                  
         }
 
@@ -223,6 +226,7 @@ class PurchaseOrderController extends Controller
             ->where('id', $idpo)
             ->update([
                 'totalHarga' =>  $totalHarga,
+                'subtotalHarga' =>  $subtotalHarga,
         ]);
 
         return redirect()->route('purchaseOrder.index')->with('status','Pembuatan PO/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex.' Berhasil');

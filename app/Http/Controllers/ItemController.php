@@ -38,8 +38,8 @@ class ItemController extends Controller
             //->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             //->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
-            ->simplePaginate(10);
-            //->get();
+            ->paginate(10);
+            //>get();
         //dd($dataItem);
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
@@ -379,6 +379,8 @@ class ItemController extends Controller
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
             ->get();
+        $dataCategory = DB::table('ItemCategory')
+        ->get();
 
 
         /*$access = DB::table('menu')
@@ -389,17 +391,18 @@ class ItemController extends Controller
             ->orWhere('user_access.idUsers',$user->id)
             ->get();
         */
-        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        //$check = $this->checkAccess('item.index', $user->id, $user->idRole);
         
-        if($check){
+        /*if($check){*/
             return view('master.item.index',[
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
+                'dataCategory' => $dataCategory,
             ]);
-        }
+       /* }
         else{
             return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }
+        }*/
     }
 
     public function searchItemId($itemId)

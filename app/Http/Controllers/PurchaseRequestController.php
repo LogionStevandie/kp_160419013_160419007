@@ -38,6 +38,21 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
             ->get();
+
+        $getPerusahaan = DB::table('MPerusahaan')
+                    ->where('UserIDManager1', $user->id)
+                    ->orWhere('UserIDManager2', $user->id)
+                    ->get();
+        /*if(count($getPerusahaan)>=0){
+            $data = DB::table('purchase_request')
+                ->select('purchase_request.*', 'MGudang.cname as gudangName')
+                ->join('users', 'purchase_request.created_by', '=', 'users.id')
+                ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+                ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+                ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+                ->where('purchase_request.hapus','=', 0)    
+                ->get();
+        } dipakek kalo udah wenak/*
         return view('master.PurchaseRequest.index',[
             'data' => $data,
         ]);
@@ -84,10 +99,11 @@ class PurchaseRequestController extends Controller
 
         $dataBarang = DB::table('Item')
             ->select('Item.*', 'Unit.Name as unitName')
-            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
-            ->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->leftjoin('Unit','Item.UnitID', '=', 'Unit.UnitID')
             ->where('Item.Hapus',0)
             ->get();
+
+            //dd($dataBarang);
 
         $dataBarangTag = DB::table('Item')
             ->select('Item.*', 'Unit.Name as unitName','ItemTagValues.ItemTagID')
@@ -170,6 +186,7 @@ class PurchaseRequestController extends Controller
             'approved' => 0,
             'approvedAkhir' => 0,
             'hapus' => 0,
+            'tanggalDibuat' => $data['tanggalDibuat'],
             'tanggalDibutuhkan' => $data['tanggalDibutuhkan'],
             'tanggalAkhirDibutuhkan' => $data['tanggalAkhir'],
             'jenisProses' => $data['jenisProses'],
@@ -430,5 +447,55 @@ class PurchaseRequestController extends Controller
         //Storage::put('public/permintaan.pdf', $pdf->output());
 	    return $pdf->download('permintaan.pdf');
         
+    }
+    public function searchNamePR(Request $request)
+    {
+        $tag=$request->input('searchtag');
+        $user = Auth::user();
+        //->whereBetween('votes', [1, 100])
+        $getLokasi = DB::table('MGudang')
+            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->get();
+        $data = DB::table('purchase_request')
+            ->select('purchase_request.*', 'MGudang.cname as gudangName')
+            ->join('users', 'purchase_request.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
+            ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
+            ->where('purchase_request.hapus','=', 0)    
+            ->where('purchase_request.name','like','%'.$tag.'%')
+            ->get();
+        return view('master.PurchaseRequest.index',[
+            'data' => $data,
+        ]);
+
+    }
+
+    public function searchDatePR(Request $request)
+    {
+        $date=$request->input('dateRangeSearch');
+        $date = explode("-", $date);
+        $user = Auth::user();
+        //
+        $getLokasi = DB::table('MGudang')
+            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->get();
+        $data = DB::table('purchase_request')
+            ->select('purchase_request.*', 'MGudang.cname as gudangName')
+            ->join('users', 'purchase_request.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
+            ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
+            ->where('purchase_request.hapus','=', 0)    
+            ->whereBetween('votes', [$date[0], $date[1]])
+            ->get();
+        return view('master.PurchaseRequest.index',[
+            'data' => $data,
+        ]);
+
     }
 }
