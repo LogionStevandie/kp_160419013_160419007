@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class PaymentTerms extends Model
 {
     use HasFactory;
+    protected $table = 'PaymentTerms';
+    protected $primaryKey='PaymentTermsID';
 }

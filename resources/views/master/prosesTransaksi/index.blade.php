@@ -7,13 +7,13 @@
 @endif
 
 @section('judul')
-Ketentuan Pembayaran
+Proses Transaksi
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item active">Ketentuan-Pembayaran</li>
+<li class="breadcrumb-item active">Proses-Transaksi</li>
 @endsection
 
 @section('content')
@@ -22,9 +22,9 @@ Ketentuan Pembayaran
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Ketentuan Pembayaran</h3>
+                    <h3 class="card-title">Proses Transaksi</h3>
                     
-                    <a href="{{route('paymentTerms.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Ketentuan Pembayaran
+                    <a href="{{route('prosesTransaksi.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Proses Transaksi
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                         </svg>
@@ -38,48 +38,29 @@ Ketentuan Pembayaran
                                 <th>ID</th>
                                 <th>Nama</th>
                                 <th>Deskripsi</th>
-                                <th>Hari</th>
-                                <th>Pembelian</th>
-                                <th>Penjualan</th>
-                                <th>Jenis Pembayaran</th>
                                 <th>Action</th>
                              </tr>
                         </thead>
                         <tbody>
                             @foreach($data as $d)
-                            <tr>
-                                <th>{{$d->PaymentTermsID}}</th>
-                                <td>{{$d->Name}}</td>
-                                <td>{{$d->Deskripsi}}</td>
-                                <td>{{$d->Days}}</td>
-                                <td>
-                                    @if($d->IsPembelian == 0)
-                                        Tidak
-                                    @elseif($d->IsPembelian == 1)   
-                                        Ya 
-                                    @endif   
-                                </td>
-                                <td>
-                                    @if($d->IsPenjualan == 0)
-                                        Tidak
-                                    @elseif($d->IsPenjualan == 1)   
-                                        Ya 
-                                    @endif   
-                                </td>
-                                <td>{{$d->paymentName}}</td>
+                             <tr>
+                                <th>{{$d->id}}</th>
+                                <td>{{$d->name}}</td>
+                                <td>{{$d->deskripsi}}</td>
                                 <td>  
-                                    <a class="btn btn-default bg-info" href="{{route('paymentTerms.show',[$d->PaymentTermsID])}}">
+                                    <a class="btn btn-default bg-info" href="{{route('prosesTransaksi.show',[$d->id])}}">
                                         <i class="fas fa-eye"></i> 
                                     </a>
-                                    <a class="btn btn-default bg-info" href="{{route('paymentTerms.edit',[$d->PaymentTermsID])}}">
+                                    <a class="btn btn-default bg-info" href="{{route('prosesTransaksi.edit',[$d->id])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form method="POST" action="{{route('paymentTerms.destroy',[$d->PaymentTermsID])}}"  class="btn btn-responsive">
+                                    <form action="{{route('prosesTransaksi.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-default bg-danger" href="{{route('paymentTerms.destroy',[$d->PaymentTermsID])}}">
+                                        <button class="btn btn-default bg-danger" action="{{route('prosesTransaksi.destroy',[$d->id])}}">
                                             <i class="fas fa-trash"></i> 
                                         </button>
+                                        @csrf
                                     </form>  
                                 </td>
                             </tr>
@@ -90,10 +71,6 @@ Ketentuan Pembayaran
                                 <th>ID</th>
                                 <th>Nama</th>
                                 <th>Deskripsi</th>
-                                <th>Hari</th>
-                                <th>Pembelian</th>
-                                <th>Penjualan</th>
-                                <th>Jenis Pembayaran</th>
                                 <th>Action</th>
                              </tr>
                         </tfoot>

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\ProsesTransaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Auth;
 
 class ProsesTransaksiController extends Controller
 {
@@ -23,7 +25,7 @@ class ProsesTransaksiController extends Controller
         //
         $data = DB::table('proses_transaksi')
             ->get();
-        return view('master.transaksi',[
+        return view('master.prosesTransaksi.index',[
             'data' => $data,
         ]);
     }
@@ -36,7 +38,7 @@ class ProsesTransaksiController extends Controller
     public function create()
     {
         //
-        return view('master.transaksi_tambah');
+        return view('master.prosesTransaksi.tambah');
     }
 
     /**
@@ -49,12 +51,17 @@ class ProsesTransaksiController extends Controller
     {
         //
         $data = $request->collect();
-        
-        DB::table('transaksi')->insert(array(
+        $user = Auth::user();
+        DB::table('proses_transaksi')->insert(array(
              'name' => $data['name'],
+             'deskripsi' => $data['deskripsi'],
+             'CreatedBy'=> $user->id,
+             'CreatedOn'=> date("Y-m-d h:i:sa"),
+             'UpdatedBy'=> $user->id,
+             'UpdatedOn'=> date("Y-m-d h:i:sa"),
              )
         ); 
-        return redirect()->route('transaksi.index')->with('status','Success!!');
+        return redirect()->route('prosesTransaksi.index')->with('status','Success!!');
     }
 
     /**
@@ -77,8 +84,8 @@ class ProsesTransaksiController extends Controller
     public function edit(ProsesTransaksi $prosesTransaksi)
     {
         //
-        return view('master.transaksi_edit',[
-            'transaksi'=>$prosesTransaksi
+        return view('master.prosesTransaksi.edit',[
+            'prosesTransaksi'=>$prosesTransaksi
         ]);
     }
 
@@ -92,15 +99,19 @@ class ProsesTransaksiController extends Controller
     public function update(Request $request, ProsesTransaksi $prosesTransaksi)
     {
         //
+        $user = Auth::user();
         $data = $request->collect(); //la teros iki
         
         DB::table('proses_transaksi')
             ->where('id', $prosesTransaksi['id'])
             ->update(array(
-                'name' => $data['transaksi']
+                'name' => $data['name'],
+                'deskripsi' => $data['deskripsi'],
+                'UpdatedBy'=> $user->id,
+                'UpdatedOn'=> date("Y-m-d h:i:sa"),
             ));
 
-        return redirect()->route('transaksi.index')->with('status','Success!!');      
+        return redirect()->route('prosesTransaksi.index')->with('status','Success!!');      
     }
 
     /**
@@ -113,6 +124,6 @@ class ProsesTransaksiController extends Controller
     {
         //
         $prosesTransaksi->delete();
-        return redirect()->route('transaksi.index')->with('status','Success!!');
+        return redirect()->route('prosesTransaksi.index')->with('status','Success!!');
     }
 }

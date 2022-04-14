@@ -48,7 +48,7 @@ Tambah Ketentuan Pembayaran
                     </label>
                 </div>
                 <div class="icheck-primary d-inline">
-                    <input type="radio" id="radioPrimary2" name="isPenjualan" value="1"{{'1' == old('isPenjualan','')? 'checked' :'0' }}>
+                    <input type="radio" id="radioPrimary2" name="isPembelian" value="0"{{'1' == old('isPembelian','')? 'checked' :'0' }}>
                     <label for="radioPrimary2">Penjualan
                     </label>
                 </div>
@@ -56,7 +56,7 @@ Tambah Ketentuan Pembayaran
 
             <div class="form-group">
                 <label>Pembayaran</label>
-                <select required name="prov" class="form-control select2bs4" style="width: 100%;">
+                <select required name="paymentID" class="form-control select2bs4" style="width: 100%;">
                     <option value="0">--Pilih Pembayaran--</option>
                     @foreach($dataPayment as $data)
                         <option value="{{$data->PaymentID}}"{{$data->Name == $data->PaymentID? 'selected' :'' }}>{{$data->Name}}</option>

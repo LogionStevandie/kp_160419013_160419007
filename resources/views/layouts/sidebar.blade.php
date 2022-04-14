@@ -710,6 +710,13 @@
                   <p>Tag Values Item</p>
                 </a>
               </li>
+
+              <li class="nav-item">
+                <a href="{{route('prosesTransaksi.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Proses Transaksi</p>
+                </a>
+              </li> 
             </ul>
           </li>
 
@@ -745,6 +752,25 @@
                 <a href="{{route('mCurrency.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>List Mata uang</p>
+                </a>
+              </li>
+              
+            </ul>
+          </li>
+
+            <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-search"></i>
+              <p>
+                Supplier
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a href="{{route('msupplier.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>list Supplier</p>
                 </a>
               </li>
               

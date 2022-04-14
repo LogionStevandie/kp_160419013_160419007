@@ -91,6 +91,9 @@ Route::resource('mKota', 'App\Http\Controllers\MKotaController');//selese
 //mPerusahaan
 Route::resource('mPerusahaan', 'App\Http\Controllers\mPerusahaanController');//selese
 
+//mKota
+Route::resource('msupplier', 'App\Http\Controllers\MSupplierController');//selese
+
 //mGudang
 Route::resource('mGudang', 'App\Http\Controllers\MGudangController');//dikerjakan setelah item dan item values selesai
 Route::resource('mGudangAreaSimpan', 'App\Http\Controllers\MGudangAreaSimpanController');//dikerjakan setelah item dan item values selesai
@@ -98,9 +101,10 @@ Route::resource('tagValuesMGudang', 'App\Http\Controllers\MGudangValuesControlle
 
 //mGudang
 Route::resource('mCurrency', 'App\Http\Controllers\MCurrencyController');
+Route::resource('prosesTransaksi', 'App\Http\Controllers\ProsesTransaksiController');
 
 //mSupplier
-Route::resource('mCurrency', 'App\Http\Controllers\MSupplierController');
+Route::resource('supplier', 'App\Http\Controllers\MSupplierController');
 //tax
 Route::resource('tax', 'App\Http\Controllers\TaxController');//selese
 

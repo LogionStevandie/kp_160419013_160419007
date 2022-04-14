@@ -11,5 +11,8 @@ class ProsesTransaksi extends Model
 
     protected $fillable=[
         'name',
+        'deskripsi',
     ];
+    protected $table = 'proses_transaksi';
+    protected $primaryKey='id';
 }

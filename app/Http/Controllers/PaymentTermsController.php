@@ -56,15 +56,18 @@ class PaymentTermsController extends Controller
     {
         //
         $data = $request->collect();
+
+        //dd($data);
         $user = Auth::user();
-        
+        $isPenjualan = 0;
+        if($data['isPembelian'] == "0") $isPenjualan = 1;
         DB::table('PaymentTerms')
             ->insert(array(
                 'Name' => $data['name'],
                 'Deskripsi' => $data['deskripsi'],
                 'Days' => $data['days'],
                 'IsPembelian' => $data['isPembelian'],
-                'IsPenjualan' => $data['isPenjualan'],
+                'IsPenjualan' => $isPenjualan,
                 'PaymentID' => $data['paymentID'],
                 'CreatedBy'=> $user->id,
                 'CreatedOn'=> date("Y-m-d h:i:sa"),
@@ -83,11 +86,11 @@ class PaymentTermsController extends Controller
      * @param  \App\Models\PaymentTerms  $paymentTerms
      * @return \Illuminate\Http\Response
      */
-    public function show(PaymentTerms $paymentTerms)
+    public function show(PaymentTerms $paymentTerm)
     {
         //
         return view('master.paymentTerms.detail',[
-            'paymentTerms' => $paymentTerms,
+            'paymentTerms' => $paymentTerm,
         ]);
     }
 
@@ -97,13 +100,13 @@ class PaymentTermsController extends Controller
      * @param  \App\Models\PaymentTerms  $paymentTerms
      * @return \Illuminate\Http\Response
      */
-    public function edit(PaymentTerms $paymentTerms)
+    public function edit(PaymentTerms $paymentTerm)
     {
         //
         $dataPayment = DB::table('Payment')
             ->get();
         return view('master.paymentTerms.edit',[
-            'paymentTerms' => $paymentTerms,
+            'paymentTerms' => $paymentTerm,
             'dataPayment' => $dataPayment,
         ]);
     }
@@ -115,19 +118,22 @@ class PaymentTermsController extends Controller
      * @param  \App\Models\PaymentTerms  $paymentTerms
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PaymentTerms $paymentTerms)
+    public function update(Request $request, PaymentTerms $paymentTerm)
     {
         //
         $data = $request->collect();
+        //dd($data);
+        $isPenjualan = 0;
+        if($data['isPembelian'] == "0") $isPenjualan = 1;
         $user = Auth::user();
         DB::table('PaymentTerms')
-            ->where('PaymentTermsID', $paymentTerms['PaymentTermsID'])
+            ->where('PaymentTermsID', $paymentTerm['PaymentTermsID'])
             ->update(array(
                 'Name' => $data['name'],
                 'Deskripsi' => $data['deskripsi'],
                 'Days' => $data['days'],
                 'IsPembelian' => $data['isPembelian'],
-                'IsPenjualan' => $data['isPenjualan'],
+                'IsPenjualan' => $isPenjualan,
                 'PaymentID' => $data['paymentID'],
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
@@ -142,13 +148,13 @@ class PaymentTermsController extends Controller
      * @param  \App\Models\PaymentTerms  $paymentTerms
      * @return \Illuminate\Http\Response
      */
-    public function destroy(PaymentTerms $paymentTerms)
+    public function destroy(PaymentTerms $paymentTerm)
     {
         //
-        $data = $request->collect();
-        $user = Auth::user();
+        //dd($paymentTerm);
+        $user = Auth::user();  
         DB::table('PaymentTerms')
-            ->where('PaymentTermsID', $paymentTerms['PaymentTermsID'])
+            ->where('PaymentTermsID', $paymentTerm['PaymentTermsID'])
             ->update(array(
                 'Hapus' => 1,
             )

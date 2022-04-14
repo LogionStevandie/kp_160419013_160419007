@@ -4,32 +4,28 @@
                 font-family: 'Nunito', sans-serif;
             }
  </style>
- <?php 
-$currentUrl = Route::current()->getName();  //buat dapetno nama directory nya / route yang diapakek
-//echo($currentUrl);
-?>
+
+@section('judul')
+Tambah Supplier
+@endsection
+
+@section('pathjudul')
+<li class="breadcrumb-item"><a href="/home">Home</a></li>
+<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item"><a href="{{route('msupplier.index')}}">Supplier</a></li>
+<li class="breadcrumb-item active">Tambah</li>
+@endsection
 @section('content')
 <div class="container-fluid">
 
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Supplier -> Tambah</h1>
-</div>
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    Supplier item
-                </div>
-                 
-                <div class="card-body">
-            
-                    <form action="{{route('msupplier.store')}}" method="POST" >
-                      @csrf
-
-                       <div class="form-group">
+<div class="card card-primary">
+    <!-- form start -->
+    <form action="{{route('msupplier.store')}}" method="POST" >
+        @csrf
+        <div class="card-body">
+              <div class="form-group">
+                                  <div class="form-group">
                              <label for="title">Info supplier</label>
                             <select name="infoSupplierID" class="form-control">
                                     <option value="">--Pilih supplier--</option>
@@ -262,15 +258,13 @@ $currentUrl = Route::current()->getName();  //buat dapetno nama directory nya / 
                                 <label class="form-check-label" for="inlineRadio2">Tidak</label>
                             </div><br>
                         </div>
-                        <button class="btn btn-primary">Tambah</button>
-   
-                    </form>
 
-                </div>
-
-            </div>
         </div>
-    </div>
-</div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
 </div>
 @endsection
+
