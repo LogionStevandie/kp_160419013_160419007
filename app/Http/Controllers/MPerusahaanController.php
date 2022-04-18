@@ -148,11 +148,12 @@ class MPerusahaanController extends Controller
         return redirect()->route('mPerusahaan.index')->with('status','Success!!');
     }
 
-    public function searchPerusahaanName($perName)
+    public function searchPerusahaanName(Request $request)
     {
         //
+        $name = $request->input('searchname');
         $data = DB::table('MPerusahaan')
-            ->where('cname','like','%'.$perName.'%')
+            ->where('cname','like','%'.$name.'%')
             ->get();
         return view('master.mPerusahaan',[
             'data' => $data,

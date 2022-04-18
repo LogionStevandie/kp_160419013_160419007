@@ -131,11 +131,13 @@ class MProvinsiController extends Controller
         return redirect()->route('mProvinsi.index')->with('status','Success!!');
     }
 
-    public function searchProvinsiName($provName)
+    public function searchProvinsiName(Request $request)
     {
         //
+        $name = $request->input('searchname');
+
         $data = DB::table('MProvinsi')
-            ->where('cidname','like','%'.$provName.'%')
+            ->where('cname','like','%'.$name.'%')
             ->get();
         return view('master.mProvinsi',[
             'data' => $data,

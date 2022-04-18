@@ -127,4 +127,16 @@ class COAHeadController extends Controller
 
     }
 
+    public function searchCoaHeadName(Request $request)
+    {
+        //
+        $name=$request->input('searchname');
+
+        $data = DB::table('COAHead')
+            ->where('Nama','like','%'.$name.'%')
+            ->get();
+        return view('master.COAHead.index',[
+            'data' => $data,
+        ]);
+    }
 }

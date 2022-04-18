@@ -130,11 +130,12 @@ class MPulauController extends Controller
         return redirect()->route('mPulau.index')->with('status','Success!!');
     }
 
-    public function searchPulauName($pulauName)
+    public function searchPulauName(Request $request)
     {
         //
+        $name = $request->input('searchname');
         $data = DB::table('MPulau')
-            ->where('cname','like','%'.$pulauName.'%')
+            ->where('cname','like','%'.$name.'%')
             ->get();
         return view('master.mPulau',[
             'data' => $data,

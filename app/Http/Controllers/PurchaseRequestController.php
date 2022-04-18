@@ -52,7 +52,7 @@ class PurchaseRequestController extends Controller
                 ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
                 ->where('purchase_request.hapus','=', 0)    
                 ->get();
-        } dipakek kalo udah wenak/*
+        } dipakek kalo udah wenak*/
         return view('master.PurchaseRequest.index',[
             'data' => $data,
         ]);
@@ -180,6 +180,8 @@ class PurchaseRequestController extends Controller
 
         $totalIndex = str_pad(strval(count($dataPermintaan) + 1),4,'0',STR_PAD_LEFT);
 
+        $dateDibutuhkan = explode("-", $data['tanggalDibutuhkan']);
+
         $idpr = DB::table('purchase_request')->insertGetId(array(
             'name' => 'NPP/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
             'MGudangID' => $data['gudang'],
@@ -187,8 +189,8 @@ class PurchaseRequestController extends Controller
             'approvedAkhir' => 0,
             'hapus' => 0,
             'tanggalDibuat' => $data['tanggalDibuat'],
-            'tanggalDibutuhkan' => $data['tanggalDibutuhkan'],
-            'tanggalAkhirDibutuhkan' => $data['tanggalAkhir'],
+            'tanggalDibutuhkan' => $dateDibutuhkan[0],
+            'tanggalAkhirDibutuhkan' => $dateDibutuhkan[1],
             'jenisProses' => $data['jenisProses'],
             'created_by'=> $user->id,
             'created_on'=> date("Y-m-d h:i:sa"),
@@ -323,13 +325,14 @@ class PurchaseRequestController extends Controller
         $user = Auth::user();
         $year = date("Y");
         $month = date("m");
+        $dateDibutuhkan = explode("-", $data['tanggalDibutuhkan']);
 
         DB::table('purchase_request')
             ->where('id', $purchaseRequest->id)
             ->update([
                 'MGudangID' => $data['gudang'],
-                'tanggalDibutuhkan' => $data['tanggalDibutuhkan'],
-                'tanggalAkhirDibutuhkan' => $data['tanggalAkhir'],
+                'tanggalDibutuhkan' => $dateDibutuhkan[0],
+                'tanggalAkhirDibutuhkan' => $dateDibutuhkan[1],
                 'jenisProses' => $data['jenisProses'],
                 'updated_by'=> $user->id,
                 'updated_on'=> date("Y-m-d h:i:sa"),
@@ -450,7 +453,7 @@ class PurchaseRequestController extends Controller
     }
     public function searchNamePR(Request $request)
     {
-        $tag=$request->input('searchtag');
+        $name=$request->input('searchname');
         $user = Auth::user();
         //->whereBetween('votes', [1, 100])
         $getLokasi = DB::table('MGudang')
@@ -465,7 +468,7 @@ class PurchaseRequestController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
-            ->where('purchase_request.name','like','%'.$tag.'%')
+            ->where('purchase_request.name','like','%'.$name.'%')
             ->get();
         return view('master.PurchaseRequest.index',[
             'data' => $data,
@@ -491,7 +494,7 @@ class PurchaseRequestController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
-            ->whereBetween('votes', [$date[0], $date[1]])
+            ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
             ->get();
         return view('master.PurchaseRequest.index',[
             'data' => $data,

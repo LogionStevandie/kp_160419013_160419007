@@ -146,4 +146,20 @@ class MGudangValuesController extends Controller
     {
         //
     }
+
+    public function searchGudangName(Request $request)
+    {
+        //
+        $name = $request->input('searchname');
+        $data = DB::table('MGudang')
+            ->where('cname','like','%'.$name.'%')
+            ->get();
+        $dataTag = DB::table('MGudangValues')
+            ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
+            ->get();
+        return view('master.tag.mGudang.index',[
+            'data' => $data,
+            'dataTag' => $dataTag,
+        ]);
+    }
 }

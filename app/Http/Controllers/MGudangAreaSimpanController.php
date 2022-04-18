@@ -139,4 +139,15 @@ class MGudangAreaSimpanController extends Controller
 
     }
 
+    public function searchGudangAreaSimpanName(Request $request)
+    {
+        //
+        $name = $request->input('searchname');
+        $data = DB::table('MGudangAreaSimpan')
+            ->get();
+        return view('master.mGudangAreaSimpan.index',[
+            'data' => $data,
+        ]);
+    }
+
 }

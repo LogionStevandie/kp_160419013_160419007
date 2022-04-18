@@ -119,4 +119,28 @@ class InfoSupplierController extends Controller
         $infoSupplier->delete();
         return redirect()->route('infoSupplier.index')->with('status','Success!!');
     }
+
+    public function searchName(Request $request)
+    {
+        $name = $request->input('searchname');
+
+        $data = DB::table('infoSupplier')
+            ->where('name','like','%'.$name.'%')
+            ->get();
+        return view('master.infoSupplier.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchKeterangan(Request $request)
+    {
+        $ket = $request->input('searchketerangan');
+
+        $data = DB::table('infoSupplier')
+            ->where('keterangan','like','%'.$ket.'%')
+            ->get();
+        return view('master.infoSupplier.index',[
+            'data' => $data,
+        ]);
+    }
 }

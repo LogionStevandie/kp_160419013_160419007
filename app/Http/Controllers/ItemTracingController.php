@@ -131,11 +131,24 @@ class ItemTracingController extends Controller
     }
 
 
-    public function searchItemTracingName($tracingName)
+    public function searchItemTracingName(Request $request)
     {
         //
+        $name = $request->input('searchname');
         $data = DB::table('ItemTracing')
-            ->where('Name','like','%'.$tracingName.'%')
+            ->where('Name','like','%'.$name.'%')
+            ->get();
+        return view('master.itemTracing',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchItemTracingKeterangan(Request $request)
+    {
+        //
+        $ket = $request->input('searchketerangan');
+        $data = DB::table('ItemTracing')
+            ->where('notes','like','%'.$ket.'%')
             ->get();
         return view('master.itemTracing',[
             'data' => $data,

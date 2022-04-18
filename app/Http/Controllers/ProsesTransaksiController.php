@@ -126,4 +126,6 @@ class ProsesTransaksiController extends Controller
         $prosesTransaksi->delete();
         return redirect()->route('prosesTransaksi.index')->with('status','Success!!');
     }
+
+   /* public function */
 }

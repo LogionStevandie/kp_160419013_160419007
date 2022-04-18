@@ -129,4 +129,15 @@ class PaymentController extends Controller
         $payment->delete();
         return redirect()->route('payment.index')->with('status','Success!!');
     }
+
+    public function searchPaymentName(Request $request)
+    {
+        $name = $request->input('searchname');
+        $data = DB::table('Payment')
+            ->where('Name','like','%'.$name.'%')
+            ->get();
+        return view('master.payment.index',[
+            'data' => $data,
+        ]);
+    }
 }

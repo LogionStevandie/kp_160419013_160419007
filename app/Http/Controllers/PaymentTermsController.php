@@ -162,28 +162,30 @@ class PaymentTermsController extends Controller
         return redirect()->route('paymentTerms.index')->with('status','Success!!');
     }
 
-    public function searchPaymentTermsName($termsName)
+    public function searchPaymentTermsName(Request $request)
     {
         //
+        $name = $request->input('searchname');
         $data = DB::table('PaymentTerms')
             ->select('PaymentTerms.*','Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->where('PaymentTerms.Hapus','=',0)
-            ->where('PaymentTerms.Name','like','%'.$termsName.'%')
+            ->where('PaymentTerms.Name','like','%'.$name.'%')
             ->get();
         return view('master.paymentTerms',[
             'data' => $data,
         ]);
     }
 
-    public function searchPaymentTermsDay($termsDay)
+    public function searchPaymentTermsDay(Request $request)
     {
         //
+        $day = $request->input('searchday');
         $data = DB::table('PaymentTerms')
             ->select('PaymentTerms.*','Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->where('PaymentTerms.Hapus','=',0)
-            ->where('PaymentTerms.Days','like','%'.$termsDay.'%')
+            ->where('PaymentTerms.Days','like','%'.$day.'%')
             ->get();
         return view('master.paymentTerms',[
             'data' => $data,

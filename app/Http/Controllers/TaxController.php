@@ -132,4 +132,26 @@ class TaxController extends Controller
         $tax->delete();
          return redirect()->route('tax.index')->with('status','Success!!');
     }
+
+    public function searchTaxName(Request $request)
+    {
+        $name = $request->input('searchname');
+        $data = DB::table('Tax')
+            ->where('Name','like','%'.$name.'%')
+            ->get();
+        return view('master.tax.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchTaxPercent(Request $request)
+    {
+        $taxPercent = $request->input('searchpercent');
+        $data = DB::table('Tax')
+            ->where('TaxPercent','like','%'.$taxPercent.'%')
+            ->get();
+        return view('master.tax.index',[
+            'data' => $data,
+        ]);
+    }
 }

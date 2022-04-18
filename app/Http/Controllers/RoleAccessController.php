@@ -121,4 +121,18 @@ class RoleAccessController extends Controller
     {
         //
     }
+
+    public function searchRoleName(Request $request)
+    {
+        $name=$request->input('searchname');
+
+        $data = DB::table('roles')->where('name','like','%'.$name.'%')->get();
+        $dataAccess = DB::table('role_access')
+            ->join('menu','role_access.idMenu','=','menu.MenuID')
+            ->get();    
+        return view('master.roleAccess.index',[
+            'data' => $data,
+            'dataAccess' => $dataAccess,
+        ]);
+    }
 }

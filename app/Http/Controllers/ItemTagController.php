@@ -134,13 +134,14 @@ class ItemTagController extends Controller
        return redirect()->route('itemTag.index')->with('status','Success!!');
     }
 
-    public function searchItemTagName($tagName)
+    public function searchItemTagName(Request $request)
     {
         //
+        $name = $request->input('searchname');
         $data = DB::table('ItemTag')
-            ->where('Name','like','%'.$tagName.'%')
+            ->where('Name','like','%'.$name.'%')
             ->get();
-        return view('master.itemTag',[
+        return view('master.itemTag.index',[
             'data' => $data,
         ]);
     }

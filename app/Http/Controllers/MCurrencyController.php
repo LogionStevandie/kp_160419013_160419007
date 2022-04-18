@@ -131,4 +131,29 @@ class MCurrencyController extends Controller
         $mCurrency->delete();
         return redirect()->route('mCurrency.index')->with('status','Success!!');
     }
+
+    public function searhMCurrencyName(Request $request)
+    {
+        //
+        $name = $request->input('searchname');
+        $data = DB::table('MCurrency')
+            ->where('name','like','%'.$name.'%')
+            ->get();
+        return view('master.mcurrency.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searhMCurrencyCountry(Request $request)
+    {
+        //
+        $country = $request->input('searchcountry');
+        $data = DB::table('MCurrency')
+            ->where('country','like','%'.$country.'%')
+            ->get();
+        return view('master.mcurrency.index',[
+            'data' => $data,
+        ]);
+    }
+
 }

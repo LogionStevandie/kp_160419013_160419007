@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Bank;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Auth;
+
 class BankController extends Controller
 {
     /**
@@ -48,11 +50,16 @@ class BankController extends Controller
     {
         //
         $data = $request->collect();
+        $user = Auth::user();
         
         DB::table('bank')->insert(array(
-             'name' => $data['name'],
-             'alias' => $data['alias'],
-             )
+            'name' => $data['name'],
+            'alias' => $data['alias'],
+            'CreatedBy'=> $user->id,
+            'CreatedOn'=> date("Y-m-d h:i:sa"),
+            'UpdatedBy'=> $user->id,
+            'UpdatedOn'=> date("Y-m-d h:i:sa"),
+            )
         ); 
         return redirect()->route('bank.index')->with('status','Success!!');
     }
@@ -93,12 +100,15 @@ class BankController extends Controller
     {
         //
         $data = $request->collect(); //la teros iki
-        
+        $user = Auth::user();
+
         DB::table('bank')
             ->where('id', $bank['id'])
             ->update(array(
                 'name' => $data['name'],
-                'alias' => $data['alias']
+                'alias' => $data['alias'],
+                'UpdatedBy'=> $user->id,
+                'UpdatedOn'=> date("Y-m-d h:i:sa"),
             ));
 
         return redirect()->route('bank.index')->with('status','Success!!');       
@@ -115,5 +125,16 @@ class BankController extends Controller
         //
          $bank->delete();
         return redirect()->route('bank.index')->with('status','Success!!');
+    }
+
+    public function searchName(Request $request)
+    {
+        $name=$request->input('searchname');
+        $datas = DB::table('bank')
+            ->where('name','like','%'.$name.'%')
+            ->get();
+        return view('master.Bank.index',[
+            'datas' => $datas,
+        ]);
     }
 }

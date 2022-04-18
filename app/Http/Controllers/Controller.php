@@ -10,4 +10,24 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    public function checkAccess($route, $userId, $roleId)
+    {
+        $access = DB::table('menu')
+            ->select('menu.url')
+            ->leftjoin('role_access', 'menu.MenuID', '=', 'role_access.idMenu')
+            ->leftjoin('user_access', 'menu.MenuID', '=', 'user_access.idMenu')
+            ->where('role_access.idRole',$roleId)
+            ->orWhere('user_access.idUsers',$userId)
+            ->get();
+        $check = false;
+        for($i = 0; $i < count($access); $i++ ){
+            if($access[$i]->url == $route){
+                $check = true;
+            }
+        }
+
+        return ($check);
+    }
+
 }

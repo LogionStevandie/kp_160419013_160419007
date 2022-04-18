@@ -131,11 +131,12 @@ class ItemTypeController extends Controller
         return redirect()->route('itemType.index')->with('status','Success!!');
     }
 
-    public function searhItemTypeName($typeName)
+    public function searhItemTypeName(Request $request)
     {
         //
+        $name = $request->input('searchname');
         $data = DB::table('ItemType')
-            ->where('Name','like','%'.$typeName.'%')
+            ->where('Name','like','%'.$name.'%')
             ->get();
         return view('master.itemType',[
             'data' => $data,

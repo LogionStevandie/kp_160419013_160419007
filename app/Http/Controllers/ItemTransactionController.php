@@ -132,11 +132,13 @@ class ItemTransactionController extends Controller
         return redirect()->route('itemTransaction.index')->with('status','Success!!');
     }
 
-    public function searchItemTransactionName($transactionName)
+    public function searchItemTransactionName(Request $request)
     {
         //
+        $name = $request->input('searchname');
+
         $data = DB::table('ItemTransaction')
-            ->where('Name','like','%'.$transactionName.'%')
+            ->where('Name','like','%'.$name.'%')
             ->get();
         return view('master.itemTransaction',[
             'data' => $data,

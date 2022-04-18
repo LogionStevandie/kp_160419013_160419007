@@ -128,4 +128,26 @@ class UnitController extends Controller
         $unit->delete();
         return redirect()->route('unit.index')->with('status','Success!!');
     }
+
+    public function searchUnitName(Request $request)
+    {
+        $name = $request->input('searchname');
+        $data = DB::table('Unit')
+            ->where('Name','like','%'.$name.'%')
+            ->get();
+        return view('master.unit.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchUnitDeskripsi(Request $request)
+    {
+        $desc = $request->input('searchdeskripsi');
+        $data = DB::table('Unit')
+            ->where('Deskripsi','like','%'.$desc.'%')
+            ->get();
+        return view('master.unit.index',[
+            'data' => $data,
+        ]);
+    }
 }

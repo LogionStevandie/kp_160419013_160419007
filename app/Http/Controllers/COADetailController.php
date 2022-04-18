@@ -150,4 +150,34 @@ class COADetailController extends Controller
         return redirect()->route('coaDetail.index')->with('status','Success!!');
     }
 
+    public function searchCoaDetailName(Request $request)
+    {
+        //
+        $name=$request->input('searchname');
+
+        $data = DB::table('COADetail')
+            ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
+            ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
+            ->where('COADetail.CDet_Name','like','%'.$name.'%')
+            ->get();
+        return view('master.COADetail.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchCoaDetailKeterangan(Request $request)
+    {
+        //
+        $ket=$request->input('searchketerangan');
+
+        $data = DB::table('COADetail')
+            ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
+            ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
+            ->where('COADetail.Keterangan','like','%'.$ket.'%')
+            ->get();
+        return view('master.COADetail.index',[
+            'data' => $data,
+        ]);
+    }
+
 }

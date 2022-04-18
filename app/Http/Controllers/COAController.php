@@ -26,7 +26,7 @@ class COAController extends Controller
             ->leftjoin('COAHead','COA.Chead','=','COAHead.CH_ID')
             ->leftjoin('COADetail','COA.Cdet','=','COADetail.COADetailID')
             ->get();
-        return view('master.coa',[
+        return view('master.coa.index',[
             'dataCOA' => $dataCOA,
         ]);
     }
@@ -43,7 +43,7 @@ class COAController extends Controller
             ->get();
         $dataCOADetail = DB::table('COADetail')
             ->get();
-        return view('master.itemCategory_tambah',[
+        return view('master.coa.tambah',[
             'dataCOAHead' => $dataCOAHead,
             'dataCOADetail' => $dataCOADetail,
         ]);
@@ -73,6 +73,8 @@ class COAController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
+        return redirect()->route('coa.index')->with('status','Success!!');
+
     }
 
     /**
@@ -88,7 +90,7 @@ class COAController extends Controller
             ->join('COADetail', 'COA.Cdet','=','COADetail.Cdet')
             ->join('COAHead', 'COA.Chead','=','COAHead.CH_ID')
             ->get();*/
-        return view('master.coa_detail',[
+        return view('master.coa.detail',[
             'cOA' => $cOA,
         ]);
     }
@@ -106,7 +108,7 @@ class COAController extends Controller
             ->get();
         $dataCOADetail = DB::table('COADetail')
             ->get();
-        return view('master.coa_edit',[
+        return view('master.coa.edit',[
             'cOA'=>$cOA,
             'dataCOAHead' => $dataCOAHead,
             'dataCOADetail' => $dataCOADetail,
@@ -136,6 +138,7 @@ class COAController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('coa.index')->with('status','Success!!');
     }
 
     /**
@@ -157,16 +160,36 @@ class COAController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         );
+        return redirect()->route('coa.index')->with('status','Success!!');
+
     }
 
-    public function searchCoaName($namaCoa)
+    public function searchCoaName(Request $request)
     {
         //
+        $name=$request->input('searchname');
+
         $dataCOA = DB::table('COA')
             ->select('COA.*','COAHead.Nama as COAHeadName','COADetail.CDet_Name as COADetailName','COADetail.Keterangan as COADetailKeterangan')
             ->leftjoin('COAHead','COA.Chead','=','COAHead.CH_ID')
             ->leftjoin('COADetail','COA.Cdet','=','COADetail.COADetailID')
-            ->where('COA.Nama','like','%'.$namaCoa.'%')
+            ->where('COA.Nama','like','%'.$name.'%')
+            ->get();
+        return view('master.coa',[
+            'dataCOA' => $dataCOA,
+        ]);
+    }
+
+    public function searchCoaNomor(Request $request)
+    {
+        //
+        $nomor=$request->input('searchnomor');
+
+        $dataCOA = DB::table('COA')
+            ->select('COA.*','COAHead.Nama as COAHeadName','COADetail.CDet_Name as COADetailName','COADetail.Keterangan as COADetailKeterangan')
+            ->leftjoin('COAHead','COA.Chead','=','COAHead.CH_ID')
+            ->leftjoin('COADetail','COA.Cdet','=','COADetail.COADetailID')
+            ->where('COA.Nama','like','%'.$nomor.'%')
             ->get();
         return view('master.coa',[
             'dataCOA' => $dataCOA,

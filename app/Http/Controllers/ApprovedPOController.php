@@ -27,7 +27,7 @@ class ApprovedPOController extends Controller
             ->where('UserIDManager2', $user->id)
             ->get();
 
-        $prKeluar = null;
+        $poKeluar = null;
         //belum
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
@@ -171,5 +171,70 @@ class ApprovedPOController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function searchNamePO(Request $request)
+    {
+        $name=$request->input('searchname');
+        $user = Auth::user();
+
+        $managerPerusahaan2 = DB::table('MPerusahaan')
+            ->where('UserIDManager2', $user->id)
+            ->get();
+
+        $poKeluar = null;
+        //belum
+        if(count($managerPerusahaan2)>0){
+            $poKeluar= DB::table('purchase_order')
+                ->where('approved',0)
+                ->where('hapus',0)
+                ->where('MPerusahaanID', $managerPerusahaan2->MPerusahaanID)
+                ->where('name','like', '%'.$name.'%')
+                ->get();
+        }
+        $pod = DB::table('purchase_order_detail')
+            ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
+            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->join('Tax','purchase_order_detail.TaxID','=','Tax.TaxID')
+            ->get();
+        
+        return view('master.approved.PurchaseOrder.index',[
+            'poKeluar' => $poKeluar,
+            'pod' => $pod,
+        ]);
+
+    }
+
+    public function searchDatePO(Request $request)
+    {
+        $date=$request->input('dateRangeSearch');
+        $user = Auth::user();
+
+        $managerPerusahaan2 = DB::table('MPerusahaan')
+            ->where('UserIDManager2', $user->id)
+            ->get();
+
+        $poKeluar = null;
+        //belum
+        if(count($managerPerusahaan2)>0){
+            $poKeluar= DB::table('purchase_order')
+                ->where('approved',0)
+                ->where('hapus',0)
+                ->where('MPerusahaanID', $managerPerusahaan2->MPerusahaanID)
+                ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
+                ->get();
+        }
+        $pod = DB::table('purchase_order_detail')
+            ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
+            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->join('Tax','purchase_order_detail.TaxID','=','Tax.TaxID')
+            ->get();
+        
+        return view('master.approved.PurchaseOrder.index',[
+            'poKeluar' => $poKeluar,
+            'pod' => $pod,
+        ]);
     }
 }

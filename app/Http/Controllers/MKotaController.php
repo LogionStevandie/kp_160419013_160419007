@@ -158,16 +158,18 @@ class MKotaController extends Controller
          return redirect()->route('mKota.index')->with('status','Success!!');
     }
 
-    public function searchKotaName($kotaName)
+    public function searchKotaName(Request $request)
     {
         //
+        $name = $request->input('searchname');
+
         $data = DB::table('MKota')
             ->select('MKota.*', 'MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName')
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
-            ->where('MKota.cname','like','%'.$kotaName.'%')
+            ->where('MKota.cname','like','%'.$name.'%')
             ->get();
-        return view('master.mKota',[
+        return view('master.mKota.index',[
             'data' => $data,
         ]);
     }

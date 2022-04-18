@@ -192,4 +192,94 @@ class ApprovedPRController extends Controller
     {
         //
     }
+
+    public function searchNamePR(Request $request)
+    {
+        $name=$request->input('searchname');
+        $user = Auth::user();
+
+        $kepalaGudang = DB::table('MGudang')
+            ->where('UserIDKepalaDivisi', $user->id)
+            ->get();
+            
+        $managerPerusahaan1 = DB::table('MPerusahaan')
+            ->where('UserIDManager1', $user->id)
+            ->get();
+        $prKeluar = null;
+        if(count($kepalaGudang)>0){
+            $prKeluar= DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
+                ->where('approved',0)
+                ->where('hapus',0)
+                ->where('purchase_request.MGudangID',$user->MGudangID)
+                ->where('purchase_request.name','like','%'.$name.'%')
+                ->get();
+        }
+        else if(count($managerPerusahaan1)>0){
+            $prKeluar= DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
+                ->where('approved',1)
+                ->where('approvedAkhir',0)
+                ->where('hapus',0)
+                ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
+                ->where('purchase_request.name','like','%'.$name.'%')
+                ->get();
+        }
+        $prd = DB::table('purchase_request_detail')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->get();
+        
+        return view('master.approved.PurchaseRequest.index',[
+            'prKeluar' => $prKeluar,
+            'prd' => $prd,
+        ]);
+
+    }
+
+    public function searchDatePR(Request $request)
+    {
+        $date=$request->input('dateRangeSearch');
+        $user = Auth::user();
+
+        $kepalaGudang = DB::table('MGudang')
+            ->where('UserIDKepalaDivisi', $user->id)
+            ->get();
+            
+        $managerPerusahaan1 = DB::table('MPerusahaan')
+            ->where('UserIDManager1', $user->id)
+            ->get();
+        $prKeluar = null;
+        if(count($kepalaGudang)>0){
+            $prKeluar= DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
+                ->where('approved',0)
+                ->where('hapus',0)
+                ->where('purchase_request.MGudangID',$user->MGudangID)
+                ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
+                ->get();
+        }
+        else if(count($managerPerusahaan1)>0){
+            $prKeluar= DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
+                ->where('approved',1)
+                ->where('approvedAkhir',0)
+                ->where('hapus',0)
+                ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
+                ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
+                ->get();
+        }
+        $prd = DB::table('purchase_request_detail')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->get();
+        
+        return view('master.approved.PurchaseRequest.index',[
+            'prKeluar' => $prKeluar,
+            'prd' => $prd,
+        ]);
+
+
+            
+
+
+    }
 }

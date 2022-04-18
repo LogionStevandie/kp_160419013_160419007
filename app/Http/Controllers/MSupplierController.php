@@ -239,4 +239,59 @@ class MSupplierController extends Controller
         );
         return redirect()->route('msupplier.index')->with('status','Success!!');
     }
+
+    public function searchSupplierName(Request $request)
+    {
+        $name = $request->input('searchname');
+        $data = DB::table('MSupplier')
+            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
+            ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
+            ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
+            ->leftjoin('PaymentTerms','MSupplier.PaymentTermsID','=','PaymentTerms.PaymentTermsID')
+            ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
+            ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
+            ->where('MSupplier.Hapus','=',0)
+            ->where('MSupplier.Name','like', '%'.$name.'%')
+            ->get();
+        return view('master.msupplier.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchSupplierAtasNama(Request $request)
+    {
+        $name = $request->input('searchatasnama');
+        $data = DB::table('MSupplier')
+            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
+            ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
+            ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
+            ->leftjoin('PaymentTerms','MSupplier.PaymentTermsID','=','PaymentTerms.PaymentTermsID')
+            ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
+            ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
+            ->where('MSupplier.Hapus','=',0)
+            ->where('MSupplier.AtasNama','like', '%'.$name.'%')
+            ->get();
+        return view('master.msupplier.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchSupplierLokasi(Request $request)
+    {
+        $lokasi = $request->input('searchlokasi');
+        $data = DB::table('MSupplier')
+            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
+            ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
+            ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
+            ->leftjoin('PaymentTerms','MSupplier.PaymentTermsID','=','PaymentTerms.PaymentTermsID')
+            ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
+            ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
+            ->where('MSupplier.Hapus','=',0)
+            ->where('MSupplier.AtasNama','like', '%'.$lokasi.'%')
+            ->get();
+        return view('master.msupplier.index',[
+            'data' => $data,
+        ]);
+    }
+
 }

@@ -194,4 +194,18 @@ class RoleController extends Controller
 
         return redirect()->route('role.index')->with('status','Success!!');
     }
+
+    public function searchRoleName(Request $request)
+    {
+        $name=$request->input('searchname');
+
+        $data = DB::table('roles')->where('name','like','%'.$name.'%')->get();
+        $dataAccess = DB::table('role_access')
+            ->join('menu','role_access.idMenu','=','menu.MenuID')
+            ->get();    
+        return view('master.roles.index',[
+            'data' => $data,
+            'dataAccess' => $dataAccess,
+        ]);
+    }
 }

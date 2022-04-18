@@ -130,10 +130,21 @@ class MenuController extends Controller
         return redirect()->route('menu.index')->with('status','Success!!');
     }
 
-    public function searchMenuName($menuName)
+    public function searchMenuName(Request $request)
     {
         //
-        $data = DB::Table('menu')->where('Name','like','%'.$menuName.'%')->get();
+        $name = $request->input('searchname');
+        $data = DB::Table('menu')->where('Name','like','%'.$name.'%')->get();
+        return view('master.menu.index',[
+            'data' => $data,
+        ]);
+    }
+
+    public function searchMenuDeskripsi(Request $request)
+    {
+        //
+        $desc = $request->input('searchdeskripsi');
+        $data = DB::Table('menu')->where('deskripsi','like','%'.$desc.'%')->get();
         return view('master.menu.index',[
             'data' => $data,
         ]);

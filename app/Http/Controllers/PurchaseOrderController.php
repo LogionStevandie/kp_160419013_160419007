@@ -431,4 +431,58 @@ class PurchaseOrderController extends Controller
 
         return redirect()->route('PurchaseOrder.index')->with('status','Success!!');
     }
+
+    public function searchNamePO(Request $request)
+    {
+        $name=$request->input('searchname');
+        $user = Auth::user();
+        
+        $getPerusahaan = DB::table('MPerusahaan')
+            ->join('MGudang','MPerusahaan.MPerusahaanID','=','MPerusahaan.MPerusahaanID')  
+            ->where('MGudangID',$user->MGudangID)
+            ->get();
+
+        $data = DB::table('purchase_order')
+            ->select('purchase_order.*')
+            ->join('users', 'purchase_order.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_order.hapus','=', 0)  
+            ->where('purchase_order.name','like', '%'.$name.'%')  
+            ->get();
+
+        //dd($data);
+        return view('master.PurchaseOrder.index',[
+            'data' => $data,
+        ]);
+
+    }
+
+    public function searchDatePO(Request $request)
+    {
+        $date=$request->input('dateRangeSearch');
+        $user = Auth::user();
+        
+        $getPerusahaan = DB::table('MPerusahaan')
+            ->join('MGudang','MPerusahaan.MPerusahaanID','=','MPerusahaan.MPerusahaanID')  
+            ->where('MGudangID',$user->MGudangID)
+            ->get();
+
+        $data = DB::table('purchase_order')
+            ->select('purchase_order.*')
+            ->join('users', 'purchase_order.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_order.hapus','=', 0)
+            ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
+            ->get();
+
+        //dd($data);
+        return view('master.PurchaseOrder.index',[
+            'data' => $data,
+        ]);
+
+    }
 }

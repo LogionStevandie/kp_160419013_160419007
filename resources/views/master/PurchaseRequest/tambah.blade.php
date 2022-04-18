@@ -46,7 +46,7 @@ Pembuatan Nota Permintaan Pembelian
                               </div>
                               <div class="col-md-6 mb-3">
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" readonly required="">
+                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{$date}}" readonly required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
                            
@@ -59,8 +59,8 @@ Pembuatan Nota Permintaan Pembelian
                                         <i class="far fa-calendar-alt"></i>
                                       </span>
                                     </div>
-                                    <input type="text" class="form-control float-right" id="reservation">
-                                  </div>                              
+                                    <input type="text" name="tanggalDibutuhkan" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan','')}}" >
+                                </div>                              
                               </div>
                            
                               <div class="col-md-6">
@@ -112,21 +112,17 @@ Pembuatan Nota Permintaan Pembelian
                              
                                   <div class="form-group">
                                       <label>Barang</label>
-                                      <select required name="ItemID" class="form-control select2bs4" style="width: 100%;" id="barang">
-                                          <option value="0">--Pilih Barang--</option>
+                                      <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
+                                          <option value="pilih">--Pilih barang--</option>
                                           @foreach($dataBarang as $key => $data)
-                                            <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
+                                          <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                           @endforeach
                                       </select>
+                                      <br>
+                                      <input min=1   type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2"id="jumlahBarang" />
                                   </div>
                                  
-                             
-                                      
-                                    <div class="form-group">
-                                      <label for="inputName">Project Name</label>
-                                      <input type="text" id="inputName" class="form-control">
-                                    </div>
-                                                    
+                                                   
                                     <div class="form-group" id="harga">
                                         <label for="Harga">Harga</label>
                                         <input  type="text" step=".01" id="tanpa-rupiah" class="form-control" value="{{old('harga','')}}" >
@@ -196,9 +192,7 @@ Pembuatan Nota Permintaan Pembelian
                               <!-- /.col (right) -->
                             </div>
 
-                            <div class="card-footer">
-                                <button type="submit" class="btn btn-primary">Submit</button>
-                            </div>
+                           
                         </form>
                     </div>
                 </div>
@@ -227,9 +221,9 @@ Pembuatan Nota Permintaan Pembelian
     <!-- /.content -->
 </form>
 
-@endsection   
+
 <script type="text/javascript">
- $('body').on('click','#hapusKeranjang', function(){
+    $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
         //alert($('.cekId').length);
         $(this).parent().parent().remove();
@@ -343,10 +337,6 @@ Pembuatan Nota Permintaan Pembelian
         tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';
         tambahCombo += '<br id="br">\n';
         tambahCombo +='</div>\n';
-        //tambahCombo +='<div class="form-group" id="total'+totalTambah+'">\n';
-        //tambahCombo +='<label for="title">Total</label>\n';
-        //tambahCombo +='<input require type="number" name="total[]" class="form-control">\n';
-        //tambahCombo +='</div>\n';
         tambahCombo +='<div class="form-group" id="harga'+totalTambah+'">\n';
         tambahCombo +='<label for="title">Harga</label>\n';
         tambahCombo +='<input require type="number" step=".01" id="tanpa-rupiah" name="harga[]" class="form-control">\n';
@@ -370,5 +360,40 @@ Pembuatan Nota Permintaan Pembelian
             totalTambah--;
         }  
     });
+         /* Tanpa Rupiah */
+     var tanpa_rupiah = document.getElementById('tanpa-rupiah');
+    tanpa_rupiah.addEventListener('keyup', function(e)
+    {
+        $('#hargaBarang').val(this.value);
+        tanpa_rupiah.value = formatRupiah(this.value);
+    });
+
+    /* Dengan Rupiah */
+    var dengan_rupiah = document.getElementById('dengan-rupiah');
+    dengan_rupiah.addEventListener('keyup', function(e)
+    {
+        $('#hargaBarang').val(this.value);
+        dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
+    });
+
+    /* Fungsi */
+    function formatRupiah(angka, prefix)
+    {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split    = number_string.split(','),
+            sisa     = split[0].length % 3,
+            rupiah     = split[0].substr(0, sisa),
+            ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+            
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
 </script>
+@endsection   
+
 
