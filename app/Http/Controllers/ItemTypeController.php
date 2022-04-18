@@ -23,7 +23,8 @@ class ItemTypeController extends Controller
     {
         //
         $data = DB::table('ItemType')
-            ->get();
+        ->paginate(10);
+        //->get();
         return view('master.itemType.index',[
             'data' => $data,
         ]);
@@ -137,7 +138,8 @@ class ItemTypeController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('ItemType')
             ->where('Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.itemType',[
             'data' => $data,
         ]);

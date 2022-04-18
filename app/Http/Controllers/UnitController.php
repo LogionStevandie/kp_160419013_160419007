@@ -22,7 +22,8 @@ class UnitController extends Controller
     {
         //
         $data = DB::table('Unit')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.unit.index',[
             'data' => $data,
         ]);
@@ -145,7 +146,8 @@ class UnitController extends Controller
         $desc = $request->input('searchdeskripsi');
         $data = DB::table('Unit')
             ->where('Deskripsi','like','%'.$desc.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.unit.index',[
             'data' => $data,
         ]);

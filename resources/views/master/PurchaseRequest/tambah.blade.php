@@ -41,14 +41,16 @@ Pembuatan Nota Permintaan Pembelian
                         <div class="row">
                               <div class="col-md-6 mb-4">
                                   <label for="firstName">Nama NPP</label>
-                                  <input type="text" class="form-control" id="firstName" placeholder="" value="{{$namaNpp}}" readonly required="">
+                                  <input type="text" class="form-control" id="firstName" placeholder="" value="{{$namaNpp}}" readonly required="" name="name">
                                   <div class="invalid-feedback"> Valid first name is required. </div>
                               </div>
                               <div class="col-md-6 mb-3">
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{$date}}" readonly required="">
+                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{$date}}" readonly required="" name="tanggalDibuat">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
+
+                             
                            
 
                               <div class="form-group col-md-6">
@@ -76,6 +78,14 @@ Pembuatan Nota Permintaan Pembelian
                                     </select>
                                     </div>
                                  
+                              </div>
+
+                               <div class="col-md-6 mb-3">
+                                  <label for="lastName">Jenis Permintaan</label> 
+                                  <select name="jenisProses" class="form-control selectpicker" data-live-search="true" data-show-subtext="true">
+                                      <option value="1" selected>Pembelian Melalui Pusat</option>
+                                      <option value="0">Pembelian Melalui Lokal</option>
+                                  </select>
                               </div>
 
                               <!-- <div class="col-md-6">
@@ -180,11 +190,12 @@ Pembuatan Nota Permintaan Pembelian
                                       </ul>
                                       <li class="list-group-item d-flex justify-content-between">
                                               <span>Total (Rupiah)</span>
-                                              <strong id="TotalHargaKeranjang"></strong>
+                                              <strong id="TotalHargaKeranjang" value="0"></strong>
                                       </li> 
                                     <!-- /.form group -->
                                   </div>  <!---->
-                                     <button class="btn btn-primary" type="submit" id="tambah">Kirim</button><br>
+                                  <input class="btn btn-primary " type="submit" id="tambah" value="Kirim"><br>
+                                  
                                   <!-- /.card-body -->
                                 </div>
                                 <!-- /.card -->
@@ -201,18 +212,7 @@ Pembuatan Nota Permintaan Pembelian
               
 
               <!-- this row will not appear when printing -->
-              <div class="row no-print">
-                <div class="col-12">
-                  <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                  <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                    Payment
-                  </button>
-                  <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                    <i class="fas fa-download"></i> Generate PDF
-                  </button>
-                </div>
-              </div>
-            </div>
+           
             <!-- /.invoice -->
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -223,6 +223,9 @@ Pembuatan Nota Permintaan Pembelian
 
 
 <script type="text/javascript">
+
+    var tambahCombo = "";
+    var totalTambah = 0;
     $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
         //alert($('.cekId').length);
@@ -238,6 +241,12 @@ Pembuatan Nota Permintaan Pembelian
         var jumlahBarang = $("#jumlahBarang").val();
         var hargaBarang = $("#hargaBarang").val();
         var keteranganBarang = $("#keteranganBarang").val();
+
+        //var totalHarga = jumlahBarang * hargaBarang;
+        /*alert(totalHarga);
+        alert(jumlahBarang);
+        alert(hargaBarang);*/
+        //die;
         
         var indexSama = null;
         for(let i=0;i<$('.cekId').length;i++){
@@ -263,9 +272,16 @@ Pembuatan Nota Permintaan Pembelian
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
             $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ($('.cekJumlah:eq('+indexSama+')').val()* $("#hargaBarang").val())+',-');
             
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').val()
-            totalHargaKeranjang += ($('.cekJumlah:eq('+indexSama+')').val()) * ($("#hargaBarang").val());
-            $('#TotalHargaKeranjang').html(formatRupiah(totalHargaKeranjang));
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
+            //totalHargaKeranjang += parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * parseFloat($("#hargaBarang").val());
+            //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
+            //alert(totalHargaKeranjang);
+            alert((totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
+            //$('#TotalHargaKeranjang').html(formatRupiah(totalHargaKeranjang));
+            //$('#TotalHargaKeranjang').val(totalHargaKeranjang);
+            $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang)  + parseFloat(hargaBarang * jumlahBarang)));
+            $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
+
         }
         else{
             var htmlKeranjang = "";
@@ -298,16 +314,29 @@ Pembuatan Nota Permintaan Pembelian
             $('#totalBarangnya').val(totalTambah);
             $('#totalBarangnya').html(totalTambah);
 
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').val()
-            totalHargaKeranjang += hargaBarang * jumlahBarang;
-            $('#TotalHargaKeranjang').html(formatRupiah(totalHargaKeranjang));
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
+            if(totalHargaKeranjang == "" || totalHargaKeranjang == NaN || totalHargaKeranjang == 0){
+            alert(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
+              //totalHargaKeranjang = totalHargaKeranjang + parseFloat(hargaBarang * jumlahBarang);
+              $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
+              $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
+            }
+            else{
+            alert("masuk siini di else  "+(parseFloat(totalHargaKeranjang)) + parseFloat(hargaBarang * jumlahBarang));
+              //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
+              $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
+              $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
+            }
+            //alert(totalHargaKeranjang);
+            
+            
         }
 
     });
 
-    $('body').on('click','.copyKe', function(){
+    $('body').on('click','#copyKe', function(){
         //alert($(this).index('.copyKe'));
-        var i = $(this).index('.copyKe');
+        var i = $(this).index('#copyKe');
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
@@ -358,13 +387,14 @@ Pembuatan Nota Permintaan Pembelian
         $('#tmbhBarangJasa'+ totalTambah).remove();//i
         if(totalTambah > 0){
             totalTambah--;
+            
         }  
     });
          /* Tanpa Rupiah */
-     var tanpa_rupiah = document.getElementById('tanpa-rupiah');
+    var tanpa_rupiah = document.getElementById('tanpa-rupiah');
     tanpa_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value);
+        $('#hargaBarang').val(this.value.replace('.','')); //aku nambah dewe buat simpen di hidden
         tanpa_rupiah.value = formatRupiah(this.value);
     });
 
@@ -372,7 +402,7 @@ Pembuatan Nota Permintaan Pembelian
     var dengan_rupiah = document.getElementById('dengan-rupiah');
     dengan_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value);
+        $('#hargaBarang').val(this.value.replace('.','')); //aku nambah dewe buat simpen di hidden
         dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
     });
 

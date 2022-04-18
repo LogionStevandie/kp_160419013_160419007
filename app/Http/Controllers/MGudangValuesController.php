@@ -18,7 +18,8 @@ class MGudangValuesController extends Controller
     {
         //
         $data = DB::table('MGudang')
-            ->get();
+            ->paginate(10);
+        //->get();
         $dataTag = DB::table('MGudangValues')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->get();
@@ -153,7 +154,8 @@ class MGudangValuesController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('MGudang')
             ->where('cname','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         $dataTag = DB::table('MGudangValues')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->get();

@@ -24,7 +24,8 @@ class InfoSupplierController extends Controller
     {
         //
         $data = DB::table('infoSupplier')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.infoSupplier.index',[
             'data' => $data,
         ]);
@@ -126,7 +127,8 @@ class InfoSupplierController extends Controller
 
         $data = DB::table('infoSupplier')
             ->where('name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.infoSupplier.index',[
             'data' => $data,
         ]);
@@ -138,7 +140,8 @@ class InfoSupplierController extends Controller
 
         $data = DB::table('infoSupplier')
             ->where('keterangan','like','%'.$ket.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.infoSupplier.index',[
             'data' => $data,
         ]);

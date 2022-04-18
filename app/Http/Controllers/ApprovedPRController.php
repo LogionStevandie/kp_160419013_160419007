@@ -37,7 +37,8 @@ class ApprovedPRController extends Controller
                 ->where('approved',0)
                 ->where('hapus',0)
                 ->where('purchase_request.MGudangID',$user->MGudangID)
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         else if(count($managerPerusahaan1)>0){
             $prKeluar= DB::table('purchase_request')
@@ -46,7 +47,8 @@ class ApprovedPRController extends Controller
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
                 ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         $prd = DB::table('purchase_request_detail')
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
@@ -213,7 +215,8 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->where('purchase_request.MGudangID',$user->MGudangID)
                 ->where('purchase_request.name','like','%'.$name.'%')
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         else if(count($managerPerusahaan1)>0){
             $prKeluar= DB::table('purchase_request')
@@ -223,7 +226,8 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
                 ->where('purchase_request.name','like','%'.$name.'%')
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         $prd = DB::table('purchase_request_detail')
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
@@ -256,7 +260,8 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->where('purchase_request.MGudangID',$user->MGudangID)
                 ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         else if(count($managerPerusahaan1)>0){
             $prKeluar= DB::table('purchase_request')
@@ -266,7 +271,8 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
                 ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         $prd = DB::table('purchase_request_detail')
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')

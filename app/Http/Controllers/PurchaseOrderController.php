@@ -36,7 +36,8 @@ class PurchaseOrderController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)  
             //->where('MPerusahaan.MPerusahaanID', $getPerusahaan[0]->MPerusahaanID)  
-            ->get();
+            ->paginate(10);
+        //->get();
 
         //dd($data);
         return view('master.PurchaseOrder.index',[
@@ -352,6 +353,15 @@ class PurchaseOrderController extends Controller
 
         $totalHarga = 0;
 
+        //pengurangan jumlah proses lalu diupdate
+        foreach($dataDetailTotal as $data){
+            DB::table('purchase_request_detail')
+            ->where('id', $data['idPurchaseRequestDetail'])
+            ->update([
+                'jumlahProses' => DB::raw('jumlahProses' - $data['jumlah']),
+            ]);
+        }
+
         if(count($dataDetailTotal) > count($data['itemId'])){
             DB::table('purchase_order_detail')
                 ->where('idPurchaseOrder', $purchaseOrder->id)
@@ -360,7 +370,7 @@ class PurchaseOrderController extends Controller
             for($i = 0; $i < count($data['itemId']); $i++){
                 DB::table('purchase_order_detail')->insert(array(
                     'idPurchaseOrder' => $purchaseOrder->id,
-                    'idPurchaseRequestDetail' => $data['idPurchaseRequestDetail'],
+                    'idPurchaseRequestDetail' => $data['prdID'][$i],
                     'idItem' => $data['itemId'][$i],
                     'jumlah' => $data['itemTotal'][$i],
                     'harga' => $data['itemHarga'][$i],
@@ -392,7 +402,7 @@ class PurchaseOrderController extends Controller
                 else{
                     DB::table('purchase_order_detail')->insert(array(
                         'idPurchaseOrder' => $purchaseOrder->id,
-                        'idPurchaseRequestDetail' => $data['idPurchaseRequestDetail'],
+                        'idPurchaseRequestDetail' => $data['prdID'][$i],
                         'idItem' => $data['itemId'][$i],
                         'jumlah' => $data['itemTotal'][$i],
                         'harga' => $data['itemHarga'][$i],
@@ -450,7 +460,8 @@ class PurchaseOrderController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)  
             ->where('purchase_order.name','like', '%'.$name.'%')  
-            ->get();
+            ->paginate(10);
+        //->get();
 
         //dd($data);
         return view('master.PurchaseOrder.index',[
@@ -477,7 +488,8 @@ class PurchaseOrderController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)
             ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
-            ->get();
+            ->paginate(10);
+        //->get();
 
         //dd($data);
         return view('master.PurchaseOrder.index',[

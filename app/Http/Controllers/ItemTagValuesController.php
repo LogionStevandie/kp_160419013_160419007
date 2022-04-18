@@ -36,7 +36,7 @@ class ItemTagValuesController extends Controller
             //->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             //->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
-            ->simplePaginate(10);
+            ->paginate(10);
         //dd($dataItem);
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
@@ -185,8 +185,8 @@ class ItemTagValuesController extends Controller
             //->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             //->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
-            ->where('Item.ItemName', '=', 0)
-            ->simplePaginate(10);
+            ->where('Item.ItemName', 'like', '%'.$name.'%')
+            ->paginate(10);
         //dd($dataItem);
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')

@@ -25,7 +25,8 @@ class COAController extends Controller
             ->select('COA.*','COAHead.Nama as COAHeadName','COADetail.CDet_Name as COADetailName','COADetail.Keterangan as COADetailKeterangan')
             ->leftjoin('COAHead','COA.Chead','=','COAHead.CH_ID')
             ->leftjoin('COADetail','COA.Cdet','=','COADetail.COADetailID')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.coa.index',[
             'dataCOA' => $dataCOA,
         ]);
@@ -174,7 +175,8 @@ class COAController extends Controller
             ->leftjoin('COAHead','COA.Chead','=','COAHead.CH_ID')
             ->leftjoin('COADetail','COA.Cdet','=','COADetail.COADetailID')
             ->where('COA.Nama','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.coa',[
             'dataCOA' => $dataCOA,
         ]);
@@ -190,7 +192,8 @@ class COAController extends Controller
             ->leftjoin('COAHead','COA.Chead','=','COAHead.CH_ID')
             ->leftjoin('COADetail','COA.Cdet','=','COADetail.COADetailID')
             ->where('COA.Nama','like','%'.$nomor.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.coa',[
             'dataCOA' => $dataCOA,
         ]);

@@ -23,7 +23,8 @@ class ItemTransactionController extends Controller
     {
         //
         $data = DB::table('ItemTransaction')
-            ->get();
+        ->paginate(10);
+        //->get();
         return view('master.itemTransaction.index',[
             'data' => $data,
         ]);
@@ -56,6 +57,7 @@ class ItemTransactionController extends Controller
             ->insert(array(
                 'Name' => $data['Name'],
                 'Description' => $data['Description'],
+                'Code' => $data['Code'],
                 'CreatedBy'=> $user->id,
                 'CreatedOn'=> date("Y-m-d h:i:sa"),
                 'UpdatedBy'=> $user->id,
@@ -111,6 +113,7 @@ class ItemTransactionController extends Controller
             ->update(array(
                 'Name' => $data['Name'],
                 'Description' => $data['Description'],
+                'Code' => $data['Code'],
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
@@ -139,7 +142,8 @@ class ItemTransactionController extends Controller
 
         $data = DB::table('ItemTransaction')
             ->where('Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.itemTransaction',[
             'data' => $data,
         ]);

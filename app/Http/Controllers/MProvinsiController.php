@@ -22,7 +22,8 @@ class MProvinsiController extends Controller
     {
         //
         $data = DB::table('MProvinsi')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mProvinsi.index',[
             'data' => $data,
         ]);
@@ -138,7 +139,8 @@ class MProvinsiController extends Controller
 
         $data = DB::table('MProvinsi')
             ->where('cname','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mProvinsi',[
             'data' => $data,
         ]);

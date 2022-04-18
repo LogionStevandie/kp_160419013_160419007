@@ -24,7 +24,8 @@ class ItemTagController extends Controller
     {
         //
         $data = DB::table('ItemTag')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.itemTag.index',[
             'data' => $data,
         ]);
@@ -140,7 +141,8 @@ class ItemTagController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('ItemTag')
             ->where('Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.itemTag.index',[
             'data' => $data,
         ]);

@@ -23,7 +23,8 @@ class MPerusahaanController extends Controller
     {
         //
         $data = DB::table('MPerusahaan')
-            ->get();
+            ->paginate(10);
+        //->get();
         $dataUser = DB::table('users')
             ->get();
         return view('master.mPerusahaan.index',[
@@ -154,7 +155,8 @@ class MPerusahaanController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('MPerusahaan')
             ->where('cname','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mPerusahaan',[
             'data' => $data,
         ]);

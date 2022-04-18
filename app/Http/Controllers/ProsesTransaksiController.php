@@ -24,7 +24,8 @@ class ProsesTransaksiController extends Controller
     {
         //
         $data = DB::table('proses_transaksi')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.prosesTransaksi.index',[
             'data' => $data,
         ]);

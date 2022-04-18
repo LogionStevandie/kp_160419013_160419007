@@ -22,7 +22,8 @@ class ItemCategoryController extends Controller
     {
         //
         $dataCategory = DB::table('ItemCategory')
-            ->get();
+            ->paginate(10);
+            //->get();
         $dataCOA = DB::table('COA')
             ->get();
         return view('master.itemCategory.index',[
@@ -160,7 +161,8 @@ class ItemCategoryController extends Controller
         //
         $dataCategory = DB::table('ItemCategory')
             ->where('Name','like','%'.$categoryName.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         $dataCOA = DB::table('COA')
             ->get();
         return view('master.itemCategory',[

@@ -32,7 +32,8 @@ class MGudangController extends Controller
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
             //->leftjoin('MGudangValues', 'MGudang.MGudangID', '=', 'MGudangValues.MGudangID')
             //->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
-            ->get();
+            ->paginate(10);
+        //->get();
 
         $dataTag = DB::table('MGudangValues')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
@@ -248,7 +249,8 @@ class MGudangController extends Controller
             ->leftjoin('MGudangValues', 'MGudang.MGudangID', '=', 'MGudangValues.MGudangID')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->where('MGudang.cname','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
 
         return view('master.mGudang.index',[
             'data' => $data,

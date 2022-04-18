@@ -25,7 +25,8 @@ class PaymentTermsController extends Controller
             ->select('PaymentTerms.*','Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->where('PaymentTerms.Hapus','=',0)
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.paymentTerms.index',[
             'data' => $data,
         ]);
@@ -171,7 +172,8 @@ class PaymentTermsController extends Controller
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->where('PaymentTerms.Hapus','=',0)
             ->where('PaymentTerms.Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.paymentTerms',[
             'data' => $data,
         ]);
@@ -186,7 +188,8 @@ class PaymentTermsController extends Controller
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->where('PaymentTerms.Hapus','=',0)
             ->where('PaymentTerms.Days','like','%'.$day.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.paymentTerms',[
             'data' => $data,
         ]);

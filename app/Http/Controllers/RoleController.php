@@ -32,7 +32,8 @@ class RoleController extends Controller
         $data = DB::table('roles')->get();
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
-            ->get();    
+            ->paginate(10);
+        //->get();    
         return view('master.roles.index',[
             'data' => $data,
             'dataAccess' => $dataAccess,
@@ -202,7 +203,8 @@ class RoleController extends Controller
         $data = DB::table('roles')->where('name','like','%'.$name.'%')->get();
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
-            ->get();    
+            ->paginate(10);
+        //->get();    
         return view('master.roles.index',[
             'data' => $data,
             'dataAccess' => $dataAccess,

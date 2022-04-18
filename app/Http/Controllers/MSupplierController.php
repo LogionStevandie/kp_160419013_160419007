@@ -28,7 +28,8 @@ class MSupplierController extends Controller
             ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
             ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
             ->where('MSupplier.Hapus','=',0)
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.msupplier.index',[
             'data' => $data,
         ]);
@@ -252,7 +253,8 @@ class MSupplierController extends Controller
             ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
             ->where('MSupplier.Hapus','=',0)
             ->where('MSupplier.Name','like', '%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.msupplier.index',[
             'data' => $data,
         ]);
@@ -270,7 +272,8 @@ class MSupplierController extends Controller
             ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
             ->where('MSupplier.Hapus','=',0)
             ->where('MSupplier.AtasNama','like', '%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.msupplier.index',[
             'data' => $data,
         ]);
@@ -288,7 +291,8 @@ class MSupplierController extends Controller
             ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
             ->where('MSupplier.Hapus','=',0)
             ->where('MSupplier.AtasNama','like', '%'.$lokasi.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.msupplier.index',[
             'data' => $data,
         ]);

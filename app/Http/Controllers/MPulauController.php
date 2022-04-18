@@ -22,7 +22,8 @@ class MPulauController extends Controller
     {
         //
         $data = DB::table('MPulau')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mPulau.index',[
             'data' => $data,
         ]);
@@ -136,7 +137,8 @@ class MPulauController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('MPulau')
             ->where('cname','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mPulau',[
             'data' => $data,
         ]);

@@ -27,7 +27,8 @@ class MKotaController extends Controller
             ->select('MKota.*', 'MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName')
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mKota.index',[
             'data' => $data,
         ]);
@@ -168,7 +169,8 @@ class MKotaController extends Controller
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
             ->where('MKota.cname','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mKota.index',[
             'data' => $data,
         ]);

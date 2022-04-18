@@ -37,7 +37,8 @@ class PurchaseRequestController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
-            ->get();
+            ->paginate(10);
+        //->get();
 
         $getPerusahaan = DB::table('MPerusahaan')
                     ->where('UserIDManager1', $user->id)
@@ -469,7 +470,8 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
             ->where('purchase_request.name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.PurchaseRequest.index',[
             'data' => $data,
         ]);
@@ -495,7 +497,8 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
             ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.PurchaseRequest.index',[
             'data' => $data,
         ]);

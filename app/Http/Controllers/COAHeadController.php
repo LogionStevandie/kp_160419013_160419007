@@ -22,7 +22,8 @@ class COAHeadController extends Controller
     {
         //
         $data = DB::table('COAHead')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.COAHead.index',[
             'data' => $data,
         ]);
@@ -134,7 +135,8 @@ class COAHeadController extends Controller
 
         $data = DB::table('COAHead')
             ->where('Nama','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.COAHead.index',[
             'data' => $data,
         ]);

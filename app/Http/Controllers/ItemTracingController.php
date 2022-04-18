@@ -24,7 +24,8 @@ class ItemTracingController extends Controller
     {
         //
         $data = DB::table('ItemTracing')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.itemTracing.index',[
             'data' => $data,
         ]);
@@ -137,7 +138,8 @@ class ItemTracingController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('ItemTracing')
             ->where('Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.itemTracing',[
             'data' => $data,
         ]);
@@ -149,7 +151,8 @@ class ItemTracingController extends Controller
         $ket = $request->input('searchketerangan');
         $data = DB::table('ItemTracing')
             ->where('notes','like','%'.$ket.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.itemTracing',[
             'data' => $data,
         ]);

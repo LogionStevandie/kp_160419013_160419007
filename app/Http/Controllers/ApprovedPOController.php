@@ -41,7 +41,8 @@ class ApprovedPOController extends Controller
             ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->join('Tax','purchase_order_detail.TaxID','=','Tax.TaxID')
-            ->get();
+            ->paginate(10);
+            //->get();
         
         return view('master.approved.PurchaseOrder.index',[
             'poKeluar' => $poKeluar,
@@ -190,7 +191,8 @@ class ApprovedPOController extends Controller
                 ->where('hapus',0)
                 ->where('MPerusahaanID', $managerPerusahaan2->MPerusahaanID)
                 ->where('name','like', '%'.$name.'%')
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         $pod = DB::table('purchase_order_detail')
             ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
@@ -223,7 +225,8 @@ class ApprovedPOController extends Controller
                 ->where('hapus',0)
                 ->where('MPerusahaanID', $managerPerusahaan2->MPerusahaanID)
                 ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
-                ->get();
+                ->paginate(10);
+            //->get();
         }
         $pod = DB::table('purchase_order_detail')
             ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')

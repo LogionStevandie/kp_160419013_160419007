@@ -22,7 +22,8 @@ class TaxController extends Controller
     {
         //
         $data = DB::table('Tax')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.tax.index',[
             'data' => $data,
         ]);
@@ -138,7 +139,8 @@ class TaxController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('Tax')
             ->where('Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.tax.index',[
             'data' => $data,
         ]);

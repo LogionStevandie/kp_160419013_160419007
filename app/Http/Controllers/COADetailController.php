@@ -25,7 +25,8 @@ class COADetailController extends Controller
         $data = DB::table('COADetail')
             ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
             ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.COADetail.index',[
             'data' => $data,
         ]);
@@ -159,7 +160,8 @@ class COADetailController extends Controller
             ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
             ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
             ->where('COADetail.CDet_Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.COADetail.index',[
             'data' => $data,
         ]);
@@ -174,7 +176,8 @@ class COADetailController extends Controller
             ->select('COADetail.*', 'COAHead.Nama as COAHeadName')
             ->leftjoin('COAHead','COADetail.CoaHead','=','COAHead.CH_ID')
             ->where('COADetail.Keterangan','like','%'.$ket.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.COADetail.index',[
             'data' => $data,
         ]);

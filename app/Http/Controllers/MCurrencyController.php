@@ -21,7 +21,8 @@ class MCurrencyController extends Controller
     {
         //
         $data = DB::table('MCurrency')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mcurrency.index',[
             'data' => $data,
         ]);
@@ -138,7 +139,8 @@ class MCurrencyController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('MCurrency')
             ->where('name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mcurrency.index',[
             'data' => $data,
         ]);
@@ -150,7 +152,8 @@ class MCurrencyController extends Controller
         $country = $request->input('searchcountry');
         $data = DB::table('MCurrency')
             ->where('country','like','%'.$country.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mcurrency.index',[
             'data' => $data,
         ]);

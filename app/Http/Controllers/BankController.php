@@ -23,7 +23,8 @@ class BankController extends Controller
     {
         //
         $datas = DB::table('bank')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.Bank.index',[
             'datas' => $datas,
         ]);
@@ -132,7 +133,8 @@ class BankController extends Controller
         $name=$request->input('searchname');
         $datas = DB::table('bank')
             ->where('name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+            //->get();
         return view('master.Bank.index',[
             'datas' => $datas,
         ]);

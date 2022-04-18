@@ -21,7 +21,9 @@ class MenuController extends Controller
     public function index()
     {
         //
-        $data = DB::Table('menu')->get();
+        $data = DB::Table('menu')
+            ->paginate(10);
+        //->get();
         return view('master.menu.index',[
             'data' => $data,
         ]);
@@ -134,7 +136,10 @@ class MenuController extends Controller
     {
         //
         $name = $request->input('searchname');
-        $data = DB::Table('menu')->where('Name','like','%'.$name.'%')->get();
+        $data = DB::Table('menu')
+            ->where('Name','like','%'.$name.'%')
+            ->paginate(10);
+        //->get();
         return view('master.menu.index',[
             'data' => $data,
         ]);
@@ -144,7 +149,10 @@ class MenuController extends Controller
     {
         //
         $desc = $request->input('searchdeskripsi');
-        $data = DB::Table('menu')->where('deskripsi','like','%'.$desc.'%')->get();
+        $data = DB::Table('menu')
+            ->where('deskripsi','like','%'.$desc.'%')
+            ->paginate(10);
+        //->get();
         return view('master.menu.index',[
             'data' => $data,
         ]);

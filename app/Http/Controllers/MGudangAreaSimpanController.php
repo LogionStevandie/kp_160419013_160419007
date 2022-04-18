@@ -22,7 +22,8 @@ class MGudangAreaSimpanController extends Controller
     {
         //
         $data = DB::table('MGudangAreaSimpan')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mGudangAreaSimpan.index',[
             'data' => $data,
         ]);
@@ -144,7 +145,8 @@ class MGudangAreaSimpanController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('MGudangAreaSimpan')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.mGudangAreaSimpan.index',[
             'data' => $data,
         ]);

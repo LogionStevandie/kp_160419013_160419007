@@ -23,7 +23,8 @@ class PaymentController extends Controller
     {
         //
         $data = DB::table('Payment')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.payment.index',[
             'data' => $data,
         ]);
@@ -135,7 +136,8 @@ class PaymentController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('Payment')
             ->where('Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
+        //->get();
         return view('master.payment.index',[
             'data' => $data,
         ]);
