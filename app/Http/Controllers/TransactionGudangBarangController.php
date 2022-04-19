@@ -199,6 +199,17 @@ class TransactionGudangBarangController extends Controller
                 ]);
             }    
 
+            $dataItem = DB::table('Item')
+                ->select('Unit.Name as unit')
+                ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
+                ->where('Item.ItemID', $data['itemId'][$i])
+                ->get();
+            $dataPOD = DB::table('purchase_order_detail')
+                ->select('harga')
+                ->where('idItem', $data['itemId'][$i])
+                ->orderBy('idItem', 'desc')
+                ->limit(1)
+                ->get();
             //Item Inventory Transaction line
             if($data['isMenerima'] == "1"){
                 DB::table('ItemInventoryTransactionLine')
@@ -207,10 +218,10 @@ class TransactionGudangBarangController extends Controller
                         //'transactionDetailID' => $idtransaksigudangdetail,  
                         'ItemID' => $data['itemId'][$i],  
                         'MGudangID' => $data['MGudangIDAwal'],  
-                        //'UnitID' => $data['unitID'][$i],  
-                        'UnitPrice' => $data['itemHarga'][$i],  
+                        'UnitID' => $dataItem[0]->unit,  
+                        'UnitPrice' => $dataPOD[0]->harga,  
                         'Quantity' => $data['itemJumlah'][$i],  
-                        'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
+                        'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],  
                     )
                 );
             } 
@@ -221,10 +232,10 @@ class TransactionGudangBarangController extends Controller
                         //'transactionDetailID' => $idtransaksigudangdetail,  
                         'ItemID' => $data['itemId'][$i],  
                         'MGudangID' => $data['MGudangIDAwal'],  
-                        //'UnitID' => $data['unitID'][$i],  
-                        'UnitPrice' => $data['itemHarga'][$i],  
+                        'UnitID' => $dataItem[0]->unit,  
+                        'UnitPrice' => $dataPOD[0]->harga,   
                         'Quantity' => $data['itemJumlah'][$i] * -1,  
-                        'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
+                        'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],  
                     )
                 );
             }          
