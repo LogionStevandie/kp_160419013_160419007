@@ -190,7 +190,7 @@ Pembuatan Nota Permintaan Pembelian
                                       </ul>
                                       <li class="list-group-item d-flex justify-content-between">
                                               <span>Total (Rupiah)</span>
-                                              <strong id="TotalHargaKeranjang" value="0"></strong>
+                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga=0>0</strong>
                                       </li> 
                                     <!-- /.form group -->
                                   </div>  <!---->
@@ -226,6 +226,7 @@ Pembuatan Nota Permintaan Pembelian
 
     var tambahCombo = "";
     var totalTambah = 0;
+    
     $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
         //alert($('.cekId').length);
@@ -241,7 +242,7 @@ Pembuatan Nota Permintaan Pembelian
         var jumlahBarang = $("#jumlahBarang").val();
         var hargaBarang = $("#hargaBarang").val();
         var keteranganBarang = $("#keteranganBarang").val();
-
+        var totalHarga= 0;
         //var totalHarga = jumlahBarang * hargaBarang;
         /*alert(totalHarga);
         alert(jumlahBarang);
@@ -272,15 +273,27 @@ Pembuatan Nota Permintaan Pembelian
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
             $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ($('.cekJumlah:eq('+indexSama+')').val()* $("#hargaBarang").val())+',-');
             
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
+            //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            //var totalHargaKeranjang = $('#TotalHargaKeranjang').val(parseInt(hargaBarang * jumlahBarang));
             //totalHargaKeranjang += parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * parseFloat($("#hargaBarang").val());
             //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
             //alert(totalHargaKeranjang);
-            alert((totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
+            //alert((totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
             //$('#TotalHargaKeranjang').html(formatRupiah(totalHargaKeranjang));
             //$('#TotalHargaKeranjang').val(totalHargaKeranjang);
-            $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang)  + parseFloat(hargaBarang * jumlahBarang)));
-            $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
+            
+            totalHarga=hargaBarang * jumlahBarang;
+            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+            $('#TotalHargaKeranjang').html("Rp. " +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+
+           
+
+            //$('#TotalHargaKeranjang').val(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang));
+            //$('#TotalHargaKeranjang').html(formatRupiah(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang)));
+            
+
+            
 
         }
         else{
@@ -314,8 +327,8 @@ Pembuatan Nota Permintaan Pembelian
             $('#totalBarangnya').val(totalTambah);
             $('#totalBarangnya').html(totalTambah);
 
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
-            if(totalHargaKeranjang == "" || totalHargaKeranjang == NaN || totalHargaKeranjang == 0){
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            /*if(totalHargaKeranjang == "" || totalHargaKeranjang == NaN || totalHargaKeranjang == 0){
             alert(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
               //totalHargaKeranjang = totalHargaKeranjang + parseFloat(hargaBarang * jumlahBarang);
               $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
@@ -326,7 +339,10 @@ Pembuatan Nota Permintaan Pembelian
               //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
               $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
               $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-            }
+            }*/
+            totalHarga=hargaBarang * jumlahBarang;
+            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
             //alert(totalHargaKeranjang);
             
             

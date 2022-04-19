@@ -379,6 +379,13 @@ class PurchaseOrderController extends Controller
                     'keterangan' => $data['itemKeterangan'][$i],
                     )
                 ); 
+                 $totalNow = DB::table('purchase_request_detail')->select('jumlah', 'jumlahProses')->where('id', $data['prdID'][$i])->get();
+                    DB::table('purchase_request_detail')
+                    ->where('id', $data['prdID'][$i])
+                    ->update([
+                        'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemTotal'][$i],
+                    ]);
+            
                 $totalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]) * (100.0 + $data['itemTaxValue'][$i]) / 100.0;
             }     
         }
@@ -413,6 +420,13 @@ class PurchaseOrderController extends Controller
                     ); 
                     $totalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]) * (100.0 + $data['itemTaxValue'][$i]) / 100.0;     
                 }
+                /* $totalNow = DB::table('purchase_request_detail')->select('jumlah', 'jumlahProses')->where('id', $data['prdID'][$i])->get();
+                    DB::table('purchase_request_detail')
+                    ->where('id', $data['prdID'][$i])
+                    ->update([
+                        'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemTotal'][$i],
+                    ]);*/
+            
             }
         }
         DB::table('purchase_order')
