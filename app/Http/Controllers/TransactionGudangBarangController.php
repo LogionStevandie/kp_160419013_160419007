@@ -135,15 +135,15 @@ class TransactionGudangBarangController extends Controller
         $totalIndex = str_pad(strval(count($dataPo) + 1),4,'0',STR_PAD_LEFT);
 
         $idtransaksigudang = DB::table('transaction_gudang_barang')->insertGetId(array(
-            'name' => 'PO/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
+            'name' => $dataItemTransaction[0]->Code.'/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
             'tanggalDibuat' => $data['tanggalDibuat'],  
             'tanggalDatang' => $data['tanggalDatang'],  
             'keteranganKendaraan' => $data['keteranganKendaraan'],  
             'keteranganNomorPolisi' => $data['keteranganNomorPolisi'],  
             'keteranganPemudi' => $data['keteranganPemudi'],  
-            'keteranganPengiriman' => $data['keteranganPengiriman'],  
+            'keteranganTransaksi' => $data['keteranganTransaksi'],  
             'ItemTransactionID' => $data['ItemTransaction'],  
-            'isTambah' => $data['isTambah'],  
+            'isMenerima' => $data['isMenerima'],  
             'SupplierID' => $data['Supplier'],  
             'PurchaseOrderID' => $data['PurchaseOrder'],  
             'MGudangIDAwal' => $data['MGudangIDAwal'],  
@@ -156,6 +156,29 @@ class TransactionGudangBarangController extends Controller
             )
         ); 
 
+        $idItemInventoryTransaction = DB::table('ItemInventoryTransaction')->insertGetId(array(
+            'Name' => $dataItemTransaction[0]->Code.'/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
+            'Description' => $data['keteranganPengiriman'],  
+            'tanggalDatang' => $data['tanggalDatang'],  
+            'ItemTransactionID' => $data['ItemTransaction'],  
+            'Date' => $data['tanggalDibuat'],  
+            'SupplierID' => $data['Supplier'],  
+            'NTBID' => $idtransaksigudang,  
+            'EmployeeID' => $user->id,  
+            'SalesOrderID' => $data['SalesOrderID'],  
+            'SalesInvoiced' => $data['SalesInvoiced'],  
+            'MGudangID' => $data['MGudangIDAwal'],  
+            'TransferID' => $data['MGudangIDTujuan'],  
+            'AdjustmentID' => $data['AdjustmentID'],  
+            'SuratJalanID' => $data['SuratJalanID'],  
+            'KwitansiID' => $data['KwitansiID'],  
+            'created_by'=> $user->id,
+            'created_on'=> date("Y-m-d h:i:sa"),
+            'updated_by'=> $user->id,
+            'updated_on'=> date("Y-m-d h:i:sa"),
+            )
+        ); 
+        //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
         for($i = 0; $i < count($data['itemId']); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
                 'transactionID' => $idpo,
@@ -163,6 +186,7 @@ class TransactionGudangBarangController extends Controller
                 'idItem' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
+                'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
                 )
             ); 
 
@@ -175,45 +199,32 @@ class TransactionGudangBarangController extends Controller
                 ]);
             }    
 
-            //kartu stok
-            $kartuStok = DB::table('kartu_stok_barang')
-                ->where('ItemID',$data['itemId'][$i])
-                ->orderBy('id', 'desc')
-                ->limit(1)
-                ->get();
-            if($data['isTambah'] == "1"){
-                DB::table('kartu_stok_barang')
+            //Item Inventory Transaction line
+            if($data['isMenerima'] == "1"){
+                DB::table('ItemInventoryTransactionLine')
                     ->insert(array(
-                        'tanggal' => $data['tanggal'],  
-                        'transactionDetailID' => $idtransaksigudangdetail,  
+                        'TransactionID' => $idItemInventoryTransaction,  
+                        //'transactionDetailID' => $idtransaksigudangdetail,  
                         'ItemID' => $data['itemId'][$i],  
-                        'stokAwal' => $kartuStok[0]->stokAkhir,  
-                        'stokMasuk' => $data['itemJumlah'][$i],  
-                        'stokKeluar' => 0,  
-                        'stokAkhir' => $kartuStok[0]->stokAkhir + $data['itemJumlah'][$i],  
-                        'keterangan' => $data['keterangan'],   
-                        'created_by'=> $user->id,
-                        'created_on'=> date("Y-m-d h:i:sa"),
-                        'updated_by'=> $user->id,
-                        'updated_on'=> date("Y-m-d h:i:sa"),
+                        'MGudangID' => $data['MGudangIDAwal'],  
+                        //'UnitID' => $data['unitID'][$i],  
+                        'UnitPrice' => $data['itemHarga'][$i],  
+                        'Quantity' => $data['itemJumlah'][$i],  
+                        'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
                     )
                 );
             } 
-            else if($data['isTambah'] == "0"){
-                DB::table('kartu_stok_barang')
+            else if($data['isMenerima'] == "0"){
+                DB::table('ItemInventoryTransactionLine')
                     ->insert(array(
-                        'tanggal' => $data['tanggal'],  
-                        'transactionDetailID' => $idtransaksigudangdetail, 
+                        'TransactionID' => $idItemInventoryTransaction,  
+                        //'transactionDetailID' => $idtransaksigudangdetail,  
                         'ItemID' => $data['itemId'][$i],  
-                        'stokAwal' => $kartuStok[0]->stokAkhir,  
-                        'stokMasuk' => 0,  
-                        'stokKeluar' => $data['itemJumlah'][$i],  
-                        'stokAkhir' => $kartuStok[0]->stokAkhir - $data['itemJumlah'][$i],  
-                        'keterangan' => $data['keterangan'],   
-                        'created_by'=> $user->id,
-                        'created_on'=> date("Y-m-d h:i:sa"),
-                        'updated_by'=> $user->id,
-                        'updated_on'=> date("Y-m-d h:i:sa"),
+                        'MGudangID' => $data['MGudangIDAwal'],  
+                        //'UnitID' => $data['unitID'][$i],  
+                        'UnitPrice' => $data['itemHarga'][$i],  
+                        'Quantity' => $data['itemJumlah'][$i] * -1,  
+                        'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
                     )
                 );
             }          
@@ -355,7 +366,7 @@ class TransactionGudangBarangController extends Controller
         $user = Auth::user();
         $data = $request->collect();
 
-        $idtransaksigudang =  DB::table('transaction_gudang_barang')
+        DB::table('transaction_gudang_barang')
             ->where('id', $transactionGudangBarang->id)
             ->update(array(
                 'tanggalDibuat' => $data['tanggalDibuat'],  
@@ -376,30 +387,48 @@ class TransactionGudangBarangController extends Controller
             )
         ); 
 
+        DB::table('ItemInventoryTransaction')
+            ->where('NTBID', $transactionGudangBarang->id)
+            ->update(array(
+                'Description' => $data['keteranganPengiriman'],  
+                'tanggalDatang' => $data['tanggalDatang'],  
+                'ItemTransactionID' => $data['ItemTransaction'],  
+                'Date' => $data['tanggalDibuat'],  
+                'SupplierID' => $data['Supplier'],  
+                'EmployeeID' => $user->id,  
+                'SalesOrderID' => $data['SalesOrderID'],  
+                'SalesInvoiced' => $data['SalesInvoiced'],  
+                'MGudangID' => $data['MGudangIDAwal'],  
+                'TransferID' => $data['MGudangIDTujuan'],  
+                'AdjustmentID' => $data['AdjustmentID'],  
+                'SuratJalanID' => $data['SuratJalanID'],  
+                'KwitansiID' => $data['KwitansiID'],  
+                'updated_by'=> $user->id,
+                'updated_on'=> date("Y-m-d h:i:sa"),
+            )
+        ); 
 
-        //pengurangan jumlah proses lalu diupdate
-        $dataDetailTotal = DB::table('transaction_gudang_barang_detail')
-            ->where('transactionID',  $transactionGudangBarang->id)
+        $dataTransactionID = DB::table('ItemInventoryTransaction')
+            ->where('NTBID', $transactionGudangBarang->id)
             ->get();
 
+        $dataDetailTotal = DB::table('transaction_gudang_barang_detail')
+            ->where('idPurchaseOrder', $purchaseOrder->id)
+            ->get();
+
+        //pengurangan jumlah proses lalu diupdate
         foreach($dataDetailTotal as $data){
             DB::table('purchase_order_detail')
             ->where('id', $data['purchaseOrderDetailID'])
             ->update([
                 'jumlahProses' => DB::raw('jumlahProses' - $data['jumlah']),
             ]);
+        } 
 
-            //kartu stok delete
-            //DB::table('kartu_stok_barang')
-            //    ->where('id', $data['id'])
-            //    ->delete();
-        }
-
-        //renew detailnya
         DB::table('transaction_gudang_barang_detail')
-            ->where('transactionID', '=', $transactionGudangBarang->id)
+            ->where('transactionID', $transactionGudangBarang->id)
             ->delete();
-
+        //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
         for($i = 0; $i < count($data['itemId']); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
                 'transactionID' => $idpo,
@@ -407,8 +436,9 @@ class TransactionGudangBarangController extends Controller
                 'idItem' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
+                'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
                 )
-            );
+            ); 
 
             if($data['Supplier'] == "0" || $data['Supplier'] == "" || $data['Supplier'] == null){
                 $totalNow = DB::table('purchase_order_detail')->select('jumlah', 'jumlahProses')->where('id', $data['podID'][$i])->get();
@@ -419,80 +449,35 @@ class TransactionGudangBarangController extends Controller
                 ]);
             }    
 
-            //kartu stok       
-            $kartuStok = DB::table('kartu_stok_barang')
-                ->where('ItemID',$data['itemId'][$i])
-                ->orderBy('id', 'desc')
-                ->limit(1)
-                ->get();
-            
-            if($data['isTambah'] == "1"){
-                $kartuStok = DB::table('kartu_stok_barang')
-                    ->where('ItemID',$data['itemId'][$i])
-                    ->where('transactionDetailID',$idtransaksigudangdetail)
-                    ->orderBy('id', 'desc')
-                    ->limit(1)
-                    ->get();
-                $jumlahReal = 0;
-                if(count($kartuStok)>0){
-                    if($kartuStok[0]->stokMasuk > 0){
-                        $jumlahReal = -$kartuStok[0]->stokMasuk + $data['itemJumlah'][$i];
-                    }
-                    else if($kartuStok[0]->stokKeluar > 0){
-                        $jumlahReal = $data['itemJumlah'][$i] + $kartuStok[0]->stokMasuk;
-                    }
-                }
-                DB::table('kartu_stok_barang')
-                    ->insert(array(
-                        'tanggal' => $data['tanggal'],  
-                        'transactionDetailID' => $idtransaksigudangdetail, 
+            //Item Inventory Transaction line
+            if($data['isMenerima'] == "1"){
+                DB::table('ItemInventoryTransactionLine')
+                    ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+                    ->update(array(
                         'ItemID' => $data['itemId'][$i],  
-                        'stokAwal' => $kartuStok[0]->stokAkhir,  
-                        'stokMasuk' => $jumlahReal,  
-                        'stokKeluar' => 0,  
-                        'stokAkhir' => $kartuStok[0]->stokAkhir + $jumlahReal,  
-                        'keterangan' => $data['keterangan'],   
-                        'created_by'=> $user->id,
-                        'created_on'=> date("Y-m-d h:i:sa"),
-                        'updated_by'=> $user->id,
-                        'updated_on'=> date("Y-m-d h:i:sa"),
+                        'MGudangID' => $data['MGudangIDAwal'],  
+                        //'UnitID' => $data['unitID'][$i],  
+                        'UnitPrice' => $data['itemHarga'][$i],  
+                        'Quantity' => $data['itemJumlah'][$i],  
+                        'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
                     )
                 );
             } 
-            else if($data['isTambah'] == "0"){
-                $kartuStok = DB::table('kartu_stok_barang')
-                    ->where('ItemID',$data['itemId'][$i])
-                    ->where('transactionDetailID',$idtransaksigudangdetail)
-                    ->orderBy('id', 'desc')
-                    ->limit(1)
-                    ->get();
-                $jumlahReal = 0;
-                if(count($kartuStok)>0){
-                    if($kartuStok[0]->stokMasuk > 0){
-                        $jumlahReal = $kartuStok[0]->stokMasuk + $data['itemJumlah'][$i];
-                    }
-                    else if($kartuStok[0]->stokKeluar > 0){
-                        $jumlahReal = $data['itemJumlah'][$i] - $kartuStok[0]->stokMasuk;
-                    }
-                }
-                DB::table('kartu_stok_barang')
-                    ->insert(array(
-                        'tanggal' => $data['tanggal'],  
-                        'transactionDetailID' => $idtransaksigudangdetail, 
+            else if($data['isMenerima'] == "0"){
+                DB::table('ItemInventoryTransactionLine')
+                    ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+                    ->update(array(
                         'ItemID' => $data['itemId'][$i],  
-                        'stokAwal' => $kartuStok[0]->stokAkhir,  
-                        'stokMasuk' => 0,  
-                        'stokKeluar' => $jumlahReal,  
-                        'stokAkhir' => $kartuStok[0]->stokAkhir - $jumlahReal,  
-                        'keterangan' => $data['keterangan'],   
-                        'created_by'=> $user->id,
-                        'created_on'=> date("Y-m-d h:i:sa"),
-                        'updated_by'=> $user->id,
-                        'updated_on'=> date("Y-m-d h:i:sa"),
+                        'MGudangID' => $data['MGudangIDAwal'],  
+                        //'UnitID' => $data['unitID'][$i],  
+                        'UnitPrice' => $data['itemHarga'][$i],  
+                        'Quantity' => $data['itemJumlah'][$i] * -1,  
+                        'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
                     )
                 );
             }          
         }
+
         return redirect()->route('transactionGudang.index')->with('status','Success!!');
     }
 
