@@ -68,10 +68,7 @@ Pembuatan Nota Permintaan Pembelian
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label>Pilih Gudang</label>
-                                    <select class="form-control select2" style="width: 100%;" name="gudang">
-                                      <option value="">
-                                          --Pilih gudang--
-                                      </option>
+                                    <select class="form-control select2" style="width: 100%;" name="gudang" id="gudang">
                                       @foreach($dataGudang as $key => $data)
                                           <option name="idGudang" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
                                       @endforeach
@@ -82,7 +79,7 @@ Pembuatan Nota Permintaan Pembelian
 
                                <div class="col-md-6 mb-3">
                                   <label for="lastName">Jenis Permintaan</label> 
-                                  <select name="jenisProses" class="form-control selectpicker" data-live-search="true" data-show-subtext="true">
+                                   <select class="form-control select2" style="width: 100%;" name="jenisProses">
                                       <option value="1" selected>Pembelian Melalui Pusat</option>
                                       <option value="0">Pembelian Melalui Lokal</option>
                                   </select>
@@ -122,7 +119,7 @@ Pembuatan Nota Permintaan Pembelian
                              
                                   <div class="form-group">
                                       <label>Barang</label>
-                                      <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
+                                      <select class="form-control " id="barang" data-live-search="true" data-show-subtext="true">
                                           <option value="pilih">--Pilih barang--</option>
                                           @foreach($dataBarang as $key => $data)
                                           <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
