@@ -6,18 +6,18 @@
  </style>
 
 @section('judul')
-Pembuatan Nota Permintaan Pembelian
+Edit Nota Purchase Order
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('purchaseRequest.index')}}">Nota-Permintaan-Pembelian</a></li>
+<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Nota-Purchase-Order</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
-<form  action="{{route('purchaseRequest.update',[$purchaseRequest->id])}}" method="POST" >
+<form action="{{route('purchaseOrder.update', [$purchaseOrder->id])}}" method="POST" >
   @csrf
   @method('PUT')
     <section class="content">
@@ -42,73 +42,99 @@ Pembuatan Nota Permintaan Pembelian
                         <div class="row">
                               <div class="col-md-6 mb-4">
                                   <label for="firstName">Nama NPP</label>
-                                  <input type="text" class="form-control" id="firstName" placeholder=""  value="{{old('name',$purchaseRequest->name)}}" readonly required="" name="name">
+                                  <input type="text" class="form-control" id="firstName" placeholder="" value="{{old('name',$purchaseOrder->name)}}" readonly required="">
                                   <div class="invalid-feedback"> Valid first name is required. </div>
                               </div>
-                              <div class="col-md-6 mb-3">
+                              <div class="col-md-6 mb-3"> 
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{old('created_on',$purchaseRequest->created_on)}}" readonly required="" name="tanggalDibuat">
+                                  <input name="tanggalDibuat" type="text" class="form-control" id="lastName" placeholder="" value="{{old('created_on',date('d-m-Y', strtotime($purchaseOrder->created_on)))}}" readonly required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
 
-                             
-                           
-
-                              <div class="form-group col-md-6">
-                                <label>Tanggal Awal - Akhir:</label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text">
-                                        <i class="far fa-calendar-alt"></i>
-                                      </span>
-                                    </div>
-                                    <input type="text" name="tanggalDibutuhkan" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan','')}}" >
-                                </div>                              
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Tanggal Batas Akhir</label>
+                                  <input type="date" name="tanggal_akhir" class="form-control" id="lastName" placeholder=""value="{{old('tanggal_akhir',$purchaseOrder->tanggal_akhir)}}" required="">
+                                  <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
-                           
                               <div class="col-md-6">
                                     <div class="form-group">
-                                    <label>Pilih Gudang</label>
-                                    <select class="form-control select2" style="width: 100%;" name="gudang" id="gudang">
-                                       @foreach($dataGudang as $key => $data)
-                                            @if($data->MGudangID==$purchaseRequest->MGudangID)
-                                            <option selected name="idGudang" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }} >{{$data->cname}} </option>
-                                            @else
-                                            <option name="idGudang" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
-                                            @endif
-                                        @endforeach
+                                   <label for="lastName">Cara Pembayaran</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms">
+                                      <option value="">
+                                          --Pilih Cara Pembayaran--
+                                      </option>
+                                      @foreach($dataPayment as $key => $data)
+                                          @if($data->PaymentTermsID == $purchaseOrder->idPaymentTerms)
+                                              <option selected name="idPaymentTerms" value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}} ({{$data->PaymentName}})</option>
+                                          @else
+                                              <option name="idPaymentTerms" value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}} ({{$data->PaymentName}})</option>
+                                          @endif
+                                      @endforeach
+                                
                                     </select>
                                     </div>
                                  
                               </div>
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for="lastName">Pilih Perusahaan</label> 
+                                    <select class="form-control select2" style="width: 100%;" id="perusahaanID" name="perusahaan">
+                                      <option value="">
+                                            --Pilih Perusahaan--
+                                      </option>
+
+                                        @foreach($dataPerusahaan as $key => $data)
+                                         
+                                          @if($data->MPerusahaanID == $purchaseOrder->MPerusahaanID)
+                                              <option selected name="idPerusahaan" singkatan="{{$data->cnames}}" value="{{$data->MPerusahaanID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}} ({{$data->cnames}})</option>
+                                          @else
+                                              <option name="idPerusahaan" singkatan="{{$data->cnames}}" value="{{$data->MPerusahaanID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}} ({{$data->cnames}})</option>
+                                          @endif
+                                            
+                                        @endforeach
+                                
+                                    </select>
+                                    </div>
+                                 
+                              </div>
+                           
+                              
+                          
+                              <div class="col-md-6 mb-3">
+                                <div class="form-group">
+                                  <label for="lastName">Supplier</label> 
+                                  <select name="supplier" class="form-control select2" style="width: 100%;">
+                                      <option value="">
+                                          --Pilih Supplier--
+                                      </option>
+                                     @foreach($dataSupplier as $key => $data)
+                                        @if($data->SupplierID == $purchaseOrder->idSupplier)
+                                            <option selected name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
+                                        @else
+                                            <option name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
+                                        @endif
+                                    @endforeach
+                                  </select>
+                                  </div>
+                              </div>
+
+                      
 
                                <div class="col-md-6 mb-3">
-                                  <label for="lastName">Jenis Permintaan</label> 
-                                   <select class="form-control select2" style="width: 100%;" name="jenisProses">
-                                       @if($purchaseRequest->jenisProses==1)
-                                        <option value="1" selected>Pembelian Melalui Pusat</option>
-                                        <option value="0">Pembelian Melalui Lokal</option>
-                                        @else
-                                        <option value="1">Pembelian Melalui Pusat</option>
-                                        <option value="0" selected>Pembelian Melalui Lokal</option>
-                                        @endif
-                                  </select>
+                                  <label for="lastName">Keterangan Lokasi</label>
+                                  <textarea rows="3"  type="text" name="keteranganLokasi" class="form-control" value="{{old('keteranganLokasi',$purchaseOrder->keteranganLokasi)}}" >{{$purchaseOrder->keteranganLokasi}}</textarea>
                               </div>
 
-                              <!-- <div class="col-md-6">
-                                    <div class="form-group" for="lastName">
-                                    <label>Minimal</label>
-                                    <select class="form-control select2" style="width: 100%;" name="jenisProses">
-                                        <option value="1" selected>Pembelian Melalui Pusat</option>
-                                        <option value="0">Pembelian Melalui Lokal</option>
-                                    </select>
-                                    </div>
-                                 
-                              </div>-->
-                         
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Pembayaran</label>
+                                  <textarea rows="3"  type="text" name="keteranganPembayaran" class="form-control" value="{{old('keteranganPembayaran',$purchaseOrder->keteranganPembayaran)}}" >{{$purchaseOrder->keteranganPembayaran}}</textarea>
+                              </div>
 
-                        
-                              
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Penagihan</label>
+                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan',$purchaseOrder->keteranganPenagihan)}}" >{{$purchaseOrder->keteranganPenagihan}}</textarea>
+                              </div>
+
                           </div>     
                   </div>
                   <!-- Page Heading -->
@@ -125,23 +151,52 @@ Pembuatan Nota Permintaan Pembelian
                                     <h3 class="card-title">Pemilihan Barang</h3>
                                   </div>
                                   <div class="card-body">
-                                    
+                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms" id="pReq">
+                                            <option value="pilih">--Permintaan Order--</option>
+                                            <!--
+                                           @foreach($dataPurchaseRequest as $key => $data)
+                                              @if($data->id == $purchaseOrder->id)
+                                                <option selected id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
+                                              @else
+                                                <option id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>  
+                                              @endif
+                                           
+                                            @endforeach-->
+                                    </select><br>
+                                                    
                              
-                                  <div class="form-group">
-                                      <label>Barang</label>
-                                      <select class="form-control " id="barang" data-live-search="true" data-show-subtext="true">
-                                          <option value="pilih">--Pilih barang--</option>
-                                          @foreach($dataBarang as $key => $data)
-                                          <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
-                                          @endforeach
-                                      </select>
-                                      <br>
-                                      <input min=1   type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2"id="jumlahBarang" />
-                                  </div>
+                                 <div class="form-group"  id='tmbhBarang'>
+                                    <label for="title">Barang</label>
+               
+                                    <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
+                                  
+                                        <option value="pilih">--Pilih barang--</option>
+                                        <!--@foreach($dataBarang as $key => $data)
+                                        <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
+                                        @endforeach-->
+                                    </select>
+                                    <input id="jumlahBarang" value="1" min="1" max="2"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                </div>
+
+                                    <div class="form-group"  id='tax'>
+                                        <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
+                                            <option value="pilih">--Pajak--</option>
+                                            @foreach($dataTax as $key => $data)
+                                            <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                      
+                                    </div>
                                  
+                                   <div class="form-group mb-3" id="diskon">
+                                      <label for="title">Diskon (Rupiah)</label>
+                                      <input  type="text" id="tanpa-rupiah-diskon" class="form-control" value="{{old('diskon','')}}" >
+                                      <input type="hidden" id="diskonBarang" value=0>
+                                  </div>
                                                    
                                     <div class="form-group" id="harga">
-                                        <label for="Harga">Harga</label>
+                                        <label for="Harga">Harga (Rupiah)</label>
                                         <input  type="text" step=".01" id="tanpa-rupiah" class="form-control" value="{{old('harga','')}}" >
                                         <input type="hidden" id="hargaBarang" value = "">
                                     </div>
@@ -173,42 +228,31 @@ Pembuatan Nota Permintaan Pembelian
                                       <input type="hidden" name="tanggalAkhir" value="{{old('tanggalAkhirVal')}}">-->
                                       <h4 class="d-flex justify-content-between align-items-center mb-3">
                                           <span class="text-muted">Keranjang</span>
-                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value="0" totalKeranjang="{{count($dataDetail)}}">{{count($dataDetail)}}</span>
+                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value="0">0</span>
                                       </h4>
                                       <ul class="list-group mb-3 sticky-top" id="keranjang">
-                                            @foreach($dataDetail as $data)
-                                                @foreach($dataBarang as $item)
-                                                    @if($item->ItemID == $data->ItemID)
-                                            <li  class="list-group-item d-flex justify-content-between lh-condensed">
-                                        <div>
-                                            <input type="hidden" class="cekId" name="itemId[]" value="{{$data->ItemID}}">
-                                            <input type="hidden" class="cekJumlah" name="itemTotal[]" value="{{$data->jumlah}}">
-                                            <input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="{{$data->keterangan_jasa}}">
-                                            <input type="hidden" class="cekHarga" name="itemHarga[]" value="{{$data->harga}}">
-                                            <h6 class="my-0">{{$item->ItemName}}<small class="hargaVal">({{$data->jumlah}})</small> </h6> 
-                                            <small class="text-muted keteranganVal">{{$data->keterangan_jasa}}</small><br>                      
-                                        </div>
-                                        <div>
-                                            <strong>Rp.{{$data->harga}},-</strong>
-                                            <button class="btn btn-primary copyKe" type="button" id="copyKe">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                                                    <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                                </svg>
-                                            </button>
-                                            <button class="btn btn-danger" type="button" id="hapusKeranjang">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </li>  
-                                        @endif    
-                                        @endforeach           
-                                    @endforeach                
+                                          <!--<li class="list-group-item d-flex justify-content-between lh-condensed">
+                                              <div>
+                                                  <input type="hidden" name="itemId[]" value="">
+                                                  <input type="hidden" name="itemTotal[]" value="">
+                                                  <input type="hidden" name="itemKeterangan[]" value="">
+                                                  <input type="hidden" name="itemHarga[]" value="">
+                                                  <h6 class="my-0">Product name <small>(6)</small> </h6> 
+                                                  <small class="text-muted">Keterangan</small><br>                      
+                                              </div>
+                                              <div>
+                                                  <strong>$20</strong>
+                                                  <button class="btn btn-danger" type="button" id="hapusKeranjang">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                                      </svg>
+                                                  </button>
+                                              </div>
+                                          </li>     -->             
                                       </ul>
                                       <li class="list-group-item d-flex justify-content-between">
                                               <span>Total (Rupiah)</span>
-                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga={{$purchaseRequest->totalHarga}}>Rp. {{$purchaseRequest->totalHarga}},-</strong>
+                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga=0>0</strong>
                                       </li> 
                                     <!-- /.form group -->
                                   </div>  <!---->
@@ -239,15 +283,150 @@ Pembuatan Nota Permintaan Pembelian
     <!-- /.content -->
 </form>
 
-
 <script type="text/javascript">
-
     var tambahCombo = "";
     var totalTambah = 0;
+    $('#TotalHargaKeranjang').val(0);
+
+ 
+  
+
+
     
+     
+    $(document).ready(function(){
+         
+        //perusahaan
+        var idPerusahaan =$("#perusahaanID option:selected").val();
+        //alert(idPerusahaan); die;
+        var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+        var optionnya = '';
+        var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
+        optionnya += '<option value="pilih" selected>--Permintaan Order--</option>\n';
+        $.each(dataPurchaseRequest, function( key, value ){
+            if(value.cidp.toString() == idPerusahaan.toString()){
+                optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';                
+            }
+            //else{
+                //optionnya += '<option id="preqID" idPr='+ value.idPerusahaan +' value="'+value.idPerusahaan+'">'+value.name+'</option>\n';      
+            //}
+        });                
+        $("#pReq").empty();
+        $("#pReq").append(optionnya);
+        $('.selectpicker').selectpicker('refresh');//lek gini bisa benere cobak en
+        //------------------------
+  
+        $("#perusahaanID").on("change",function(){
+                
+            var id = this.value;
+            //alert(id);
+            var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+            //alert(singkatan);
+            var optionnya = '';
+        
+            var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="pilih" selected>--Permintaan Order--</option>\n';
+            $.each(dataPurchaseRequest, function( key, value ){
+               
+                if(value.cidp.toString() == id.toString()){
+                    //alert('masuk'); 
+                     alert("masuk cek");
+                    optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';      
+                    //alert(optionnya);         
+                }
+            });
+            
+
+                                
+            $("#pReq").empty();
+            $("#pReq").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+
+        $("#pReq").change(function() {
+            alert(this.value);
+            var id = this.value;
+            var optionnya = '';
+            //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
+            var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            alert('masuk sini'); //ini chhec
+            optionnya += '<option value="" selected>--Pilih barang--</option>\n';
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                alert(value.ItemName);//ini chhec 
+                if(value.idPurchaseRequest.toString() == id.toString()){
+                    //alert(value.ItemName);//ini chhec
+                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
+                }
+            });
+            //alert(optionnya);
+            
+                                
+            $("#barang").empty();
+            $("#barang").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+          
+        $("#barang").on("change",function(){
+            //alert(this.value);
+            var id = this.value;
+            var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.id.toString() == id.toString()){
+                    var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    //alert(maxAngka);
+                    $("#jumlahBarang").attr({
+                        "max" : maxAngka,        
+                        "min" : 1,
+                        "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                        "value" : "",   
+                    }); 
+                }
+            });
+            
+        });
+
+    });
+
+     $('body').on('click','#copyKe', function(){
+        //alert($(this).index('.copyKe'));
+        var i = $(this).index('.copyKe');
+        var idBarang = $('.cekId:eq('+i+')').val();
+        //var namaBarang = $('.cekJumlah:eq('+i+')').val();
+        var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+        var hargaBarang = $('.cekHarga:eq('+i+')').val();
+        var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
+        var diskonBarang = $('.cekDiskon:eq('+i+')').val();
+        
+        $("#barang").val(idBarang);
+        $("#jumlahBarang").val(jumlahBarang);
+        $("#hargaBarang").val(hargaBarang);
+        $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
+        $("#diskonBarang").val(diskonBarang);
+        $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
+        $("#keteranganBarang").val(keteranganBarang);
+
+    });
+
+
+
     $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
-        //alert($('.cekId').length);
+        //alert($('.cekId').length);cekJumlah
+        var jumlah = $(this).parent().parent().children("#hiddenDiv").children(".cekJumlah").val();
+        //alert(jumlah);
+        $("#jumlahBarang").attr({
+            "max" : parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah),        
+            "min" : 1,
+            "placeholder" : "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",       
+            "value" : "",         
+        }); 
         $(this).parent().parent().remove();
         totalTambah -= 1;
         $('#totalBarangnya').val(totalTambah);
@@ -255,79 +434,90 @@ Pembuatan Nota Permintaan Pembelian
     });
 
     $('body').on('click','#tambahKeranjang', function(){
-        var idBarang = $("#barang").val();
-        var namaBarang = $("#barang option:selected").html();
-        var jumlahBarang = $("#jumlahBarang").val();
-        var hargaBarang = $("#hargaBarang").val();
-        var keteranganBarang = $("#keteranganBarang").val();
-        var totalHarga= 0;
-        //var totalHarga = jumlahBarang * hargaBarang;
-        /*alert(totalHarga);
-        alert(jumlahBarang);
-        alert(hargaBarang);*/
-        //die;
+        var idPurchaseDetail = $("#barang").val();//
+        var namaBarang = $("#barang option:selected").html();//
+        var jumlahBarang = parseFloat($("#jumlahBarang").val());//
+        //alert(jumlahBarang);
+        var hargaBarang = parseFloat($("#hargaBarang").val());//
+        //alert(hargaBarang);
+        var diskonBarang = parseFloat($("#diskonBarang").val());//
+        //alert(diskonBarang);
+        //alert(jumlahBarang);
+        var keteranganBarang = $("#keteranganBarang").val();//
+        var taxPercent = parseFloat($("#tax option:selected").attr("taxPercent"));
+        var taxId = $("#tax option:selected").val();
+        var idBarang = $("#barang option:selected").attr("idPr");
+        //alert(taxPercent);
         
         var indexSama = null;
         for(let i=0;i<$('.cekId').length;i++){
             if($('.cekId:eq('+i+')').val() == idBarang){
                 if($('.cekHarga:eq('+i+')').val() == hargaBarang){
-                    indexSama = i;
+                    if($('.cekTax:eq('+i+')').val() == taxId){
+                        if($('.cekDiskon:eq('+i+')').val() == diskonBarang){
+                            if($('.cekPrd:eq('+i+')').val() == idPurchaseDetail){
+                                indexSama = i;
+                            }
+                        }
+                    }
                 }
             }
         }
-
-        if(idBarang == "" || namaBarang == "--Pilih barang--" || jumlahBarang == 0 || jumlahBarang == "" || hargaBarang == 0 || hargaBarang == "" || keteranganBarang == ""){
-            alert('Harap lengkapi data Barang untuk menambahkan ke keranjang');
+        if(idBarang == "" || namaBarang == "--Pilih barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || hargaBarang == 0 || hargaBarang == "" || keteranganBarang == "" || parseFloat(jumlahBarang) > parseFloat($("#jumlahBarang").attr("max")) || taxId == ""){
+            alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
         }
         //alert(jumlahBarang + hargaBarang+ keteranganBarang);
         else if(indexSama != null){
             var jumlah = $('.cekJumlah:eq('+indexSama+')').val();
-            $('.cekJumlah:eq('+indexSama+')').val(parseInt(jumlah) + parseInt(jumlahBarang))
+            $('.cekJumlah:eq('+indexSama+')').val(parseFloat(jumlah) + parseFloat(jumlahBarang))
             var keterangan = $('.cekKeterangan:eq('+indexSama+')').val();
             $('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang)
             
             $('.keteranganVal:eq('+indexSama+')').html($('.cekKeterangan:eq('+indexSama+')').val());
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
-            $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ($('.cekJumlah:eq('+indexSama+')').val()* $("#hargaBarang").val())+',-');
+
+            $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ((parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * (parseFloat(hargaBarang)-parseFloat(diskonBarang)))* (100.0+taxPercent) / 100.0)+',-');
+
+            var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
+            //alert(maxAngka);
+            $("#jumlahBarang").attr({
+                "max" : maxAngka,        
+                "min" : 0,
+                "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                "value" : "",         
+            }); 
+
+
+
             
-            //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
             var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
-            //var totalHargaKeranjang = $('#TotalHargaKeranjang').val(parseInt(hargaBarang * jumlahBarang));
-            //totalHargaKeranjang += parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * parseFloat($("#hargaBarang").val());
-            //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
-            //alert(totalHargaKeranjang);
-            //alert((totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-            //$('#TotalHargaKeranjang').html(formatRupiah(totalHargaKeranjang));
-            //$('#TotalHargaKeranjang').val(totalHargaKeranjang);
-            
-            totalHarga=hargaBarang * jumlahBarang;
-            $('#TotalHargaKeranjang').attr('jumlahHarga',parseInt(totalHargaKeranjang)+parseInt(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp. " +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
-
-           
-
-            //$('#TotalHargaKeranjang').val(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang));
-            //$('#TotalHargaKeranjang').html(formatRupiah(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang)));
-            
-
-            
+        
+            totalHarga= ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
 
         }
         else{
             var htmlKeranjang = "";
             htmlKeranjang += '<li class="list-group-item d-flex justify-content-between lh-condensed">\n';
-            htmlKeranjang += '<div>\n';
+            htmlKeranjang += '<div id="hiddenDiv">\n';
             htmlKeranjang += '<input type="hidden" class="cekId" name="itemId[]" value="'+idBarang+'">\n';
-            htmlKeranjang += '<input type="hidden" class="cekJumlah" name="itemTotal[]" value="'+jumlahBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemTotal[]" value="'+jumlahBarang+'">\n';
             htmlKeranjang += '<input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="'+keteranganBarang+'">\n';
             htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="'+hargaBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekDiskon" name="itemDiskon[]" value="'+diskonBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekTax" name="itemTax[]" value="'+taxId+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekTaxValue" name="itemTaxValue[]" value="'+taxPercent+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekPrd" name="prdID[]" value="'+idPurchaseDetail+'">\n';
             htmlKeranjang += '<h6 class="my-0">'+ namaBarang +'<small class="jumlahVal" value="'+jumlahBarang+'">('+jumlahBarang+')</small> </h6>\n';
             htmlKeranjang += '<small class="text-muted keteranganVal" value="'+keteranganBarang+'">'+keteranganBarang+'</small><br>\n';
+            htmlKeranjang += '<small class="text-muted diskonVal" value="'+diskonBarang+'">Diskon/Item: Rp. '+diskonBarang+',--</small><br>\n';
+            htmlKeranjang += '<small class="text-muted taxVal" value="'+taxPercent+'">Pajak: '+taxPercent+'%</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="'+hargaBarang * jumlahBarang+'">Rp. '+hargaBarang * jumlahBarang+',-</strong>\n';
-            htmlKeranjang += '<button class="btn btn-primary" type="button" id="copyKe">\n';
+            htmlKeranjang += '<strong class="hargaVal" value="'+ ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0+'">Rp. '+ ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0+',-</strong>\n';
+            htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
             htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
             htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
             htmlKeranjang += '</svg>\n';
@@ -341,51 +531,36 @@ Pembuatan Nota Permintaan Pembelian
             htmlKeranjang += '</li>\n';
 
             $('#keranjang').append(htmlKeranjang);
-            var totalBarangnya = $('#totalBarangnya').attr('totalKeranjang');
-            alert(totalBarangnya);
             totalTambah += 1
             $('#totalBarangnya').val(totalTambah);
-            $('#totalBarangnya').attr('totalKeranjang',parseInt(totalBarangnya)+parseInt(totalTambah));
-            $('#totalBarangnya').html($('#totalBarangnya').attr('totalKeranjang'));
+            $('#totalBarangnya').html(totalTambah);
+
+            var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
+            //alert(maxAngka);
+            $("#jumlahBarang").attr({
+                "max" : maxAngka,        
+                "min" : 0,
+                "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                "value" : "",         
+            }); 
+
+            /*var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').val());
+            alert(totalHargaKeranjang);
+            totalHargaKeranjang += ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+            alert(totalHargaKeranjang);
+            $('#TotalHargaKeranjang').html(totalHargaKeranjang);
+            $('#TotalHargaKeranjang').val(totalHargaKeranjang);*/
 
             var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
-            /*if(totalHargaKeranjang == "" || totalHargaKeranjang == NaN || totalHargaKeranjang == 0){
-            alert(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-              //totalHargaKeranjang = totalHargaKeranjang + parseFloat(hargaBarang * jumlahBarang);
-              $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
-              $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-            }
-            else{
-            alert("masuk siini di else  "+(parseFloat(totalHargaKeranjang)) + parseFloat(hargaBarang * jumlahBarang));
-              //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
-              $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
-              $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-            }*/
-            totalHarga=hargaBarang * jumlahBarang;
-            $('#TotalHargaKeranjang').attr('jumlahHarga',parseInt(totalHargaKeranjang)+parseInt(totalHarga));
-           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
-            
-            
-        }
-
-    });
-
-    $('body').on('click','#copyKe', function(){
-        //alert($(this).index('.copyKe'));
-        var i = $(this).index('#copyKe');
-        var idBarang = $('.cekId:eq('+i+')').val();
-        //var namaBarang = $('.cekJumlah:eq('+i+')').val();
-        var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
-        var hargaBarang = $('.cekHarga:eq('+i+')').val();
-        var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         
-        $("#barang").val(idBarang);
-        $("#jumlahBarang").val(jumlahBarang);
-        $("#hargaBarang").val(hargaBarang);
-        $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
-        $("#keteranganBarang").val(keteranganBarang);
+            totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+        }
+        
 
     });
+
 
     $("body").on("click", "#tambah", function () {  
         totalTambah++;
@@ -402,9 +577,13 @@ Pembuatan Nota Permintaan Pembelian
         tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';
         tambahCombo += '<br id="br">\n';
         tambahCombo +='</div>\n';
+        //tambahCombo +='<div class="form-group" id="total'+totalTambah+'">\n';
+        //tambahCombo +='<label for="title">Total</label>\n';
+        //tambahCombo +='<input require type="number" name="total[]" class="form-control">\n';
+        //tambahCombo +='</div>\n';
         tambahCombo +='<div class="form-group" id="harga'+totalTambah+'">\n';
         tambahCombo +='<label for="title">Harga</label>\n';
-        tambahCombo +='<input require type="number" step=".01" id="tanpa-rupiah" name="harga[]" class="form-control">\n';
+        tambahCombo +='<input require type="number" name="harga[]" class="form-control">\n';
         tambahCombo +='</div>\n';
         tambahCombo +='<div class="form-group" id="ket'+totalTambah+'">\n';
         tambahCombo +='<label for="title">Keterangan</label>\n';
@@ -415,7 +594,6 @@ Pembuatan Nota Permintaan Pembelian
         $('#totalRequest').append(tambahCombo);
         tambahCombo = "";
     });
-
     $("body").on("click", "#kurang", function () {
         //$('#barang'+ totalTambah).remove();//i
         //$('#jml'+ totalTambah).remove();//i
@@ -423,22 +601,30 @@ Pembuatan Nota Permintaan Pembelian
         $('#tmbhBarangJasa'+ totalTambah).remove();//i
         if(totalTambah > 0){
             totalTambah--;
-            
         }  
     });
-         /* Tanpa Rupiah */
+
+    /* Tanpa Rupiah */
     var tanpa_rupiah = document.getElementById('tanpa-rupiah');
     tanpa_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.replace('.','')); //aku nambah dewe buat simpen di hidden
+        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        //alert(this.value.toString().replace(/\./g, ''));
         tanpa_rupiah.value = formatRupiah(this.value);
+    });
+
+    var tanpa_rupiah_diskon = document.getElementById('tanpa-rupiah-diskon');
+    tanpa_rupiah_diskon.addEventListener('keyup', function(e)
+    {
+        $('#diskonBarang').val(this.value.toString().replace(/\./g, ''));
+        tanpa_rupiah_diskon.value = formatRupiah(this.value);
     });
 
     /* Dengan Rupiah */
     var dengan_rupiah = document.getElementById('dengan-rupiah');
     dengan_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.replace('.','')); //aku nambah dewe buat simpen di hidden
+        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
         dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
     });
 
@@ -459,7 +645,47 @@ Pembuatan Nota Permintaan Pembelian
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
-</script>
+
+    $(document).ready(function(){
+        $('input[name=jenis0]').click(function(){
+
+            if($("#barang").is(':checked'))
+            {
+              $("#tmbhBarang").show();
+              $("#total").show();
+              $("#ket").hide();
+               //$("#buttonBarang").show();
+            }
+            else
+            {
+              $("#ket").show();
+              $("#tmbhBarang").hide();
+              //$("#buttonBarang").hide();
+            }
+        });
+    });
+    
+    /*$('#myForm input').on('change', function() {
+           $("input[name=jenis]").change(function(){
+
+            if($("#barang").is(':checked'))
+            {
+              $("#tmbhBarang").show();
+              $("#total").show();
+               $("#ket").hide();
+               //$("#buttonBarang").show();
+            }
+            else
+            {
+              $("#ket").show();
+              $("#tmbhBarang").hide();
+              //$("#buttonBarang").hide();
+            }
+        });
+      //alert($('input[name=jenis]:checked', '#myForm').val()); 
+    });*/
+
+</script>  
 @endsection   
 
 

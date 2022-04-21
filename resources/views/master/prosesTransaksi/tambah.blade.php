@@ -19,29 +19,32 @@ Tambah Proses Transaksi
 @section('content')
 <div class="container-fluid">
 
-<!-- Page Heading -->
-<div class="card card-primary">
-    <!-- form start -->
-    <form action="{{route('prosesTransaksi.store')}}" method="POST" >
-        @csrf
-        <div class="card-body">
+    <!-- Page Heading -->
+    <div class="card card-primary">
+        <!-- form start -->
+        <form action="{{route('prosesTransaksi.store')}}" method="POST" >
+            @csrf
+            <div class="card-body">
 
-            <div class="form-group">
-                <label for="title">Nama</label>
-                <input required type="text" name="name" maxlength="20" class="form-control" value="{{old('name','')}}">
-            </div>
-            <div class="form-group">
-                <label for="title">Deskripsi</label>
-                <input required type="text" name="deskripsi" maxlength="100" class="form-control" value="{{old('deskripsi','')}}" >
-            </div>
-            
+                <div class="form-group">
+                    <label for="title">Nama</label>
+                    <input required type="text" name="name" maxlength="20" class="form-control" value="{{old('name','')}}">
+                </div>
+                <div class="form-group">
+                    <label for="title">Deskripsi</label>
+                    <input required type="text" name="deskripsi" maxlength="100" class="form-control" value="{{old('deskripsi','')}}" >
+                </div>
+                
 
-        </div>
-        <!-- /.card-body -->
-        <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
 </div>
-
 @endsection
+
+

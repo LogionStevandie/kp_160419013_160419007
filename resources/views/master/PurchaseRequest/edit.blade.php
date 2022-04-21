@@ -129,7 +129,7 @@ Pembuatan Nota Permintaan Pembelian
                              
                                   <div class="form-group">
                                       <label>Barang</label>
-                                      <select class="form-control " id="barang" data-live-search="true" data-show-subtext="true">
+                                      <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
                                           <option value="pilih">--Pilih barang--</option>
                                           @foreach($dataBarang as $key => $data)
                                           <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>

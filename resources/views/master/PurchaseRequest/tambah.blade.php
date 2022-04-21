@@ -17,6 +17,13 @@ Pembuatan Nota Permintaan Pembelian
 @endsection
 
 @section('content')
+<div class="container-fluid">
+
+    <!-- Page Heading -->
+    <div class="card card-primary">
+        <!-- form start -->
+     
+ 
 <form action="{{route('purchaseRequest.store')}}" method="POST" >
   @csrf
     <section class="content">
@@ -119,7 +126,7 @@ Pembuatan Nota Permintaan Pembelian
                              
                                   <div class="form-group">
                                       <label>Barang</label>
-                                      <select class="form-control " id="barang" data-live-search="true" data-show-subtext="true">
+                                      <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
                                           <option value="pilih">--Pilih barang--</option>
                                           @foreach($dataBarang as $key => $data)
                                           <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
@@ -217,7 +224,9 @@ Pembuatan Nota Permintaan Pembelian
     </section>
     <!-- /.content -->
 </form>
+</div>
 
+</div>
 
 <script type="text/javascript">
 
