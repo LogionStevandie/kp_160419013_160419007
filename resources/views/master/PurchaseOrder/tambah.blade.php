@@ -158,7 +158,7 @@ Pembuatan Nota Purchase Order
                                 </div>
 
                                     <div class="form-group"  id='tax'>
-                                        <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
+                                        <select class="form-control select2" style="width: 100%;"name="tax" id="tax">
                                             <option value="pilih">--Pajak--</option>
                                             @foreach($dataTax as $key => $data)
                                             <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
@@ -355,9 +355,12 @@ Pembuatan Nota Purchase Order
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+        var pajak = $('.cekTax:eq('+i+')').val();//cekTaxValue
+
         var hargaBarang = $('.cekHarga:eq('+i+')').val();
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         var diskonBarang = $('.cekDiskon:eq('+i+')').val();
+
         
         $("#barang").val(idBarang);
         $("#jumlahBarang").val(jumlahBarang);
@@ -366,7 +369,9 @@ Pembuatan Nota Purchase Order
         $("#diskonBarang").val(diskonBarang);
         $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
         $("#keteranganBarang").val(keteranganBarang);
-
+        $("#tax").val(pajak).change();
+        $("#barang").val(idBarang).change();
+        
     });
 
 

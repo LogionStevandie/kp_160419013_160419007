@@ -228,31 +228,57 @@ Edit Nota Purchase Order
                                       <input type="hidden" name="tanggalAkhir" value="{{old('tanggalAkhirVal')}}">-->
                                       <h4 class="d-flex justify-content-between align-items-center mb-3">
                                           <span class="text-muted">Keranjang</span>
-                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value="0">0</span>
+                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value="0"totalKeranjang="{{count($dataDetail)}}">{{count($dataDetail)}}</span>
                                       </h4>
                                       <ul class="list-group mb-3 sticky-top" id="keranjang">
-                                          <!--<li class="list-group-item d-flex justify-content-between lh-condensed">
+                                           @foreach($dataDetail as $data)
+                                                
+                                         <li class="list-group-item d-flex justify-content-between lh-condensed">
                                               <div>
-                                                  <input type="hidden" name="itemId[]" value="">
-                                                  <input type="hidden" name="itemTotal[]" value="">
-                                                  <input type="hidden" name="itemKeterangan[]" value="">
-                                                  <input type="hidden" name="itemHarga[]" value="">
-                                                  <h6 class="my-0">Product name <small>(6)</small> </h6> 
-                                                  <small class="text-muted">Keterangan</small><br>                      
-                                              </div>
-                                              <div>
-                                                  <strong>$20</strong>
-                                                  <button class="btn btn-danger" type="button" id="hapusKeranjang">
-                                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
-                                                      </svg>
-                                                  </button>
-                                              </div>
-                                          </li>     -->             
+                                                  <input type="hidden" name="itemId[]" value="{{$data->idItem}}">
+                                                  <input type="hidden" name="itemTotal[]" value="{{$data->jumlah}}">
+                                                  <input type="hidden" name="itemKeterangan[]" value="{{$data->keterangan}}">
+                                                  <input type="hidden" name="itemHarga[]" value="{{$data->harga}}">
+                                                  <input type="hidden" class="cekDiskon" name="itemDiskon[]" value="{{$data->diskon}}">
+                                                  <input type="hidden" class="cekTax" name="itemTax[]" value="{{$data->idTax}}">
+                                                  @foreach($dataTax as $tax)
+                                                  @if($tax->TaxID==$data->idTax)
+                                                  <input type="hidden" class="cekTaxValue" name="itemTaxValue[]" value="{{$tax->Name}}">
+                                                  <input type="hidden" class="cekPrd" name="prdID[]" value="{{$data->idPurchaseRequestDetail}}">
+                                                  @foreach($dataBarang as $item)
+                                                    @if($item->ItemID == $data->idItem)
+                                                  <h6 class="my-0">{{$item->ItemName}}<small class="hargaVal">({{$data->jumlah}})</small> </h6> 
+                                                    @endif    
+                                                    @endforeach 
+                                                  <small class="text-muted keteranganVal keteranganBarang">{{$data->keterangan}}</small><br>  
+                                                  <small class="text-muted diskonVal diskonBarang">Diskon/Item: Rp. {{$data->diskon}}</small><br> 
+                                                  <small class="text-muted taxVal taxPercent">Pajak: {{$tax->Name}}</small><br> 
+                                              
+                                                                 
+                                               </div>
+                                            <div>
+                                            
+                                                  <strong>Rp.{{(($data->harga-$data->diskon) * $data->jumlah) * (100+$tax->TaxPercent) / 100}},-</strong>
+                                                   @endif
+                                                  @endforeach 
+                                                <button class="btn btn-primary copyKe" type="button" id="copyKe">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                                    </svg>
+                                                </button>
+                                                <button class="btn btn-danger" type="button" id="hapusKeranjang">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                          </li>       
+                                                   
+                                    @endforeach           
                                       </ul>
                                       <li class="list-group-item d-flex justify-content-between">
                                               <span>Total (Rupiah)</span>
-                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga=0>0</strong>
+                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga={{$purchaseOrder->totalHarga}}>Rp. {{$purchaseOrder->totalHarga}},-</strong>
                                       </li> 
                                     <!-- /.form group -->
                                   </div>  <!---->
@@ -400,9 +426,12 @@ Edit Nota Purchase Order
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+        var pajak = $('.cekTax:eq('+i+')').val();//cekTaxValue
+
         var hargaBarang = $('.cekHarga:eq('+i+')').val();
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         var diskonBarang = $('.cekDiskon:eq('+i+')').val();
+
         
         $("#barang").val(idBarang);
         $("#jumlahBarang").val(jumlahBarang);
@@ -411,6 +440,8 @@ Edit Nota Purchase Order
         $("#diskonBarang").val(diskonBarang);
         $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
         $("#keteranganBarang").val(keteranganBarang);
+        $("#tax").val(pajak).change();
+        $("#barang").val(idBarang).change();
 
     });
 
@@ -577,10 +608,6 @@ Edit Nota Purchase Order
         tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';
         tambahCombo += '<br id="br">\n';
         tambahCombo +='</div>\n';
-        //tambahCombo +='<div class="form-group" id="total'+totalTambah+'">\n';
-        //tambahCombo +='<label for="title">Total</label>\n';
-        //tambahCombo +='<input require type="number" name="total[]" class="form-control">\n';
-        //tambahCombo +='</div>\n';
         tambahCombo +='<div class="form-group" id="harga'+totalTambah+'">\n';
         tambahCombo +='<label for="title">Harga</label>\n';
         tambahCombo +='<input require type="number" name="harga[]" class="form-control">\n';

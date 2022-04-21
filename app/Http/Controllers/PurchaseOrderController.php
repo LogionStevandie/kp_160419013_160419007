@@ -262,10 +262,10 @@ class PurchaseOrderController extends Controller
         //
         $user = Auth::user();
         
-        $dataSupplier = DB::table('MSupplier')
+        $dataSupplier = DB::table('MSupplier')//
             ->get();
 
-        $dataPayment = DB::table('PaymentTerms')
+        $dataPayment = DB::table('PaymentTerms')//
             ->select('PaymentTerms.*', 'Payment.Name as PaymentName', 'Payment.Deskripsi as PaymentDeskripsi')
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->get();
@@ -295,7 +295,7 @@ class PurchaseOrderController extends Controller
         $dataTax=DB::table('Tax')
             ->get();
 
-        $dataPerusahaan =DB::table('MPerusahaan')
+        $dataPerusahaan =DB::table('MPerusahaan')//
             ->get();
 
         $dataPurchaseRequest = DB::table('purchase_request')

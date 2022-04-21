@@ -365,7 +365,22 @@ Pembuatan Nota Permintaan Pembelian
         var hargaBarang = $('.cekHarga:eq('+i+')').val();
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         
-        $("#barang").val(idBarang);
+        //document.getElementById("barang").value = idBarang;
+       /* var optionnya = '';
+        var dataBarang = <?php echo json_encode($dataBarang); ?>;
+        $.each(dataBarang, function( key, value ){
+            if(value.ItemID.toString() == idBarang.toString()){
+               optionnya += '<option selected id="namaBarang" value="'+value.ItemID+'">'+value.ItemName+'<nbsp>('+value.unitName+')</option>\n';          
+            }
+            else{
+                optionnya += '<option id="namaBarang" value="'+value.ItemID+'">'+value.ItemName+'<nbsp>('+value.unitName+')</option>\n';      
+                     
+            }
+        });*/
+        //$("#barang").empty();
+        $("#barang").val(idBarang).change();
+        $('.selectpicker').selectpicker('refresh');
+
         $("#jumlahBarang").val(jumlahBarang);
         $("#hargaBarang").val(hargaBarang);
         $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
