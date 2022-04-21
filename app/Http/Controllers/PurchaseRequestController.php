@@ -37,8 +37,8 @@ class PurchaseRequestController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
-            ->paginate(10);
-        //->get();
+            //->paginate(10);
+            ->get();
 
         $getPerusahaan = DB::table('MPerusahaan')
                     ->where('UserIDManager1', $user->id)

@@ -580,10 +580,31 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="pages/kanban.html" class="nav-link">
+            <a href="{{route('purchaseOrder.index')}}" class="nav-link">
               <i class="nav-icon fas fa-columns"></i>
               <p>
                 Nota Purchase Order
+              </p>
+            </a>
+          </li>
+          <!-- END Permintaan-->
+
+          
+          <!--Permintaan-->
+          <li class="nav-header">PERSETUJUAN PEMBELIAN</li>
+          <li class="nav-item">
+            <a href="{{route('approvedPurchaseRequest.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Permintaan Pembelian
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="pages/kanban.html" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Purchase Order
               </p>
             </a>
           </li>
