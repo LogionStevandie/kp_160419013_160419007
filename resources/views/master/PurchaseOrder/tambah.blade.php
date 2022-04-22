@@ -41,13 +41,13 @@ Pembuatan Nota Purchase Order
                         <div class="row">
                               <div class="col-md-6 mb-3"> 
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" readonly required="">
+                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Perusahaan</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="perusahaanID" name="perusahaan">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="perusahaanID" name="perusahaan">
                                       <option value="">
                                             --Pilih Perusahaan--
                                         </option>
@@ -68,7 +68,7 @@ Pembuatan Nota Purchase Order
                               <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Cara Pembayaran</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="paymentTerms">
                                       <option value="">
                                           --Pilih Cara Pembayaran--
                                       </option>
@@ -84,7 +84,7 @@ Pembuatan Nota Purchase Order
                               <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                   <label for="lastName">Supplier</label> 
-                                  <select name="supplier" class="form-control select2" style="width: 100%;">
+                                  <select name="supplier" class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;">
                                       <option value="">
                                           --Pilih Supplier--
                                       </option>
@@ -131,7 +131,7 @@ Pembuatan Nota Purchase Order
                                     <h3 class="card-title">Pemilihan Barang</h3>
                                   </div>
                                   <div class="card-body">
-                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms" id="pReq">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="paymentTerms" id="pReq">
                                             <option value="pilih">--Permintaan Order--</option>
                                             <!--@foreach($dataPurchaseRequest as $key => $data)
                                             <option id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
@@ -147,7 +147,7 @@ Pembuatan Nota Purchase Order
                                         <option id="namaTag" value="{{$data->ItemTagID}}"{{$data->Name == $data->ItemTagID? 'selected' :'' }}>{{$data->Name}}</option>
                                         @endforeach
                                     </select>-->
-                                    <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
                                   
                                         <option value="pilih">--Pilih barang--</option>
                                         <!--@foreach($dataBarang as $key => $data)
@@ -158,7 +158,7 @@ Pembuatan Nota Purchase Order
                                 </div>
 
                                     <div class="form-group"  id='tax'>
-                                        <select class="form-control select2" style="width: 100%;"name="tax" id="tax">
+                                        <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="tax" id="tax">
                                             <option value="pilih">--Pajak--</option>
                                             @foreach($dataTax as $key => $data)
                                             <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
@@ -351,7 +351,8 @@ Pembuatan Nota Purchase Order
 
      $('body').on('click','#copyKe', function(){
         //alert($(this).index('.copyKe'));
-        var i = $(this).index('.copyKe');
+        var i = $(this).index('#copyKe');
+        
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
@@ -371,7 +372,9 @@ Pembuatan Nota Purchase Order
         $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
         $("#keteranganBarang").val(keteranganBarang);
         $("#tax").val(pajak).change();
-        $("#barang").val(idBarang).change();
+        //$("#barang").val(idBarang).change();
+
+        $('.selectpicker').selectpicker('refresh');
         
     });
 

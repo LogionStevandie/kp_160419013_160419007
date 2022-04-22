@@ -120,11 +120,16 @@ class ApprovedPRController extends Controller
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->get();
         //dd($approvedPurchaseRequest['id']);
-        return view('master.approved.PurchaseRequest.approve',[
-            'purchaseRequest'=>$approvedPurchaseRequest,
-            'dataGudang'=>$dataGudang,
-            'prd'=>$prd,
-        ]);
+        if($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0){
+            return view('master.approved.PurchaseRequest.approve',[
+                'purchaseRequest'=>$approvedPurchaseRequest,
+                'dataGudang'=>$dataGudang,
+                'prd'=>$prd,
+            ]);
+        }
+        else{
+            return redirect()->route('approvedPurchaseRequest.index')->with('status','Failed');    
+        }
     }
 
     /**

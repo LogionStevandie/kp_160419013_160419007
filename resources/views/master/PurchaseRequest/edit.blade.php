@@ -47,7 +47,7 @@ Pembuatan Nota Permintaan Pembelian
                               </div>
                               <div class="col-md-6 mb-3">
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{old('created_on',$purchaseRequest->created_on)}}" readonly required="" name="tanggalDibuat">
+                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{old('created_on',$purchaseRequest->tanggalDibuat)}}" required="" name="tanggalDibuat">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
 
@@ -69,7 +69,7 @@ Pembuatan Nota Permintaan Pembelian
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label>Pilih Gudang</label>
-                                    <select class="form-control select2" style="width: 100%;" name="gudang" id="gudang">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="gudang" id="gudang">
                                        @foreach($dataGudang as $key => $data)
                                             @if($data->MGudangID==$purchaseRequest->MGudangID)
                                             <option selected name="idGudang" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }} >{{$data->cname}} </option>
@@ -84,7 +84,7 @@ Pembuatan Nota Permintaan Pembelian
 
                                <div class="col-md-6 mb-3">
                                   <label for="lastName">Jenis Permintaan</label> 
-                                   <select class="form-control select2" style="width: 100%;" name="jenisProses">
+                                   <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="jenisProses">
                                        @if($purchaseRequest->jenisProses==1)
                                         <option value="1" selected>Pembelian Melalui Pusat</option>
                                         <option value="0">Pembelian Melalui Lokal</option>
@@ -373,6 +373,7 @@ Pembuatan Nota Permintaan Pembelian
     $('body').on('click','#copyKe', function(){
         //alert($(this).index('.copyKe'));
         var i = $(this).index('#copyKe');
+        //alert(i);
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();

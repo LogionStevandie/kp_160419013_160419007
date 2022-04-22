@@ -31,7 +31,7 @@ class SuratJalanController extends Controller
             ->where('surat_jalan.hapus',0)
             ->paginate(10);
 
-        return view('nota.suratJalan.index',[
+        return view('master.note.suratJalan.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);
@@ -87,7 +87,7 @@ class SuratJalanController extends Controller
         $dataTag = DB::table('ItemTag')
             ->get();
         
-        return view('nota.suratJalan.tambah',[
+        return view('master.note.suratJalan.tambah',[
             'dataGudang' => $dataGudang,
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
             'dataPurchaseRequest' => $dataPurchaseRequest,
@@ -216,7 +216,7 @@ class SuratJalanController extends Controller
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
             ->get();
-        return view('nota.suratJalan.detail',[
+        return view('master.note.suratJalan.detail',[
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
             'dataTag' => $dataTag,
@@ -278,7 +278,7 @@ class SuratJalanController extends Controller
         $dataTag = DB::table('ItemTag')
             ->get();
         
-        return view('nota.suratJalan.edit',[
+        return view('master.note.suratJalan.edit',[
             'dataGudang' => $dataGudang,
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
             'dataPurchaseRequest' => $dataPurchaseRequest,
@@ -370,7 +370,7 @@ class SuratJalanController extends Controller
             ->where('surat_jalan.hapus',0)
             ->where('surat_jalan.name','like','%'.$name.'%')
             ->paginate(10);
-        return view('note.suratJalan.index',[
+        return view('master.note.suratJalan.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);
@@ -392,7 +392,7 @@ class SuratJalanController extends Controller
             ->where('surat_jalan.hapus',0)
             ->where('surat_jalan.tanggalDibuat',[$date[0], $date[1]])
             ->paginate(10);
-        return view('note.suratJalan.index',[
+        return view('master.note.suratJalan.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);

@@ -99,6 +99,11 @@ class ApprovedPOController extends Controller
         //
         $dataPerusahaan = DB::table('MPerusahaan')
             ->get();
+        $dataBarang = DB::table('Item')
+        ->select('Item.*', 'Unit.Name as unitName')
+        ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+        ->where('Item.Hapus',0)
+        ->get();
         $pod = DB::table('purchase_order_detail')
             ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
             ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
@@ -106,11 +111,18 @@ class ApprovedPOController extends Controller
             ->join('Tax','purchase_order_detail.idTax','=','Tax.TaxID')
             ->get();
         //dd($approvedPurchaseRequest['id']);
-        return view('master.approved.PurchaseOrder.approve',[
-            'purchaseOrder'=>$approvedPurchaseOrder,
-            'dataPerusahaan'=>$dataPerusahaan,
-            'pod'=>$pod,
-        ]);
+        if($approvedPurchaseOrder->approved == 0){
+            return view('master.approved.PurchaseOrder.approve',[
+                'purchaseOrder'=>$approvedPurchaseOrder,
+                'dataPerusahaan'=>$dataPerusahaan,
+                'dataBarang'=>$dataBarang,
+                'pod'=>$pod,
+            ]);
+        }
+        else{
+            return redirect()->route('approvedPurchaseOrder.index')->with('status','Failed');
+        }
+        
     }
 
     /**

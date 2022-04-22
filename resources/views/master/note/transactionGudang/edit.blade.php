@@ -47,7 +47,7 @@ Edit Nota Purchase Order
                               </div>
                               <div class="col-md-6 mb-3"> 
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input name="tanggalDibuat" type="text" class="form-control" id="lastName" placeholder="" value="{{old('created_on',date('d-m-Y', strtotime($purchaseOrder->created_on)))}}" readonly required="">
+                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{old('created_on',$purchaseOrder->tanggalDibuat)}}" required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
 
@@ -59,7 +59,7 @@ Edit Nota Purchase Order
                               <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Cara Pembayaran</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="paymentTerms">
                                       <option value="">
                                           --Pilih Cara Pembayaran--
                                       </option>
@@ -78,7 +78,7 @@ Edit Nota Purchase Order
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Perusahaan</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="perusahaanID" name="perusahaan">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="perusahaanID" name="perusahaan">
                                       <option value="">
                                             --Pilih Perusahaan--
                                       </option>
@@ -103,7 +103,7 @@ Edit Nota Purchase Order
                               <div class="col-md-6 mb-3">
                                 <div class="form-group">
                                   <label for="lastName">Supplier</label> 
-                                  <select name="supplier" class="form-control select2" style="width: 100%;">
+                                  <select name="supplier" class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;">
                                       <option value="">
                                           --Pilih Supplier--
                                       </option>
@@ -151,7 +151,7 @@ Edit Nota Purchase Order
                                     <h3 class="card-title">Pemilihan Barang</h3>
                                   </div>
                                   <div class="card-body">
-                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms" id="pReq">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="selectPRD" id="pReq">
                                             <option value="pilih">--Permintaan Order--</option>
                                             <!--
                                            @foreach($dataPurchaseRequest as $key => $data)
@@ -168,7 +168,7 @@ Edit Nota Purchase Order
                                  <div class="form-group"  id='tmbhBarang'>
                                     <label for="title">Barang</label>
                
-                                    <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
                                   
                                         <option value="pilih">--Pilih barang--</option>
                                         <!--@foreach($dataBarang as $key => $data)
@@ -179,7 +179,7 @@ Edit Nota Purchase Order
                                 </div>
 
                                     <div class="form-group"  id='tax'>
-                                        <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
+                                        <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
                                             <option value="pilih">--Pajak--</option>
                                             @foreach($dataTax as $key => $data)
                                             <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
@@ -236,10 +236,10 @@ Edit Nota Purchase Order
                                          <li class="list-group-item d-flex justify-content-between lh-condensed">
                                               <div>
                                                   <input type="hidden" name="itemId[]" value="{{$data->idItem}}">
-                                                  <input type="hidden" name="itemTotal[]" value="{{$data->jumlah}}">
+                                                  <input type="hidden" name="itemTotal[]" value="{{(int)$data->jumlah}}">
                                                   <input type="hidden" name="itemKeterangan[]" value="{{$data->keterangan}}">
-                                                  <input type="hidden" name="itemHarga[]" value="{{$data->harga}}">
-                                                  <input type="hidden" class="cekDiskon" name="itemDiskon[]" value="{{$data->diskon}}">
+                                                  <input type="hidden" name="itemHarga[]" value="{{(int)$data->harga}}">
+                                                  <input type="hidden" class="cekDiskon" name="itemDiskon[]" value="{{(int)$data->diskon}}">
                                                   <input type="hidden" class="cekTax" name="itemTax[]" value="{{$data->idTax}}">
                                                   @foreach($dataTax as $tax)
                                                   @if($tax->TaxID==$data->idTax)
@@ -247,18 +247,18 @@ Edit Nota Purchase Order
                                                   <input type="hidden" class="cekPrd" name="prdID[]" value="{{$data->idPurchaseRequestDetail}}">
                                                   @foreach($dataBarang as $item)
                                                     @if($item->ItemID == $data->idItem)
-                                                  <h6 class="my-0">{{$item->ItemName}}<small class="hargaVal">({{$data->jumlah}})</small> </h6> 
+                                                  <h6 class="my-0">{{$item->ItemName}}<small class="hargaVal">({{(int)$data->jumlah}})</small> </h6> 
                                                     @endif    
                                                     @endforeach 
                                                   <small class="text-muted keteranganVal keteranganBarang">{{$data->keterangan}}</small><br>  
-                                                  <small class="text-muted diskonVal diskonBarang">Diskon/Item: Rp. {{$data->diskon}}</small><br> 
+                                                  <small class="text-muted diskonVal diskonBarang">Diskon/Item: Rp. {{(int)$data->diskon}}</small><br> 
                                                   <small class="text-muted taxVal taxPercent">Pajak: {{$tax->Name}}</small><br> 
                                               
                                                                  
                                                </div>
                                             <div>
                                             
-                                                  <strong>Rp.{{(($data->harga-$data->diskon) * $data->jumlah) * (100+$tax->TaxPercent) / 100}},-</strong>
+                                                  <strong>Rp.{{(int)(($data->harga-$data->diskon) * $data->jumlah) * (100+$tax->TaxPercent) / 100}},-</strong>
                                                    @endif
                                                   @endforeach 
                                                 <button class="btn btn-primary copyKe" type="button" id="copyKe">
@@ -420,20 +420,22 @@ Edit Nota Purchase Order
 
     });
 
-     $('body').on('click','#copyKe', function(){
+    $('body').on('click','#copyKe', function(){
         //alert($(this).index('.copyKe'));
-        var i = $(this).index('.copyKe');
+        var i = $(this).index('#copyKe');
+        //alert(i);
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
         var pajak = $('.cekTax:eq('+i+')').val();//cekTaxValue
+        var prd = $('.cekPrd:eq('+i+')').val();
 
         var hargaBarang = $('.cekHarga:eq('+i+')').val();
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         var diskonBarang = $('.cekDiskon:eq('+i+')').val();
 
-        
-        $("#barang").val(idBarang);
+        $("#pReq").val(prd).change();
+        $("#barang").val(idBarang).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#hargaBarang").val(hargaBarang);
         $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
@@ -441,8 +443,9 @@ Edit Nota Purchase Order
         $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
         $("#keteranganBarang").val(keteranganBarang);
         $("#tax").val(pajak).change();
-        $("#barang").val(idBarang).change();
 
+        //$('.selectpicker').selectpicker('refresh');
+        
     });
 
 
@@ -562,9 +565,13 @@ Edit Nota Purchase Order
             htmlKeranjang += '</li>\n';
 
             $('#keranjang').append(htmlKeranjang);
+           var totalBarangnya = $('#totalBarangnya').attr('totalKeranjang');
+            alert(totalBarangnya);
             totalTambah += 1
             $('#totalBarangnya').val(totalTambah);
-            $('#totalBarangnya').html(totalTambah);
+            $('#totalBarangnya').attr('totalKeranjang',parseInt(totalBarangnya)+parseInt(totalTambah));
+            $('#totalBarangnya').html($('#totalBarangnya').attr('totalKeranjang'));
+
 
             var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
             //alert(maxAngka);

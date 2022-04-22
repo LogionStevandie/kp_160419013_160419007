@@ -1,36 +1,36 @@
+
 @extends('layouts.home_master')
 <style>
             p {
                 font-family: 'Nunito', sans-serif;
             }
  </style>
+
+@section('judul')
+Edit Supplier
+@endsection
+
+@section('pathjudul')
+<li class="breadcrumb-item"><a href="/home">Home</a></li>
+<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item"><a href="{{route('msupplier.index')}}">Supplier</a></li>
+<li class="breadcrumb-item active">Edit</li>
+@endsection
 @section('content')
 <div class="container-fluid">
 
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Supplier -> Edit</h1>
-</div>
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    Edit Supplier
-                </div>
-                 
-                <div class="card-body">
-            
-                    <form action="{{route('msupplier.update',[$msupplier->SupplierID])}}" method="POST" >
-                      @csrf
-                      @method('PUT')
-
-                     
-                         
-                       <div class="form-group">
+<div class="card card-primary">
+    <!-- form start -->
+      <form action="{{route('msupplier.update',[$msupplier->SupplierID])}}" method="POST" >
+        @csrf
+        @method('PUT')
+        <div class="card-body">
+              <div class="form-group">
+                        <div class="form-group">
+                             <div class="form-group">
                              <label for="title">Info supplier</label>
-                            <select name="infoSupplierID" class="form-control">
+                            <select name="infoSupplierID" class="form-control select2">
                                     <option value="">--Pilih supplier--</option>
                                     @foreach($infoSupplier as $key => $data)
                                     @if($data->InfoSupplierID==$msupplier->InfoSupplierID)
@@ -46,7 +46,7 @@
 
                         <div class="form-group">
                              <label for="title">Mcurrency</label>
-                            <select name="mCurrencyID" class="form-control">
+                            <select name="mCurrencyID" class="form-control select2">
                                     <option value="">--Pilih MCurrency--</option>
                                     @foreach($MCurrency as $key => $data)
                                     @if($data->MCurrencyID== $msupplier->MCurrencyID)
@@ -60,7 +60,7 @@
 
                         <div class="form-group">
                             <label for="title">Tax</label>
-                            <select name="taxID" class="form-control">
+                            <select name="taxID" class="form-control select2">
                                     <option value="">--Pilih Tax--</option>
                                     @foreach($Tax as $key => $data)
                                     @if($data->TaxID==$msupplier->TaxID)
@@ -75,7 +75,7 @@
 
                         <div class="form-group">
                             <label for="title">Payment Terms</label>
-                            <select name="PaymentTermsID" class="form-control">
+                            <select name="PaymentTermsID"class="form-control select2">
                                     <option value="">--Pilih Payment Terms--</option>
                                     @foreach($PaymentTerms as $key => $data)
                                     @if($data->PaymentTermsID==$msupplier->PaymentTermsID)
@@ -91,7 +91,7 @@
 
                          <div class="form-group">
                             <label for="title">COA</label>
-                            <select name="COAID" class="form-control">
+                            <select name="COAID" class="form-control select2">
                                     <option value="">--Pilih COA--</option>
                                     @foreach($COA as $key => $data)
                                     @if($data->COAID==$msupplier->COAID)
@@ -103,8 +103,12 @@
                             </select>
 
                         </div>
-                     
 
+
+
+
+
+                
                         <div class="form-group">
                             <label for="title">Nama Supplier</label>
                            <input require type="text" name="name" class="form-control" 
@@ -181,6 +185,23 @@
                            value="{{old('RekeningBank',$msupplier->RekeningBank)}}" >
                         </div>
 
+                        <div class="form-group">
+                            <label for="title">Bank</label>
+                             <select class="form-control select2" style="width: 100%;" name="COAID">
+                                    <option value="">--Pilih Bank--</option>
+                                    @foreach($bank as $key => $data)
+                                    @if($data->id==$msupplier->BankID)
+                                    <option selected value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
+                                    @else
+                                    <option value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
+                                    @endif
+                                    @endforeach
+                            </select>
+
+                        </div>
+
+                        
+
                          <div class="form-group">
                             <label for="title">No Rekening</label>
                             <input require type="text" name="noRekening" class="form-control" 
@@ -249,7 +270,7 @@
 
                         <div class="form-group">
                             <label for="title">Mkota</label>
-                            <select name="mKotaID" class="form-control">
+                            <select class="form-control select2" style="width: 100%;" name="mKotaID">
                                     <option value="">--Pilih kota--</option>
                                     @foreach($MKota as $key => $data)
                                     @if($data->MKotaID==$msupplier->MKotaID)
@@ -258,12 +279,9 @@
                                     <option selected value="{{$data->MKotaID}}"{{$data->cname == $data->MKotaID? 'selected' :'' }}>{{$data->cname}}</option>
                                     @endif
                                     @endforeach
-                                    
                             </select>
                         </div>
-
-
-                           <div class="form-group">
+                             <div class="form-group">
                              <label for="title">Petani</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="Petani" value="1"{{'1' == old('Petani',$msupplier->Petani)? 'checked' :'' }}>
@@ -287,15 +305,13 @@
                                 <label class="form-check-label" for="inlineRadio2">Tidak</label>
                             </div><br>
                         </div>
-
-                       <button class="btn btn-primary">Save</button>
-                    </form>
-
+        <!-- /.card-body -->
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-
-            </div>
         </div>
-    </div>
-</div>
+        
+    </form>
 </div>
 @endsection
+

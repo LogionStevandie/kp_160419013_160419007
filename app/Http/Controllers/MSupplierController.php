@@ -55,6 +55,8 @@ class MSupplierController extends Controller
             ->get();
         $COA = DB::table('COA')
             ->get();
+         $Bank = DB::table('bank')
+            ->get();
         return view('master.msupplier.tambah',[
                 'infoSupplier' => $infoSupplier,
                 'MCurrency' => $MCurrency,
@@ -62,6 +64,7 @@ class MSupplierController extends Controller
                 'PaymentTerms' => $PaymentTerms,
                 'MKota' => $MKota,
                 'COA' => $COA,
+                'bank' => $Bank,
         ]);
     }
 
@@ -156,6 +159,9 @@ class MSupplierController extends Controller
             ->get();
         $COA = DB::table('COA')
             ->get();
+         $Bank = DB::table('bank')
+            ->get();
+
         return view('master.msupplier.edit',[
                 'infoSupplier' => $infoSupplier,
                 'MCurrency' => $MCurrency,
@@ -164,6 +170,7 @@ class MSupplierController extends Controller
                 'MKota' => $MKota,
                 'COA' => $COA,
                 'msupplier' => $msupplier,
+                'bank' => $Bank,
         ]);
     }
 
@@ -211,6 +218,8 @@ class MSupplierController extends Controller
                 'SPPKP' => $data['SPPKP'],
                 'KTP' => $data['KTP'],
                 'MKotaID' => $data['mKotaID'],
+                'Petani'=>$data['Petani'],
+                'Khusus'=>$data['Khusus'],
                 'UpdatedBy'=> $user->id,//
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),//
             )

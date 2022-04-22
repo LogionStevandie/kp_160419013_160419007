@@ -6,20 +6,19 @@
  </style>
 
 @section('judul')
-Edit Nota Purchase Order
+Pembuatan Transaksi Gudang Barang
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Nota-Purchase-Order</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item"><a href="{{route('transactionGudang.index')}}">Transaksi Gudang Barang</a></li>
+<li class="breadcrumb-item active">Tambah</li>
 @endsection
 
 @section('content')
-<form action="{{route('purchaseOrder.update', [$purchaseOrder->id])}}" method="POST" >
+<form action="{{route('transactionGudang.store')}}" method="POST" >
   @csrf
-  @method('PUT')
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -40,36 +39,26 @@ Edit Nota Purchase Order
                   <div class="py-5 ">
                      
                         <div class="row">
-                              <div class="col-md-6 mb-4">
-                                  <label for="firstName">Nama NPP</label>
-                                  <input type="text" class="form-control" id="firstName" placeholder="" value="{{old('name',$purchaseOrder->name)}}" readonly required="">
-                                  <div class="invalid-feedback"> Valid first name is required. </div>
-                              </div>
                               <div class="col-md-6 mb-3"> 
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{old('created_on',$purchaseOrder->tanggalDibuat)}}" required="">
+                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" readonly required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
-
-                              <div class="col-md-6 mb-3">
-                                  <label for="lastName">Tanggal Batas Akhir</label>
-                                  <input type="date" name="tanggal_akhir" class="form-control" id="lastName" placeholder=""value="{{old('tanggal_akhir',$purchaseOrder->tanggal_akhir)}}" required="">
+                              <div class="col-md-6 mb-3"> 
+                                  <label for="lastName">Tanggal Datang</label>
+                                  <input name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" readonly required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
                               <div class="col-md-6">
                                     <div class="form-group">
-                                   <label for="lastName">Cara Pembayaran</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="paymentTerms">
+                                    <label for="lastName">Pilih Gudang Awal</label> 
+                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
                                       <option value="">
-                                          --Pilih Cara Pembayaran--
-                                      </option>
-                                      @foreach($dataPayment as $key => $data)
-                                          @if($data->PaymentTermsID == $purchaseOrder->idPaymentTerms)
-                                              <option selected name="idPaymentTerms" value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}} ({{$data->PaymentName}})</option>
-                                          @else
-                                              <option name="idPaymentTerms" value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}} ({{$data->PaymentName}})</option>
-                                          @endif
-                                      @endforeach
+                                            --Pilih Gudang--
+                                        </option>
+                                        @foreach($dataGudang as $key => $data)
+                                            <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}}</option>
+                                        @endforeach
                                 
                                     </select>
                                     </div>
@@ -77,20 +66,29 @@ Edit Nota Purchase Order
                               </div>
                               <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for="lastName">Pilih Perusahaan</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="perusahaanID" name="perusahaan">
+                                    <label for="lastName">Pilih Gudang Tujuan</label> 
+                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="MGudangIDTujuan">
                                       <option value="">
-                                            --Pilih Perusahaan--
-                                      </option>
+                                            --Pilih Gudang--
+                                        </option>
+                                        @foreach($dataGudang as $key => $data)
+                                            <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}}</option>
+                                        @endforeach
+                                
+                                    </select>
+                                    </div>
+                                 
+                              </div>
 
-                                        @foreach($dataPerusahaan as $key => $data)
-                                         
-                                          @if($data->MPerusahaanID == $purchaseOrder->MPerusahaanID)
-                                              <option selected name="idPerusahaan" singkatan="{{$data->cnames}}" value="{{$data->MPerusahaanID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}} ({{$data->cnames}})</option>
-                                          @else
-                                              <option name="idPerusahaan" singkatan="{{$data->cnames}}" value="{{$data->MPerusahaanID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}} ({{$data->cnames}})</option>
-                                          @endif
-                                            
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for="lastName">Pilih Supplier</label> 
+                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="Supplier">
+                                      <option value="">
+                                            --Pilih Supplier--
+                                        </option>
+                                        @foreach($dataSupplier as $key => $data)
+                                            <option name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
                                         @endforeach
                                 
                                     </select>
@@ -98,43 +96,102 @@ Edit Nota Purchase Order
                                  
                               </div>
                            
-                              
-                          
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label for="lastName">Supplier</label> 
-                                  <select name="supplier" class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;">
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Jenis Transaksi</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
                                       <option value="">
-                                          --Pilih Supplier--
+                                          --Pilih Jenis Transaksi--
                                       </option>
-                                     @foreach($dataSupplier as $key => $data)
-                                        @if($data->SupplierID == $purchaseOrder->idSupplier)
-                                            <option selected name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
-                                        @else
-                                            <option name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
-                                        @endif
-                                    @endforeach
-                                  </select>
-                                  </div>
-                              </div>
-
-                      
+                                      @foreach($dataItemTransaction as $key => $data)
+                                          <option name="idItemTransaction" value="{{$data->ItemTransactionID}}"{{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
+                                      @endforeach
+                                
+                                    </select>
+                                    </div>
+                                 
+                               </div>
+                                        
 
                                <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Lokasi</label>
-                                  <textarea rows="3"  type="text" name="keteranganLokasi" class="form-control" value="{{old('keteranganLokasi',$purchaseOrder->keteranganLokasi)}}" >{{$purchaseOrder->keteranganLokasi}}</textarea>
+                                  <label for="lastName">Keterangan Kendaraan</label>
+                                  <textarea rows="3"  type="text" name="keteranganLokasi" class="form-control" value="{{old('keteranganLokasi','')}}" ></textarea>
                               </div>
 
                               <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Pembayaran</label>
-                                  <textarea rows="3"  type="text" name="keteranganPembayaran" class="form-control" value="{{old('keteranganPembayaran',$purchaseOrder->keteranganPembayaran)}}" >{{$purchaseOrder->keteranganPembayaran}}</textarea>
+                                  <label for="lastName">Keterangan Nomor Polisi</label>
+                                  <textarea rows="3"  type="text" name="keteranganPembayaran" class="form-control" value="{{old('keteranganPembayaran','')}}" ></textarea>
                               </div>
 
                               <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Penagihan</label>
-                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan',$purchaseOrder->keteranganPenagihan)}}" >{{$purchaseOrder->keteranganPenagihan}}</textarea>
+                                  <label for="lastName">Keterangan Pemudi</label>
+                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
                               </div>
 
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Transaksi</label>
+                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Pemudi</label>
+                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Mengirim / Menerima</label>
+                                    <div class="icheck-primary d-inline">
+                                        <input checked id="setuju"  type="radio" name="isMenerima" value="0"{{'0' == old('approved','')? 'checked' :'' }}>
+                                        <label class="form-check-label" for="setuju">Mengirim</label>
+                                    </div>
+                                    <div class="icheck-primary d-inline">
+                                        <input id="tdkSetuju"  type="radio" name="isMenerima" value="1"{{'1'== old('approved','')? 'checked' :'' }}>
+                                        <label class="form-check-label" for="tdkSetuju">Menerima</label><br>
+                                    </div>
+                              </div>
+                                
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Surat Jalan</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
+                                      <option value="">
+                                          --Pilih Surat Jalan--
+                                      </option>
+                                      @foreach($suratJalan as $key => $data)
+                                          <option name="idSuratJalan" value="{{$data->id}}"{{$data->Name == $data->id? 'selected' :'' }}>{{$data->name}}--{{$data->tanggalDibuat}}({{$data->MGudangIDAwal}}<nbsp>ke<nbsp>{{$data->MGudangIDTujuan}})</option>
+                                      @endforeach  
+                                    </select>
+                                    </div>
+                               </div>
+                               <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Surat Jalan</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
+                                      <option value="">
+                                          --Pilih Surat Jalan--
+                                      </option>
+                                      @foreach($dataPurchaseOrder as $key => $data)
+                                          <option name="idPO" value="{{$data->id}}"{{$data->Name == $data->id? 'selected' :'' }}>{{$data->name}}--{{$data->tanggalDibuat}}</option>
+                                      @endforeach  
+                                    </select>
+                                    </div>
+                               </div>
+
+                               <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Surat Jalan</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="PurchaseRequestID">
+                                      <option value="">
+                                          --Pilih Surat Jalan--
+                                      </option>
+                                      @foreach($dataPurchaseRequest as $key => $data)
+                                          <option name="idPR" value="{{$data->id}}"{{$data->Name == $data->id? 'selected' :'' }}>{{$data->name}}--{{$data->tanggalDibuat}}</option>
+                                      @endforeach  
+                                    </select>
+                                    </div>
+                               </div>
+                        
+                              
                           </div>     
                   </div>
                   <!-- Page Heading -->
@@ -151,35 +208,32 @@ Edit Nota Purchase Order
                                     <h3 class="card-title">Pemilihan Barang</h3>
                                   </div>
                                   <div class="card-body">
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="selectPRD" id="pReq">
+                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms" id="pReq">
                                             <option value="pilih">--Permintaan Order--</option>
-                                            <!--
-                                           @foreach($dataPurchaseRequest as $key => $data)
-                                              @if($data->id == $purchaseOrder->id)
-                                                <option selected id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
-                                              @else
-                                                <option id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>  
-                                              @endif
-                                           
+                                            <!--@foreach($dataPurchaseRequest as $key => $data)
+                                            <option id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
                                             @endforeach-->
                                     </select><br>
                                                     
                              
                                  <div class="form-group"  id='tmbhBarang'>
                                     <label for="title">Barang</label>
-               
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
+                                    <!--<select class="form-control selectpicker" id="tag" data-live-search="true">
+                                        <option value="all">Semua Data</option>
+                                        @foreach($dataTag as $key => $data)
+                                        <option id="namaTag" value="{{$data->ItemTagID}}"{{$data->Name == $data->ItemTagID? 'selected' :'' }}>{{$data->Name}}</option>
+                                        @endforeach
+                                    </select>-->
+                                    <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
                                   
                                         <option value="pilih">--Pilih barang--</option>
-                                        <!--@foreach($dataBarang as $key => $data)
-                                        <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
-                                        @endforeach-->
+                                     
                                     </select>
                                     <input id="jumlahBarang" value="1" min="1" max="2"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                                 </div>
 
                                     <div class="form-group"  id='tax'>
-                                        <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
+                                        <select class="form-control select2" style="width: 100%;"name="tax" id="tax">
                                             <option value="pilih">--Pajak--</option>
                                             @foreach($dataTax as $key => $data)
                                             <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
@@ -228,57 +282,31 @@ Edit Nota Purchase Order
                                       <input type="hidden" name="tanggalAkhir" value="{{old('tanggalAkhirVal')}}">-->
                                       <h4 class="d-flex justify-content-between align-items-center mb-3">
                                           <span class="text-muted">Keranjang</span>
-                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value="0"totalKeranjang="{{count($dataDetail)}}">{{count($dataDetail)}}</span>
+                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value="0">0</span>
                                       </h4>
                                       <ul class="list-group mb-3 sticky-top" id="keranjang">
-                                           @foreach($dataDetail as $data)
-                                                
-                                         <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                          <!--<li class="list-group-item d-flex justify-content-between lh-condensed">
                                               <div>
-                                                  <input type="hidden" name="itemId[]" value="{{$data->idItem}}">
-                                                  <input type="hidden" name="itemTotal[]" value="{{(int)$data->jumlah}}">
-                                                  <input type="hidden" name="itemKeterangan[]" value="{{$data->keterangan}}">
-                                                  <input type="hidden" name="itemHarga[]" value="{{(int)$data->harga}}">
-                                                  <input type="hidden" class="cekDiskon" name="itemDiskon[]" value="{{(int)$data->diskon}}">
-                                                  <input type="hidden" class="cekTax" name="itemTax[]" value="{{$data->idTax}}">
-                                                  @foreach($dataTax as $tax)
-                                                  @if($tax->TaxID==$data->idTax)
-                                                  <input type="hidden" class="cekTaxValue" name="itemTaxValue[]" value="{{$tax->Name}}">
-                                                  <input type="hidden" class="cekPrd" name="prdID[]" value="{{$data->idPurchaseRequestDetail}}">
-                                                  @foreach($dataBarang as $item)
-                                                    @if($item->ItemID == $data->idItem)
-                                                  <h6 class="my-0">{{$item->ItemName}}<small class="hargaVal">({{(int)$data->jumlah}})</small> </h6> 
-                                                    @endif    
-                                                    @endforeach 
-                                                  <small class="text-muted keteranganVal keteranganBarang">{{$data->keterangan}}</small><br>  
-                                                  <small class="text-muted diskonVal diskonBarang">Diskon/Item: Rp. {{(int)$data->diskon}}</small><br> 
-                                                  <small class="text-muted taxVal taxPercent">Pajak: {{$tax->Name}}</small><br> 
-                                              
-                                                                 
-                                               </div>
-                                            <div>
-                                            
-                                                  <strong>Rp.{{(int)(($data->harga-$data->diskon) * $data->jumlah) * (100+$tax->TaxPercent) / 100}},-</strong>
-                                                   @endif
-                                                  @endforeach 
-                                                <button class="btn btn-primary copyKe" type="button" id="copyKe">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
-                                                        <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                                                    </svg>
-                                                </button>
-                                                <button class="btn btn-danger" type="button" id="hapusKeranjang">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                          </li>       
-                                                   
-                                    @endforeach           
+                                                 
+                                                  <input type="hidden" name="itemTotal[]" value="">
+                                                  <input type="hidden" name="itemKeterangan[]" value="">
+                                                  <input type="hidden" name="itemHarga[]" value="">
+                                                  <h6 class="my-0">Product name <small>(6)</small> </h6> 
+                                                  <small class="text-muted">Keterangan</small><br>                      
+                                              </div>
+                                              <div>
+                                                  <strong>$20</strong>
+                                                  <button class="btn btn-danger" type="button" id="hapusKeranjang">
+                                                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                          <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                                      </svg>
+                                                  </button>
+                                              </div>
+                                          </li>     -->             
                                       </ul>
                                       <li class="list-group-item d-flex justify-content-between">
                                               <span>Total (Rupiah)</span>
-                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga={{$purchaseOrder->totalHarga}}>Rp. {{$purchaseOrder->totalHarga}},-</strong>
+                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga=0>0</strong>
                                       </li> 
                                     <!-- /.form group -->
                                   </div>  <!---->
@@ -314,34 +342,11 @@ Edit Nota Purchase Order
     var totalTambah = 0;
     $('#TotalHargaKeranjang').val(0);
 
- 
-  
 
+   
 
-    
-     
     $(document).ready(function(){
-         
-        //perusahaan
-        var idPerusahaan =$("#perusahaanID option:selected").val();
-        //alert(idPerusahaan); die;
-        var singkatan = $("#perusahaanID option:selected").attr('singkatan');
-        var optionnya = '';
-        var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
-        optionnya += '<option value="pilih" selected>--Permintaan Order--</option>\n';
-        $.each(dataPurchaseRequest, function( key, value ){
-            if(value.cidp.toString() == idPerusahaan.toString()){
-                optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';                
-            }
-            //else{
-                //optionnya += '<option id="preqID" idPr='+ value.idPerusahaan +' value="'+value.idPerusahaan+'">'+value.name+'</option>\n';      
-            //}
-        });                
-        $("#pReq").empty();
-        $("#pReq").append(optionnya);
-        $('.selectpicker').selectpicker('refresh');//lek gini bisa benere cobak en
-        //------------------------
-  
+
         $("#perusahaanID").on("change",function(){
                 
             var id = this.value;
@@ -360,7 +365,7 @@ Edit Nota Purchase Order
                     //alert('masuk'); 
                      alert("masuk cek");
                     optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';      
-                    //alert(optionnya);         
+                    alert(optionnya);         
                 }
             });
             
@@ -371,21 +376,20 @@ Edit Nota Purchase Order
             $('.selectpicker').selectpicker('refresh');
         });
 
-
-        $("#pReq").change(function() {
-            alert(this.value);
+         $("#pReq").change(function() {
+            //alert(this.value);
             var id = this.value;
             var optionnya = '';
             //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
             var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
 
-            alert('masuk sini'); //ini chhec
+            //alert('masuk sini');
             optionnya += '<option value="" selected>--Pilih barang--</option>\n';
             $.each(dataPurchaseRequestDetail, function( key, value ){
-                alert(value.ItemName);//ini chhec 
+                //alert(value.ItemName);
                 if(value.idPurchaseRequest.toString() == id.toString()){
-                    //alert(value.ItemName);//ini chhec
-                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
+                    //alert('masuk');
+                    /*optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';  */             
                 }
             });
             //alert(optionnya);
@@ -396,8 +400,8 @@ Edit Nota Purchase Order
             $('.selectpicker').selectpicker('refresh');
         });
 
-          
-        $("#barang").on("change",function(){
+        
+        $("#barang").change(function() {
             //alert(this.value);
             var id = this.value;
             var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
@@ -420,10 +424,9 @@ Edit Nota Purchase Order
 
     });
 
-    $('body').on('click','#copyKe', function(){
+     $('body').on('click','#copyKe', function(){
         //alert($(this).index('.copyKe'));
-        var i = $(this).index('#copyKe');
-        //alert(i);
+        var i = $(this).index('.copyKe');
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
@@ -434,8 +437,8 @@ Edit Nota Purchase Order
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         var diskonBarang = $('.cekDiskon:eq('+i+')').val();
 
-        $("#pReq").val(prd).change();
-        $("#barang").val(idBarang).change();
+        $("#pReq").val(prd);
+        $("#barang").val(idBarang);
         $("#jumlahBarang").val(jumlahBarang);
         $("#hargaBarang").val(hargaBarang);
         $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
@@ -443,8 +446,7 @@ Edit Nota Purchase Order
         $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
         $("#keteranganBarang").val(keteranganBarang);
         $("#tax").val(pajak).change();
-
-        //$('.selectpicker').selectpicker('refresh');
+        $("#barang").val(idBarang).change();
         
     });
 
@@ -536,7 +538,7 @@ Edit Nota Purchase Order
             var htmlKeranjang = "";
             htmlKeranjang += '<li class="list-group-item d-flex justify-content-between lh-condensed">\n';
             htmlKeranjang += '<div id="hiddenDiv">\n';
-            htmlKeranjang += '<input type="hidden" class="cekId" name="itemId[]" value="'+idBarang+'">\n';
+       
             htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemTotal[]" value="'+jumlahBarang+'">\n';
             htmlKeranjang += '<input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="'+keteranganBarang+'">\n';
             htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="'+hargaBarang+'">\n';
@@ -565,13 +567,9 @@ Edit Nota Purchase Order
             htmlKeranjang += '</li>\n';
 
             $('#keranjang').append(htmlKeranjang);
-           var totalBarangnya = $('#totalBarangnya').attr('totalKeranjang');
-            alert(totalBarangnya);
             totalTambah += 1
             $('#totalBarangnya').val(totalTambah);
-            $('#totalBarangnya').attr('totalKeranjang',parseInt(totalBarangnya)+parseInt(totalTambah));
-            $('#totalBarangnya').html($('#totalBarangnya').attr('totalKeranjang'));
-
+            $('#totalBarangnya').html(totalTambah);
 
             var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
             //alert(maxAngka);
@@ -609,12 +607,16 @@ Edit Nota Purchase Order
         tambahCombo += '<select require name="barang[]" class="form-control" id="barang'+totalTambah+'">\n';
         tambahCombo += '<option value="">--Pilih barang--</option>\n';
         tambahCombo += '@foreach($dataBarang as $key => $data)\n';
-        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
+       /* tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';*/
         tambahCombo += '@endforeach\n';
         tambahCombo += '</select>\n';
         tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';
         tambahCombo += '<br id="br">\n';
         tambahCombo +='</div>\n';
+        //tambahCombo +='<div class="form-group" id="total'+totalTambah+'">\n';
+        //tambahCombo +='<label for="title">Total</label>\n';
+        //tambahCombo +='<input require type="number" name="total[]" class="form-control">\n';
+        //tambahCombo +='</div>\n';
         tambahCombo +='<div class="form-group" id="harga'+totalTambah+'">\n';
         tambahCombo +='<label for="title">Harga</label>\n';
         tambahCombo +='<input require type="number" name="harga[]" class="form-control">\n';

@@ -188,9 +188,9 @@ class PurchaseOrderController extends Controller
             'keteranganPenagihan' => $data['keteranganPenagihan'],         
             'keteranganPembayaran' => $data['keteranganPembayaran'],         
             'created_by'=> $user->id,
-            'created_on'=> date("Y-m-d h:i:sa"),
+            'created_on'=> date("Y-m-d h:i:s"),
             'updated_by'=> $user->id,
-            'updated_on'=> date("Y-m-d h:i:sa"),
+            'updated_on'=> date("Y-m-d h:i:s"),
             'MPerusahaanID'=> $data['perusahaan'],
             )
         ); 
@@ -346,29 +346,30 @@ class PurchaseOrderController extends Controller
                 'keteranganPenagihan' => $data['keteranganPenagihan'],         
                 'keteranganPembayaran' => $data['keteranganPembayaran'],     
                 'updated_by'=> $user->id,
-                'updated_on'=> date("Y-m-d h:i:sa"),
+                'updated_on'=> date("Y-m-d h:i:s"),
         ]);
 
         $dataDetailTotal = DB::table('purchase_order_detail')
             ->where('idPurchaseOrder', $purchaseOrder->id)
             ->get();
 
+
         $totalHarga = 0;
 
         //pengurangan jumlah proses lalu diupdate
         foreach($dataDetailTotal as $data){
             DB::table('purchase_request_detail')
-            ->where('id', $data['idPurchaseRequestDetail'])
+            ->where('id', $data->idPurchaseRequestDetail)
             ->update([
-                'jumlahProses' => DB::raw('jumlahProses' - $data['jumlah']),
-            ]);
-        }
+                'jumlahProses' => DB::raw((float)'jumlahProses' - (float)$data->jumlah),
+            ]);//nggeh
+        }//lek ngene sekk tk halu
 
-        if(count($dataDetailTotal) > count($data['itemId'])){
+        /*//if(count($dataDetailTotal) > count($data['itemId'])){
             DB::table('purchase_order_detail')
                 ->where('idPurchaseOrder', $purchaseOrder->id)
                 ->delete();
-            
+            //dd(count($data['itemId']));
             for($i = 0; $i < count($data['itemId']); $i++){
                 DB::table('purchase_order_detail')->insert(array(
                     'idPurchaseOrder' => $purchaseOrder->id,
@@ -376,7 +377,7 @@ class PurchaseOrderController extends Controller
                     'idItem' => $data['itemId'][$i],
                     'jumlah' => $data['itemTotal'][$i],
                     'harga' => $data['itemHarga'][$i],
-                    'idTax' => $data['tax'][$i],
+                    'idTax' => $data['itemTax'][$i],
                     'diskon' => $data['itemDiskon'][$i],
                     'keterangan' => $data['itemKeterangan'][$i],
                     )
@@ -388,9 +389,9 @@ class PurchaseOrderController extends Controller
                         'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemTotal'][$i],
                     ]);
             
-                $totalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]) * (100.0 + $data['itemTaxValue'][$i]) / 100.0;
-            }     
-        }
+                $totalHarga += (float)(($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]) * (100.0 + $data['itemTaxValue'][$i]) / 100.0;
+                 
+        /*}
         else{
             for($i = 0; $i < count($data['itemId']); $i++){
                 if($i < count($dataDetailTotal)){
@@ -429,16 +430,44 @@ class PurchaseOrderController extends Controller
                     ->update([
                         'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemTotal'][$i],
                     ]);
-            
+                
+            }*/
+            $totalHarga = 0;
+            $subtotalHarga = 0;
+    
+            for($i = 0; $i < count($data['itemId']); $i++){
+                DB::table('purchase_order_detail')->insert(array(
+                    'idPurchaseOrder' => $purchaseOrder->id,
+                    'idPurchaseRequestDetail' => $data['prdID'][$i],
+                    'idItem' => $data['itemId'][$i],
+                    'jumlah' => $data['itemTotal'][$i],
+                    'harga' => $data['itemHarga'][$i],
+                    'diskon' => $data['itemDiskon'][$i],
+                    'idTax' => $data['itemTax'][$i],
+                    'keterangan' => $data['itemKeterangan'][$i],
+                    )
+                ); 
+    
+                $totalNow = DB::table('purchase_request_detail')->select('jumlah', 'jumlahProses')->where('id', $data['prdID'][$i])->get();
+                DB::table('purchase_request_detail')
+                ->where('id', $data['prdID'][$i])
+                ->update([
+                    'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemTotal'][$i],
+                ]);
+                
+                $totalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]) * (100.0 + $data['itemTaxValue'][$i]) / 100.0;
+                $subtotalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]);
+                     
             }
-        }
-        DB::table('purchase_order')
-            ->where('id', $purchaseOrder->id)
-            ->update([
-                'totalHarga' =>  $totalHarga,
-        ]);
+    
+            DB::table('purchase_order')
+                ->where('id', $purchaseOrder->id)
+                ->update([
+                    'totalHarga' =>  $totalHarga,
+                    'subtotalHarga' =>  $subtotalHarga,
+            ]);
 
-        return redirect()->route('PurchaseOrder.index')->with('status','Success!!');
+        return redirect()->route('master.PurchaseOrder.index')->with('status','Success!!');
     }
 
     /**

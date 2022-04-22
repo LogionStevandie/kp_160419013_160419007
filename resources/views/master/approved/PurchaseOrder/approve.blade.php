@@ -14,7 +14,7 @@ Persetujuan Order
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Persetujuan Order</li>
-<li class="breadcrumb-item"><a href="{{route('approvedPurchaseOrder.index')}}">Purchase Order</li>
+<li class="breadcrumb-item"><a href="{{route('approvedPurchaseOrder.index')}}">Purchase Order</a></li>
 <li class="breadcrumb-item active">Approve</li>
 @endsection
 
@@ -33,8 +33,8 @@ Persetujuan Order
                             <table class="table table-bordered">
                                 <thead class="thead-light">
                                     <tr>
-                                    <th scope="col" colspan="3"><h2>PERSETUJUAN PURCHASE ORDER</h2></th>
-                                    <th scope="col" colspan="3">
+                                    <th scope="col" colspan="4"><h2>PERSETUJUAN PURCHASE ORDER</h2></th>
+                                    <th scope="col" colspan="4">
                                         Nama PO : {{$purchaseOrder->name}}<br>
                                         Tanggal pembuatan : {{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}
                                     </th>
@@ -42,16 +42,15 @@ Persetujuan Order
                                 </thead>
                                 <thead class="thead-light">
                                     <tr>
-                                    <th scope="col"colspan="6"cellspacing="3" >
+                                    <th scope="col"colspan="8"cellspacing="3" >
                                                                         
-                                    @foreach($dataGudang as $data)
-                                        @if($data->MGudangID == $purchaseRequest->MGudangID)
-                                        Gudang :{{$data->cname}} <nbsp> ({{$purchaseRequest->MGudangID}}) <br> 
+                                    @foreach($dataPerusahaan as $data)
+                                        @if($data->MPerusahaanID == $purchaseOrder->MPerusahaanID)
+                                        Gudang :{{$data->cname}} <nbsp> ({{$purchaseOrder->MPerusahaanID}}) <br> 
                                         @endif 
                                     @endforeach
-                                    Jenis permintaan : {{$purchaseRequest->jenisProses}} <br>
-                                    Tanggal dibutuhkan : {{$purchaseRequest->tanggalDibutuhkan}}<br>
-                                    Tanggal batas akhir : {{$purchaseRequest->tanggalAkhirDibutuhkan}}
+                                    Jenis permintaan : {{$purchaseOrder->jenisProses}} <br>
+                                    Tanggal batas akhir : {{$purchaseOrder->tanggal_akhir}}
                                     </th>
                                     </tr>
                                 </thead>
@@ -64,19 +63,21 @@ Persetujuan Order
                                         <th scope="col">Diskon</th>
                                         <th scope="col">Pajak</th>
                                         <th scope="col">Keterangan</th>
-                                        <th scope="col">Total Harga</th>
+                                        <th scope="col">Total Harga</th> <!--ni ws tak bantu gae colomn atas e doang:v-->
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                        @foreach($prd as $data) 
+                                        @foreach($pod as $data) 
                                         <tr>
-                                            @if($data->idPurchaseRequest==$purchaseRequest->id)
+                                            @if($data->idPurchaseOrder==$purchaseOrder->id)
                                             <th scope="row">{{$data->id}}</th>
-                                            <th scope="row">{{$data->ItemName}}</th>
+                                            <th scope="row">{{$data->namaItem}}</th>
                                             <td>{{$data->jumlah}}</td>
-                                            <td>{{$data->harga}}</td>              
-                                            <td>{{$data->keterangan_jasa}}</td>                                          
+                                            <td>{{$data->harga}}</td>     
+                                            <td>{{$data->diskon}}</td> 
+                                            <td>{{$data->namaTax}}</td>    <!--nntk loopng-->      
+                                            <td>{{$data->keterangan}}</td>                                          
                                             <td>{{$data->jumlah * $data->harga}}</td>                                          
                                             @endif
                                         </tr>

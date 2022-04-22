@@ -119,3 +119,4 @@ Route::resource('purchaseOrder', 'App\Http\Controllers\PurchaseOrderController')
 
 //transactionGudangBarang
 Route::resource('transactionGudang','App\Http\Controllers\TransactionGudangBarangController');
+Route::resource('suratJalan','App\Http\Controllers\SuratJalanController');

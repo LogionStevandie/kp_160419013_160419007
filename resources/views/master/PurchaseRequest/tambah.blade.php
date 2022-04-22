@@ -53,7 +53,7 @@ Pembuatan Nota Permintaan Pembelian
                               </div>
                               <div class="col-md-6 mb-3">
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{$date}}" readonly required="" name="tanggalDibuat">
+                                  <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{$date}}" required="" name="tanggalDibuat">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
 
@@ -75,7 +75,7 @@ Pembuatan Nota Permintaan Pembelian
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label>Pilih Gudang</label>
-                                    <select class="form-control select2" style="width: 100%;" name="gudang" id="gudang">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="gudang" id="gudang">
                                       @foreach($dataGudang as $key => $data)
                                           <option name="idGudang" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
                                       @endforeach
@@ -86,7 +86,7 @@ Pembuatan Nota Permintaan Pembelian
 
                                <div class="col-md-6 mb-3">
                                   <label for="lastName">Jenis Permintaan</label> 
-                                   <select class="form-control select2" style="width: 100%;" name="jenisProses">
+                                   <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="jenisProses">
                                       <option value="1" selected>Pembelian Melalui Pusat</option>
                                       <option value="0">Pembelian Melalui Lokal</option>
                                   </select>

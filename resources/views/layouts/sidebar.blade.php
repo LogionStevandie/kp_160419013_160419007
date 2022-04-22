@@ -569,6 +569,30 @@
             </ul>
           </li>
 
+          <!--PembuatanNotaTransaksiGudang-->
+          <li class="nav-header">NOTA TRANSAKSI GUDANG</li>
+          <li class="nav-item">
+            <a href="{{route('transactionGudang.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Nota Transaksi Gudang
+              </p>
+            </a>
+          </li>
+          <!-- END PembuatanNotaTransaksiGudang-->
+          <!--PembuatansURATJALAN-->
+          <li class="nav-header">NOTA SURAT JALAN</li>
+          <li class="nav-item">
+            <a href="{{route('suratJalan.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Nota Surat Jalan
+              </p>
+            </a>
+          </li>
+          <!-- END PembuatansURATJALAN-->
+
+
           <!--Permintaan-->
           <li class="nav-header">PERMINTAAN PEMBELIAN</li>
           <li class="nav-item">
