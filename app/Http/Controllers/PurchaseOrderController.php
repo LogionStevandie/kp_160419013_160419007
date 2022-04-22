@@ -88,7 +88,7 @@ class PurchaseOrderController extends Controller
         
         //data Purchase Request yang disetujui
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
-            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->select('purchase_request_detail.*','purchase_request.name as prName','Item.ItemName as ItemName','Unit.Name as UnitName')//
             ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
@@ -176,7 +176,7 @@ class PurchaseOrderController extends Controller
         $totalIndex = str_pad(strval(count($dataPo) + 1),4,'0',STR_PAD_LEFT);
 
         $idpo = DB::table('purchase_order')->insertGetId(array(
-            'name' => 'PO/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
+            'name' => 'PO/'.$dataLokasiPerusahaan[0]->cnames.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
             'idSupplier' => $data['supplier'],
             'idPaymentTerms' => $data['paymentTerms'],
             'tanggalDibuat' => $data['tanggalDibuat'],
@@ -262,10 +262,10 @@ class PurchaseOrderController extends Controller
         //
         $user = Auth::user();
         
-        $dataSupplier = DB::table('MSupplier')
+        $dataSupplier = DB::table('MSupplier')//
             ->get();
 
-        $dataPayment = DB::table('PaymentTerms')
+        $dataPayment = DB::table('PaymentTerms')//
             ->select('PaymentTerms.*', 'Payment.Name as PaymentName', 'Payment.Deskripsi as PaymentDeskripsi')
             ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
             ->get();
@@ -278,13 +278,15 @@ class PurchaseOrderController extends Controller
 
         //data Purchase Request yang disetujui
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
-            ->select('purchase_request_detail.*','purchase_request.name')
+            ->select('purchase_request_detail.*','purchase_request.name as prName','Item.ItemName as ItemName','Unit.Name as UnitName')//
             ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('purchase_request.approved', 1)
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
             ->get();
 
         $dataDetail = DB::table('purchase_order_detail')
@@ -293,7 +295,7 @@ class PurchaseOrderController extends Controller
         $dataTax=DB::table('Tax')
             ->get();
 
-        $dataPerusahaan =DB::table('MPerusahaan')
+        $dataPerusahaan =DB::table('MPerusahaan')//
             ->get();
 
         $dataPurchaseRequest = DB::table('purchase_request')

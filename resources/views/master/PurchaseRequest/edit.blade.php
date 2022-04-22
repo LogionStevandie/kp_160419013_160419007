@@ -129,7 +129,7 @@ Pembuatan Nota Permintaan Pembelian
                              
                                   <div class="form-group">
                                       <label>Barang</label>
-                                      <select class="form-control " id="barang" data-live-search="true" data-show-subtext="true">
+                                      <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
                                           <option value="pilih">--Pilih barang--</option>
                                           @foreach($dataBarang as $key => $data)
                                           <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
@@ -189,7 +189,7 @@ Pembuatan Nota Permintaan Pembelian
                                             <small class="text-muted keteranganVal">{{$data->keterangan_jasa}}</small><br>                      
                                         </div>
                                         <div>
-                                            <strong>Rp.{{$data->harga}},-</strong>
+                                            <strong>Rp.{{$data->harga*$data->jumlah}},-</strong>
                                             <button class="btn btn-primary copyKe" type="button" id="copyKe">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
@@ -379,7 +379,7 @@ Pembuatan Nota Permintaan Pembelian
         var hargaBarang = $('.cekHarga:eq('+i+')').val();
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         
-        $("#barang").val(idBarang);
+        $("#barang").val(idBarang).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#hargaBarang").val(hargaBarang);
         $("#tanpa-rupiah").val(formatRupiah(hargaBarang));

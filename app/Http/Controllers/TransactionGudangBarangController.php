@@ -76,21 +76,55 @@ class TransactionGudangBarangController extends Controller
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
             ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=','purchase_order.id')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
             ->where('purchase_order.proses', 1)
             ->where('purchase_order_detail.jumlahProses', '<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
             ->get();
-        //dd($dataPurchaseRequestDetail);
-        
-        $dataPurchaseOrder = DB::table('purchase_request')
+        //dd($dataPurchaseRequestDetail);      
+        $dataPurchaseOrder = DB::table('purchase_order')
             ->select('purchase_order.*')
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
             ->where('purchase_order.proses', 1)
             ->get();
+
+        $suratJalan = DB::table('surat_jalan')
+            ->where('hapus', 0)
+            ->get();
+        $suratJalanDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*')
+            ->join('surat_jalan', 'surat_jalan_detail.suratJalanID','=','surat_jalan.id')
+            ->where('surat_jalan.hapus', 0)
+            ->get();
+        
+
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+        //dd($dataPurchaseRequestDetail);
+        
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->get();
+
+        
 
         return view('master.transactionGudang.tambah',[
             'dataSupplier' => $dataSupplier,
@@ -99,6 +133,10 @@ class TransactionGudangBarangController extends Controller
             'dataTag' => $dataTag,
             'dataPurchaseOrderDetail' => $dataPurchaseOrderDetail,
             'dataPurchaseOrder' => $dataPurchaseOrder,
+            'suratJalan' => $suratJalan,
+            'suratJalanDetail' => $suratJalanDetail,
+            'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+            'dataPurchaseRequest' => $dataPurchaseRequest,
         ]);
     }
 
@@ -122,13 +160,13 @@ class TransactionGudangBarangController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
             ->where('MGudang.MGudangID', '=', $user->MGudangID)
             ->get();
-        $dataLokasiPerusahaan = DB::table('MPerusahaan')
+        /*$dataLokasiPerusahaan = DB::table('MPerusahaan')
             ->where("MPerusahaanID", $data['perusahaan'])
-            ->get();
+            ->get();*/
         
         $dataItemTransaction = DB::table('ItemTransaction')->where('ItemTransactionID',$data['ItemTransaction'])->get();
         $dataPo = DB::table('purchase_order')
-            ->where('name', 'like', $dataItemTransaction[0]->Code.'/'.$dataLokasiPerusahaan[0]->cnames.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/%")
+            ->where('name', 'like', $dataItemTransaction[0]->Code.'/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/%")
             ->get();
         
 
@@ -148,6 +186,8 @@ class TransactionGudangBarangController extends Controller
             'PurchaseOrderID' => $data['PurchaseOrder'],  
             'MGudangIDAwal' => $data['MGudangIDAwal'],  
             'MGudangIDTujuan' => $data['MGudangIDTujuan'],  
+            'SuratJalanID' => $data['SuratJalanID'],  
+            'PurchaseRequestID' => $data['PurchaseRequestID'],  
             'hapus' => 0,  
             'created_by'=> $user->id,
             'created_on'=> date("Y-m-d h:i:sa"),
@@ -165,13 +205,13 @@ class TransactionGudangBarangController extends Controller
             'SupplierID' => $data['Supplier'],  
             'NTBID' => $idtransaksigudang,  
             'EmployeeID' => $user->id,  
-            'SalesOrderID' => $data['SalesOrderID'],  
-            'SalesInvoiced' => $data['SalesInvoiced'],  
+            //'SalesOrderID' => $data['SalesOrderID'],  
+            //'SalesInvoiced' => $data['SalesInvoiced'],  
             'MGudangID' => $data['MGudangIDAwal'],  
-            'TransferID' => $data['MGudangIDTujuan'],  
-            'AdjustmentID' => $data['AdjustmentID'],  
+            //'TransferID' => $data['MGudangIDTujuan'],  
+            //'AdjustmentID' => $data['AdjustmentID'],  
             'SuratJalanID' => $data['SuratJalanID'],  
-            'KwitansiID' => $data['KwitansiID'],  
+            //'KwitansiID' => $data['KwitansiID'],  
             'created_by'=> $user->id,
             'created_on'=> date("Y-m-d h:i:sa"),
             'updated_by'=> $user->id,
@@ -289,6 +329,46 @@ class TransactionGudangBarangController extends Controller
             ->where('purchase_order_detail.jumlahProses', '<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
             ->get();
 
+        $dataPurchaseOrder = DB::table('purchase_order')
+            ->select('purchase_order.*')
+            ->where('purchase_order.approved', 1)
+            ->where('purchase_order.hapus', 0)
+            ->where('purchase_order.proses', 1)
+            ->get();
+
+        $suratJalan = DB::table('surat_jalan')
+            ->where('hapus', 0)
+            ->get();
+        $suratJalanDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*')
+            ->join('surat_jalan', 'surat_jalan_detail.suratJalanID','=','surat_jalan.id')
+            ->where('surat_jalan.hapus', 0)
+            ->get();
+        
+
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+        //dd($dataPurchaseRequestDetail);
+        
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->get();
+
         return view('master.transactionGudang.detail',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
@@ -296,6 +376,10 @@ class TransactionGudangBarangController extends Controller
             'dataTag' => $dataTag,
             'dataPurchaseOrderDetail' => $dataPurchaseOrderDetail,
             'dataPurchaseOrder' => $dataPurchaseOrder,
+            'suratJalan' => $suratJalan,
+            'suratJalanDetail' => $suratJalanDetail,
+            'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+            'dataPurchaseRequest' => $dataPurchaseRequest,
             'transactionGudangBarang' => $transactionGudangBarang,
         ]);
     }
@@ -338,7 +422,7 @@ class TransactionGudangBarangController extends Controller
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
             ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=','purchase_order.id')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
@@ -347,11 +431,45 @@ class TransactionGudangBarangController extends Controller
             ->get();
         //dd($dataPurchaseRequestDetail);
         
-        $dataPurchaseOrder = DB::table('purchase_request')
+        $dataPurchaseOrder = DB::table('purchase_order')
             ->select('purchase_order.*')
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
             ->where('purchase_order.proses', 1)
+            ->get();
+
+        
+        $suratJalan = DB::table('surat_jalan')
+            ->where('hapus', 0)
+            ->get();
+
+        $suratJalanDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*')
+            ->join('surat_jalan', 'surat_jalan_detail.suratJalanID','=','surat_jalan.id')
+            ->where('surat_jalan.hapus', 0)
+            ->get();   
+
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+        //dd($dataPurchaseRequestDetail);
+        
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
             ->get();
 
         return view('master.transactionGudang.edit',[
@@ -361,6 +479,11 @@ class TransactionGudangBarangController extends Controller
             'dataTag' => $dataTag,
             'dataPurchaseOrderDetail' => $dataPurchaseOrderDetail,
             'dataPurchaseOrder' => $dataPurchaseOrder,
+            'suratJalan' => $suratJalan,
+            'suratJalanDetail' => $suratJalanDetail,
+            'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+            'dataPurchaseRequest' => $dataPurchaseRequest,
+            'transactionGudangBarang' => $transactionGudangBarang,
         ]);
     }
 
@@ -391,7 +514,9 @@ class TransactionGudangBarangController extends Controller
                 'SupplierID' => $data['Supplier'],  
                 'PurchaseOrderID' => $data['PurchaseOrder'],  
                 'MGudangIDAwal' => $data['MGudangIDAwal'],  
-                'MGudangIDTujuan' => $data['MGudangIDTujuan'],  
+                'MGudangIDTujuan' => $data['MGudangIDTujuan'],
+                'SuratJalanID' => $data['SuratJalanID'],  
+                'PurchaseRequestID' => $data['PurchaseRequestID'],    
                 'hapus' => 0,  
                 'updated_by'=> $user->id,
                 'updated_on'=> date("Y-m-d h:i:sa"),
@@ -407,13 +532,13 @@ class TransactionGudangBarangController extends Controller
                 'Date' => $data['tanggalDibuat'],  
                 'SupplierID' => $data['Supplier'],  
                 'EmployeeID' => $user->id,  
-                'SalesOrderID' => $data['SalesOrderID'],  
-                'SalesInvoiced' => $data['SalesInvoiced'],  
+                //'SalesOrderID' => $data['SalesOrderID'],  
+                //'SalesInvoiced' => $data['SalesInvoiced'],  
                 'MGudangID' => $data['MGudangIDAwal'],  
-                'TransferID' => $data['MGudangIDTujuan'],  
-                'AdjustmentID' => $data['AdjustmentID'],  
+                //'TransferID' => $data['MGudangIDTujuan'],  
+                //'AdjustmentID' => $data['AdjustmentID'],  
                 'SuratJalanID' => $data['SuratJalanID'],  
-                'KwitansiID' => $data['KwitansiID'],  
+                //'KwitansiID' => $data['KwitansiID'],   
                 'updated_by'=> $user->id,
                 'updated_on'=> date("Y-m-d h:i:sa"),
             )

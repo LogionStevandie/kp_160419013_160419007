@@ -39,9 +39,9 @@ Pembuatan Nota Purchase Order
                   <div class="py-5 ">
                      
                         <div class="row">
-                              <div class="col-md-6 mb-3">
+                              <div class="col-md-6 mb-3"> 
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" readonly required="">
+                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" readonly required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
                               <div class="col-md-6">
@@ -131,8 +131,7 @@ Pembuatan Nota Purchase Order
                                     <h3 class="card-title">Pemilihan Barang</h3>
                                   </div>
                                   <div class="card-body">
-
-                                     <select class="form-control selectpicker" id="pReq" data-show-subtext="true">
+                                    <select class="form-control select2" style="width: 100%;"name="paymentTerms" id="pReq">
                                             <option value="pilih">--Permintaan Order--</option>
                                             <!--@foreach($dataPurchaseRequest as $key => $data)
                                             <option id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
@@ -148,7 +147,8 @@ Pembuatan Nota Purchase Order
                                         <option id="namaTag" value="{{$data->ItemTagID}}"{{$data->Name == $data->ItemTagID? 'selected' :'' }}>{{$data->Name}}</option>
                                         @endforeach
                                     </select>-->
-                                    <select  id="barang" class="form-control selectpicker" data-live-search="true" data-show-subtext="true">
+                                    <select class="form-control select2" style="width: 100%;"name="barang" id="barang">
+                                  
                                         <option value="pilih">--Pilih barang--</option>
                                         <!--@foreach($dataBarang as $key => $data)
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
@@ -156,11 +156,22 @@ Pembuatan Nota Purchase Order
                                     </select>
                                     <input id="jumlahBarang" value="1" min="1" max="2"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                                 </div>
+
+                                    <div class="form-group"  id='tax'>
+                                        <select class="form-control select2" style="width: 100%;"name="tax" id="tax">
+                                            <option value="pilih">--Pajak--</option>
+                                            @foreach($dataTax as $key => $data)
+                                            <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
+                                            @endforeach
+                                            
+                                        </select>
+                                      
+                                    </div>
                                  
                                    <div class="form-group mb-3" id="diskon">
                                       <label for="title">Diskon (Rupiah)</label>
                                       <input  type="text" id="tanpa-rupiah-diskon" class="form-control" value="{{old('diskon','')}}" >
-                                      <input type="hidden" id="diskonBarang" value="">
+                                      <input type="hidden" id="diskonBarang" value=0>
                                   </div>
                                                    
                                     <div class="form-group" id="harga">
@@ -257,99 +268,113 @@ Pembuatan Nota Purchase Order
     $('#TotalHargaKeranjang').val(0);
 
 
-    $('body').on('click','.copyKe', function(){
+   
+
+    $(document).ready(function(){
+
+        $("#perusahaanID").on("change",function(){
+                
+            var id = this.value;
+            //alert(id);
+            var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+            //alert(singkatan);
+            var optionnya = '';
+        
+            var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="pilih" selected>--Permintaan Order--</option>\n';
+            $.each(dataPurchaseRequest, function( key, value ){
+               
+                if(value.cidp.toString() == id.toString()){
+                    //alert('masuk'); 
+                     alert("masuk cek");
+                    optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';      
+                    alert(optionnya);         
+                }
+            });
+            
+
+                                
+            $("#pReq").empty();
+            $("#pReq").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+         $("#pReq").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var optionnya = '';
+            //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
+            var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="" selected>--Pilih barang--</option>\n';
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.idPurchaseRequest.toString() == id.toString()){
+                    //alert('masuk');
+                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
+                }
+            });
+            //alert(optionnya);
+            
+                                
+            $("#barang").empty();
+            $("#barang").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+        
+        $("#barang").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.id.toString() == id.toString()){
+                    var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    //alert(maxAngka);
+                    $("#jumlahBarang").attr({
+                        "max" : maxAngka,        
+                        "min" : 1,
+                        "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                        "value" : "",   
+                    }); 
+                }
+            });
+            
+        });
+
+    });
+
+     $('body').on('click','#copyKe', function(){
         //alert($(this).index('.copyKe'));
         var i = $(this).index('.copyKe');
         var idBarang = $('.cekId:eq('+i+')').val();
         //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+        var pajak = $('.cekTax:eq('+i+')').val();//cekTaxValue
+
         var hargaBarang = $('.cekHarga:eq('+i+')').val();
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
+        var diskonBarang = $('.cekDiskon:eq('+i+')').val();
+
         
         $("#barang").val(idBarang);
         $("#jumlahBarang").val(jumlahBarang);
         $("#hargaBarang").val(hargaBarang);
         $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
+        $("#diskonBarang").val(diskonBarang);
+        $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
         $("#keteranganBarang").val(keteranganBarang);
-
-    });
-    
-    $("#perusahaanID").change(function() {
-        //alert(this.value);
-        var id = this.value;
-        var singkatan = $("#perusahaanID option:selected").attr('singkatan');
-        //alert(singkatan);
-        var optionnya = '';
-        //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
-        var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
-
-        //alert('masuk sini');
-        optionnya += '<option value="" selected>--Permintaan Order--</option>\n';
-        $.each(dataPurchaseRequest, function( key, value ){
-            //alert(value.ItemName);
-            if(value.cidp.toString() == id.toString()){
-                //alert('masuk');
-                optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';               
-            }
-        });
-        //alert(optionnya);
-        
-        //alert(optionnya);
-                            
-        $("#pReq").empty();
-        $("#pReq").append(optionnya);
-        $('.selectpicker').selectpicker('refresh');
-
-
-    });
-    //$('body').on('click','#namaTag', function(){
-        
-    //});
-    $("#pReq").change(function() {
-        //alert(this.value);
-        var id = this.value;
-        var optionnya = '';
-        //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
-        var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
-
-        //alert('masuk sini');
-        optionnya += '<option value="" selected>--Pilih barang--</option>\n';
-        $.each(dataPurchaseRequestDetail, function( key, value ){
-            //alert(value.ItemName);
-            if(value.idPurchaseRequest.toString() == id.toString()){
-                //alert('masuk');
-                optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
-            }
-        });
-        //alert(optionnya);
-        
-        //alert(optionnya);
-                            
-        $("#barang").empty();
-        $("#barang").append(optionnya);
-        $('.selectpicker').selectpicker('refresh');
-    });
-
-    $("#barang").change(function() {
-        //alert(this.value);
-        var id = this.value;
-        var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
-
-        $.each(dataPurchaseRequestDetail, function( key, value ){
-            //alert(value.ItemName);
-            if(value.id.toString() == id.toString()){
-                var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
-                //alert(maxAngka);
-                $("#jumlahBarang").attr({
-                    "max" : maxAngka,        
-                    "min" : 1,
-                    "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
-                    "value" : "",   
-                }); 
-            }
-        });
+        $("#tax").val(pajak).change();
+        $("#barang").val(idBarang).change();
         
     });
+
+
 
     $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
@@ -423,12 +448,14 @@ Pembuatan Nota Purchase Order
                 "value" : "",         
             }); 
 
-            var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').val());
-            alert(totalHargaKeranjang);
-            totalHargaKeranjang += ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
-            alert(totalHargaKeranjang);
-            $('#TotalHargaKeranjang').html(totalHargaKeranjang);
-            $('#TotalHargaKeranjang').val(totalHargaKeranjang);
+
+
+            
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+        
+            totalHarga= ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
 
         }
         else{
@@ -449,7 +476,7 @@ Pembuatan Nota Purchase Order
             htmlKeranjang += '<small class="text-muted taxVal" value="'+taxPercent+'">Pajak: '+taxPercent+'%</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="'+ ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0+'">Rp. '+ ((hargaBarang * jumlahBarang) - diskonBarang) * (100.0+taxPercent) / 100.0+',-</strong>\n';
+            htmlKeranjang += '<strong class="hargaVal" value="'+ ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0+'">Rp. '+ ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0+',-</strong>\n';
             htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
             htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
             htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
@@ -477,12 +504,18 @@ Pembuatan Nota Purchase Order
                 "value" : "",         
             }); 
 
-            var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').val());
+            /*var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').val());
             alert(totalHargaKeranjang);
             totalHargaKeranjang += ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
             alert(totalHargaKeranjang);
             $('#TotalHargaKeranjang').html(totalHargaKeranjang);
-            $('#TotalHargaKeranjang').val(totalHargaKeranjang);
+            $('#TotalHargaKeranjang').val(totalHargaKeranjang);*/
+
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+        
+            totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
         }
         
 
