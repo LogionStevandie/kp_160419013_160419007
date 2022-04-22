@@ -7,13 +7,13 @@
 @endif
 
 @section('judul')
-Purchase Order
+Transaksi Gudang Barang
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Pembuatan Permintaan</li>
-<li class="breadcrumb-item active">Purchase-Order</li>
+<li class="breadcrumb-item">Nota</li>
+<li class="breadcrumb-item active">Transaksi Gudang Barang</li>
 @endsection
 
 @section('content')
@@ -22,7 +22,7 @@ Purchase Order
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">List-Purchase Order</h3>
+                    <h3 class="card-title">List-Transaksi Gudang Barang</h3>
                     
                     <a href="{{route('purchaseOrder.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Purchase Order
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -35,11 +35,14 @@ Purchase Order
                     <table id="example1" class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                              <th scope="col">#</th>
-                              <th scope="col">Nama</th>
-                               <th scope="col">Proses</th>
-                              <th scope="col">Status Approved</th>
-                              <th scope="col">Handle</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Tanggal Dibuat</th>
+                                <th scope="col">Tanggal Keluar/Masuk Barang</th>
+                                <th scope="col">Jenis Transaksi</th>
+                                <th scope="col">Jenis Proses</th>
+                                <th scope="col">Gudang</th><!-- Gudang Awal-->
+                                <th scope="col">Handle</th>
                             </tr>
                           </thead>
                          <tbody>
@@ -49,11 +52,9 @@ Purchase Order
                               <td>{{$purchaseOrder->name}}</td>
                               <td>{{$purchaseOrder->proses}}</td>
                               @if($purchaseOrder->approved==0)
-                              <td>Pending</td>
-                              @elseif($purchaseOrder->approved==1)
-                              <td>Approved</td>
-                              @elseif($purchaseOrder->approved==2)
                               <td>Not Approved</td>
+                              @else
+                              <td>Approved</td>
                               @endif
                             
                             <td>  
@@ -78,11 +79,14 @@ Purchase Order
                           </tbody>
                         <tfoot>
                             <tr>
-                             <th scope="col">#</th>
-                              <th scope="col">Nama</th>
-                               <th scope="col">Proses</th>
-                              <th scope="col">Status Approved</th>
-                              <th scope="col">Handle</th>
+                                <th scope="col">#</th>
+                                <th scope="col">Nama</th>
+                                <th scope="col">Tanggal Dibuat</th>
+                                <th scope="col">Tanggal Keluar/Masuk Barang</th>
+                                <th scope="col">Jenis Transaksi</th>
+                                <th scope="col">Jenis Proses</th>
+                                <th scope="col">Gudang</th><!-- Gudang Awal-->
+                                <th scope="col">Handle</th>
                             </tr>
                         </tfoot>
                     </table>

@@ -113,5 +113,9 @@ Route::resource('purchaseRequest', 'App\Http\Controllers\PurchaseRequestControll
 //Route::get('purchaseRequest/pdf/{purchaseRequest}',[App\Http\Controllers\PurchaseRequestController::class, 'pdf']);
 //approve purchase request
 Route::resource('approvedPurchaseRequest', 'App\Http\Controllers\ApprovedPRController');
+Route::resource('approvedPurchaseOrder', 'App\Http\Controllers\ApprovedPOController');
 //Purchase Order 
 Route::resource('purchaseOrder', 'App\Http\Controllers\PurchaseOrderController');
+
+//transactionGudangBarang
+Route::resource('transactionGudang','App\Http\Controllers\TransactionGudangBarangController');

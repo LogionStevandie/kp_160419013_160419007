@@ -8,13 +8,13 @@
 @endif
 
 @section('judul')
-Persetujuan Pembelian
+Persetujuan Order
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Persetujuan Pembelian</li>
-<li class="breadcrumb-item"><a href="{{route('approvedPurchaseRequest.index')}}">Permintaan Pembelian</a></li>
+<li class="breadcrumb-item">Persetujuan Order</li>
+<li class="breadcrumb-item"><a href="{{route('approvedPurchaseOrder.index')}}">Purchase Order</li>
 <li class="breadcrumb-item active">Approve</li>
 @endsection
 
@@ -25,7 +25,7 @@ Persetujuan Pembelian
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-    <form method="POST" action="{{route('approvedPurchaseRequest.update',[$purchaseRequest->id])}}" >
+    <form method="POST" action="{{route('approvedPurchaseOrder.update',[$purchaseOrder->id])}}" >
         @csrf
         @method('PUT')
         <div class="card-body">
@@ -33,11 +33,10 @@ Persetujuan Pembelian
                             <table class="table table-bordered">
                                 <thead class="thead-light">
                                     <tr>
-                                    <th scope="col" colspan="3"><h2>PERSETUJUAN PERMINTAAN PEMBELIAN</h2></th>
+                                    <th scope="col" colspan="3"><h2>PERSETUJUAN PURCHASE ORDER</h2></th>
                                     <th scope="col" colspan="3">
-                                        Nama Npp : {{$purchaseRequest->name}}<br>
-                                        Tanggal pembuatan : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDibuat))}}
-
+                                        Nama PO : {{$purchaseOrder->name}}<br>
+                                        Tanggal pembuatan : {{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}
                                     </th>
                                     </tr>
                                 </thead>
@@ -62,6 +61,8 @@ Persetujuan Pembelian
                                         <th scope="col">Nama Barang</th>
                                         <th scope="col">Jumlah</th>
                                         <th scope="col">Harga</th>
+                                        <th scope="col">Diskon</th>
+                                        <th scope="col">Pajak</th>
                                         <th scope="col">Keterangan</th>
                                         <th scope="col">Total Harga</th>
                                     </tr>
@@ -120,5 +121,6 @@ $('body').on("click", "#tdkSetuju", function (){
 
         $("#ket").show();
 });
+
 </script>
 @endsection

@@ -32,21 +32,29 @@ class ApprovedPRController extends Controller
             ->get();
         $prKeluar = null;
         if(count($kepalaGudang)>0){
+            $arrkepala = array();
+            foreach($kepalaGudang as $val){
+                array_push($arrkepala, $val->MGudangID);
+            }
             $prKeluar= DB::table('purchase_request')
                 ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
                 ->where('approved',0)
                 ->where('hapus',0)
-                ->where('purchase_request.MGudangID',$user->MGudangID)
+                ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->paginate(10);
             //->get();
         }
         else if(count($managerPerusahaan1)>0){
+            $arrmanager = array();
+            foreach($managerPerusahaan1 as $val){
+                array_push($arrmanager, $val->MPerusahaanID);
+            }
             $prKeluar= DB::table('purchase_request')
                 ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
                 ->where('approved',1)
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
-                ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
+                ->whereIn('MGudang.MPerusahaanID', $arrmanager)
                 ->paginate(10);
             //->get();
         }
@@ -209,22 +217,30 @@ class ApprovedPRController extends Controller
             ->get();
         $prKeluar = null;
         if(count($kepalaGudang)>0){
+            $arrkepala = array();
+            foreach($kepalaGudang as $val){
+                array_push($arrkepala, $val->MGudangID);
+            }
             $prKeluar= DB::table('purchase_request')
                 ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
                 ->where('approved',0)
                 ->where('hapus',0)
-                ->where('purchase_request.MGudangID',$user->MGudangID)
+                ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->paginate(10);
             //->get();
         }
         else if(count($managerPerusahaan1)>0){
+            $arrmanager = array();
+            foreach($managerPerusahaan1 as $val){
+                array_push($arrmanager, $val->MPerusahaanID);
+            }
             $prKeluar= DB::table('purchase_request')
                 ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
                 ->where('approved',1)
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
-                ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
+                ->whereIn('MGudang.MPerusahaanID', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->paginate(10);
             //->get();
@@ -254,22 +270,30 @@ class ApprovedPRController extends Controller
             ->get();
         $prKeluar = null;
         if(count($kepalaGudang)>0){
+            $arrkepala = array();
+            foreach($kepalaGudang as $val){
+                array_push($arrkepala, $val->MGudangID);
+            }
             $prKeluar= DB::table('purchase_request')
                 ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
                 ->where('approved',0)
                 ->where('hapus',0)
-                ->where('purchase_request.MGudangID',$user->MGudangID)
+                ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
                 ->paginate(10);
             //->get();
         }
         else if(count($managerPerusahaan1)>0){
+            $arrmanager = array();
+            foreach($managerPerusahaan1 as $val){
+                array_push($arrmanager, $val->MPerusahaanID);
+            }
             $prKeluar= DB::table('purchase_request')
                 ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
                 ->where('approved',1)
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
-                ->where('MGudang.MPerusahaanID', $managerPerusahaan1->MPerusahaanID)
+                ->whereIn('MGudang.MPerusahaanID', $arrmanager)
                 ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
                 ->paginate(10);
             //->get();

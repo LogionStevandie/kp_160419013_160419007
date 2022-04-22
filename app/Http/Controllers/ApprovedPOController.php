@@ -29,20 +29,26 @@ class ApprovedPOController extends Controller
 
         $poKeluar = null;
         //belum
+        $arrPerusahaan = array();
+        foreach($managerPerusahaan2 as $val){
+            array_push($arrPerusahaan, $val->MPerusahaanID);
+        }
+        //dd($arrPerusahaan);
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
                 ->where('approved',0)
                 ->where('hapus',0)
-                ->where('MPerusahaanID', $managerPerusahaan2->MPerusahaanID)
-                ->get();
+                ->whereIn('MPerusahaanID', $arrPerusahaan)
+                ->paginate(10);
         }
+        //dd($poKeluar);
         $pod = DB::table('purchase_order_detail')
             ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
-            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
-            ->join('Tax','purchase_order_detail.TaxID','=','Tax.TaxID')
-            ->paginate(10);
-            //->get();
+            ->join('Tax','purchase_order_detail.idTax','=','Tax.TaxID')
+            //->paginate(10);
+            ->get();
         
         return view('master.approved.PurchaseOrder.index',[
             'poKeluar' => $poKeluar,
@@ -95,9 +101,9 @@ class ApprovedPOController extends Controller
             ->get();
         $pod = DB::table('purchase_order_detail')
             ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
-            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
-            ->join('Tax','purchase_order_detail.TaxID','=','Tax.TaxID')
+            ->join('Tax','purchase_order_detail.idTax','=','Tax.TaxID')
             ->get();
         //dd($approvedPurchaseRequest['id']);
         return view('master.approved.PurchaseOrder.approve',[
@@ -160,7 +166,7 @@ class ApprovedPOController extends Controller
 
         }
 
-        return redirect()->route('approvedPurchaseRequest.index')->with('status','Success!!');
+        return redirect()->route('approvedPurchaseOrder.index')->with('status','Success!!');
     }
 
     /**
@@ -184,21 +190,25 @@ class ApprovedPOController extends Controller
             ->get();
 
         $poKeluar = null;
+        $arrPerusahaan = array();
+        foreach($managerPerusahaan2 as $val){
+            array_push($arrPerusahaan, $val->MPerusahaanID);
+        }
         //belum
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
                 ->where('approved',0)
                 ->where('hapus',0)
-                ->where('MPerusahaanID', $managerPerusahaan2->MPerusahaanID)
+                ->whereIn('MPerusahaanID', $arrPerusahaan)
                 ->where('name','like', '%'.$name.'%')
                 ->paginate(10);
             //->get();
         }
         $pod = DB::table('purchase_order_detail')
             ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
-            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
-            ->join('Unit','Item.UnitID','=','Unit.UnitID')
-            ->join('Tax','purchase_order_detail.TaxID','=','Tax.TaxID')
+            ->leftjoin('Item','purchase_order_detail.idItem','=','Item.ItemID')
+            ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
+            ->leftjoin('Tax','purchase_order_detail.idTax','=','Tax.TaxID')
             ->get();
         
         return view('master.approved.PurchaseOrder.index',[
@@ -218,21 +228,25 @@ class ApprovedPOController extends Controller
             ->get();
 
         $poKeluar = null;
+        $arrPerusahaan = array();
+        foreach($managerPerusahaan2 as $val){
+            array_push($arrPerusahaan, $val->MPerusahaanID);
+        }
         //belum
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
                 ->where('approved',0)
                 ->where('hapus',0)
-                ->where('MPerusahaanID', $managerPerusahaan2->MPerusahaanID)
+                ->whereIn('MPerusahaanID', $arrPerusahaan)
                 ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
                 ->paginate(10);
             //->get();
         }
         $pod = DB::table('purchase_order_detail')
             ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
-            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
-            ->join('Tax','purchase_order_detail.TaxID','=','Tax.TaxID')
+            ->join('Tax','purchase_order_detail.idTax','=','Tax.TaxID')
             ->get();
         
         return view('master.approved.PurchaseOrder.index',[

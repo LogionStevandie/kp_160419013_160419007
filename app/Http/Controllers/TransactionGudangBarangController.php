@@ -33,7 +33,7 @@ class TransactionGudangBarangController extends Controller
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
-        return view('master.transactionGudang.index',[
+        return view('master.note.transactionGudang.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);
@@ -126,7 +126,7 @@ class TransactionGudangBarangController extends Controller
 
         
 
-        return view('master.transactionGudang.tambah',[
+        return view('master.note.transactionGudang.tambah',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
@@ -369,7 +369,7 @@ class TransactionGudangBarangController extends Controller
             ->where('purchase_request.proses', 1)
             ->get();
 
-        return view('master.transactionGudang.detail',[
+        return view('master.note.transactionGudang.detail',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
@@ -472,7 +472,7 @@ class TransactionGudangBarangController extends Controller
             ->where('purchase_request.proses', 1)
             ->get();
 
-        return view('master.transactionGudang.edit',[
+        return view('master.note.transactionGudang.edit',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
@@ -654,7 +654,7 @@ class TransactionGudangBarangController extends Controller
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
-        return view('master.transactionGudang.index',[
+        return view('master.note.transactionGudang.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);
@@ -677,7 +677,7 @@ class TransactionGudangBarangController extends Controller
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
-        return view('master.transactionGudang.index',[
+        return view('master.note.transactionGudang.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);

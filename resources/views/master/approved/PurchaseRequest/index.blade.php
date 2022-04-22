@@ -8,7 +8,7 @@
 @endif
 
 @section('judul')
-Permintaan Pembelian
+Persetujuan Pembelian
 @endsection
 
 @section('pathjudul')
@@ -44,15 +44,19 @@ Permintaan Pembelian
                                 <th scope="row" name='id'>{{$purchaseRequest->id}}</th>
                                 <td>{{$purchaseRequest->name}}</td>
                                 @if($purchaseRequest->approved==0)
-                                <td>Not Approved</td>
-                                @else
+                                <td>Pending</td>
+                                @elseif($purchaseRequest->approved==1)
                                 <td>Approved</td>
+                                @elseif($purchaseRequest->approved==2)
+                                <td>Not Approved</td>
                                 @endif
 
                                 @if($purchaseRequest->approvedAkhir==0)
-                                <td>Not Approved</td>
-                                @else
+                                <td>Pending</td>
+                                @elseif($purchaseRequest->approvedAkhir==1)
                                 <td>Approved</td>
+                                @elseif($purchaseRequest->approvedAkhir==2)
+                                <td>Not Approved</td>
                                 @endif
                                 <td>  
                                 <a href="{{route('approvedPurchaseRequest.edit',[$purchaseRequest->id])}}" class="btn btn-primary btn-responsive">Approve</a>
