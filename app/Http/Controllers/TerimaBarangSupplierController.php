@@ -51,8 +51,6 @@ class TerimaBarangSupplierController extends Controller
     public function create()
     {
         //
-        
-        //
         $user = Auth::user();
 
         $dataSupplier = DB::table('MSupplier')

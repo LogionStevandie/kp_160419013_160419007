@@ -197,14 +197,22 @@ class TerimaBarangPesananController extends Controller
         for($i = 0; $i < count($data['itemId']); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
                 'transactionID' => $idpo,
-                'purchaseOrderDetailID' => $data['podID'][$i],
+                //'purchaseOrderDetailID' => $data['podID'][$i],
+                'PurchaseRequestID' => $data['prdID'][$i],
                 'idItem' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
                 'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
                 )
-            );           
-
+            ); 
+            $totalNow = DB::table('purchase_request_detail')->select('jumlah', 'jumlahDiterima')->where('id', $data['prdID'][$i])->get();
+            DB::table('purchase_request_detail')
+                ->where('id',$data['prdID'][$i])
+                ->update(array(
+                    'jumlahDiterima' => $totalNow[0]->jumlahDiterima + $data['itemJumlah'][$i],  
+                )
+            );
+ 
             $dataItem = DB::table('Item')
                 ->select('Unit.Name as unit')
                 ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
@@ -455,9 +463,17 @@ class TerimaBarangPesananController extends Controller
             ->get();
 
         $dataDetailTotal = DB::table('transaction_gudang_barang_detail')
-            ->where('idPurchaseOrder', $purchaseOrder->id)
+            ->where('PurchaseRequestID', $data['PurchaseRequestID'])
             ->get();
 
+        foreach($dataDetailTotal as $data){
+            DB::table('purchase_request_detail')
+            ->where('id', $data['PurchaseRequestDetailID'])
+            ->update([
+                'jumlahProses' => DB::raw('jumlahProses' - $data['jumlah']),
+            ]);
+        } 
+         
         DB::table('transaction_gudang_barang_detail')
             ->where('transactionID', $transactionGudangBarang->id)
             ->delete();
@@ -465,13 +481,22 @@ class TerimaBarangPesananController extends Controller
         for($i = 0; $i < count($data['itemId']); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
                 'transactionID' => $idpo,
-                'purchaseOrderDetailID' => $data['podID'][$i],
+                'purchaseRequestDetailID' => $data['prdID'][$i],
                 'idItem' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
                 'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
                 )
             );  
+
+            $totalNow = DB::table('purchase_request_detail')->select('jumlah', 'jumlahDiterima')->where('id', $data['prdID'][$i])->get();
+            DB::table('purchase_request_detail')
+                ->where('id',$data['prdID'][$i])
+                ->update(array(
+                    'jumlahDiterima' => $totalNow[0]->jumlahDiterima + $data['itemJumlah'][$i],  
+                )
+            );
+
             $dataItem = DB::table('Item')
                 ->select('Unit.Name as unit')
                 ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
@@ -533,6 +558,7 @@ class TerimaBarangPesananController extends Controller
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
             ->whereNotNull('SupplierID')
+            ->where('isMenerima',1)
             ->where('transaction_gudang_barang.name','like','%'.$name.'%')
             ->where('MGudangIDAwal',$user->MGudangID)
             ->orWhere('MGudangIDTujuan',$user->MGudangID)
@@ -557,6 +583,7 @@ class TerimaBarangPesananController extends Controller
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
             ->whereNotNull('SupplierID')
+            ->where('isMenerima',1)
             ->whereBetween('transaction_gudang_barang.tanggalDibuat',[$date[0], $date[1]])
             ->where('MGudangIDAwal',$user->MGudangID)
             ->orWhere('MGudangIDTujuan',$user->MGudangID)
