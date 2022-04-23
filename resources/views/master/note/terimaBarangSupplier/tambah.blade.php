@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Pembuatan Nota Purchase Order
+Pembuatan Terima Barang Supplier
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Nota-Purchase-Order</a></li>
+<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Terima Barang Supplier</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -39,20 +39,42 @@ Pembuatan Nota Purchase Order
                   <div class="py-5 ">
                      
                         <div class="row">
-                              <div class="col-md-6 mb-3"> 
+                        <div class="col-md-6 mb-3"> 
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" required="">
+                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="" required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
+                              <div class="col-md-6 mb-3"> 
+                                  <label for="lastName">Tanggal Datang</label>
+                                  <input name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="" required="">
+                                  <div class="invalid-feedback"> Valid last name is required. </div>
+                              </div>
+
                               <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for="lastName">Pilih Perusahaan</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="perusahaanID" name="perusahaan">
+                                    <label for="lastName">Pilih Gudang Tujuan</label> 
+                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="MGudangIDTujuan">
                                       <option value="">
-                                            --Pilih Perusahaan--
+                                            --Pilih Gudang--
                                         </option>
-                                        @foreach($dataPerusahaan as $key => $data)
-                                            <option name="idPerusahaan" singkatan="{{$data->cnames}}" value="{{$data->MPerusahaanID}}"{{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}} ({{$data->cnames}})</option>
+                                        @foreach($dataGudang as $key => $data)
+                                            <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                        @endforeach
+                                
+                                    </select>
+                                    </div>
+                                 
+                              </div>
+
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for="lastName">Pilih Supplier</label> 
+                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="Supplier">
+                                      <option value="">
+                                            --Pilih Supplier--
+                                        </option>
+                                        @foreach($dataSupplier as $key => $data)
+                                            <option name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
                                         @endforeach
                                 
                                     </select>
@@ -60,62 +82,58 @@ Pembuatan Nota Purchase Order
                                  
                               </div>
                            
-                              <div class="col-md-6 mb-3">
-                                  <label for="lastName">Tanggal Batas Akhir</label>
-                                  <input type="date" name="tanggal_akhir" class="form-control" id="lastName" placeholder="" value="{{old('tanggalAkhir','')}}" required="">
-                                  <div class="invalid-feedback"> Valid last name is required. </div>
-                              </div>
                               <div class="col-md-6">
                                     <div class="form-group">
-                                   <label for="lastName">Cara Pembayaran</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="paymentTerms">
+                                   <label for="lastName">Jenis Transaksi</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
                                       <option value="">
-                                          --Pilih Cara Pembayaran--
+                                          --Pilih Jenis Transaksi--
                                       </option>
-                                      @foreach($dataPayment as $key => $data)
-                                          <option name="idPaymentTerms" value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}} ({{$data->PaymentName}})</option>
+                                      @foreach($dataItemTransaction as $key => $data)
+                                          <option name="idItemTransaction" value="{{$data->ItemTransactionID}}"{{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
                                       @endforeach
                                 
                                     </select>
                                     </div>
                                  
-                              </div>
-                          
-                              <div class="col-md-6 mb-3">
-                                <div class="form-group">
-                                  <label for="lastName">Supplier</label> 
-                                  <select name="supplier" class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;">
-                                      <option value="">
-                                          --Pilih Supplier--
-                                      </option>
-                                      @foreach($dataSupplier as $key => $data)
-                                          <option name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
-                                      @endforeach
-                                  </select>
-                                  </div>
-                              </div>
-
-                      
+                               </div>
+                                        
 
                                <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Lokasi</label>
-                                  <textarea rows="3"  type="text" name="keteranganLokasi" class="form-control" value="{{old('keteranganLokasi','')}}" ></textarea>
+                                  <label for="lastName">Keterangan Kendaraan</label>
+                                  <textarea rows="3"  type="text" name="keteranganKendaraan" class="form-control" value="{{old('keteranganLokasi','')}}" ></textarea>
                               </div>
 
                               <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Pembayaran</label>
-                                  <textarea rows="3"  type="text" name="keteranganPembayaran" class="form-control" value="{{old('keteranganPembayaran','')}}" ></textarea>
+                                  <label for="lastName">Keterangan Nomor Polisi</label>
+                                  <textarea rows="3"  type="text" name="keteranganNomorPolisi" class="form-control" value="{{old('keteranganPembayaran','')}}" ></textarea>
                               </div>
 
                               <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Penagihan</label>
-                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
+                                  <label for="lastName">Keterangan Pemudi</label>
+                                  <textarea rows="3"  type="text" name="keteranganPemudi" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
                               </div>
-                         
 
-                        
-                              
-                          </div>     
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Transaksi</label>
+                                  <textarea rows="3"  type="text" name="keteranganTransaksi" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
+                              </div>
+
+                               <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Data Purchase Order</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="poID">
+                                      <option value="">
+                                          --Pilih Purchase Order--
+                                      </option>
+                                      @foreach($dataPurchaseOrder as $key => $data)
+                                          <option id="idPurchaseOrder" name="idPO" value="{{$data->id}}"{{$data->Name == $data->id? 'selected' :'' }}>{{$data->name}}--{{$data->tanggalDibuat}}</option>
+                                      @endforeach  
+                                    </select>
+                                    </div>
+                               </div>
+                                                  
+                        </div>     
                   </div>
                   <!-- Page Heading -->
                     <div class="card card-primary">
@@ -130,23 +148,10 @@ Pembuatan Nota Purchase Order
                                   <div class="card-header">
                                     <h3 class="card-title">Pemilihan Barang</h3>
                                   </div>
-                                  <div class="card-body">
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="paymentTerms" id="pReq">
-                                            <option value="pilih">--Permintaan Order--</option>
-                                            <!--@foreach($dataPurchaseRequest as $key => $data)
-                                            <option id="preqID" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
-                                            @endforeach-->
-                                    </select><br>
-                                                    
+                                  <div class="card-body">                                     
                              
                                  <div class="form-group"  id='tmbhBarang'>
                                     <label for="title">Barang</label>
-                                    <!--<select class="form-control selectpicker" id="tag" data-live-search="true">
-                                        <option value="all">Semua Data</option>
-                                        @foreach($dataTag as $key => $data)
-                                        <option id="namaTag" value="{{$data->ItemTagID}}"{{$data->Name == $data->ItemTagID? 'selected' :'' }}>{{$data->Name}}</option>
-                                        @endforeach
-                                    </select>-->
                                     <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
                                   
                                         <option value="pilih">--Pilih barang--</option>
@@ -154,31 +159,8 @@ Pembuatan Nota Purchase Order
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                         @endforeach-->
                                     </select>
-                                    <input id="jumlahBarang" value="1" min="1" max="2"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                    <input id="jumlahBarang" value="1" min="1"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                                 </div>
-
-                                    <div class="form-group"  id='tax'>
-                                        <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="tax" id="tax">
-                                            <option value="pilih">--Pajak--</option>
-                                            @foreach($dataTax as $key => $data)
-                                            <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
-                                            @endforeach
-                                            
-                                        </select>
-                                      
-                                    </div>
-                                 
-                                   <div class="form-group mb-3" id="diskon">
-                                      <label for="title">Diskon (Rupiah)</label>
-                                      <input  type="text" id="tanpa-rupiah-diskon" class="form-control" value="{{old('diskon','')}}" >
-                                      <input type="hidden" id="diskonBarang" value=0>
-                                  </div>
-                                                   
-                                    <div class="form-group" id="harga">
-                                        <label for="Harga">Harga (Rupiah)</label>
-                                        <input  type="text" step=".01" id="tanpa-rupiah" class="form-control" value="{{old('harga','')}}" >
-                                        <input type="hidden" id="hargaBarang" value = "">
-                                    </div>
 
                                     <div class="form-group " id="ket">
                                         <label for="Keterangan">Keterangan</label>
@@ -272,41 +254,40 @@ Pembuatan Nota Purchase Order
 
     $(document).ready(function(){
 
-        $("#perusahaanID").on("change",function(){
+        $("#idPurchaseOrder").on("change",function(){  //sudah
                 
             var id = this.value;
             //alert(id);
-            var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+            //var singkatan = $("#perusahaanID option:selected").attr('singkatan');
             //alert(singkatan);
             var optionnya = '';
         
-            var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
+            var dataPurchaseOrderDetail = <?php echo json_encode($dataPurchaseOrderDetail); ?>;
 
             //alert('masuk sini');
-            optionnya += '<option value="pilih" selected>--Permintaan Order--</option>\n';
-            $.each(dataPurchaseRequest, function( key, value ){
+            optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            $.each(dataPurchaseOrderDetail, function( key, value ){
                
-                if(value.cidp.toString() == id.toString()){
+                if(value.idPurchaseOrder.toString() == id.toString()){
                     //alert('masuk'); 
-                     alert("masuk cek");
-                    optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';      
-                    alert(optionnya);         
+                    //alert("masuk cek");
+                    optionnya += '<option id="namaBarang" harga='+ value.harga +' idPodId='+ value.id +' value="'+value.idItem+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';
+                    //alert(optionnya);         
                 }
             });
-            
-
+        
                                 
-            $("#pReq").empty();
-            $("#pReq").append(optionnya);
+            $("#barang").empty();
+            $("#barang").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
         });
 
-         $("#pReq").change(function() {
+         /*$("#pReq").change(function() {
             //alert(this.value);
             var id = this.value;
             var optionnya = '';
             //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
-            var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
 
             //alert('masuk sini');
             optionnya += '<option value="" selected>--Pilih barang--</option>\n';
@@ -323,13 +304,13 @@ Pembuatan Nota Purchase Order
             $("#barang").empty();
             $("#barang").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
-        });
+        });*/
 
         
-        $("#barang").change(function() {
+        /*$("#barang").change(function() {
             //alert(this.value);
             var id = this.value;
-            var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
 
             $.each(dataPurchaseRequestDetail, function( key, value ){
                 //alert(value.ItemName);
@@ -345,19 +326,16 @@ Pembuatan Nota Purchase Order
                 }
             });
             
-        });
+        });*/
 
     });
 
-     $('body').on('click','#copyKe', function(){
+     $('body').on('click','#copyKe', function(){ //belum
         //alert($(this).index('.copyKe'));
         var i = $(this).index('#copyKe');
         
         var idBarang = $('.cekId:eq('+i+')').val();
-        //var namaBarang = $('.cekJumlah:eq('+i+')').val();
         var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
-        var pajak = $('.cekTax:eq('+i+')').val();//cekTaxValue
-        var prd = $('.cekPrd:eq('+i+')').val();
 
         var hargaBarang = $('.cekHarga:eq('+i+')').val();
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
@@ -398,36 +376,25 @@ Pembuatan Nota Purchase Order
     });
 
     $('body').on('click','#tambahKeranjang', function(){
-        var idPurchaseDetail = $("#barang").val();//
+        var idbarang = $("#barang").val();//
         var namaBarang = $("#barang option:selected").html();//
+        var idpodID = $("#barang option:selected").attr("idPodId");
+        var hargaBarang = $("#barang option:selected").attr("harga");
         var jumlahBarang = parseFloat($("#jumlahBarang").val());//
-        //alert(jumlahBarang);
-        var hargaBarang = parseFloat($("#hargaBarang").val());//
-        //alert(hargaBarang);
-        var diskonBarang = parseFloat($("#diskonBarang").val());//
-        //alert(diskonBarang);
-        //alert(jumlahBarang);
         var keteranganBarang = $("#keteranganBarang").val();//
-        var taxPercent = parseFloat($("#tax option:selected").attr("taxPercent"));
-        var taxId = $("#tax option:selected").val();
-        var idBarang = $("#barang option:selected").attr("idPr");
-        //alert(taxPercent);
+        
         
         var indexSama = null;
         for(let i=0;i<$('.cekId').length;i++){
             if($('.cekId:eq('+i+')').val() == idBarang){
                 if($('.cekHarga:eq('+i+')').val() == hargaBarang){
-                    if($('.cekTax:eq('+i+')').val() == taxId){
-                        if($('.cekDiskon:eq('+i+')').val() == diskonBarang){
-                            if($('.cekPrd:eq('+i+')').val() == idPurchaseDetail){
-                                indexSama = i;
-                            }
-                        }
+                    if($('.cekPod:eq('+i+')').val() == idpodID){
+                        indexSama = i;
                     }
                 }
             }
         }
-        if(idBarang == "" || namaBarang == "--Pilih barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || hargaBarang == 0 || hargaBarang == "" || keteranganBarang == "" || parseFloat(jumlahBarang) > parseFloat($("#jumlahBarang").attr("max")) || taxId == ""){
+        if(idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || hargaBarang == 0 || hargaBarang == "" || keteranganBarang == ""){
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
         }
@@ -441,25 +408,19 @@ Pembuatan Nota Purchase Order
             $('.keteranganVal:eq('+indexSama+')').html($('.cekKeterangan:eq('+indexSama+')').val());
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
 
-            $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ((parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * (parseFloat(hargaBarang)-parseFloat(diskonBarang)))* (100.0+taxPercent) / 100.0)+',-');
-
             var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
             //alert(maxAngka);
-            $("#jumlahBarang").attr({
+            /*$("#jumlahBarang").attr({
                 "max" : maxAngka,        
                 "min" : 0,
                 "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
                 "value" : "",         
-            }); 
-
-
-
-            
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            }); */      
+            //var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
         
-            totalHarga= ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
-            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
-           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+            //totalHarga= ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+           //$('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+           //$('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
 
         }
         else{
@@ -467,20 +428,14 @@ Pembuatan Nota Purchase Order
             htmlKeranjang += '<li class="list-group-item d-flex justify-content-between lh-condensed">\n';
             htmlKeranjang += '<div id="hiddenDiv">\n';
             htmlKeranjang += '<input type="hidden" class="cekId" name="itemId[]" value="'+idBarang+'">\n';
-            htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemTotal[]" value="'+jumlahBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemJumlah[]" value="'+jumlahBarang+'">\n';
             htmlKeranjang += '<input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="'+keteranganBarang+'">\n';
             htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="'+hargaBarang+'">\n';
-            htmlKeranjang += '<input type="hidden" class="cekDiskon" name="itemDiskon[]" value="'+diskonBarang+'">\n';
-            htmlKeranjang += '<input type="hidden" class="cekTax" name="itemTax[]" value="'+taxId+'">\n';
-            htmlKeranjang += '<input type="hidden" class="cekTaxValue" name="itemTaxValue[]" value="'+taxPercent+'">\n';
-            htmlKeranjang += '<input type="hidden" class="cekPrd" name="prdID[]" value="'+idPurchaseDetail+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekPod" name="podID[]" value="'+idPurchaseDetail+'">\n';
             htmlKeranjang += '<h6 class="my-0">'+ namaBarang +'<small class="jumlahVal" value="'+jumlahBarang+'">('+jumlahBarang+')</small> </h6>\n';
             htmlKeranjang += '<small class="text-muted keteranganVal" value="'+keteranganBarang+'">'+keteranganBarang+'</small><br>\n';
-            htmlKeranjang += '<small class="text-muted diskonVal" value="'+diskonBarang+'">Diskon/Item: Rp. '+diskonBarang+',--</small><br>\n';
-            htmlKeranjang += '<small class="text-muted taxVal" value="'+taxPercent+'">Pajak: '+taxPercent+'%</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="'+ ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0+'">Rp. '+ ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0+',-</strong>\n';
             htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
             htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
             htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
@@ -499,14 +454,14 @@ Pembuatan Nota Purchase Order
             $('#totalBarangnya').val(totalTambah);
             $('#totalBarangnya').html(totalTambah);
 
-            var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
+            //var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
             //alert(maxAngka);
-            $("#jumlahBarang").attr({
+            /*$("#jumlahBarang").attr({
                 "max" : maxAngka,        
                 "min" : 0,
                 "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
                 "value" : "",         
-            }); 
+            }); */
 
             /*var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').val());
             alert(totalHargaKeranjang);
@@ -515,57 +470,14 @@ Pembuatan Nota Purchase Order
             $('#TotalHargaKeranjang').html(totalHargaKeranjang);
             $('#TotalHargaKeranjang').val(totalHargaKeranjang);*/
 
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            //var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
         
-            totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
-            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
-           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+            //totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+            //$('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
+           //$('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
         }
         
 
-    });
-
-
-    $("body").on("click", "#tambah", function () {  
-        totalTambah++;
-        tambahCombo +='<div class="form-group p-3 mb-2 bg-light text-dark border" id="tmbhBarangJasa'+totalTambah+'">\n';
-        tambahCombo +='<input type="hidden" name="totalRequest[]">\n';
-        tambahCombo += '<div class="form-group" id="tmbhBarang">\n';
-        tambahCombo += '<label for="title">Barang</label>\n';
-        tambahCombo += '<select require name="barang[]" class="form-control" id="barang'+totalTambah+'">\n';
-        tambahCombo += '<option value="">--Pilih barang--</option>\n';
-        tambahCombo += '@foreach($dataBarang as $key => $data)\n';
-        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
-        tambahCombo += '@endforeach\n';
-        tambahCombo += '</select>\n';
-        tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';
-        tambahCombo += '<br id="br">\n';
-        tambahCombo +='</div>\n';
-        //tambahCombo +='<div class="form-group" id="total'+totalTambah+'">\n';
-        //tambahCombo +='<label for="title">Total</label>\n';
-        //tambahCombo +='<input require type="number" name="total[]" class="form-control">\n';
-        //tambahCombo +='</div>\n';
-        tambahCombo +='<div class="form-group" id="harga'+totalTambah+'">\n';
-        tambahCombo +='<label for="title">Harga</label>\n';
-        tambahCombo +='<input require type="number" name="harga[]" class="form-control">\n';
-        tambahCombo +='</div>\n';
-        tambahCombo +='<div class="form-group" id="ket'+totalTambah+'">\n';
-        tambahCombo +='<label for="title">Keterangan</label>\n';
-        tambahCombo +='<input require type="text" name="Keterangan[]" class="form-control" >\n';
-        tambahCombo +='</div>\n';
-        tambahCombo +='</div>';
-        
-        $('#totalRequest').append(tambahCombo);
-        tambahCombo = "";
-    });
-    $("body").on("click", "#kurang", function () {
-        //$('#barang'+ totalTambah).remove();//i
-        //$('#jml'+ totalTambah).remove();//i
-        //$('#br'+ totalTambah).remove();//i
-        $('#tmbhBarangJasa'+ totalTambah).remove();//i
-        if(totalTambah > 0){
-            totalTambah--;
-        }  
     });
 
     /* Tanpa Rupiah */

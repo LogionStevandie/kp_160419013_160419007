@@ -48,6 +48,7 @@ Surat Jalan
                             @foreach($data as $data)
                             <tr >
                             <th scope="row" name='id'>{{$data->id}}</th>
+                            <td>{{$data->name}}</td>
                             <td>{{$data->tanggalDibuat}}</td>
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $data->MGudangIDAwal)

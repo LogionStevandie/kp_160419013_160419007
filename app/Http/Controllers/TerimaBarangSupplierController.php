@@ -27,7 +27,7 @@ class TerimaBarangSupplierController extends Controller
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
-            ->whereNotNull('SupplierID')
+            ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->where('MGudangIDAwal',$user->MGudangID)
             ->orWhere('MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
@@ -36,7 +36,7 @@ class TerimaBarangSupplierController extends Controller
             ->get();
         $dataGudang = DB::table('MGudang')
             ->get();
-        return view('master.note.transactionGudang.index',[
+        return view('master.note.terimaBarangSupplier.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
             'dataGudang' => $dataGudang,
@@ -80,7 +80,7 @@ class TerimaBarangSupplierController extends Controller
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
             ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=','purchase_order.id')
-            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
@@ -98,7 +98,7 @@ class TerimaBarangSupplierController extends Controller
         $dataGudang = DB::table("MGudang")->get();
         $dataItemTransaction = DB::table("ItemTransaction")->get();
 
-        return view('master.note.transactionGudang.tambah',[
+        return view('master.note.terimaBarangSupplier.tambah',[
             'dataSupplier' => $dataSupplier,
             'dataGudang' => $dataGudang,
             'dataItemTransaction' => $dataItemTransaction,
@@ -157,6 +157,7 @@ class TerimaBarangSupplierController extends Controller
             'isMenerima' => 1,  
             'SupplierID' => $data['Supplier'],  
             'MGudangIDTujuan' => $data['MGudangIDTujuan'],  
+            'PurchaseOrderID' => $data['poID'],  
             'hapus' => 0,  
             'created_by'=> $user->id,
             'created_on'=> date("Y-m-d h:i:sa"),
@@ -185,7 +186,7 @@ class TerimaBarangSupplierController extends Controller
         for($i = 0; $i < count($data['itemId']); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
                 'transactionID' => $idtransaksigudang,
-                'purchaseOrderDetailID' => $data['podID'][$i],
+                'purchaseOrderDetailID' => $data['podID'][$i],//didapet dari variabel yang disimpen di itemnya(combobox item)
                 'idItem' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
@@ -227,7 +228,7 @@ class TerimaBarangSupplierController extends Controller
             );
                      
         }
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('terimaBarangSupplier.index')->with('status','Success!!');
     
     }
 
@@ -287,7 +288,7 @@ class TerimaBarangSupplierController extends Controller
             ->get();
 
 
-        return view('master.note.transactionGudang.detail',[
+        return view('master.note.terimaBarangSupplier.detail',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
@@ -355,7 +356,7 @@ class TerimaBarangSupplierController extends Controller
             ->where('purchase_order.proses', 1)
             ->get();
 
-        return view('master.note.transactionGudang.edit',[
+        return view('master.note.terimaBarangSupplier.edit',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
@@ -482,7 +483,7 @@ class TerimaBarangSupplierController extends Controller
             );          
         }
 
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('terimaBarangSupplier.index')->with('status','Success!!');
     
     }
 
@@ -506,7 +507,7 @@ class TerimaBarangSupplierController extends Controller
                 'Hapus' => 1,
         ));
 
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('terimaBarangSupplier.index')->with('status','Success!!');
     
     }
 
@@ -527,7 +528,7 @@ class TerimaBarangSupplierController extends Controller
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
-        return view('master.note.transactionGudang.index',[
+        return view('master.note.terimaBarangSupplier.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);
@@ -551,7 +552,7 @@ class TerimaBarangSupplierController extends Controller
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
-        return view('master.note.transactionGudang.index',[
+        return view('master.note.terimaBarangSupplier.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
         ]);
