@@ -569,49 +569,87 @@
             </ul>
           </li>
 
-          <!--PembuatanNotaTransaksiGudang-->
-          <li class="nav-header">NOTA TRANSAKSI GUDANG</li>
+          <li class="nav-header">PEMBUATAN NOTA</li>
           <li class="nav-item">
-            <a href="{{route('transactionGudang.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-columns"></i>
-              <p>
-                Nota Transaksi Gudang
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>Nota
+                <i class="fas fa-angle-left right"></i>
               </p>
             </a>
-          </li>
-          <!-- END PembuatanNotaTransaksiGudang-->
-          <!--PembuatansURATJALAN-->
-          <li class="nav-header">NOTA SURAT JALAN</li>
-          <li class="nav-item">
-            <a href="{{route('suratJalan.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-columns"></i>
-              <p>
-                Nota Surat Jalan
-              </p>
-            </a>
-          </li>
-          <!-- END PembuatansURATJALAN-->
+            <ul class="nav nav-treeview">
+            
+                <li class="nav-item">
+                  <a href="{{route('transactionGudang.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                      Transaksi Gudang
+                    </p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="{{route('kirimBarangPesanan.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                       Kirim  Pesanan
+                    </p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="{{route('terimaBarangPesanan.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                      Terima  Pesanan
+                    </p>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a href="{{route('terimaBarangSupplier.index')}}" class="nav-link">
+                    <i class="nav-icon fas fa-columns"></i>
+                    <p>
+                        Terima Barang Supplier
+                    </p>
+                  </a>
+                </li>
 
 
-          <!--Permintaan-->
-          <li class="nav-header">PERMINTAAN PEMBELIAN</li>
-          <li class="nav-item">
-            <a href="{{route('purchaseRequest.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-columns"></i>
-              <p>
-                Nota Permintaan Pembelian
-              </p>
-            </a>
+                  <li class="nav-item">
+                    <a href="{{route('suratJalan.index')}}" class="nav-link">
+                      <i class="nav-icon fas fa-columns"></i>
+                      <p>
+                        Surat Jalan
+                      </p>
+                    </a>
+                  </li>
+
+                    <li class="nav-item">
+                      <a href="{{route('purchaseRequest.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-columns"></i>
+                        <p>
+                         Permintaan Pembelian
+                        </p>
+                      </a>
+                    </li>
+
+                      <li class="nav-item">
+                        <a href="{{route('purchaseOrder.index')}}" class="nav-link">
+                          <i class="nav-icon fas fa-columns"></i>
+                          <p>
+                            Purchase Order
+                          </p>
+                        </a>
+                      </li>
+              
+            </ul>
           </li>
-          <li class="nav-item">
-            <a href="{{route('purchaseOrder.index')}}" class="nav-link">
-              <i class="nav-icon fas fa-columns"></i>
-              <p>
-                Nota Purchase Order
-              </p>
-            </a>
-          </li>
-          <!-- END Permintaan-->
+
+       
+
+
+     
 
           
           <!--Permintaan-->

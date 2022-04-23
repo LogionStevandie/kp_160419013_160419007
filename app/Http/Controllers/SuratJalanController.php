@@ -86,7 +86,7 @@ class SuratJalanController extends Controller
         //dd($dataBarangTag);
         $dataTag = DB::table('ItemTag')
             ->get();
-        
+         $date = date("Y-m-d");
         return view('master.note.suratJalan.tambah',[
             'dataGudang' => $dataGudang,
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
@@ -94,6 +94,7 @@ class SuratJalanController extends Controller
             'dataBarang' => $dataBarang,
             'dataBarangTag' => $dataBarangTag,
             'dataTag' => $dataTag,
+            'date' => $date,
         ]);
     }
 
