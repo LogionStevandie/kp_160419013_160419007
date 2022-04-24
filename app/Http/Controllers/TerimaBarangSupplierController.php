@@ -28,9 +28,10 @@ class TerimaBarangSupplierController extends Controller
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
             ->whereNotNull('transaction_gudang_barang.SupplierID')
-            ->where('MGudangIDAwal',$user->MGudangID)
-            ->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
+        //dd($data);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
@@ -131,14 +132,11 @@ class TerimaBarangSupplierController extends Controller
             ->select('MKota.*','MPerusahaan.cnames as perusahaanCode')
             ->join('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->where('MGudang.MGudangID', '=', $data['MGudangIDTujuan'])
             ->get();
-        /*$dataLokasiPerusahaan = DB::table('MPerusahaan')
-            ->where("MPerusahaanID", $data['perusahaan'])
-            ->get();*/
         
         $dataItemTransaction = DB::table('ItemTransaction')->where('ItemTransactionID',$data['ItemTransaction'])->get();
-        $dataPo = DB::table('purchase_order')
+        $dataPo = DB::table('transaction_gudang_barang')
             ->where('name', 'like', $dataItemTransaction[0]->Code.'/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/%")
             ->get();
         
@@ -159,27 +157,26 @@ class TerimaBarangSupplierController extends Controller
             'MGudangIDTujuan' => $data['MGudangIDTujuan'],  
             'PurchaseOrderID' => $data['poID'],  
             'hapus' => 0,  
-            'created_by'=> $user->id,
-            'created_on'=> date("Y-m-d h:i:sa"),
-            'updated_by'=> $user->id,
-            'updated_on'=> date("Y-m-d h:i:sa"),
+            'CreatedBy'=> $user->id,
+            'CreatedOn'=> date("Y-m-d h:i:sa"),
+            'UpdatedBy'=> $user->id,
+            'CreatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
 
         $idItemInventoryTransaction = DB::table('ItemInventoryTransaction')->insertGetId(array(
             'Name' => $dataItemTransaction[0]->Code.'/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
-            'Description' => $data['keteranganPengiriman'],  
-            'tanggalDatang' => $data['tanggalDatang'],  
+            'Description' => $data['keteranganTransaksi'],  
             'ItemTransactionID' => $data['ItemTransaction'],  
             'Date' => $data['tanggalDibuat'],  
             'SupplierID' => $data['Supplier'],  
             'NTBID' => $idtransaksigudang,  
             'EmployeeID' => $user->id,  
             'MGudangID' => $data['MGudangIDTujuan'],  
-            'created_by'=> $user->id,
-            'created_on'=> date("Y-m-d h:i:sa"),
-            'updated_by'=> $user->id,
-            'updated_on'=> date("Y-m-d h:i:sa"),
+            'CreatedBy'=> $user->id,
+            'CreatedOn'=> date("Y-m-d h:i:sa"),
+            'UpdatedBy'=> $user->id,
+            'CreatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
@@ -187,7 +184,7 @@ class TerimaBarangSupplierController extends Controller
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
                 'transactionID' => $idtransaksigudang,
                 'purchaseOrderDetailID' => $data['podID'][$i],//didapet dari variabel yang disimpen di itemnya(combobox item)
-                'idItem' => $data['itemId'][$i],
+                'ItemID' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
                 'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
@@ -203,7 +200,7 @@ class TerimaBarangSupplierController extends Controller
                 
 
             $dataItem = DB::table('Item')
-                ->select('Unit.Name as unit')
+                ->select('Unit.UnitID as unit')
                 ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
                 ->where('Item.ItemID', $data['itemId'][$i])
                 ->get();
@@ -219,7 +216,7 @@ class TerimaBarangSupplierController extends Controller
                     'TransactionID' => $idItemInventoryTransaction,  
                     //'transactionDetailID' => $idtransaksigudangdetail,  
                     'ItemID' => $data['itemId'][$i],  
-                    'MGudangID' => $data['MGudangIDAwal'],  
+                    'MGudangID' => $data['MGudangIDTujuan'],  
                     'UnitID' => $dataItem[0]->unit,  
                     'UnitPrice' => $dataPOD[0]->harga,  
                     'Quantity' => $data['itemJumlah'][$i],  
@@ -306,7 +303,7 @@ class TerimaBarangSupplierController extends Controller
      * @param  \App\Models\TransactionGudang  $transactionGudang
      * @return \Illuminate\Http\Response
      */
-    public function edit(TransactionGudangBarang $transactionGudangBarang)
+    public function edit(TransactionGudangBarang $terimaBarangSupplier)
     {
         //
         
@@ -335,12 +332,14 @@ class TerimaBarangSupplierController extends Controller
 
         $dataGudang =DB::table('MGudang')
             ->get();  
+
+        $dataItemTransaction = DB::table("ItemTransaction")->get();
         
         //data Purchase Request yang disetujui
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
             ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=','purchase_order.id')
-            ->join('Item','purchase_order_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
@@ -356,14 +355,25 @@ class TerimaBarangSupplierController extends Controller
             ->where('purchase_order.proses', 1)
             ->get();
 
+        
+        $dataTotalDetail = DB::table('transaction_gudang_barang_detail')
+            ->select('transaction_gudang_barang_detail.*','purchase_order_detail.harga as hargaPOD', 'purchase_order_detail.id as idPOD','Item.ItemName as itemName' )
+            ->join('purchase_order_detail', 'transaction_gudang_barang_detail.purchaseOrderDetailID','=','purchase_order_detail.id')
+            ->join('Item', 'transaction_gudang_barang_detail.ItemID','=','Item.ItemID')
+            ->where('transactionID', $terimaBarangSupplier->id)
+            ->get();
+
         return view('master.note.terimaBarangSupplier.edit',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
             'dataTag' => $dataTag,
+            'dataGudang' => $dataGudang,
+            'dataItemTransaction' => $dataItemTransaction,
             'dataPurchaseOrderDetail' => $dataPurchaseOrderDetail,
             'dataPurchaseOrder' => $dataPurchaseOrder,
-            'transactionGudangBarang' => $transactionGudangBarang,
+            'transactionGudangBarang' => $terimaBarangSupplier,
+            'dataTotalDetail' => $dataTotalDetail,
         ]);
     
     }
@@ -375,7 +385,7 @@ class TerimaBarangSupplierController extends Controller
      * @param  \App\Models\TransactionGudang  $transactionGudang
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TransactionGudangBarang $transactionGudangBarang)
+    public function update(Request $request, TransactionGudangBarang $terimaBarangSupplier)
     {
         //
         
@@ -384,67 +394,70 @@ class TerimaBarangSupplierController extends Controller
         $data = $request->collect();
 
         DB::table('transaction_gudang_barang')
-            ->where('id', $transactionGudangBarang->id)
+            ->where('id', $terimaBarangSupplier->id)
             ->update(array(
                 'tanggalDibuat' => $data['tanggalDibuat'],  
                 'tanggalDatang' => $data['tanggalDatang'],  
                 'keteranganKendaraan' => $data['keteranganKendaraan'],  
                 'keteranganNomorPolisi' => $data['keteranganNomorPolisi'],  
                 'keteranganPemudi' => $data['keteranganPemudi'],  
-                'keteranganPengiriman' => $data['keteranganPengiriman'],  
+                'keteranganTransaksi' => $data['keteranganTransaksi'],  
                 'ItemTransactionID' => $data['ItemTransaction'],  
-                'isMenerima' => 1,  
                 'SupplierID' => $data['Supplier'],  
-                'PurchaseOrderID' => $data['PurchaseOrder'],  
-                'MGudangIDAwal' => $data['MGudangIDAwal'],  
-                'MGudangIDTujuan' => $data['MGudangIDTujuan'],
+                'MGudangIDTujuan' => $data['MGudangIDTujuan'],  
+                'PurchaseOrderID' => $data['poID'],  
                 'hapus' => 0,  
-                'updated_by'=> $user->id,
-                'updated_on'=> date("Y-m-d h:i:s"),
+                'UpdatedBy'=> $user->id,
+                'CreatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
 
         DB::table('ItemInventoryTransaction')
-            ->where('NTBID', $transactionGudangBarang->id)
+            ->where('NTBID', $terimaBarangSupplier->id)
             ->update(array(
-                'Description' => $data['keteranganPengiriman'],  
-                'tanggalDatang' => $data['tanggalDatang'],  
+                'Description' => $data['keteranganTransaksi'],  
                 'ItemTransactionID' => $data['ItemTransaction'],  
                 'Date' => $data['tanggalDibuat'],  
                 'SupplierID' => $data['Supplier'],  
                 'EmployeeID' => $user->id,   
-                'MGudangID' => $data['MGudangIDAwal'],  
-                'updated_by'=> $user->id,
-                'updated_on'=> date("Y-m-d h:i:s"),
+                'MGudangID' => $data['MGudangIDTujuan'],  
+                'UpdatedBy'=> $user->id,
+                'CreatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
 
         $dataTransactionID = DB::table('ItemInventoryTransaction')
-            ->where('NTBID', $transactionGudangBarang->id)
+            ->where('NTBID', $terimaBarangSupplier->id)
             ->get();
 
         $dataDetailTotal = DB::table('transaction_gudang_barang_detail')
-            ->where('idPurchaseOrder', $purchaseOrder->id)
+            ->where('transactionID', $terimaBarangSupplier->id)
             ->get();
 
         //pengurangan jumlah proses lalu diupdate
         foreach($dataDetailTotal as $data){
-            DB::table('purchase_order_detail')
+            /*DB::table('purchase_order_detail')
             ->where('id', $data->purchaseOrderDetailID)
             ->update([
                 'jumlahProses' => DB::raw('jumlahProses' - $data->jumlah),
-            ]);
+            ]);*/
+            DB::table('purchase_order_detail')
+                ->where('id', $data->purchaseOrderDetailID)
+                ->decrement('jumlahProses', $data->jumlah);
         } 
 
         DB::table('transaction_gudang_barang_detail')
-            ->where('transactionID', $transactionGudangBarang->id)
+            ->where('transactionID', $terimaBarangSupplier->id)
+            ->delete();
+        DB::table('ItemInventoryTransaction')
+            ->where('NTBID', $terimaBarangSupplier->id)
             ->delete();
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
-        for($i = 0; $i < count($data['itemId']); $i++){
+        for($i = 0; $i < count( $data['itemId'] ); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
-                'transactionID' => $idpo,
+                'transactionID' => $terimaBarangSupplier->id,
                 'purchaseOrderDetailID' => $data['podID'][$i],
-                'idItem' => $data['itemId'][$i],
+                'ItemID' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
                 'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
@@ -459,7 +472,7 @@ class TerimaBarangSupplierController extends Controller
             ]);
               
             $dataItem = DB::table('Item')
-                ->select('Unit.Name as unit')
+                ->select('Unit.UnitID as unit')
                 ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
                 ->where('Item.ItemID', $data['itemId'][$i])
                 ->get();
@@ -471,16 +484,27 @@ class TerimaBarangSupplierController extends Controller
                 ->get();
             //Item Inventory Transaction line positif
             DB::table('ItemInventoryTransactionLine')
+                ->insert(array(
+                    'TransactionID' => $terimaBarangSupplier->id,  
+                    'ItemID' => $data['itemId'][$i],  
+                    'MGudangID' => $data['MGudangIDTujuan'],  
+                    'UnitID' => $dataItem[0]->unit,  
+                    'UnitPrice' => $dataPOD[0]->harga,  
+                    'Quantity' => $data['itemJumlah'][$i],  
+                    'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],  
+                )
+            );
+           /* DB::table('ItemInventoryTransactionLine')
                 ->where('TransactionID', $dataTransactionID[0]->TransactionID)
                 ->update(array(
                     'ItemID' => $data['itemId'][$i],  
-                    'MGudangID' => $data['MGudangIDAwal'],  
+                    'MGudangID' => $data['MGudangIDTujuan'],  
                     'UnitID' => $dataItem[0]->unit,  
                     'UnitPrice' => $dataPOD[0]->harga,  
                     'Quantity' => $data['itemJumlah'][$i],  
                     'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
                 )
-            );          
+            );*/          
         }
 
         return redirect()->route('terimaBarangSupplier.index')->with('status','Success!!');

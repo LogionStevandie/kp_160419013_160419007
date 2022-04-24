@@ -168,10 +168,13 @@ class ApprovedPOController extends Controller
                         ->where('id', $data['idPurchaseRequestDetail'])
                         ->update(array(
                             'jumlahProses' => $data['jumlah'],
-                        ));*/
+                        ));
                     DB::table('purchase_request_detail')->decrement('jumlahProses', $data['jumlah'], [
                         'id' => $data['idPurchaseRequestDetail'],
-                    ]);
+                    ]);*/
+                    DB::table('purchase_request_detail')
+                        ->where('id', $data->idPurchaseRequestDetail)
+                        ->decrement('jumlahProses', $data->jumlah);
                 }
                 
             }

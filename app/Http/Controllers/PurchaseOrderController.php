@@ -342,6 +342,7 @@ class PurchaseOrderController extends Controller
                 'idSupplier' => $data['supplier'],
                 'idPaymentTerms' => $data['paymentTerms'],
                 'tanggal_akhir' => $data['tanggal_akhir'],
+                'tanggalDibuat' => $data['tanggalDibuat'],
                 'keteranganLokasi' => $data['keteranganLokasi'],         
                 'keteranganPenagihan' => $data['keteranganPenagihan'],         
                 'keteranganPembayaran' => $data['keteranganPembayaran'],     
@@ -358,12 +359,18 @@ class PurchaseOrderController extends Controller
 
         //pengurangan jumlah proses lalu diupdate
         foreach($dataDetailTotal as $data){
+            //DB::table('purchase_request_detail')
+            //->where('id', $data->idPurchaseRequestDetail)
+            //->update([
+            //    'jumlahProses' => DB::raw((float)'jumlahProses' - (float)$data->jumlah),
+            //]);
             DB::table('purchase_request_detail')
-            ->where('id', $data->idPurchaseRequestDetail)
-            ->update([
-                'jumlahProses' => DB::raw((float)'jumlahProses' - (float)$data->jumlah),
-            ]);//nggeh
+                ->where('id', $data->idPurchaseRequestDetail)
+                ->decrement('jumlahProses', $data->jumlah);
         }//lek ngene sekk tk halu
+        DB::table('purchase_order_detail')
+                ->where('idPurchaseOrder', $purchaseOrder->id)
+                ->delete();
 
         /*//if(count($dataDetailTotal) > count($data['itemId'])){
             DB::table('purchase_order_detail')
@@ -435,7 +442,7 @@ class PurchaseOrderController extends Controller
             $totalHarga = 0;
             $subtotalHarga = 0;
     
-            for($i = 0; $i < count($data['itemId']); $i++){
+            for($i = 0; $i < count( $data['itemId'] ); $i++){
                 DB::table('purchase_order_detail')->insert(array(
                     'idPurchaseOrder' => $purchaseOrder->id,
                     'idPurchaseRequestDetail' => $data['prdID'][$i],
@@ -455,8 +462,8 @@ class PurchaseOrderController extends Controller
                     'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemTotal'][$i],
                 ]);
                 
-                $totalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]) * (100.0 + $data['itemTaxValue'][$i]) / 100.0;
-                $subtotalHarga += (($data['itemHarga'][$i]-$data['itemDiskon'][$i]) * $data['itemTotal'][$i]);
+                $totalHarga += (((float)$data['itemHarga'][$i]-(float)$data['itemDiskon'][$i]) * (float)$data['itemTotal'][$i]) * (100.0 + (float)$data['itemTaxValue'][$i]) / 100.0;
+                $subtotalHarga += (((float)$data['itemHarga'][$i]-(float)$data['itemDiskon'][$i]) * (float)$data['itemTotal'][$i]);
                      
             }
     
@@ -467,7 +474,7 @@ class PurchaseOrderController extends Controller
                     'subtotalHarga' =>  $subtotalHarga,
             ]);
 
-        return redirect()->route('master.PurchaseOrder.index')->with('status','Success!!');
+        return redirect()->route('purchaseOrder.index')->with('status','Success!!');
     }
 
     /**
@@ -485,7 +492,7 @@ class PurchaseOrderController extends Controller
                 'hapus' =>  1,
         ]);
 
-        return redirect()->route('PurchaseOrder.index')->with('status','Success!!');
+        return redirect()->route('purchaseOrder.index')->with('status','Success!!');
     }
 
     public function searchNamePO(Request $request)

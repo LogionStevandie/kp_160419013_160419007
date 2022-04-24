@@ -31,9 +31,12 @@ class SuratJalanController extends Controller
             ->where('surat_jalan.hapus',0)
             ->paginate(10);
 
+        $dataGudang =DB::table('MGudang')
+            ->get();  
         return view('master.note.suratJalan.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
+            'dataGudang' => $dataGudang,
         ]);
     }
 
@@ -50,8 +53,9 @@ class SuratJalanController extends Controller
 
 
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
-            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//,'purchase_order_detail.harga as hargaItem')//
             ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            //->join('purchase_order_detail', 'purchase_request_detail.id', '=','purchase_order_detail.idPurchaseRequestDetail')
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('purchase_request.approved', 1)
@@ -116,18 +120,18 @@ class SuratJalanController extends Controller
             ->select('MKota.*','MPerusahaan.cnames as perusahaanCode')
             ->join('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->where('MGudang.MGudangID', '=', $data['MGudangIDAwal'])
             ->get();
-        $dataLokasiPerusahaan = DB::table('MPerusahaan')
+        /*$dataLokasiPerusahaan = DB::table('MPerusahaan')
             //->where("MPerusahaanID", $data['perusahaan'])
             ->where("MPerusahaanID", $data['perusahaan'])
-            ->get();
+            ->get();*/
 
         $dataSj = DB::table('surat_jalan')
             ->where('name', 'like', 'SJ/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/%")
             ->get();
 
-        $totalIndex = str_pad(strval(count($dataPo) + 1),4,'0',STR_PAD_LEFT);
+        $totalIndex = str_pad(strval(count($dataSj) + 1),4,'0',STR_PAD_LEFT);
 
         $idSuratJalan = DB::table('surat_jalan')->insertGetId(array(
             'name' => 'SJ/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
@@ -142,22 +146,21 @@ class SuratJalanController extends Controller
             'keteranganPenerima' => $data['keteranganPenerima'],   
             'PurchaseRequestID' => $data['PurchaseRequestID'],  
             'hapus' => 0,  
-            'created_by'=> $user->id,
-            'created_on'=> date("Y-m-d h:i:sa"),
-            'updated_by'=> $user->id,
-            'updated_on'=> date("Y-m-d h:i:sa"),
+            'CreatedBy'=> $user->id,
+            'CreatedOn'=> date("Y-m-d h:i:sa"),
+            'UpdatedBy'=> $user->id,
+            'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
 
         for($i = 0; $i < count($data['itemId']); $i++){
             $idSuratJalanDetail = DB::table('surat_jalan_detail')->insertGetId(array(
-                'suratJalanID' => $idSuratJalan,
-                'purchaseOrderDetailID' => $data['podID'][$i],
-                'ItemID' => $data['ItemId'][$i],
+                'suratJalanID' => $idSuratJalan,           
+                'ItemID' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
                 'keterangan' => $data['itemKeterangan'][$i],
-                'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
-                'PurchaseRequestDetailID' => $data['itemPRDID'][$i],
+                //'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
+                'PurchaseRequestDetailID' => $data['itemPRDID'][$i], //didapat dri hidden ketika milih barang di PO
                 )
             ); 
         }   
@@ -278,6 +281,13 @@ class SuratJalanController extends Controller
         //dd($dataBarangTag);
         $dataTag = DB::table('ItemTag')
             ->get();
+
+         $dataTotalDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*', 'purchase_request_detail.id as idPRD','Item.ItemName as itemName' )
+            ->join('purchase_request_detail', 'surat_jalan_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item', 'surat_jalan_detail.ItemID','=','Item.ItemID')
+            ->where('suratJalanID', $suratJalan->id)
+            ->get();
         
         return view('master.note.suratJalan.edit',[
             'dataGudang' => $dataGudang,
@@ -287,6 +297,7 @@ class SuratJalanController extends Controller
             'dataBarangTag' => $dataBarangTag,
             'dataTag' => $dataTag,
             'suratJalan' => $suratJalan,
+            'dataTotalDetail' => $dataTotalDetail,
         ]);
     }
 
@@ -316,20 +327,22 @@ class SuratJalanController extends Controller
                 'keteranganGudangTujuan' => $data['keteranganGudangTujuan'],   
                 'keteranganPenerima' => $data['keteranganPenerima'],   
                 'PurchaseRequestID' => $data['PurchaseRequestID'],  
-                'updated_by'=> $user->id,
-                'updated_on'=> date("Y-m-d h:i:sa"),
+                'UpdatedBy'=> $user->id,
+                'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
 
+        DB::table('surat_jalan_detail')
+            ->where('suratJalanID', $suratJalan->id)
+            ->delete();
         for($i = 0; $i < count($data['itemId']); $i++){
-            $idSuratJalanDetail = DB::table('surat_jalan_detail')
-                ->where('id', $suratJalan->id)
-                ->update(array(
-                    'ItemID' => $data['ItemId'][$i],
-                    'jumlah' => $data['itemJumlah'][$i],
-                    'keterangan' => $data['itemKeterangan'][$i],
-                    'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
-                    'PurchaseRequestDetailID' => $data['itemPRDID'][$i],
+            $idSuratJalanDetail = DB::table('surat_jalan_detail')->insertGetId(array(
+                'suratJalanID' => $suratJalan->id,           
+                'ItemID' => $data['itemId'][$i],
+                'jumlah' => $data['itemJumlah'][$i],
+                'keterangan' => $data['itemKeterangan'][$i],
+                //'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
+                'PurchaseRequestDetailID' => $data['itemPRDID'][$i], //didapat dri hidden ketika milih barang di PO
                 )
             ); 
         }   

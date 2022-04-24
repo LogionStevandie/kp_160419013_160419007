@@ -228,7 +228,7 @@ Edit Nota Purchase Order
                                       <input type="hidden" name="tanggalAkhir" value="{{old('tanggalAkhirVal')}}">-->
                                       <h4 class="d-flex justify-content-between align-items-center mb-3">
                                           <span class="text-muted">Keranjang</span>
-                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value="0"totalKeranjang="{{count($dataDetail)}}">{{count($dataDetail)}}</span>
+                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value={{count($dataDetail)}} totalKeranjang="{{count($dataDetail)}}">{{count($dataDetail)}}</span>
                                       </h4>
                                       <ul class="list-group mb-3 sticky-top" id="keranjang">
                                            @foreach($dataDetail as $data)
@@ -373,16 +373,16 @@ Edit Nota Purchase Order
 
 
         $("#pReq").change(function() {
-            alert(this.value);
+            //alert(this.value);
             var id = this.value;
             var optionnya = '';
             //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
             var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
 
-            alert('masuk sini'); //ini chhec
+            //alert('masuk sini'); //ini chhec
             optionnya += '<option value="" selected>--Pilih barang--</option>\n';
             $.each(dataPurchaseRequestDetail, function( key, value ){
-                alert(value.ItemName);//ini chhec 
+                //alert(value.ItemName);//ini chhec 
                 if(value.idPurchaseRequest.toString() == id.toString()){
                     //alert(value.ItemName);//ini chhec
                     optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
@@ -462,9 +462,14 @@ Edit Nota Purchase Order
             "value" : "",         
         }); 
         $(this).parent().parent().remove();
-        totalTambah -= 1;
+        
+        totalBarangSekarang = $("#totalBarangnya").attr("value");
+        totalTambah = totalBarangSekarang - 1;
+        alert(totalBarangSekarang);
         $('#totalBarangnya').val(totalTambah);
         $('#totalBarangnya').html(totalTambah);
+
+        
     });
 
     $('body').on('click','#tambahKeranjang', function(){

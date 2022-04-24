@@ -6,18 +6,18 @@
  </style>
 
 @section('judul')
-Pembuatan Transaksi Gudang Barang
+Pembuatan Surat Jalan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('transactionGudang.index')}}">Transaksi Gudang Barang</a></li>
+<li class="breadcrumb-item"><a href="{{route('suratJalan.index')}}">Surat Jalan</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
 @section('content')
-<form action="{{route('transactionGudang.store')}}" method="POST" >
+<form action="{{route('suratJalan.store')}}" method="POST" >
   @csrf
     <section class="content">
       <div class="container-fluid">
@@ -39,19 +39,18 @@ Pembuatan Transaksi Gudang Barang
                   <div class="py-5 ">
                      
                         <div class="row">
-                              <div class="col-md-6 mb-3"> 
+                        <div class="col-md-6 mb-3"> 
                                   <label for="lastName">Tanggal Pembuatan</label>
-                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" readonly required="">
+                                  <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="" required="">
                                   <div class="invalid-feedback"> Valid last name is required. </div>
                               </div>
-                        
+
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Awal</label> 
-                                    <select class="form-control selectpicker" name="MGudangIDAwal" data-live-search="true" data-show-subtext="true">
-                                    
+                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
                                       <option value="">
-                                            --Pilih Gudang--
+                                            --Pilih Gudang Awal--
                                         </option>
                                         @foreach($dataGudang as $key => $data)
                                             <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
@@ -61,71 +60,63 @@ Pembuatan Transaksi Gudang Barang
                                     </div>
                                  
                               </div>
+
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Tujuan</label> 
-                                    <select class="form-control selectpicker" name="MGudangIDTujuan" data-live-search="true" data-show-subtext="true">
+                                    <select class="form-control select2" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
                                       <option value="">
-                                            --Pilih Gudang--
+                                            --Pilih Gudang Tujuan--
                                         </option>
                                         @foreach($dataGudang as $key => $data)
                                             <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
                                         @endforeach
                                 
                                     </select>
+                                    </div>    
+                              </div>
+
+                               <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Data Purchase Request</label> 
+                                    <select class="form-control select2" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
+
+                                    </select>
                                     </div>
-                                 
-                              </div>
-
-                           
-                              <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Gudang tujuan</label>
-                                  <textarea rows="3"  type="text" name="keteranganGudangTujuan" class="form-control" value="{{old('keteranganGudangTujuan','')}}" ></textarea>
-                              </div>
-
-                               <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Penerima</label>
-                                  <textarea rows="3"  type="text" name="keteranganPenerima" class="form-control" value="{{old('keteranganPenerima','')}}" ></textarea>
-                              </div>
+                               </div>
                                         
 
                                <div class="col-md-6 mb-3">
                                   <label for="lastName">Keterangan Kendaraan</label>
-                                  <textarea rows="3"  type="text" name="keteranganLokasi" class="form-control" value="{{old('keteranganLokasi','')}}" ></textarea>
+                                  <textarea rows="3"  type="text" name="keteranganKendaraan" class="form-control" value="{{old('keteranganKendaraan','')}}" ></textarea>
                               </div>
 
                               <div class="col-md-6 mb-3">
                                   <label for="lastName">Keterangan Nomor Polisi</label>
-                                  <textarea rows="3"  type="text" name="keteranganPembayaran" class="form-control" value="{{old('keteranganPembayaran','')}}" ></textarea>
+                                  <textarea rows="3"  type="text" name="keteranganNomorPolisi" class="form-control" value="{{old('keteranganNomorPolisi','')}}" ></textarea>
                               </div>
 
                               <div class="col-md-6 mb-3">
                                   <label for="lastName">Keterangan Pemudi</label>
-                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
+                                  <textarea rows="3"  type="text" name="keteranganPemudi" class="form-control" value="{{old('keteranganPemudi','')}}" ></textarea>
                               </div>
 
                               <div class="col-md-6 mb-3">
                                   <label for="lastName">Keterangan Transaksi</label>
-                                  <textarea rows="3"  type="text" name="keteranganPenagihan" class="form-control" value="{{old('keteranganPenagihan','')}}" ></textarea>
+                                  <textarea rows="3"  type="text" name="keteranganTransaksi" class="form-control" value="{{old('keteranganTransaksi','')}}" ></textarea>
                               </div>
 
-                
                               <div class="col-md-6 mb-3">
-                                  <label for="lastName">Mengirim / Menerima</label>
-                                    <div class="icheck-primary d-inline">
-                                        <input checked id="setuju"  type="radio" name="isMenerima" value="0"{{'0' == old('approved','')? 'checked' :'' }}>
-                                        <label class="form-check-label" for="setuju">Mengirim</label>
-                                    </div>
-                                    <div class="icheck-primary d-inline">
-                                        <input id="tdkSetuju"  type="radio" name="isMenerima" value="1"{{'1'== old('approved','')? 'checked' :'' }}>
-                                        <label class="form-check-label" for="tdkSetuju">Menerima</label><br>
-                                    </div>
+                                  <label for="lastName">Keterangan Gudang Tujuan</label>
+                                  <textarea rows="3"  type="text" name="keteranganGudangTujuan" class="form-control" value="{{old('keteranganGudangTujuan','')}}" ></textarea>
                               </div>
-                                
-                           
-                        
                               
-                          </div>     
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Penerima</label>
+                                  <textarea rows="3"  type="text" name="keteranganPenerima" class="form-control" value="{{old('keteranganPenerima','')}}" ></textarea>
+                              </div>
+                                                  
+                        </div>     
                   </div>
                   <!-- Page Heading -->
                     <div class="card card-primary">
@@ -140,40 +131,25 @@ Pembuatan Transaksi Gudang Barang
                                   <div class="card-header">
                                     <h3 class="card-title">Pemilihan Barang</h3>
                                   </div>
-                                  <div class="card-body">
-                                        <div class="form-group">
-                                            <label>Nota</label>
-                                            <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
-                                                <option value="pilih">--Pilih Nota Permintaan Pembelian--</option>
-                                                @foreach($dataPurchaseRequest as $key => $data)
-                                                <option id="namaBarang" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
-                                                @endforeach
-                                            </select>
-                                            
-                                        </div>
-                                    <div class="form-group">
-                                      <label>Barang</label>
-                                      <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
-                                          <option value="pilih">--Pilih barang--</option>
-                                          @foreach($dataBarang as $key => $data)
-                                          <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
-                                          @endforeach
-                                      </select>
-                                      <br>
-                                      <input min=1   type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2"id="jumlahBarang" />
-                                  </div>
-                                 
-                                                   
-                                    <div class="form-group" id="harga">
-                                        <label for="Harga">Harga</label>
-                                        <input  type="text" step=".01" id="tanpa-rupiah" class="form-control" value="{{old('harga','')}}" >
-                                        <input type="hidden" id="hargaBarang" value = "">
-                                    </div>
+                                  <div class="card-body">                                     
+                             
+                                 <div class="form-group"  id='tmbhBarang'>
+                                    <label for="title">Barang</label>
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
+                                  
+                                        <option value="pilih">--Pilih barang--</option>
+                                        <!--@foreach($dataBarang as $key => $data)
+                                        <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
+                                        @endforeach-->
+                                    </select>
+                                    <input id="jumlahBarang" value="1" min="1"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                </div>
 
                                     <div class="form-group " id="ket">
                                         <label for="Keterangan">Keterangan</label>
                                         <textarea rows="3" id="keteranganBarang" class="form-control" value="{{old('keterangan','')}}" ></textarea>
                                     </div>
+                                   
                                
                              
                                      <input class="btn btn-danger btn-lg btn-block" type="button" id="tambahKeranjang" value="Tambah kedalam Keranjang">
@@ -201,7 +177,7 @@ Pembuatan Transaksi Gudang Barang
                                       <ul class="list-group mb-3 sticky-top" id="keranjang">
                                           <!--<li class="list-group-item d-flex justify-content-between lh-condensed">
                                               <div>
-                                                 
+                                                  <input type="hidden" name="itemId[]" value="">
                                                   <input type="hidden" name="itemTotal[]" value="">
                                                   <input type="hidden" name="itemKeterangan[]" value="">
                                                   <input type="hidden" name="itemHarga[]" value="">
@@ -218,10 +194,10 @@ Pembuatan Transaksi Gudang Barang
                                               </div>
                                           </li>     -->             
                                       </ul>
-                                      <li class="list-group-item d-flex justify-content-between">
+                                      <!--<li class="list-group-item d-flex justify-content-between">
                                               <span>Total (Rupiah)</span>
                                               <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga=0>0</strong>
-                                      </li> 
+                                      </li>--> 
                                     <!-- /.form group -->
                                   </div>  <!---->
                                   <input class="btn btn-primary " type="submit" id="tambah" value="Kirim"><br>
@@ -252,12 +228,150 @@ Pembuatan Transaksi Gudang Barang
 </form>
 
 <script type="text/javascript">
-     var tambahCombo = "";
+    var tambahCombo = "";
     var totalTambah = 0;
+    $('#TotalHargaKeranjang').val(0);
+
+
+   
+
+    $(document).ready(function(){
+
+        $("#idGudangTujuan").on("change",function(){  //sudah
+                
+                var id = this.value;
+                //alert(id);
+                //var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+                //alert(singkatan);
+                var optionnya = '';
+            
+                var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
     
+                //alert('masuk sini');
+                optionnya += '<option value="pilih" selected>--Pilih Purchase Request--</option>\n';
+                $.each(dataPurchaseRequest, function( key, value ){
+                   
+                    if(value.MGudangID.toString() == id.toString()){
+                        //alert('masuk'); 
+                        optionnya += '<option id="idPr" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';
+                        //alert(optionnya);         
+                    }
+                });
+            
+                                    
+                $("#PurchaseRequestID").empty();
+                $("#PurchaseRequestID").append(optionnya);
+                //$('.selectpicker').selectpicker('refresh');
+            });
+
+        $("#PurchaseRequestID").on("change",function(){  //sudah
+                
+            var id = this.value;
+            //alert(id);
+            //var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+            //alert(singkatan);
+            var optionnya = '';
+        
+            var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+               
+                if(value.idPurchaseRequest.toString() == id.toString()){
+                    //alert('masuk'); 
+                    //alert("masuk cek");
+                    optionnya += '<option id="namaBarang" namaBarang='+value.ItemName +' idPrdId='+ value.id +' value="'+value.ItemID+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';
+                    //alert(optionnya);         
+                }
+            });
+        
+                                
+            $("#barang").empty();
+            $("#barang").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+         /*$("#pReq").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var optionnya = '';
+            //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="" selected>--Pilih barang--</option>\n';
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.idPurchaseRequest.toString() == id.toString()){
+                    //alert('masuk');
+                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
+                }
+            });
+            //alert(optionnya);
+            
+                                
+            $("#barang").empty();
+            $("#barang").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });*/
+
+        
+        /*$("#barang").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.id.toString() == id.toString()){
+                    var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    //alert(maxAngka);
+                    $("#jumlahBarang").attr({
+                        "max" : maxAngka,        
+                        "min" : 1,
+                        "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                        "value" : "",   
+                    }); 
+                }
+            });
+            
+        });*/
+
+    });
+
+     $('body').on('click','#copyKe', function(){ //belum
+        //alert($(this).index('.copyKe'));
+        var i = $(this).index('#copyKe');
+        
+        var idBarang = $('.cekId:eq('+i+')').val();
+        var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+
+        var hargaBarang = $('.cekHarga:eq('+i+')').val();
+        var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
+        var diskonBarang = $('.cekDiskon:eq('+i+')').val();
+
+        $("#barang").val(idBarang);
+        $("#jumlahBarang").val(jumlahBarang);
+        $("#keteranganBarang").val(keteranganBarang);
+
+        //$('.selectpicker').selectpicker('refresh');
+        
+    });
+
+
+
     $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
-        //alert($('.cekId').length);
+        //alert($('.cekId').length);cekJumlah
+        var jumlah = $(this).parent().parent().children("#hiddenDiv").children(".cekJumlah").val();
+        //alert(jumlah);
+        $("#jumlahBarang").attr({
+            "max" : parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah),        
+            "min" : 1,
+            "placeholder" : "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",       
+            "value" : "",         
+        }); 
         $(this).parent().parent().remove();
         totalTambah -= 1;
         $('#totalBarangnya').val(totalTambah);
@@ -265,79 +379,55 @@ Pembuatan Transaksi Gudang Barang
     });
 
     $('body').on('click','#tambahKeranjang', function(){
-        var idBarang = $("#barang").val();
-        var namaBarang = $("#barang option:selected").html();
-        var jumlahBarang = $("#jumlahBarang").val();
-        var hargaBarang = $("#hargaBarang").val();
-        var keteranganBarang = $("#keteranganBarang").val();
-        var totalHarga= 0;
-        //var totalHarga = jumlahBarang * hargaBarang;
-        /*alert(totalHarga);
-        alert(jumlahBarang);
-        alert(hargaBarang);*/
-        //die;
         
+        var idBarang = $("#barang").val();//
+        var namaBarang = $("#barang option:selected").attr("namaBarang");//
+        var idprdID = $("#barang option:selected").attr("idPrdId");
+        //alert(idprdID);
+        //var hargaBarang = $("#barang option:selected").attr("harga");
+        var jumlahBarang = parseFloat($("#jumlahBarang").val());//
+        var keteranganBarang = $("#keteranganBarang").val();//
+
         var indexSama = null;
         for(let i=0;i<$('.cekId').length;i++){
             if($('.cekId:eq('+i+')').val() == idBarang){
-                if($('.cekHarga:eq('+i+')').val() == hargaBarang){
+                if($('.cekPrd:eq('+i+')').val() == idPrdId){
                     indexSama = i;
                 }
             }
         }
-
-        if(idBarang == "" || namaBarang == "--Pilih barang--" || jumlahBarang == 0 || jumlahBarang == "" || hargaBarang == 0 || hargaBarang == "" || keteranganBarang == ""){
-            alert('Harap lengkapi data Barang untuk menambahkan ke keranjang');
+        
+        if(idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == ""){
+            alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
         }
-        //alert(jumlahBarang + hargaBarang+ keteranganBarang);
         else if(indexSama != null){
+            //alert("masuk indexSama");
             var jumlah = $('.cekJumlah:eq('+indexSama+')').val();
-            $('.cekJumlah:eq('+indexSama+')').val(parseInt(jumlah) + parseInt(jumlahBarang))
+            $('.cekJumlah:eq('+indexSama+')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));
             var keterangan = $('.cekKeterangan:eq('+indexSama+')').val();
-            $('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang)
+            $('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang);
             
             $('.keteranganVal:eq('+indexSama+')').html($('.cekKeterangan:eq('+indexSama+')').val());
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
-            $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ($('.cekJumlah:eq('+indexSama+')').val()* $("#hargaBarang").val())+',-');
-            
-            //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
-            //var totalHargaKeranjang = $('#TotalHargaKeranjang').val(parseInt(hargaBarang * jumlahBarang));
-            //totalHargaKeranjang += parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * parseFloat($("#hargaBarang").val());
-            //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
-            //alert(totalHargaKeranjang);
-            //alert((totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-            //$('#TotalHargaKeranjang').html(formatRupiah(totalHargaKeranjang));
-            //$('#TotalHargaKeranjang').val(totalHargaKeranjang);
-            
-            totalHarga=hargaBarang * jumlahBarang;
-            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp. " +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
 
-           
-
-            //$('#TotalHargaKeranjang').val(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang));
-            //$('#TotalHargaKeranjang').html(formatRupiah(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang)));
-            
-
-            
-
+            var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
         }
         else{
+            //alert("masuk");
             var htmlKeranjang = "";
             htmlKeranjang += '<li class="list-group-item d-flex justify-content-between lh-condensed">\n';
-            htmlKeranjang += '<div>\n';
+            htmlKeranjang += '<div id="hiddenDiv">\n';
             htmlKeranjang += '<input type="hidden" class="cekId" name="itemId[]" value="'+idBarang+'">\n';
-            htmlKeranjang += '<input type="hidden" class="cekJumlah" name="itemTotal[]" value="'+jumlahBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemJumlah[]" value="'+jumlahBarang+'">\n';
             htmlKeranjang += '<input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="'+keteranganBarang+'">\n';
-            htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="'+hargaBarang+'">\n';
+            //htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="'+hargaBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekPrd" name="itemPRDID[]" value="'+idprdID+'">\n';
             htmlKeranjang += '<h6 class="my-0">'+ namaBarang +'<small class="jumlahVal" value="'+jumlahBarang+'">('+jumlahBarang+')</small> </h6>\n';
             htmlKeranjang += '<small class="text-muted keteranganVal" value="'+keteranganBarang+'">'+keteranganBarang+'</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="'+hargaBarang * jumlahBarang+'">Rp. '+hargaBarang * jumlahBarang+',-</strong>\n';
-            htmlKeranjang += '<button class="btn btn-primary" type="button" id="copyKe">\n';
+            htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
             htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
             htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
             htmlKeranjang += '</svg>\n';
@@ -355,113 +445,32 @@ Pembuatan Transaksi Gudang Barang
             $('#totalBarangnya').val(totalTambah);
             $('#totalBarangnya').html(totalTambah);
 
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
-            /*if(totalHargaKeranjang == "" || totalHargaKeranjang == NaN || totalHargaKeranjang == 0){
-            alert(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-              //totalHargaKeranjang = totalHargaKeranjang + parseFloat(hargaBarang * jumlahBarang);
-              $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
-              $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-            }
-            else{
-            alert("masuk siini di else  "+(parseFloat(totalHargaKeranjang)) + parseFloat(hargaBarang * jumlahBarang));
-              //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
-              $('#TotalHargaKeranjang').html(formatRupiah(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang)));
-              $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-            }*/
-            totalHarga=hargaBarang * jumlahBarang;
-            $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
-           $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
-            //alert(totalHargaKeranjang);
-            
-            
         }
-
-    });
-
-    $('body').on('click','#copyKe', function(){
-        //alert($(this).index('.copyKe'));
-        var i = $(this).index('#copyKe');
-        var idBarang = $('.cekId:eq('+i+')').val();
-        //var namaBarang = $('.cekJumlah:eq('+i+')').val();
-        var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
-        var hargaBarang = $('.cekHarga:eq('+i+')').val();
-        var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         
-        //document.getElementById("barang").value = idBarang;
-       /* var optionnya = '';
-        var dataBarang = <?php echo json_encode($dataBarang); ?>;
-        $.each(dataBarang, function( key, value ){
-            if(value.ItemID.toString() == idBarang.toString()){
-               optionnya += '<option selected id="namaBarang" value="'+value.ItemID+'">'+value.ItemName+'<nbsp>('+value.unitName+')</option>\n';          
-            }
-            else{
-                optionnya += '<option id="namaBarang" value="'+value.ItemID+'">'+value.ItemName+'<nbsp>('+value.unitName+')</option>\n';      
-                     
-            }
-        });*/
-        //$("#barang").empty();
-        $("#barang").val(idBarang).change();
-        $('.selectpicker').selectpicker('refresh');
-
-        $("#jumlahBarang").val(jumlahBarang);
-        $("#hargaBarang").val(hargaBarang);
-        $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
-        $("#keteranganBarang").val(keteranganBarang);
 
     });
 
-    $("body").on("click", "#tambah", function () {  
-        totalTambah++;
-        tambahCombo +='<div class="form-group p-3 mb-2 bg-light text-dark border" id="tmbhBarangJasa'+totalTambah+'">\n';
-        tambahCombo +='<input type="hidden" name="totalRequest[]">\n';
-        tambahCombo += '<div class="form-group" id="tmbhBarang">\n';
-        tambahCombo += '<label for="title">Barang</label>\n';
-        tambahCombo += '<select require name="barang[]" class="form-control" id="barang'+totalTambah+'">\n';
-        tambahCombo += '<option value="">--Pilih barang--</option>\n';
-        tambahCombo += '@foreach($dataBarang as $key => $data)\n';
-        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
-        tambahCombo += '@endforeach\n';
-        tambahCombo += '</select>\n';
-        tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';
-        tambahCombo += '<br id="br">\n';
-        tambahCombo +='</div>\n';
-        tambahCombo +='<div class="form-group" id="harga'+totalTambah+'">\n';
-        tambahCombo +='<label for="title">Harga</label>\n';
-        tambahCombo +='<input require type="number" step=".01" id="tanpa-rupiah" name="harga[]" class="form-control">\n';
-        tambahCombo +='</div>\n';
-        tambahCombo +='<div class="form-group" id="ket'+totalTambah+'">\n';
-        tambahCombo +='<label for="title">Keterangan</label>\n';
-        tambahCombo +='<input require type="text" name="Keterangan[]" class="form-control" >\n';
-        tambahCombo +='</div>\n';
-        tambahCombo +='</div>';
-        
-        $('#totalRequest').append(tambahCombo);
-        tambahCombo = "";
-    });
-
-    $("body").on("click", "#kurang", function () {
-        //$('#barang'+ totalTambah).remove();//i
-        //$('#jml'+ totalTambah).remove();//i
-        //$('#br'+ totalTambah).remove();//i
-        $('#tmbhBarangJasa'+ totalTambah).remove();//i
-        if(totalTambah > 0){
-            totalTambah--;
-            
-        }  
-    });
-         /* Tanpa Rupiah */
+    /* Tanpa Rupiah */
     var tanpa_rupiah = document.getElementById('tanpa-rupiah');
     tanpa_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.replace('.','')); //aku nambah dewe buat simpen di hidden
+        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        //alert(this.value.toString().replace(/\./g, ''));
         tanpa_rupiah.value = formatRupiah(this.value);
+    });
+
+    var tanpa_rupiah_diskon = document.getElementById('tanpa-rupiah-diskon');
+    tanpa_rupiah_diskon.addEventListener('keyup', function(e)
+    {
+        $('#diskonBarang').val(this.value.toString().replace(/\./g, ''));
+        tanpa_rupiah_diskon.value = formatRupiah(this.value);
     });
 
     /* Dengan Rupiah */
     var dengan_rupiah = document.getElementById('dengan-rupiah');
     dengan_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.replace('.','')); //aku nambah dewe buat simpen di hidden
+        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
         dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
     });
 
@@ -482,6 +491,46 @@ Pembuatan Transaksi Gudang Barang
         rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
+
+    $(document).ready(function(){
+        $('input[name=jenis0]').click(function(){
+
+            if($("#barang").is(':checked'))
+            {
+              $("#tmbhBarang").show();
+              $("#total").show();
+              $("#ket").hide();
+               //$("#buttonBarang").show();
+            }
+            else
+            {
+              $("#ket").show();
+              $("#tmbhBarang").hide();
+              //$("#buttonBarang").hide();
+            }
+        });
+    });
+    
+    /*$('#myForm input').on('change', function() {
+           $("input[name=jenis]").change(function(){
+
+            if($("#barang").is(':checked'))
+            {
+              $("#tmbhBarang").show();
+              $("#total").show();
+               $("#ket").hide();
+               //$("#buttonBarang").show();
+            }
+            else
+            {
+              $("#ket").show();
+              $("#tmbhBarang").hide();
+              //$("#buttonBarang").hide();
+            }
+        });
+      //alert($('input[name=jenis]:checked', '#myForm').val()); 
+    });*/
+
 </script>  
 @endsection   
 

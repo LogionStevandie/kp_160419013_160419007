@@ -38,7 +38,6 @@ Terima Barang Supplier
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Tanggal Dibuat</th>
-                                <th scope="col">Gudang Awal</th>
                                 <th scope="col">Gudang Tujuan</th>
                                 <th scope="col">keterangan Penerima</th>
                                 <th scope="col">Handle</th>
@@ -48,18 +47,14 @@ Terima Barang Supplier
                             @foreach($data as $data)
                             <tr >
                             <th scope="row" name='id'>{{$data->id}}</th>
-                            <td>{{$data->tanggalDibuat}}</td>
-                            @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDAwal)
-                                    <td>{{$dataGudang->cname}}</td>
-                                @endif
-                            @endforeach     
+                            <td>{{$data->name}}</td>
+                            <td>{{$data->tanggalDibuat}}</td>   
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $data->MGudangIDTujuan)
-                                    <td>{{$dataGudang->cname}}</td>
+                                    <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach 
-                            <td>{{$data->keteranganPenerima}}</td>                 
+                            <td>{{$data->keteranganTransaksi}}</td>                 
                             <td>  
                                 <a class="btn btn-default bg-info" href="{{route('terimaBarangSupplier.show',[$data->id])}}">
                                     <i class="fas fa-eye"></i>
@@ -85,7 +80,6 @@ Terima Barang Supplier
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Tanggal Dibuat</th>
-                                <th scope="col">Gudang Awal</th>
                                 <th scope="col">Gudang Tujuan</th>
                                 <th scope="col">keteranganPenerima</th>
                                 <th scope="col">Handle</th>

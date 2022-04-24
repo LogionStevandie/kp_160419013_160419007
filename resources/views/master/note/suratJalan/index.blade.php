@@ -52,12 +52,12 @@ Surat Jalan
                             <td>{{$data->tanggalDibuat}}</td>
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $data->MGudangIDAwal)
-                                    <td>{{$dataGudang->cname}}</td>
+                                    <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach     
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $data->MGudangIDTujuan)
-                                    <td>{{$dataGudang->cname}}</td>
+                                    <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach 
                             <td>{{$data->keteranganPenerima}}</td>                 
