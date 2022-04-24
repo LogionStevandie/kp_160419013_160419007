@@ -27,17 +27,18 @@ class TerimaBarangPesananController extends Controller
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
-            ->whereNotNull('SuratJalanID')
-            ->where('isMenerima',1)
-            ->where('MGudangIDAwal',$user->MGudangID)
-            ->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->whereNotNull('transaction_gudang_barang.SuratJalanID')
+            ->where('transaction_gudang_barang.isMenerima',1)
+            ->where('transaction_gudang_barang.hapus',0)
+            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
         $dataGudang = DB::table('MGudang')
             ->get();
-        return view('master.note.transactionGudang.index',[
+        return view('master.note.terimaBarangPesanan.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
             'dataGudang' => $dataGudang,
@@ -107,10 +108,11 @@ class TerimaBarangPesananController extends Controller
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
             ->get();
-
+        $dataItemTransaction = DB::table("ItemTransaction")
+            ->get();
         
 
-        return view('master.note.transactionGudang.tambah',[
+        return view('master.note.terimaBarangPesanan.tambah',[
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
             'dataTag' => $dataTag,
@@ -118,6 +120,8 @@ class TerimaBarangPesananController extends Controller
             'suratJalanDetail' => $suratJalanDetail,
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
             'dataPurchaseRequest' => $dataPurchaseRequest,
+            'dataGudang'=>$dataGudang,
+            'dataItemTransaction' => $dataItemTransaction,
         ]);
     }
 
@@ -147,7 +151,7 @@ class TerimaBarangPesananController extends Controller
             ->get();*/
         
         $dataItemTransaction = DB::table('ItemTransaction')->where('ItemTransactionID',$data['ItemTransaction'])->get();
-        $dataPo = DB::table('purchase_order')
+        $dataPo = DB::table('transaction_gudang_barang')
             ->where('name', 'like', $dataItemTransaction[0]->Code.'/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/%")
             ->get();
         
@@ -239,7 +243,7 @@ class TerimaBarangPesananController extends Controller
             );
               
         }
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('terimaBarangPesanan.index')->with('status','Success!!');
     
     }
 
@@ -311,7 +315,7 @@ class TerimaBarangPesananController extends Controller
             ->where('purchase_request.proses', 1)
             ->get();
 
-        return view('master.note.transactionGudang.detail',[
+        return view('master.note.terimaBarangPesanan.detail',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
@@ -393,7 +397,7 @@ class TerimaBarangPesananController extends Controller
             ->where('purchase_request.proses', 1)
             ->get();
 
-        return view('master.note.transactionGudang.edit',[
+        return view('master.note.terimaBarangPesanan.edit',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
@@ -523,7 +527,7 @@ class TerimaBarangPesananController extends Controller
                       
         }
 
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('terimaBarangPesanan.index')->with('status','Success!!');
     
     }
 
@@ -545,7 +549,7 @@ class TerimaBarangPesananController extends Controller
                 'Hapus' => 1,
         ));
 
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('terimaBarangPesanan.index')->with('status','Success!!');
     }
 
     public function searchTGBName(Request $request)
@@ -557,11 +561,12 @@ class TerimaBarangPesananController extends Controller
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
-            ->whereNotNull('SupplierID')
-            ->where('isMenerima',1)
+            ->whereNotNull('transaction_gudang_barang.SupplierID')
+            ->where('transaction_gudang_barang.isMenerima',1)
+            ->where('transaction_gudang_barang.hapus',0)
             ->where('transaction_gudang_barang.name','like','%'.$name.'%')
-            ->where('MGudangIDAwal',$user->MGudangID)
-            ->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -582,11 +587,12 @@ class TerimaBarangPesananController extends Controller
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
-            ->whereNotNull('SupplierID')
-            ->where('isMenerima',1)
+            ->whereNotNull('transaction_gudang_barang.SupplierID')
+            ->where('transaction_gudang_barang.isMenerima',1)
+            ->where('transaction_gudang_barang.hapus',0)
             ->whereBetween('transaction_gudang_barang.tanggalDibuat',[$date[0], $date[1]])
-            ->where('MGudangIDAwal',$user->MGudangID)
-            ->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')

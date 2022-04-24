@@ -40,41 +40,43 @@ Terima Barang Pesanan
                                 <th scope="col">Tanggal Dibuat</th>
                                 <th scope="col">Gudang Awal</th>
                                 <th scope="col">Gudang Tujuan</th>
-                                <th scope="col">Keterangan Penerima</th>
+                                <th scope="col">Keterangan Pengemudi</th>
                                 <th scope="col">Handle</th>
                             </tr>
                           </thead>
                          <tbody>
                             @foreach($data as $data)
                             <tr >
-                            <th scope="row" name='id'>{{$data->id}}</th>
-                            <td>{{$data->tanggalDibuat}}</td>
-                            @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDAwal)
-                                    <td>{{$dataGudang->cname}}</td>
-                                @endif
-                            @endforeach     
-                            @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDTujuan)
-                                    <td>{{$dataGudang->cname}}</td>
-                                @endif
-                            @endforeach 
-                            <td>{{$data->keteranganPenerima}}</td>                 
-                            <td>  
-                                <a class="btn btn-default bg-info" href="{{route('terimaBarangPesanan.show',[$data->id])}}">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a class="btn btn-default bg-info" href="{{route('terimaBarangPesanan.edit',[$data->id])}}">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                <form action="{{route('terimaBarangPesanan.destroy',[$data->id])}}" method="POST" class="btn btn-responsive">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-default bg-danger" action="{{route('terimaBarangPesanan.destroy',[$data->id])}}">
-                                        <i class="fas fa-trash"></i> 
-                                    </button>
-                                </form>  
-                            </td>
+                                <th scope="row" name='id'>{{$data->id}}</th>
+                                <td>{{$data->name}}</td>
+                                <td>{{$data->tanggalDibuat}}</td>
+                                <td>{{$data->tanggalDatang}}</td>
+                                @foreach($dataGudang as $gudang)
+                                    @if($gudang->MGudangID == $data->MGudangIDAwal)
+                                        <td>{{$gudang->cname}}</td>
+                                    @endif
+                                @endforeach     
+                                @foreach($dataGudang as $gudang)
+                                    @if($gudang->MGudangID == $data->MGudangIDTujuan)
+                                        <td>{{$gudang->cname}}</td>
+                                    @endif
+                                @endforeach 
+                                <td>{{$data->keteranganPemudi}}</td>                 
+                                <td>  
+                                    <a class="btn btn-default bg-info" href="{{route('terimaBarangPesanan.show',[$data->id])}}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a class="btn btn-default bg-info" href="{{route('terimaBarangPesanan.edit',[$data->id])}}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form action="{{route('terimaBarangPesanan.destroy',[$data->id])}}" method="POST" class="btn btn-responsive">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-default bg-danger" action="{{route('terimaBarangPesanan.destroy',[$data->id])}}">
+                                            <i class="fas fa-trash"></i> 
+                                        </button>
+                                    </form>  
+                                </td>
                               
                             </tr>
                             @endforeach

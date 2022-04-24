@@ -28,6 +28,7 @@ class TerimaBarangSupplierController extends Controller
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
             ->whereNotNull('transaction_gudang_barang.SupplierID')
+            ->where('transaction_gudang_barang.hapus',0)
             ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
             ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
@@ -449,8 +450,8 @@ class TerimaBarangSupplierController extends Controller
         DB::table('transaction_gudang_barang_detail')
             ->where('transactionID', $terimaBarangSupplier->id)
             ->delete();
-        DB::table('ItemInventoryTransaction')
-            ->where('NTBID', $terimaBarangSupplier->id)
+        DB::table('ItemInventoryTransactionLine')
+            ->where('TransactionID', $dataTransactionID[0]->TransactionID)
             ->delete();
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
         for($i = 0; $i < count( $data['itemId'] ); $i++){
@@ -485,7 +486,7 @@ class TerimaBarangSupplierController extends Controller
             //Item Inventory Transaction line positif
             DB::table('ItemInventoryTransactionLine')
                 ->insert(array(
-                    'TransactionID' => $terimaBarangSupplier->id,  
+                    'TransactionID' => $dataTransactionID[0]->TransactionID,  
                     'ItemID' => $data['itemId'][$i],  
                     'MGudangID' => $data['MGudangIDTujuan'],  
                     'UnitID' => $dataItem[0]->unit,  
@@ -544,10 +545,11 @@ class TerimaBarangSupplierController extends Controller
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
-            ->whereNotNull('SupplierID')
+            ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->where('transaction_gudang_barang.name','like','%'.$name.'%')
-            ->where('MGudangIDAwal',$user->MGudangID)
-            ->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->where('transaction_gudang_barang.hapus',0)
+            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -568,10 +570,11 @@ class TerimaBarangSupplierController extends Controller
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
-            ->whereNotNull('SupplierID')
+            ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->whereBetween('transaction_gudang_barang.tanggalDibuat',[$date[0], $date[1]])
-            ->where('MGudangIDAwal',$user->MGudangID)
-            ->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->where('transaction_gudang_barang.hapus',0)
+            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')

@@ -24,7 +24,7 @@ Kirim pesanan
                 <div class="card-header">
                     <h3 class="card-title">List-Kirim pesanan Barang</h3>
                     
-                    <a href="{{route('suratJalan.create')}}" class="btn btn-primary btn-responsive float-right">Tambah pesanan Barang
+                    <a href="{{route('kirimBarangPesanan.create')}}" class="btn btn-primary btn-responsive float-right">Tambah pesanan Barang
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                         </svg>
@@ -48,15 +48,16 @@ Kirim pesanan
                             @foreach($data as $data)
                             <tr >
                             <th scope="row" name='id'>{{$data->id}}</th>
+                            <td>{{$data->name}}</td>
                             <td>{{$data->tanggalDibuat}}</td>
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $data->MGudangIDAwal)
-                                    <td>{{$dataGudang->cname}}</td>
+                                    <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach     
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $data->MGudangIDTujuan)
-                                    <td>{{$dataGudang->cname}}</td>
+                                    <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach 
                             <td>{{$data->keteranganPemudi}}</td>                 
