@@ -50,7 +50,6 @@ Terima Barang Pesanan
                                 <th scope="row" name='id'>{{$data->id}}</th>
                                 <td>{{$data->name}}</td>
                                 <td>{{$data->tanggalDibuat}}</td>
-                                <td>{{$data->tanggalDatang}}</td>
                                 @foreach($dataGudang as $gudang)
                                     @if($gudang->MGudangID == $data->MGudangIDAwal)
                                         <td>{{$gudang->cname}}</td>

@@ -71,7 +71,7 @@ Pembuatan Nota Terima Pesanan
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Tujuan</label> 
-                                    <select class="form-control selectpicker" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
+                                    <select class="form-control select2" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
                                       <option value="">
                                             --Pilih Gudang Tujuan--
                                         </option>
@@ -95,7 +95,7 @@ Pembuatan Nota Terima Pesanan
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Data Purchase Request</label> 
-                                    <select class="form-control selectpicker" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
+                                    <select class="form-control select2" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
 
                                     </select>
                                     </div>
@@ -104,7 +104,7 @@ Pembuatan Nota Terima Pesanan
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Jenis Transaksi</label> 
-                                    <select class="form-control selectpicker" style="width: 100%;"name="ItemTransaction">
+                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
                                       <option value="">
                                           --Pilih Jenis Transaksi--
                                       </option>
@@ -159,7 +159,7 @@ Pembuatan Nota Terima Pesanan
                                     <label for="title">Barang</label>
                                     <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
                                   
-                                        <option value="pilih">--Pilih barang--</option>
+                                     
                                         <!--@foreach($dataBarang as $key => $data)
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                         @endforeach-->
@@ -280,13 +280,13 @@ Pembuatan Nota Terima Pesanan
                                     
                 $("#PurchaseRequestID").empty();
                 $("#PurchaseRequestID").append(optionnya);
-                $('.selectpicker').selectpicker('refresh');
+                //$('.selectpicker').selectpicker('refresh');
                 var optionnya = '';
             
                 var suratJalan = <?php echo json_encode($suratJalan); ?>;
     
                 //alert('masuk sini');
-                optionnya += '<option value="pilih" >--Pilih Surat Jalan--</option>\n';
+                optionnya += '<option value="pilih" selected>--Pilih Surat Jalan--</option>\n';
                 $.each(suratJalan, function( key, value ){
                    
                     if(value.MGudangIDTujuan.toString() == id.toString()){
@@ -305,20 +305,20 @@ Pembuatan Nota Terima Pesanan
         $("#SuratJalanID").on("change",function(){  //sudah
                 
             var pr = $("#SuratJalanID option:selected").attr("idPurchaseReq");
-            //alert(pr);
-            alert($("#SuratJalanID").val()); 
+            alert(pr);
             var optionnya = '';
         
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
             
-            //alert('masuk sini');
+            alert('masuk sini');
             optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            alert(optionnya);   
             $.each(suratJalanDetail, function( key, value ){    
                 if(value.idPR.toString() == pr.toString()){
                     //alert('masuk'); 
                     //alert("masuk cek");
                     optionnya += '<option id="namaBarang" namaBarang='+value.itemName +' idPrdId='+ value.PurchaseRequestDetailID +' value="'+value.ItemID+'">'+value.itemName+'<nbsp>('+value.unitName+')</option>\n';
-                    //alert(optionnya);         
+                    alert(optionnya);         
                 }
             });
         
@@ -328,6 +328,51 @@ Pembuatan Nota Terima Pesanan
             $('.selectpicker').selectpicker('refresh');
         });
 
+         /*$("#pReq").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var optionnya = '';
+            //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="" selected>--Pilih barang--</option>\n';
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.idPurchaseRequest.toString() == id.toString()){
+                    //alert('masuk');
+                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
+                }
+            });
+            //alert(optionnya);
+            
+                                
+            $("#barang").empty();
+            $("#barang").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });*/
+
+        
+        /*$("#barang").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.id.toString() == id.toString()){
+                    var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    //alert(maxAngka);
+                    $("#jumlahBarang").attr({
+                        "max" : maxAngka,        
+                        "min" : 1,
+                        "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                        "value" : "",   
+                    }); 
+                }
+            });
+            
+        });*/
 
     });
 
