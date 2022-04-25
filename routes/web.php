@@ -110,16 +110,22 @@ Route::resource('tax', 'App\Http\Controllers\TaxController');//selese
 
 //Purchase Request 
 Route::resource('purchaseRequest', 'App\Http\Controllers\PurchaseRequestController');
-//Route::get('purchaseRequest/pdf/{purchaseRequest}',[App\Http\Controllers\PurchaseRequestController::class, 'pdf']);
+Route::get('PurchaseRequeste/print/{purchaseRequest}',[App\Http\Controllers\PurchaseRequestController::class, 'print']);
 //approve purchase request
 Route::resource('approvedPurchaseRequest', 'App\Http\Controllers\ApprovedPRController');
+//Route::get('/approvedPurchaseRequeste/print/{$purchaseRequest}',[App\Http\Controllers\ApprovedPRController::class, 'print']); 
+
+
 Route::resource('approvedPurchaseOrder', 'App\Http\Controllers\ApprovedPOController');
 //Purchase Order 
 Route::resource('purchaseOrder', 'App\Http\Controllers\PurchaseOrderController');
-
+Route::get('PurchaseOrdere/print/{purchaseOrder}',[App\Http\Controllers\PurchaseOrderController::class, 'print']);
 //transactionGudangBarang
 Route::resource('transactionGudang','App\Http\Controllers\TransactionGudangBarangController');
 Route::resource('kirimBarangPesanan','App\Http\Controllers\KirimBarangPesananController');
 Route::resource('terimaBarangPesanan','App\Http\Controllers\TerimaBarangPesananController');
 Route::resource('terimaBarangSupplier','App\Http\Controllers\TerimaBarangSupplierController');
 Route::resource('suratJalan','App\Http\Controllers\SuratJalanController');
+
+Route::resource('inventoryTransaction','App\Http\Controllers\InventoryTransactionController');
+Route::get('/kartuStok/searchgudang/',[App\Http\Controllers\InventoryTransactionController::class, 'searchIndexByGudang']);

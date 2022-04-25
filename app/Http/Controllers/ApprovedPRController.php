@@ -31,7 +31,26 @@ class ApprovedPRController extends Controller
             ->where('UserIDManager1', $user->id)
             ->get();
         $prKeluar = null;
-        if(count($kepalaGudang)>0){
+        if(count($managerPerusahaan1)>0 && count($kepalaGudang)>0){
+            $arrkepala = array();
+            foreach($kepalaGudang as $val){
+                array_push($arrkepala, $val->MGudangID);
+            }
+            $arrmanager = array();
+            foreach($managerPerusahaan1 as $val){
+                array_push($arrmanager, $val->MPerusahaanID);
+            }
+            $prKeluar= DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
+                ->where('approved', "!=",2)
+                ->where('approvedAkhir',0)
+                ->where('hapus',0)
+                ->whereIn('purchase_request.MGudangID',$arrkepala)
+                ->WhereIn('MGudang.cidp', $arrmanager)
+                ->paginate(10);
+                //dd($prKeluar);
+        }
+        else if(count($kepalaGudang)>0){
             $arrkepala = array();
             foreach($kepalaGudang as $val){
                 array_push($arrkepala, $val->MGudangID);
@@ -54,7 +73,7 @@ class ApprovedPRController extends Controller
                 ->where('approved',1)
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
-                ->whereIn('MGudang.MPerusahaanID', $arrmanager)
+                ->whereIn('MGudang.cidp', $arrmanager)
                 ->paginate(10);
             //->get();
         }
@@ -145,7 +164,9 @@ class ApprovedPRController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         //dd($approvedPurchaseRequest['id']);
-        if($approvedPurchaseRequest['approve'] == 0){
+        if($approvedPurchaseRequest['approved'] == 0){
+
+            //dd("masu sini");
             DB::table('purchase_request')
             ->where('id', $approvedPurchaseRequest['id'])
             ->update(array(
@@ -169,7 +190,7 @@ class ApprovedPRController extends Controller
             }
 
         }
-        else if($approvedPurchaseRequest['approve'] ==1 && $approvedPurchaseRequest['approveAkhir'] == 0){
+        else if($approvedPurchaseRequest['approved'] ==1 && $approvedPurchaseRequest['approvedAkhir'] == 0){
             DB::table('purchase_request')
             ->where('id', $approvedPurchaseRequest['id'])
             ->update(array(
@@ -312,9 +333,26 @@ class ApprovedPRController extends Controller
             'prd' => $prd,
         ]);
 
-
-            
-
-
+    }
+    public function print(PurchaseRequest $approvedPurchaseRequest)
+    {
+        //
+        /*$user = Auth::user();*/
+        $dataGudang = DB::table('MGudang')
+            ->get();
+        $prd = DB::table('purchase_request_detail')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->get();
+        //dd($approvedPurchaseRequest['id']);
+        if($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0){
+            return view('master.approved.PurchaseRequest.print',[
+                'purchaseRequest'=>$approvedPurchaseRequest,
+                'dataGudang'=>$dataGudang,
+                'prd'=>$prd,
+            ]);
+        }
+        else{
+            return redirect()->route('approvedPurchaseRequest.index')->with('status','Failed');    
+        }
     }
 }

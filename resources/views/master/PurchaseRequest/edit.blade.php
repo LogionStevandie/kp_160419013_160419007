@@ -243,13 +243,27 @@ Pembuatan Nota Permintaan Pembelian
 <script type="text/javascript">
 
     var tambahCombo = "";
-    var totalTambah = 0;
+    var totalTambah = $('#totalBarangnya').val();
     
     $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
         //alert($('.cekId').length);
+        var i = $(this).index('#hapusKeranjang');
+        var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+        var hargaBarang = $('.cekHarga:eq('+i+')').val();
+
         $(this).parent().parent().remove();
         totalTambah -= 1;
+
+        var totalSekarang = parseFloat($("#TotalHargaKeranjang").attr('jumlahHarga')) - parseFloat(jumlahBarang * hargaBarang);
+        $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalSekarang));
+        $('#TotalHargaKeranjang').html("Rp. " + totalSekarang);
+
+
+        $('#totalBarangnya').val(totalTambah);
+        $('#totalBarangnya').html(totalTambah);
+
+
         $('#totalBarangnya').val(totalTambah);
         $('#totalBarangnya').html(totalTambah);
     });
@@ -310,7 +324,14 @@ Pembuatan Nota Permintaan Pembelian
             //$('#TotalHargaKeranjang').val(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang));
             //$('#TotalHargaKeranjang').html(formatRupiah(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang)));
             
-
+            $("#barang").val("").change();
+          $("#jumlahBarang").val(1);
+          $("#hargaBarang").val(1);
+          $("#keteranganBarang").val("");
+          $('#hargaBarang').val(0);
+          $('#tanpa-rupiah').val(0);
+          $('#tanpa-rupiah').html(0);
+          $('.selectpicker').selectpicker('refresh');
             
 
         }
@@ -365,7 +386,14 @@ Pembuatan Nota Permintaan Pembelian
             $('#TotalHargaKeranjang').attr('jumlahHarga',parseInt(totalHargaKeranjang)+parseInt(totalHarga));
            $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
             
-            
+           $("#barang").val("").change();
+          $("#jumlahBarang").val(1);
+          $("#hargaBarang").val(1);
+          $("#keteranganBarang").val("");
+          $('#hargaBarang').val(0);
+          $('#tanpa-rupiah').val(0);
+          $('#tanpa-rupiah').html(0);
+          $('.selectpicker').selectpicker('refresh');
         }
 
     });

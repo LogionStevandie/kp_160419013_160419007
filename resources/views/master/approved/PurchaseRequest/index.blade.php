@@ -60,8 +60,9 @@ Persetujuan Pembelian
                                 @endif
                                 <td>  
                                 <a href="{{route('approvedPurchaseRequest.edit',[$purchaseRequest->id])}}" class="btn btn-primary btn-responsive">Approve</a>
-                                    
-                                
+                                 
+                              
+                           
                                 </td>
                                 
                                 </tr>

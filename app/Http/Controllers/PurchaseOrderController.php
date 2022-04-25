@@ -495,6 +495,70 @@ class PurchaseOrderController extends Controller
         return redirect()->route('purchaseOrder.index')->with('status','Success!!');
     }
 
+    public function print(PurchaseOrder $purchaseOrder)
+    {
+        //
+        $user = Auth::user();
+        
+        $dataSupplier = DB::table('MSupplier')//
+            ->get();
+
+        $dataPayment = DB::table('PaymentTerms')//
+            ->select('PaymentTerms.*', 'Payment.Name as PaymentName', 'Payment.Deskripsi as PaymentDeskripsi')
+            ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
+            ->get();
+
+        $dataBarang = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->where('Item.Hapus',0)
+            ->get();
+
+        //data Purchase Request yang disetujui
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name as prName','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+
+        $dataDetail = DB::table('purchase_order_detail')
+            ->where('purchase_order_detail.idPurchaseOrder', '=', $purchaseOrder->id)
+            ->get();
+        $dataTax=DB::table('Tax')
+            ->get();
+
+        $dataPerusahaan =DB::table('MPerusahaan')//
+            ->get();
+
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->get();
+
+        return view('master.PurchaseOrder.print',[
+            'purchaseOrder'=>$purchaseOrder,
+            'dataDetail'=>$dataDetail,
+            'dataSupplier' => $dataSupplier,
+            'dataPayment' => $dataPayment,
+            'dataBarang' => $dataBarang,
+            'dataTax' => $dataTax,
+            'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+            'dataPurchaseRequest' => $dataPurchaseRequest,
+            'dataPerusahaan' => $dataPerusahaan,
+        ]);
+    }
+
     public function searchNamePO(Request $request)
     {
         $name=$request->input('searchname');

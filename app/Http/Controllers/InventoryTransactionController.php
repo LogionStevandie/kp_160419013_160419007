@@ -29,10 +29,29 @@ class InventoryTransactionController extends Controller
             ->paginate(10);
         $dataDetail = DB::table('ItemInventoryTransactionLine')
             ->get();
+
+        $dataReport = DB::table('ItemInventoryTransactionLine')//index mbek show tok?? nggeh sek njokok sate yo
+            ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', 
+            DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
+            ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+            ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+            ->paginate(10);
+        //dd($dataReport);
         
-        return view('report.itemInventoryTransaction.index',[
+        $dataGudang = DB::table("MGudang")
+            ->get();
+
+        $dataItem = DB::table("Item")
+            ->select("Item.ItemID", "Unit.Name")
+            ->join("Unit",'Item.UnitID','=','Unit.UnitID')
+            ->get();
+        return view('kartuStok.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
+            'dataReport' => $dataReport,
+            'dataGudang' => $dataGudang,
+            'dataItem' => $dataItem,
         ]);
     }
 
@@ -110,7 +129,7 @@ class InventoryTransactionController extends Controller
             ->get();
         
 
-        return view('report.itemInventoryTransaction.detail',[
+        return view('kartuStok.detail',[
             'inventoryTransaction' => $inventoryTransaction,
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
@@ -156,5 +175,54 @@ class InventoryTransactionController extends Controller
     public function destroy(InventoryTransaction $inventoryTransaction)
     {
         //
+    }
+
+    public function searchIndexByGudang(Request $request)// dibikin report sapa tau butuh buat printshow e dibeken modal ato seng biasa
+    {
+        //pas juga semua nota kasik tombol print (layout sama kayak approve gapapa, di approve tambahi total keseluruhan kayak di nota biasa be tempat buat tanda tangan gitu) ya
+        $gudang=$request->input('searchgudangid');
+        $user = Auth::user();
+
+        $data = DB::table('ItemInventoryTransaction')
+            ->select('ItemInventoryTransaction.*', 'ItemTransaction.Name as itemTransactionName','MSupplier.Name as supplierName','MGudang.cname as gudangName','MGudang.ccode as gudangCode')
+            ->leftjoin('ItemTransaction','ItemInventoryTransaction.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
+            ->leftjoin('MSupplier','ItemInventoryTransaction.SupplierID','=','MSupplier.SupplierID')
+            ->leftjoin('MGudang','ItemInventoryTransaction.MGudangID','=','MGudang.MGudangID')
+            ->paginate(10);
+        $dataDetail = DB::table('ItemInventoryTransactionLine')
+            ->get();
+
+        if($gudang == "" || $gudang == null){
+            $dataReport = DB::table('ItemInventoryTransactionLine')//index mbek show tok?? nggeh sek njokok sate yo
+                ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
+                ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+                ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+                ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+                ->paginate(10);
+        }
+        else{
+            $dataReport = DB::table('ItemInventoryTransactionLine')//index mbek show tok?? nggeh sek njokok sate yo
+                ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
+                ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+                ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+                ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+                ->where('ItemInventoryTransactionLine.MGudangID','=', $gudang)
+                ->paginate(10);
+        }
+        
+        //dd($dataReport);
+        $dataItem = DB::table("Item")
+            ->select("Item.ItemID", "Unit.Name")
+            ->join("Unit",'Item.UnitID','=','Unit.UnitID')
+            ->get();
+        $dataGudang = DB::table("MGudang")->get();
+        return view('kartuStok.index',[
+            'data' => $data,
+            'dataDetail' => $dataDetail,
+            'dataReport' => $dataReport,
+            'dataGudang' => $dataGudang,
+            'gudang' => $gudang,
+            'dataItem' => $dataItem,
+        ]);
     }
 }

@@ -1,31 +1,11 @@
 
-@extends('layouts.home_master')
-
-@if(session()->has('message'))
-    <div class="alert alert-success">
-        {{ session()->get('message') }}
-    </div>
-@endif
-
-@section('judul')
-Persetujuan Pembelian
-@endsection
-
-@section('pathjudul')
-<li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Persetujuan Pembelian</li>
-<li class="breadcrumb-item"><a href="{{route('approvedPurchaseRequest.index')}}">Permintaan Pembelian</a></li>
-<li class="breadcrumb-item active">Approve</li>
-@endsection
-
-@section('content')
 
 <div class="container-fluid">
 
     <!-- Page Heading -->
     <div class="card card-primary">
         <!-- form start -->
-        <form method="POST" action="{{route('approvedPurchaseRequest.update',[$purchaseRequest->id])}}" >
+        <form method="POST" >
             @csrf
             @method('PUT')
             <div class="card-body">
@@ -51,8 +31,8 @@ Persetujuan Pembelian
                                             @endif 
                                         @endforeach
                                         Jenis permintaan : {{$purchaseRequest->jenisProses}} <br>
-                                        Tanggal dibutuhkan : {{$purchaseRequest->tanggalDibutuhkan}}<br>
-                                        Tanggal batas akhir : {{$purchaseRequest->tanggalAkhirDibutuhkan}}
+                                        Tanggal dibutuhkan : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDibutuhkan))}}<br>
+                                        Tanggal batas akhir : {{date("d-m-Y", strtotime($purchaseRequest->tanggalAkhirDibutuhkan))}}
                                         </th>
                                         </tr>
                                     </thead>
@@ -95,41 +75,17 @@ Persetujuan Pembelian
                             </div>
                         
                             <div class="form-group">
-                                <label for="title">Pembelian / Penjualan</label><br>
-                                <div class="icheck-primary d-inline">
-                                    <input id="setuju"  type="radio" name="approve" value="1"{{'1' == old('approved','')? 'checked' :'' }}>
-                                    <label class="form-check-label" for="setuju">Setuju</label>
-                                </div>
-                                <div class="icheck-primary d-inline">
-                                    <input id="tdkSetuju"  type="radio" name="approve" value="2"{{'2'== old('approved','')? 'checked' :'' }}>
-                                    <label class="form-check-label" for="tdkSetuju">Tidak Setuju</label><br>
-                                </div><br><br>
-                                <div id="ket">
-                                    <label class="form-check-label" >Keterangan :</label><br>
-                                    <textarea rows="3" required type="text" name="keterangan"class="form-control" value="{{old('keterangan','')}}" id="txt"></textarea>
-                                </div>
-                            </div>    
+                  
 
             </div>
-            <!-- /.card-body -->
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
+        
+           
         </form>
     </div>
 </div>
 
 <script type="text/javascript">
-$('body').on("click", "#setuju", function (){
-
-         $("#ket").hide();
-         document.getElementById("txt").value = "-";
-});
-$('body').on("click", "#tdkSetuju", function (){
-
-        $("#ket").show();
-});
-
+  window.addEventListener("load", window.print());
 $('#hargaTotal').html("Rp." +formatRupiah($('#hargaTotal').attr('hargaT')));
 /* Fungsi */
 function formatRupiah(angka, prefix)
@@ -149,4 +105,3 @@ function formatRupiah(angka, prefix)
     return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
 }
 </script>
-@endsection

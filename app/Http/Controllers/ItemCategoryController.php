@@ -156,11 +156,14 @@ class ItemCategoryController extends Controller
         return redirect()->route('itemCategory.index')->with('status','Success!!');
     }
 
-    public function selectItemCategoryName($categoryName)
+    public function selectItemCategoryName(Request $request)
     {
         //
+        $name=$request->input('searchname');
+        $user = Auth::user();
+
         $dataCategory = DB::table('ItemCategory')
-            ->where('Name','like','%'.$categoryName.'%')
+            ->where('Name','like','%'.$name.'%')
             ->paginate(10);
             //->get();
         $dataCOA = DB::table('COA')

@@ -54,7 +54,7 @@ Edit Terima Barang Supplier
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Penerima</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="MGudangIDTujuan">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDTujuan">
                                       <option value="">
                                             --Pilih Gudang--
                                         </option>
@@ -74,8 +74,8 @@ Edit Terima Barang Supplier
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Supplier</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="idSupplierDipilih" name="Supplier">
-                                      <option value="">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idSupplierDipilih" name="Supplier">
+                                      <option value=""> 
                                             --Pilih Supplier--
                                         </option>
                                         @foreach($dataSupplier as $key => $data)
@@ -94,7 +94,7 @@ Edit Terima Barang Supplier
                               <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Jenis Transaksi</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="ItemTransaction" readonly>
                                       <option value="">
                                           --Pilih Jenis Transaksi--
                                       </option>
@@ -114,8 +114,8 @@ Edit Terima Barang Supplier
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Data Purchase Order</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="poID" id="idPurchaseOrder">
-                                      <!--<option value="">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="poID" id="idPurchaseOrder">
+                                      <!--<option value=""> 
                                           --Pilih Purchase Order--
                                       </option>
                                       @foreach($dataPurchaseOrder as $key => $data)

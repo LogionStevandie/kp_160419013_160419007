@@ -71,21 +71,26 @@ Purchase Request
                                     @endif
                                 </td>
                                 <td>{{$d->keterangan}}</td>
-                                <td>  
-                                    <a class="btn btn-default bg-info" href="{{route('purchaseRequest.show',[$d->id])}}">
-                                        <i class="fas fa-eye"></i> 
-                                    </a>
-                                    <a class="btn btn-default bg-info" href="{{route('purchaseRequest.edit',[$d->id])}}">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{route('purchaseRequest.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-default bg-danger" action="{{route('purchaseRequest.destroy',[$d->id])}}">
-                                            <i class="fas fa-trash"></i> 
-                                        </button>
-                                    </form>  
-                                </td>
+
+                                     <td >
+                                           <a class="btn btn-primary btn-sm" href="{{route('purchaseRequest.show',[$d->id])}}">
+                                                <i class="fas fa-eye"></i> 
+                                            </a>
+                                            <a class="btn btn-info btn-sm" href="{{route('purchaseRequest.edit',[$d->id])}}">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                             <form action="{{route('purchaseRequest.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-danger btn-sm" action="{{route('purchaseRequest.destroy',[$d->id])}}">
+                                                    <i class="fas fa-trash"></i> 
+                                                </button>
+                                            </form>
+                                             <a href="PurchaseRequeste/print/{{$d->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                    
+                                    </td>  
+                                  
+                                
                             </tr>   
                             @endforeach
                         </tbody>

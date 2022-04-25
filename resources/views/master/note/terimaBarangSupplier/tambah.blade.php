@@ -53,7 +53,7 @@ Pembuatan Terima Barang Supplier
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Penerima</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="MGudangIDTujuan">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDTujuan">
                                       <option value="">
                                             --Pilih Gudang--
                                         </option>
@@ -69,7 +69,7 @@ Pembuatan Terima Barang Supplier
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Supplier</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="idSupplierDipilih" name="Supplier">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idSupplierDipilih" name="Supplier">
                                       <option value="">
                                             --Pilih Supplier--
                                         </option>
@@ -85,7 +85,7 @@ Pembuatan Terima Barang Supplier
                               <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Jenis Transaksi</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="ItemTransaction">
                                       <option value="">
                                           --Pilih Jenis Transaksi--
                                       </option>
@@ -101,7 +101,7 @@ Pembuatan Terima Barang Supplier
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Data Purchase Order</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="poID" id="idPurchaseOrder">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="poID" id="idPurchaseOrder">
                                       <!--<option value="">
                                           --Pilih Purchase Order--
                                       </option>
@@ -258,14 +258,11 @@ Pembuatan Terima Barang Supplier
         $("#idSupplierDipilih").on("change",function(){  //sudah
                 
                 var id = this.value;
-                //alert(id);
-                //var singkatan = $("#perusahaanID option:selected").attr('singkatan');
-                //alert(singkatan);
                 var optionnya = '';
             
                 var dataPurchaseOrder = <?php echo json_encode($dataPurchaseOrder); ?>;
     
-                //alert('masuk sini');
+                alert('masuk sini');
                 optionnya += '<option value="pilih" selected>--Pilih Purchase Order--</option>\n';
                 $.each(dataPurchaseOrder, function( key, value ){
                    
@@ -309,52 +306,6 @@ Pembuatan Terima Barang Supplier
             $("#barang").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
         });
-
-         /*$("#pReq").change(function() {
-            //alert(this.value);
-            var id = this.value;
-            var optionnya = '';
-            //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
-            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
-
-            //alert('masuk sini');
-            optionnya += '<option value="" selected>--Pilih barang--</option>\n';
-            $.each(dataPurchaseRequestDetail, function( key, value ){
-                //alert(value.ItemName);
-                if(value.idPurchaseRequest.toString() == id.toString()){
-                    //alert('masuk');
-                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
-                }
-            });
-            //alert(optionnya);
-            
-                                
-            $("#barang").empty();
-            $("#barang").append(optionnya);
-            $('.selectpicker').selectpicker('refresh');
-        });*/
-
-        
-        /*$("#barang").change(function() {
-            //alert(this.value);
-            var id = this.value;
-            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
-
-            $.each(dataPurchaseRequestDetail, function( key, value ){
-                //alert(value.ItemName);
-                if(value.id.toString() == id.toString()){
-                    var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
-                    //alert(maxAngka);
-                    $("#jumlahBarang").attr({
-                        "max" : maxAngka,        
-                        "min" : 1,
-                        "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
-                        "value" : "",   
-                    }); 
-                }
-            });
-            
-        });*/
 
     });
 

@@ -55,7 +55,7 @@ Pembuatan Nota Terima Pesanan
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Awal</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
                                       <option value="">
                                             --Pilih Gudang Awal--
                                         </option>
@@ -75,7 +75,7 @@ Pembuatan Nota Terima Pesanan
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Tujuan</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
                                       <option value="">
                                             --Pilih Gudang Tujuan--
                                         </option>
@@ -94,7 +94,7 @@ Pembuatan Nota Terima Pesanan
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Surat Jalan</label> 
-                                    <select class="form-control select2" style="width: 100%;" id="SuratJalanID" name="SuratJalanID">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="SuratJalanID" name="SuratJalanID">
                                 
                                     </select>
                                     </div>    
@@ -103,7 +103,7 @@ Pembuatan Nota Terima Pesanan
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Data Purchase Request</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
 
                                     </select>
                                     </div>
@@ -112,7 +112,7 @@ Pembuatan Nota Terima Pesanan
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Jenis Transaksi</label> 
-                                    <select class="form-control select2" style="width: 100%;"name="ItemTransaction">
+                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="ItemTransaction" readonly>
                                       <option value="">
                                           --Pilih Jenis Transaksi--
                                       </option>

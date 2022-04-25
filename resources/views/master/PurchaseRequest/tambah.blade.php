@@ -236,8 +236,21 @@ Pembuatan Nota Permintaan Pembelian
     $('body').on('click','#hapusKeranjang', function(){
         //alert($('.cekId:eq(2)').val());
         //alert($('.cekId').length);
+
+        //var harga = $(this).parent();
+        var i = $(this).index('#hapusKeranjang');
+        var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+        var hargaBarang = $('.cekHarga:eq('+i+')').val();
+        //alert(jumlahBarang * hargaBarang);
         $(this).parent().parent().remove();
+        
         totalTambah -= 1;
+        //alert(parseFloat($("#TotalHargaKeranjang").attr('jumlahHarga')) - parseFloat(jumlahBarang * hargaBarang));
+        var totalSekarang = parseFloat($("#TotalHargaKeranjang").attr('jumlahHarga')) - parseFloat(jumlahBarang * hargaBarang);
+        $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalSekarang));
+        $('#TotalHargaKeranjang').html("Rp. " + totalSekarang);
+
+
         $('#totalBarangnya').val(totalTambah);
         $('#totalBarangnya').html(totalTambah);
     });
@@ -277,7 +290,7 @@ Pembuatan Nota Permintaan Pembelian
             
             $('.keteranganVal:eq('+indexSama+')').html($('.cekKeterangan:eq('+indexSama+')').val());
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
-            $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ($('.cekJumlah:eq('+indexSama+')').val()* $("#hargaBarang").val())+',-');
+            $('.hargaVal:eq('+indexSama+')').html( "Rp. " + ($('.cekJumlah:eq('+indexSama+')').val() * hargaBarang)+',-');
             
             //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
             var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
@@ -293,7 +306,14 @@ Pembuatan Nota Permintaan Pembelian
             $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
             $('#TotalHargaKeranjang').html("Rp. " +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
 
-           
+            $("#barang").val("").change();
+          $("#jumlahBarang").val(1);
+          $("#hargaBarang").val(1);
+          $("#keteranganBarang").val("");
+          $('#hargaBarang').val(0);
+          $('#tanpa-rupiah').val(0);
+          $('#tanpa-rupiah').html(0);
+          $('.selectpicker').selectpicker('refresh');
 
             //$('#TotalHargaKeranjang').val(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang));
             //$('#TotalHargaKeranjang').html(formatRupiah(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang)));
@@ -351,7 +371,14 @@ Pembuatan Nota Permintaan Pembelian
            $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
             //alert(totalHargaKeranjang);
             
-            
+          $("#barang").val("").change();
+          $("#jumlahBarang").val(1);
+          $("#hargaBarang").val(1);
+          $("#keteranganBarang").val("");
+          $('#hargaBarang').val(0);
+          $('#tanpa-rupiah').val(0);
+          $('#tanpa-rupiah').html(0);
+          $('.selectpicker').selectpicker('refresh');
         }
 
     });

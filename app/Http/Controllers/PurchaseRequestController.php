@@ -415,9 +415,10 @@ class PurchaseRequestController extends Controller
        return redirect()->route('purchaseRequest.index')->with('status','Success!!');
     }
 
-    public function pdf(PurchaseRequest $purchaseRequest)
+    public function print(PurchaseRequest $purchaseRequest)
     {
-         $user = Auth::user();
+        //
+        $user = Auth::user();
 
         $getLokasi = DB::table('MGudang')
             ->where('MGudang.MGudangID', '=', $user->MGudangID)
@@ -440,18 +441,17 @@ class PurchaseRequestController extends Controller
         $dataDetail = DB::table('purchase_request_detail')
             ->where('purchase_request_detail.idPurchaseRequest', '=', $purchaseRequest->id)
             ->get();
-        
-        $pdf = PDF::loadview('master.PurchaseRequest.pdf',[
+
+     
+            return view('master.PurchaseRequest.print',[
                 'purchaseRequest'=>$purchaseRequest,
                 'dataDetail'=>$dataDetail,
                 'dataGudang' => $dataGudang,
                 'dataBarang' => $dataBarang,
             ]);
         
-        //Storage::put('public/permintaan.pdf', $pdf->output());
-	    return $pdf->download('permintaan.pdf');
-        
     }
+
     public function searchNamePR(Request $request)
     {
         $name=$request->input('searchname');

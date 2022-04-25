@@ -56,22 +56,23 @@ Purchase Order
                               <td>Not Approved</td>
                               @endif
                             
-                            <td>  
-                                <a class="btn btn-default bg-info" href="{{route('purchaseOrder.show',[$purchaseOrder->id])}}">
+                            <td>
+                                <a class="btn btn-primary btn-sm" href="{{route('purchaseOrder.show',[$purchaseOrder->id])}}">
                                     <i class="fas fa-eye"></i> 
                                 </a>
-                                <a class="btn btn-default bg-info" href="{{route('purchaseOrder.edit',[$purchaseOrder->id])}}">
+                                <a class="btn btn-info btn-sm" href="{{route('purchaseOrder.edit',[$purchaseOrder->id])}}">
                                     <i class="fas fa-edit"></i>
                                 </a>
                                 <form action="{{route('purchaseOrder.destroy',[$purchaseOrder->id])}}" method="POST" class="btn btn-responsive">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-default bg-danger" action="{{route('purchaseOrder.destroy',[$purchaseOrder->id])}}">
+                                    <button class="btn btn-danger btn-sm" action="{{route('purchaseOrder.destroy',[$purchaseOrder->id])}}">
                                         <i class="fas fa-trash"></i> 
                                     </button>
-                                </form>  
-                            </td>
-                              
+                                </form>
+                                <a href="PurchaseOrdere/print/{{$purchaseOrder->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i>Print</a>
+                                
+                            </td>  
                             </tr>
                             @endforeach
                            
