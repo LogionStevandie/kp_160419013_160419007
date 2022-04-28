@@ -334,6 +334,12 @@ Pembuatan Nota Purchase Order
                 //alert(value.ItemName);
                 if(value.id.toString() == id.toString()){
                     var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    $.each($('.cekPrd'), function(idx, val) {
+                        if(val.value == value.id){
+                            var jumlahBarang = $('.cekJumlah:eq('+idx+')').val();
+                            maxAngka = maxAngka - jumlahBarang;
+                        }
+                    });
                     //alert(maxAngka);
                     $("#jumlahBarang").attr({
                         "max" : maxAngka,        
@@ -367,10 +373,12 @@ Pembuatan Nota Purchase Order
         $("#barang").val(prd).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#hargaBarang").val(hargaBarang);
+        $("#hargaBarang").html(hargaBarang);    
         $("#tanpa-rupiah").val(formatRupiah(hargaBarang));
         $("#diskonBarang").val(diskonBarang);
         $("#tanpa-rupiah-diskon").val(formatRupiah(diskonBarang));
         $("#keteranganBarang").val(keteranganBarang);
+        $("#keteranganBarang").html(keteranganBarang);
         $("#tax").val(pajak).change();
         //$("#barang").val(idBarang).change();
 

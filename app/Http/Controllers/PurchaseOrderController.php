@@ -278,21 +278,36 @@ class PurchaseOrderController extends Controller
 
         //data Purchase Request yang disetujui
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
-            ->select('purchase_request_detail.*','purchase_request.name as prName','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->select('purchase_request_detail.*','purchase_request.name as prName','Item.ItemName as ItemName','Unit.Name as UnitName') //'purchase_order_detail.jumlah as podJumlah')//
             ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            //->leftjoin('purchase_order_detail','purchase_request_detail.id','=','purchase_order_detail.idPurchaseRequestDetail')
             ->where('purchase_request.approved', 1)
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
             ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
             ->get();
-
+        //dd($dataPurchaseRequestDetail);
         $dataDetail = DB::table('purchase_order_detail')
+            ->select('purchase_order_detail.*','Item.ItemName as itemName','Tax.TaxPercent')
+            //->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
+            ->leftjoin('Tax', 'purchase_order_detail.idTax','=','Tax.TaxID')
+            ->leftjoin('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->where('purchase_order_detail.idPurchaseOrder', '=', $purchaseOrder->id)
             ->get();
+        //dd($dataDetail);
+
+        $dataDetailBarang = DB::table('purchase_order_detail')
+            ->select('purchase_order_detail.*','Item.ItemName as itemName','Tax.TaxPercent')
+            //->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
+            ->leftjoin('Tax', 'purchase_order_detail.idTax','=','Tax.TaxID')
+            ->leftjoin('Item','purchase_order_detail.idItem','=','Item.ItemID')
+            ->where('purchase_order_detail.idPurchaseOrder', '!=', $purchaseOrder->id)
+            ->get();
         $dataTax=DB::table('Tax')
+            ->select('Tax.*')
             ->get();
 
         $dataPerusahaan =DB::table('MPerusahaan')//
@@ -308,17 +323,24 @@ class PurchaseOrderController extends Controller
             ->where('purchase_request.proses', 1)
             ->get();
 
-        return view('master.PurchaseOrder.edit',[
-            'purchaseOrder'=>$purchaseOrder,
-            'dataDetail'=>$dataDetail,
-            'dataSupplier' => $dataSupplier,
-            'dataPayment' => $dataPayment,
-            'dataBarang' => $dataBarang,
-            'dataTax' => $dataTax,
-            'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
-            'dataPurchaseRequest' => $dataPurchaseRequest,
-            'dataPerusahaan' => $dataPerusahaan,
-        ]);
+            
+        if($purchaseOrder->approved == 1 || $purchaseOrder->approved == 2){
+            return redirect()->route('purchaseOrder.index')->with('status','Tidak dapat mengubah data');
+        }
+        else{
+            return view('master.PurchaseOrder.edit',[
+                'purchaseOrder'=>$purchaseOrder,
+                'dataDetail'=>$dataDetail,
+                'dataSupplier' => $dataSupplier,
+                'dataPayment' => $dataPayment,
+                'dataBarang' => $dataBarang,
+                'dataTax' => $dataTax,
+                'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+                'dataPurchaseRequest' => $dataPurchaseRequest,
+                'dataPerusahaan' => $dataPerusahaan,
+                'dataDetailBarang' => $dataDetailBarang,
+            ]);
+        } 
     }
 
     /**
@@ -486,13 +508,19 @@ class PurchaseOrderController extends Controller
     public function destroy(PurchaseOrder $purchaseOrder)
     {
         //
-        DB::table('purchase_order')
-            ->where('id', $purchaseOrder->id)
-            ->update([
-                'hapus' =>  1,
-        ]);
+        if($purchaseOrder->approved == 1 || $purchaseOrder->approved == 2){
+            return redirect()->route('purchaseOrder.index')->with('status','Tidak dapat mengubah data');
+        }
+        else{
+            DB::table('purchase_order')
+                ->where('id', $purchaseOrder->id)
+                ->update([
+                    'hapus' =>  1,
+            ]);
 
-        return redirect()->route('purchaseOrder.index')->with('status','Success!!');
+            return redirect()->route('purchaseOrder.index')->with('status','Success!!');
+        }
+        
     }
 
     public function print(PurchaseOrder $purchaseOrder)

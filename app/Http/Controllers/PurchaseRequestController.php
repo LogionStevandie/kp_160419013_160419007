@@ -407,12 +407,18 @@ class PurchaseRequestController extends Controller
         //
        // echo $purchaseRequest->id;
         //dd($purchaseRequest->id);
-        DB::table('purchase_request')
-            ->where('id', $purchaseRequest->id)
-            ->update([
-                'hapus' => 1,
-        ]);
-       return redirect()->route('purchaseRequest.index')->with('status','Success!!');
+        if($purchaseRequest->approved == 1 || $purchaseRequest->approved == 2){
+            return redirect()->route('purchaseRequest.index')->with('status','Tidak dapat mengubah data');
+        }
+        else{
+            DB::table('purchase_request')
+                ->where('id', $purchaseRequest->id)
+                ->update([
+                    'hapus' => 1,
+            ]);
+            return redirect()->route('purchaseRequest.index')->with('status','Success!!');
+        }
+       
     }
 
     public function print(PurchaseRequest $purchaseRequest)

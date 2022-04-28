@@ -86,81 +86,88 @@
             <!-- Main content -->
             <div class="invoice p-3 mb-3">
               <!-- title row -->
-              <div class="row">
-                <div class="col-12">
-                  <h4>
-                    <img src="" alt=""> Purchase Order
-                    <small class="float-right">Date: {{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</small>
-                  </h4>
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- info row -->
-              <div class="row invoice-info">
-                <div class="col-sm-4 invoice-col">
-                  From
-                  <address>
-                    <strong>Admin, Inc.</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (804) 123-5432<br>
-                    Email: info@almasaeedstudio.com
-                  </address>
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-4 invoice-col">
-                  To
-                  <address>
-                    <strong>John Doe</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (555) 539-1037<br>
-                    Email: john.doe@example.com
-                  </address>
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-4 invoice-col">
-                  <b>Invoice #007612</b><br>
-                  <br>
-                  <b>Order ID:</b> 4F3S8J<br>
-                  <b>Payment Due:</b> 2/22/2014<br>
-                  <b>Account:</b> 968-34567
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                      <table class="table table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                <th scope="col" colspan="3"><h2> <img src="" alt="">PURCHASE ORDER</h2></th>
+                                <th scope="col" colspan="3">
+                                    <b>PO :  {{$purchaseOrder->name}}</b><br>
+                                    <b>Tanggal pembuatan :{{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</b><br>
+                                </th>
+                                </tr>
+                            </thead>
+                            <thead class="thead-light">
+                                <tr>
+                                  <th scope="col" colspan="3">
+                                      <b>Keterangan:</b>
+                                      <br>
+                                      <b>Lokasi:</b> {{$purchaseOrder->keteranganLokasi}}<br>
+                                      <b>Pembayaran:</b> {{$purchaseOrder->keteranganPembayaran}}<br>
+                                      <b>Penagihan:</b> {{$purchaseOrder->keteranganPenagihan}}<br>
+                                  </th>
+                                  <th scope="col" colspan="3">
+                                    <b>Jatuh Tempo:</b> {{$purchaseOrder->tanggal_akhir}}<br>
+                                    <b>Perusahaan:</b> {{$purchaseOrder->MPerusahaanID}}<br><!--nanti looping -->
+                                    <b>Supplier:</b> {{$purchaseOrder->idSupplier}}<br><!--nanti looping -->
+                                    <b>Pembayaran:</b> {{$purchaseOrder->idPaymentTerms}}<br>  <!--nanti looping -->
+                                  </th>
+                                </tr>
+                            </thead>
 
+                        </table>
+                    </div>
+                  <!-- /.col -->
+                </div>
+           
               <!-- Table row -->
               <div class="row">
-                <div class="col-12 table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                    <tr>
-                      <th>Qty</th>
-                      <th>Product</th>
-                      <th>Serial #</th>
-                      <th>Description</th>
-                      <th>Subtotal</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Call of Duty</td>
-                      <td>455-981-221</td>
-                      <td>El snort testosterone trophy driving gloves handsome</td>
-                      <td>$64.50</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- /.col -->
+                  <div class="col-12 table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Nama Barang</th>
+                          <th>Jumlah</th>
+                          <th>Harga</th>
+                          <th>Pajak</th>
+                          <th>Diskon</th>
+                          <th>Total Harga</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          @foreach($dataDetail as $data) 
+                            <tr>
+                                @if($data->idPurchaseOrder==$purchaseOrder->id)
+                                <th scope="row">{{$data->id}}</th>
+                                <th scope="row">{{$data->idItem}}</th>
+                                <td>{{$data->jumlah}}</td>
+                                <td>{{$data->harga}}</td>              
+                                <td>{{$data->idTax}}</td>  
+                                <td>{{$data->diskon}}</td>                                            
+                                <td>{{$data->jumlah * $data->harga}}</td>                                          
+                                @endif
+                            </tr>
+                          @endforeach
+                      </tbody>
+                       <thead class="thead-light justify-content-center">
+                            <tr>
+                                <th scope="col" colspan="6" > <h3>Total</h3> </th>
+                                <th scope="col" colspan="6"  id="hargaTotal" hargaT="{{$purchaseOrder->totalHarga}}"> <h3>{{$purchaseOrder->totalHarga}}</h3> </th>
+                            </tr>
+                        </thead>
+                        <thead>
+                            <tr>
+                                <th scope="col" colspan="2">Approvel 1 :<br><br><br><br><br><br>Tanda tangan</th>
+                                <th scope="col" colspan="3">Approvel 2 :<br><br><br><br><br><br>Tanda tangan</th>
+                                <th scope="col" colspan="2">Pembuat :<br><br><br><br><br><br>Tanda tangan</th>
+                            </tr>
+                        </thead>
+                    </table>
+                  </div>
               </div>
               <!-- /.row -->
-
-              <!-- /.row -->
-
-              <!-- this row will not appear when printing -->
               
             </div>
             <!-- /.invoice -->
