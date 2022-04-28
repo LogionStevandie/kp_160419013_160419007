@@ -86,7 +86,7 @@ class MKotaController extends Controller
      * @param  \App\Models\MKota  $mKota
      * @return \Illuminate\Http\Response
      */
-    public function show(MKota $mKota)
+    public function show(MKota $mKotum)
     {
         //
         /*$data = DB::table('MKota')
@@ -94,8 +94,14 @@ class MKotaController extends Controller
             ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
             ->get();*/
-        return view('master.mKota_detail',[
-            'mKota' => $mKota,
+        $dataMPulau = DB::table('MPulau')
+            ->get();
+        $dataMProvinsi = DB::table('MProvinsi')
+            ->get();    
+        return view('master.mKota.detail',[
+            'mKota' => $mKotum,
+            'dataMPulau' => $dataMPulau,
+            'dataMProvinsi' => $dataMProvinsi,
         ]);
     }
 

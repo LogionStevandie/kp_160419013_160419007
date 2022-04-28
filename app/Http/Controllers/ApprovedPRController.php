@@ -185,7 +185,7 @@ class ApprovedPRController extends Controller
                 DB::table('purchase_request')
                 ->where('id', $approvedPurchaseRequest['id'])
                 ->update(array(
-                    'proses' => 0,
+                    'proses' => 2,
                 ));
             }
 
@@ -210,7 +210,7 @@ class ApprovedPRController extends Controller
                 DB::table('purchase_request')
                 ->where('id', $approvedPurchaseRequest['id'])
                 ->update(array(
-                    'proses' => 0,
+                    'proses' => 2,
                 ));
             }
         }

@@ -109,4 +109,5 @@ Persetujuan Order
         return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
     }
 </script>
+{{ $dataItem->links('pagination::bootstrap-4') }}
 @endsection

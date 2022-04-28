@@ -78,5 +78,5 @@ Tag Item Values
     </div>
     <!-- /.row -->
 </div>
-
+{{ $dataItem->links('pagination::bootstrap-4') }}
 @endsection

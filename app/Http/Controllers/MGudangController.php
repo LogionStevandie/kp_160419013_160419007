@@ -120,8 +120,19 @@ class MGudangController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
             ->join('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->get();*/
+             $dataMKota = DB::table('MKota')
+            ->get();
+        $dataMPerusahaan = DB::table('MPerusahaan')
+            ->get();    
+        $dataMGudangAreaSimpan = DB::table('MGudangAreaSimpan')
+            ->get();  
+        $users = DB::table('users')->get();
         return view('master.mGudang.detail',[
-            'mGudang' => $mGudang,
+            'mGudang' =>$mGudang,
+            'dataMKota' => $dataMKota,
+            'dataMPerusahaan' => $dataMPerusahaan,
+            'dataMGudangAreaSimpan' => $dataMGudangAreaSimpan,
+            'users' => $users,
         ]);
     }
 

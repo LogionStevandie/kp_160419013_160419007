@@ -37,7 +37,7 @@ Detail Provinsi
 
         <div class="card-footer">
             <a class="btn btn-default bg-info" href="{{route('mProvinsi.index')}}">
-              <i class="fas fa-arrow-alt-left"></i>
+              Back
             </a>
         </div>
         <!-- /.card-body -->

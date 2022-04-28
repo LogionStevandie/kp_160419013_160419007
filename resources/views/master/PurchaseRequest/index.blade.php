@@ -119,5 +119,5 @@ Purchase Request
     </div>
     <!-- /.row -->
 </div>
-
+{{ $dataItem->links('pagination::bootstrap-4') }}
 @endsection

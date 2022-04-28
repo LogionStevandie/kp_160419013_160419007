@@ -56,9 +56,21 @@ class MGudangValuesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(MGudang $tagValuesMGudang)
     {
         //
+         $data = DB::table('MGudangAreaSimpan')
+            ->get();
+        $dataTag = DB::table('MGudangValues')
+            ->rightjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
+            ->where('MGudangValues.MGudangID',$tagValuesMGudang->MGudangID)
+            ->get();
+        //dd($dataTag);
+        return view('master.tag.mGudang.detail',[
+            'data' =>$data,
+            'dataTag' => $dataTag,
+            'mGudang' => $tagValuesMGudang,
+        ]);
     }
 
     /**

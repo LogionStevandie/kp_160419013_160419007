@@ -157,7 +157,7 @@ class ApprovedPOController extends Controller
                 DB::table('purchase_order')
                 ->where('id', $approvedPurchaseOrder['id'])
                 ->update(array(
-                    'proses' => 0,
+                    'proses' => 2,
                 ));
 
 

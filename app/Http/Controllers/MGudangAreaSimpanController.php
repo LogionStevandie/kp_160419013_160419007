@@ -72,10 +72,8 @@ class MGudangAreaSimpanController extends Controller
     public function show(MGudangAreaSimpan $mGudangAreaSimpan)
     {
         //
-        $data = DB::table('MGudangAreaSimpan')
-            ->get();
         return view('master.mGudangAreaSimpan.detail',[
-            'data' => $data,
+            'mGudangAreaSimpan' => $mGudangAreaSimpan,
         ]);
     }
 

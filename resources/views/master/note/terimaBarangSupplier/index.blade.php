@@ -95,5 +95,5 @@ Terima Barang Supplier
     </div>
     <!-- /.row -->
 </div>
-
+{{ $dataItem->links('pagination::bootstrap-4') }}
 @endsection

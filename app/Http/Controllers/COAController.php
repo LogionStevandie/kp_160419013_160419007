@@ -27,7 +27,7 @@ class COAController extends Controller
             ->leftjoin('COADetail','COA.Cdet','=','COADetail.COADetailID')
             ->paginate(10);
             //->get();
-        return view('master.coa.index',[
+        return view('master.COA.index',[
             'dataCOA' => $dataCOA,
         ]);
     }
