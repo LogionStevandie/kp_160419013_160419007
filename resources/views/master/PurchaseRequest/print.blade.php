@@ -60,17 +60,17 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" ></script>
 
 </head>
-<div class="container-fluid">
 
-    <!-- Page Heading -->
-    <div class="card card-primary">
-        <!-- form start -->
-        <form method="POST" >
-            @csrf
-            @method('PUT')
-            <div class="card-body">
-                <div class="form-group">
-                                <table class="table table-bordered">
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+                <div class="row">
+                    <div class="col-12 table-responsive">
+                      <table class="table table-bordered">
                                     <thead class="thead-light">
                                         <tr>
                                         <th scope="col" colspan="3"><h2> PERMINTAAN PEMBELIAN</h2></th>
@@ -135,19 +135,21 @@
                                             <th scope="col" colspan="2">Pembuat :<br><br><br><br><br><br>Tanda tangan</th>
                                         </tr>
                                     </thead>
-                                    
-                                </table>
+                           
 
-                            </div>
-                        
-                            <div class="form-group">
+                        </table>
+                    </div>
+                  <!-- /.col -->
+                </div>
+           
 
-                            </div>
+              
             </div>
-        </form>
-    </div>
-</div>
-
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
 <script type="text/javascript">
   window.addEventListener("load", window.print());
 $('#hargaTotal').html("Rp." +formatRupiah($('#hargaTotal').attr('hargaT')));

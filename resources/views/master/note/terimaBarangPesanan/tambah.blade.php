@@ -427,7 +427,7 @@ Pembuatan Nota Terima Pesanan
         var indexSama = null;
         for(let i=0;i<$('.cekId').length;i++){
             if($('.cekId:eq('+i+')').val() == idBarang){
-                if($('.cekPrd:eq('+i+')').val() == idPrdId){
+                if($('.cekPrd:eq('+i+')').val() == idprdID){
                     indexSama = i;
                 }
             }

@@ -555,7 +555,11 @@ class PurchaseOrderController extends Controller
             ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
             ->get();
 
-        $dataDetail = DB::table('purchase_order_detail')
+         $dataDetail = DB::table('purchase_order_detail')
+            ->select('purchase_order_detail.*','Item.ItemName as itemName','Tax.TaxPercent as TaxPercent')
+            //->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
+            ->leftjoin('Tax', 'purchase_order_detail.idTax','=','Tax.TaxID')
+            ->leftjoin('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->where('purchase_order_detail.idPurchaseOrder', '=', $purchaseOrder->id)
             ->get();
         $dataTax=DB::table('Tax')
@@ -573,6 +577,8 @@ class PurchaseOrderController extends Controller
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
             ->get();
+        $dataUser = DB::table('users')
+            ->get();
 
         return view('master.PurchaseOrder.print',[
             'purchaseOrder'=>$purchaseOrder,
@@ -584,6 +590,7 @@ class PurchaseOrderController extends Controller
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
             'dataPurchaseRequest' => $dataPurchaseRequest,
             'dataPerusahaan' => $dataPerusahaan,
+            'dataUser' => $dataUser,
         ]);
     }
 

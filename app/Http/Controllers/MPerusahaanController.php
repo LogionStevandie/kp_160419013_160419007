@@ -65,11 +65,14 @@ class MPerusahaanController extends Controller
                 'cname' => $data['name'],
                 'cnames' => $data['names'],
                 'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
+                'CreatedOn'=> date("Y-m-d h:i:s"),
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdatedOn'=> date("Y-m-d h:i:s"),
                 'UserIDManager1' => $data['manager1'],
                 'UserIDManager2' => $data['manager2'],
+                'NomorNPWP' => $data['NomorNPWP'],
+                'AlamatNPWP' => $data['AlamatNPWP'],
+                //'Gambar' => $request->image->storeAs('Gambar', $imageName);,
             )
         );
         return redirect()->route('mPerusahaan.index')->with('status','Success!!');
@@ -129,8 +132,10 @@ class MPerusahaanController extends Controller
                 'cname' => $data['name'],
                 'cnames' => $data['names'],
                 'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                'UserIDManager' => $data['manager']
+                'UpdatedOn'=> date("Y-m-d h:i:s"),
+                'UserIDManager' => $data['manager'],
+                'NomorNPWP' => $data['NomorNPWP'],
+                'AlamatNPWP' => $data['AlamatNPWP'],
             )
         );
         return redirect()->route('mPerusahaan.index')->with('status','Success!!');

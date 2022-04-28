@@ -186,7 +186,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
     <script>
-        $('.selectpicker').selectpicker();
+        $('.selectpicker').selectpicker({
+          size: 10,
+        });
     </script>
 <script>
 

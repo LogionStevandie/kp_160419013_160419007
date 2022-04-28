@@ -297,9 +297,10 @@ Pembuatan Nota Permintaan Pembelian
         //alert(jumlahBarang + hargaBarang+ keteranganBarang);
         else if(indexSama != null){
             var jumlah = $('.cekJumlah:eq('+indexSama+')').val();
-            $('.cekJumlah:eq('+indexSama+')').val(parseInt(jumlah) + parseInt(jumlahBarang))
+            $('.cekJumlah:eq('+indexSama+')').val(parseInt(jumlah) + parseInt(jumlahBarang));
             var keterangan = $('.cekKeterangan:eq('+indexSama+')').val();
-            $('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang)
+            //$('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang);
+            $('.cekKeterangan:eq('+indexSama+')').val(keteranganBarang);
             
             $('.keteranganVal:eq('+indexSama+')').html($('.cekKeterangan:eq('+indexSama+')').val());
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));

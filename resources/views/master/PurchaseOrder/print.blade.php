@@ -103,15 +103,32 @@
                                   <th scope="col" colspan="3">
                                       <b>Keterangan:</b>
                                       <br>
-                                      <b>Lokasi:</b> {{$purchaseOrder->keteranganLokasi}}<br>
+                                      <b>Lokasi:</b>{{$purchaseOrder->keteranganLokasi}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos dolores quis accusamus. Natus ipsam sequi quisquam eius veniam, totam reiciendis sit facere? Modi mollitia ex ratione eius possimus accusantium quibusdam?<br>
                                       <b>Pembayaran:</b> {{$purchaseOrder->keteranganPembayaran}}<br>
                                       <b>Penagihan:</b> {{$purchaseOrder->keteranganPenagihan}}<br>
                                   </th>
                                   <th scope="col" colspan="3">
-                                    <b>Jatuh Tempo:</b> {{$purchaseOrder->tanggal_akhir}}<br>
-                                    <b>Perusahaan:</b> {{$purchaseOrder->MPerusahaanID}}<br><!--nanti looping -->
-                                    <b>Supplier:</b> {{$purchaseOrder->idSupplier}}<br><!--nanti looping -->
-                                    <b>Pembayaran:</b> {{$purchaseOrder->idPaymentTerms}}<br>  <!--nanti looping -->
+                                    <b>Jatuh Tempo:</b> {{date("d-m-Y", strtotime($purchaseOrder->tanggal_akhir))}}<br>
+                                    
+                                    @foreach($dataPerusahaan as $key => $data)
+                                      
+                                      @if($data->MPerusahaanID == $purchaseOrder->MPerusahaanID)
+                                          <b>Perusahaan:</b> {{$data->cname}}<br>
+                                      @endif
+                                        
+                                    @endforeach
+                                 
+                                    @foreach($dataSupplier as $key => $data)
+                                        @if($data->SupplierID == $purchaseOrder->idSupplier)
+                                              <b>Supplier:</b>  {{$data->Name}}<br>
+                                        @endif
+                                    @endforeach
+                                  
+                                    @foreach($dataPayment as $key => $data)
+                                          @if($data->PaymentTermsID == $purchaseOrder->idPaymentTerms)
+                                            <b>Pembayaran:</b>{{$data->PaymentName}}<br> 
+                                          @endif
+                                    @endforeach
                                   </th>
                                 </tr>
                             </thead>
@@ -140,16 +157,26 @@
                           @foreach($dataDetail as $data) 
                             <tr>
                                 @if($data->idPurchaseOrder==$purchaseOrder->id)
-                                <th scope="row">{{$data->id}}</th>
-                                <th scope="row">{{$data->idItem}}</th>
-                                <td>{{$data->jumlah}}</td>
-                                <td>{{$data->harga}}</td>              
-                                <td>{{$data->idTax}}</td>  
-                                <td>{{$data->diskon}}</td>                                            
-                                <td>{{$data->jumlah * $data->harga}}</td>                                          
+                                  <th scope="row">{{ $loop->index + 1 }}</th>
+                                    @foreach($dataBarang as $dataBrg)     
+                                      @if($data->idItem==$dataBrg->ItemID)
+                                          <th scope="row">{{$dataBrg->ItemName}}</th> <!--nanti looping -->
+                                      @endif
+                                    @endforeach
+                                
+                                  <td>{{$data->jumlah}}</td>
+                                  <td>{{$data->harga}}</td>    
+                                    @foreach($dataTax as $dataTx)     
+                                      @if($data->idTax==$dataTx->TaxID)
+                                          <td>{{$dataTx->Name}}</td>  
+                                      @endif
+                                    @endforeach
+                                
+                                  <td>{{$data->diskon}}</td>                                            
+                                  <td>{{(((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0}}</td>                                          
                                 @endif
                             </tr>
-                          @endforeach
+                           @endforeach
                       </tbody>
                        <thead class="thead-light justify-content-center">
                             <tr>
@@ -159,9 +186,32 @@
                         </thead>
                         <thead>
                             <tr>
-                                <th scope="col" colspan="2">Approvel 1 :<br><br><br><br><br><br>Tanda tangan</th>
-                                <th scope="col" colspan="3">Approvel 2 :<br><br><br><br><br><br>Tanda tangan</th>
-                                <th scope="col" colspan="2">Pembuat :<br><br><br><br><br><br>Tanda tangan</th>
+                                <th scope="col" colspan="2">Approvel :           
+                                <br/><br/><br/><br/><br/>Tanda tangan <br/>
+                                @if($purchaseOrder->approved==1)
+                                  @foreach($dataUser as $user) 
+                                    @if($user->id == $purchaseOrder->approved_by)
+                                      {{$user->name}}
+                                    @endif
+                                  @endforeach
+                                @endif<br/></th>
+
+                                <th scope="col" colspan="3">Supplier :
+                                  <br/><br/><br/><br/><br/>Tanda tangan <br/>
+                                  @foreach($dataSupplier as $supplier) 
+                                    @if($supplier->SupplierID == $purchaseOrder->idSupplier)
+                                      {{$supplier->AtasNama}}
+                                    @endif
+                                  @endforeach<br/> </th>
+
+                                <th scope="col" colspan="2">Pembuat :
+                                  <br/><br/><br/><br/><br/>Tanda tangan <br/>
+                                  @foreach($dataUser as $user) 
+                                    @if($user->id == $purchaseOrder->CreatedBy)
+                                      {{$user->name}}
+                                    @endif
+                                  @endforeach<br/></th>
+                                  
                             </tr>
                         </thead>
                     </table>

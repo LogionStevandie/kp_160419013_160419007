@@ -320,52 +320,6 @@ Pembuatan Nota Kirim Pesanan
             $('.selectpicker').selectpicker('refresh');
         });
 
-         /*$("#pReq").change(function() {
-            //alert(this.value);
-            var id = this.value;
-            var optionnya = '';
-            //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
-            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
-
-            //alert('masuk sini');
-            optionnya += '<option value="" selected>--Pilih barang--</option>\n';
-            $.each(dataPurchaseRequestDetail, function( key, value ){
-                //alert(value.ItemName);
-                if(value.idPurchaseRequest.toString() == id.toString()){
-                    //alert('masuk');
-                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
-                }
-            });
-            //alert(optionnya);
-            
-                                
-            $("#barang").empty();
-            $("#barang").append(optionnya);
-            $('.selectpicker').selectpicker('refresh');
-        });*/
-
-        
-        /*$("#barang").change(function() {
-            //alert(this.value);
-            var id = this.value;
-            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
-
-            $.each(dataPurchaseRequestDetail, function( key, value ){
-                //alert(value.ItemName);
-                if(value.id.toString() == id.toString()){
-                    var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
-                    //alert(maxAngka);
-                    $("#jumlahBarang").attr({
-                        "max" : maxAngka,        
-                        "min" : 1,
-                        "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
-                        "value" : "",   
-                    }); 
-                }
-            });
-            
-        });*/
-
     });
 
      $('body').on('click','#copyKe', function(){ //belum
@@ -419,7 +373,7 @@ Pembuatan Nota Kirim Pesanan
         var indexSama = null;
         for(let i=0;i<$('.cekId').length;i++){
             if($('.cekId:eq('+i+')').val() == idBarang){
-                if($('.cekPrd:eq('+i+')').val() == idPrdId){
+                if($('.cekPrd:eq('+i+')').val() == idprdID){
                     indexSama = i;
                 }
             }
@@ -434,7 +388,7 @@ Pembuatan Nota Kirim Pesanan
             var jumlah = $('.cekJumlah:eq('+indexSama+')').val();
             $('.cekJumlah:eq('+indexSama+')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));
             var keterangan = $('.cekKeterangan:eq('+indexSama+')').val();
-            $('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang);
+            $('.cekKeterangan:eq('+indexSama+')').val(keteranganBarang);
             
             $('.keteranganVal:eq('+indexSama+')').html($('.cekKeterangan:eq('+indexSama+')').val());
             $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
