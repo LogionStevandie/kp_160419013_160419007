@@ -168,7 +168,7 @@ class ItemCategoryController extends Controller
             //->get();
         $dataCOA = DB::table('COA')
             ->get();
-        return view('master.itemCategory',[
+        return view('master.itemCategory.index',[
             'dataCategory' => $dataCategory,
             'dataCOA' => $dataCOA,
         ]);

@@ -58,8 +58,17 @@ class MPerusahaanController extends Controller
     {
         //
         $data = $request->collect();
+        $dataFile = $request->file();
         $user = Auth::user();
-        
+        //dd($dataFile);
+        ///image
+        $validatedData = $request->validate([
+        'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ]);
+        $path = $request->file('image')->store('public_html/images');
+        $path = base64_encode($path);
+        ///
+
         DB::table('MPerusahaan')
             ->insert(array(
                 'cname' => $data['name'],
@@ -72,7 +81,7 @@ class MPerusahaanController extends Controller
                 'UserIDManager2' => $data['manager2'],
                 'NomorNPWP' => $data['NomorNPWP'],
                 'AlamatNPWP' => $data['AlamatNPWP'],
-                //'Gambar' => $request->image->storeAs('Gambar', $imageName);,
+                'Gambar' => $path,
             )
         );
         return redirect()->route('mPerusahaan.index')->with('status','Success!!');
@@ -126,6 +135,12 @@ class MPerusahaanController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         
+        $validatedData = $request->validate([
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+        ]);
+        $path = $request->file('image')->store('public_html/images');
+        $path = base64_encode($path); //jangan lupa di decode waktu manggil di blade 
+
         DB::table('MPerusahaan')
             ->where('MPerusahaanID', $mPerusahaan['MPerusahaanID'])
             ->update(array(
@@ -136,6 +151,7 @@ class MPerusahaanController extends Controller
                 'UserIDManager' => $data['manager'],
                 'NomorNPWP' => $data['NomorNPWP'],
                 'AlamatNPWP' => $data['AlamatNPWP'],
+                'Gambar' => $path,
             )
         );
         return redirect()->route('mPerusahaan.index')->with('status','Success!!');
@@ -162,8 +178,11 @@ class MPerusahaanController extends Controller
             ->where('cname','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.mPerusahaan',[
+        $dataUser = DB::table('users')
+            ->get();
+        return view('master.mPerusahaan.index',[
             'data' => $data,
+            'dataUser' => $dataUser,
         ]);
     }
 }

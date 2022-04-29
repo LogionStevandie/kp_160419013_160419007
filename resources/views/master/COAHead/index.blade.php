@@ -18,6 +18,24 @@ COA Head
 
 @section('content')
 <div class="container-fluid">
+        <h2 class="text-center display-4">Cari Nama COA Head</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="/coaHeade/searchname/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama COA Head">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+<br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -46,7 +64,9 @@ COA Head
                                 <th>{{$d->CH_ID}}</th>
                                 <td>{{$d->Nama}}</td>  
                                 <td>  
-                                
+                                    <a class="btn btn-default bg-info" href="{{route('coaHead.show',[$d->CH_ID])}}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <a class="btn btn-default bg-info" href="{{route('coaHead.edit',[$d->CH_ID])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>

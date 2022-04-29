@@ -1,52 +1,54 @@
 @extends('layouts.home_master')
-<?php 
-$currentUrl = Route::current()->getName();  //buat dapetno nama directory nya / route yang diapakek
-
-?>
 <style>
             p {
                 font-family: 'Nunito', sans-serif;
             }
  </style>
+
+@section('judul')
+Detail Transaction item
+@endsection
+
+@section('pathjudul')
+<li class="breadcrumb-item"><a href="/home">Home</a></li>
+<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item"><a href="{{route('itemTransaction.index')}}">Transaction item</a></li>
+<li class="breadcrumb-item active">Detail</li>
+@endsection
 @section('content')
 <div class="container-fluid">
 
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">item Transaction -> Detail</h1>
-</div>
+<div class="card card-primary">
+    <!-- form start -->
+    <form method="POST" >
+                @csrf
+                @method('PUT')
+        <div class="card-body">
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    Detail item Transaction
-                </div>
-                 
-                <div class="card-body">
-            
-                    <form  method="POST" >
-                      @csrf
-             
-                        <div class="form-group">
-                           <label for="title">Nama Item Transaction</label>
-                           <input require type="text" name="Name" class="form-control" 
-                           value="{{old('Name',$itemTransaction->Name)}}" disabled>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="title">Notes</label>
-                           <input require type="text" name="Description" class="form-control" 
-                           value="{{old('Description',$itemTransaction->Description)}}" disabled>
-                        </div>
-                    </form>
-
-                </div>
-
+            <div class="form-group">
+                <label for="title">Nama Item Transaction</label>
+                <input readonly type="text" name="Name" class="form-control" 
+                value="{{old('Name',$itemTransaction->Name)}}" >
             </div>
+
+            <div class="form-group">
+                <label for="title">Code</label>
+                <input readonly type="text" name="Code" class="form-control" 
+                value="{{old('Code',$itemTransaction->Code)}}" >
+            </div>
+
+            <div class="form-group">
+                <label for="title">Description</label>
+                <input readonly type="text" name="Description" class="form-control" 
+                value="{{old('Description',$itemTransaction->Description)}}" >
+            </div>
+
         </div>
-    </div>
-</div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button type="button" href="{{route('itemTransaction.index')}}" class="btn btn-primary">Back</button>
+        </div>
+    </form>
 </div>
 @endsection

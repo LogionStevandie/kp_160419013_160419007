@@ -263,8 +263,13 @@ class MGudangController extends Controller
             ->paginate(10);
         //->get();
 
+           $dataTag = DB::table('MGudangValues')
+            ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
+            ->get();
+        //dd($dataTag);
         return view('master.mGudang.index',[
             'data' => $data,
+            'dataTag' => $dataTag,
         ]);
     }
 
@@ -285,10 +290,15 @@ class MGudangController extends Controller
             ->leftjoin('MGudangValues', 'MGudang.MGudangID', '=', 'MGudangValues.MGudangID')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->where('MGudang.ccode','like','%'.$code.'%')
-            ->get();
+            ->paginate(10);
 
+         $dataTag = DB::table('MGudangValues')
+            ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
+            ->get();
+        //dd($dataTag);
         return view('master.mGudang.index',[
             'data' => $data,
+            'dataTag' => $dataTag,
         ]);
     }
 
@@ -308,10 +318,15 @@ class MGudangController extends Controller
             ->leftjoin('MGudangValues', 'MGudang.MGudangID', '=', 'MGudangValues.MGudangID')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->where('MKota.cname','like','%'.$kota.'%')
-            ->get();
+            ->paginate(10);
 
+         $dataTag = DB::table('MGudangValues')
+            ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
+            ->get();
+        //dd($dataTag);
         return view('master.mGudang.index',[
             'data' => $data,
+            'dataTag' => $dataTag,
         ]);
     }
 

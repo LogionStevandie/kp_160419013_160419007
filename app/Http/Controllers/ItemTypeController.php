@@ -140,7 +140,7 @@ class ItemTypeController extends Controller
             ->where('Name','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.itemType',[
+        return view('master.itemType.index',[
             'data' => $data,
         ]);
     }

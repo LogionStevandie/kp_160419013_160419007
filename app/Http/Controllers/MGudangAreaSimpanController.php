@@ -143,6 +143,7 @@ class MGudangAreaSimpanController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('MGudangAreaSimpan')
+            ->where('cname','like','%'.$name.'%')
             ->paginate(10);
         //->get();
         return view('master.mGudangAreaSimpan.index',[

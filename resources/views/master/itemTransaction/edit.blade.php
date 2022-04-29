@@ -26,10 +26,16 @@ Edit Transaction item
                 @method('PUT')
         <div class="card-body">
 
-                <div class="form-group">
+            <div class="form-group">
                 <label for="title">Nama Item Transaction</label>
                 <input require type="text" name="Name" class="form-control" 
                 value="{{old('Name',$itemTransaction->Name)}}" >
+            </div>
+
+            <div class="form-group">
+                <label for="title">Code</label>
+                <input require type="text" name="Code" class="form-control" 
+                value="{{old('Code',$itemTransaction->Code)}}" >
             </div>
 
             <div class="form-group">

@@ -24,8 +24,8 @@ class InfoSupplierController extends Controller
     {
         //
         $data = DB::table('infoSupplier')
-            ->paginate(10);
-            //->get();
+            //->paginate(10);
+            ->get();
         return view('master.infoSupplier.index',[
             'data' => $data,
         ]);

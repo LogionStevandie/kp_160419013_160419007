@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Edit Tag Item
+Edit Info Supplier
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('itemTag.index')}}">Tag item</a></li>
+<li class="breadcrumb-item"><a href="{{route('infoSupplier.index')}}">Info Supplier</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 @section('content')
@@ -21,7 +21,7 @@ Edit Tag Item
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-   <form action="{{route('itemTag.update',[$ItemTag->ItemTagID])}}" method="POST" >
+   <form action="{{route('infoSupplier.update',[$infoSupplier->InfoSupplierID])}}" method="POST" >
         @csrf
         @method('PUT')
         <div class="card-body">
@@ -29,15 +29,15 @@ Edit Tag Item
             @method('PUT')
 
             <div class="form-group">
-                <label for="title">Nama Item Tag</label>
-                <input require type="text" name="Name" class="form-control" 
-                value="{{old('Name',$ItemTag->Name)}}" maxlength="50">
+                <label for="title">Nama Info Supplier</label>
+                <input require type="text" name="name" class="form-control" 
+                value="{{old('name',$infoSupplier->name)}}" maxlength="50">
             </div>
 
             <div class="form-group">
-                <label for="title">Deskripsi</label>
-                <input require type="text" name="Desc" class="form-control" 
-                value="{{old('Desc',$ItemTag->Desc)}}" maxlength="512">
+                <label for="title">Keterangan</label>
+                <input require type="text" name="keterangan" class="form-control" 
+                value="{{old('keterangan',$infoSupplier->keterangan)}}" maxlength="255">
             </div>
         </div>
         <!-- /.card-body -->

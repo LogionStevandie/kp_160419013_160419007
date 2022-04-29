@@ -33,6 +33,12 @@ Tambah Tracing item
                         </div>
 
                         <div class="form-group">
+                           <label for="title">Code</label>
+                           <input require type="text" name="Code" class="form-control" 
+                           value="{{old('Code','')}}" >
+                        </div>
+
+                        <div class="form-group">
                             <label for="title">Description</label>
                            <input require type="text" name="Description" class="form-control" 
                            value="{{old('Description','')}}" >

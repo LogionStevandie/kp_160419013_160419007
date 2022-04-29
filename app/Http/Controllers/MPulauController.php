@@ -139,7 +139,7 @@ class MPulauController extends Controller
             ->where('cname','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.mPulau',[
+        return view('master.mPulau.index',[
             'data' => $data,
         ]);
     }

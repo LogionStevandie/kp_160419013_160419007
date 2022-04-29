@@ -269,12 +269,7 @@
                 </a>
               </li>
 
-              <li class="nav-item">
-                <a href="{{route('prosesTransaksi.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Proses Transaksi</p>
-                </a>
-              </li> 
+          
             </ul>
           </li>
 
@@ -329,6 +324,12 @@
                 <a href="{{route('msupplier.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>list Supplier</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('infoSupplier.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Info Supplier</p>
                 </a>
               </li>
               

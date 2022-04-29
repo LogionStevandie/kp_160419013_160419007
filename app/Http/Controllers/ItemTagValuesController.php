@@ -92,9 +92,21 @@ class ItemTagValuesController extends Controller
      * @param  \App\Models\ItemTagValues  $itemTagValues
      * @return \Illuminate\Http\Response
      */
-    public function show(ItemTagValues $itemTagValues)
+    public function show(Item $itemTagValue)
     {
         //
+        $data = DB::table('ItemTag')
+            ->get();
+        $dataTag = DB::table('ItemTagValues')
+            ->rightjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
+            ->where('ItemTagValues.ItemID',$itemTagValue->ItemID)
+            ->get();
+        //dd($dataTag);
+        return view('master.tag.item.detail',[
+            'data' =>$data,
+            'dataTag' => $dataTag,
+            'itemTagValues' => $itemTagValue,
+        ]);
     }
 
     /**

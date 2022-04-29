@@ -141,7 +141,7 @@ class MProvinsiController extends Controller
             ->where('cname','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.mProvinsi',[
+        return view('master.mProvinsi.inde',[
             'data' => $data,
         ]);
     }

@@ -86,7 +86,7 @@ List Supplier
     </div>
     <!-- /.row -->
 </div>
-{{ $dataItem->links('pagination::bootstrap-4') }}
+{{ $data->links('pagination::bootstrap-4') }}
 @endsection
 
 

@@ -18,6 +18,35 @@ Satuan
 
 @section('content')
 <div class="container-fluid">
+        <h2 class="text-center display-4">Cari Nama Unit</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+            <form action="/unite/searchname/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Unit">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+             </form>
+             <br>
+             <form action="/unite/searchdesc/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchdeskripsi" placeholder="Nama Deskripsi">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+<br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -84,5 +113,5 @@ Satuan
     </div>
     <!-- /.row -->
 </div>
-{{ $dataItem->links('pagination::bootstrap-4') }}
+{{ $data->links('pagination::bootstrap-4') }}
 @endsection

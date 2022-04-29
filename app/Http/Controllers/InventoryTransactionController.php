@@ -27,6 +27,7 @@ class InventoryTransactionController extends Controller
             ->leftjoin('MSupplier','ItemInventoryTransaction.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('MGudang','ItemInventoryTransaction.MGudangID','=','MGudang.MGudangID')
             ->paginate(10);
+
         $dataDetail = DB::table('ItemInventoryTransactionLine')
             ->get();
 

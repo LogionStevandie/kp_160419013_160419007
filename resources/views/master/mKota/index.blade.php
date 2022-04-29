@@ -18,6 +18,24 @@ Kota
 
 @section('content')
 <div class="container-fluid">
+        <h2 class="text-center display-4">Search</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="/mKotae/searchname/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Kota">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+<br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -58,13 +76,43 @@ Kota
                                     <a class="btn btn-default bg-info" href="{{route('mKota.edit',[$d->MKotaID])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{route('mKota.destroy',[$d->MKotaID])}}" method="POST" class="btn btn-responsive">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-default bg-danger" action="{{route('mKota.destroy',[$d->MKotaID])}}">
-                                            <i class="fas fa-trash"></i> 
-                                        </button>
-                                    </form>  
+                                    
+                                    <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$d->MKotaID}}">
+                                     <i class="fas fa-trash"></i> 
+                                    </button>
+
+                                     <div class="modal fade" id="delete_{{$d->MKotaID}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Konfirmasi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> 
+                                                </div>
+                                               
+                                                <div class="modal-body">
+                                                     Apakah anda yakin mau menghapus  "{{$d->cname}}"
+                                                </div>
+                                            
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                     <form action="{{route('mKota.destroy',[$d->MKotaID])}}" method="POST" class="btn btn-responsive">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-default bg-danger" action="{{route('mKota.destroy',[$d->MKotaID])}}">
+                                                           Hapus
+                                                        </button>
+                                                     </form> 
+                                                </div>
+                                                
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                    </div>
+                                  
                                 </td>
                             </tr>   
                             @endforeach

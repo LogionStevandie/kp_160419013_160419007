@@ -144,7 +144,7 @@ class ItemTransactionController extends Controller
             ->where('Name','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.itemTransaction',[
+        return view('master.itemTransaction.index',[
             'data' => $data,
         ]);
     }

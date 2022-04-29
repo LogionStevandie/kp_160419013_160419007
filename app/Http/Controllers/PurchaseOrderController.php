@@ -639,7 +639,7 @@ class PurchaseOrderController extends Controller
             ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)
-            ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
+            ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
             ->paginate(10);
         //->get();
 

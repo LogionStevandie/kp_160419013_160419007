@@ -135,7 +135,7 @@ class UnitController extends Controller
         $name = $request->input('searchname');
         $data = DB::table('Unit')
             ->where('Name','like','%'.$name.'%')
-            ->get();
+            ->paginate(10);
         return view('master.unit.index',[
             'data' => $data,
         ]);

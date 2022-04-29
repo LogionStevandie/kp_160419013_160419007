@@ -18,6 +18,44 @@ Purchase Order
 
 @section('content')
 <div class="container-fluid">
+        <h2 class="text-center display-4">Cari PO</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+            <form action="/purchaseOrdere/searchname/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama PO">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+            <form action="/purchaseOrdere/searchdate/" method="get">
+                <label>Tanggal Pembuatan Awal - Akhir:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                    </div>
+                    <input type="text" name="dateRangeSearch" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan','')}}" >
+                    <button type="submit" class="btn btn-lg btn-default">
+                    <i class="fa fa-search"></i>
+                    </button>
+                </div>                           
+            </form>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -73,7 +111,7 @@ Purchase Order
                                     </form>
                                 @endif
                                 
-                                <a href="PurchaseOrdere/print/{{$purchaseOrder->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i>Print</a>
+                                <a href="/PurchaseOrdere/print/{{$purchaseOrder->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i>Print</a>
                                 
                             </td>  
                             </tr>
@@ -99,5 +137,5 @@ Purchase Order
     </div>
     <!-- /.row -->
 </div>
-{{ $dataItem->links('pagination::bootstrap-4') }}
+{{ $data->links('pagination::bootstrap-4') }}
 @endsection

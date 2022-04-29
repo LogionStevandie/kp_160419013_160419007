@@ -18,6 +18,24 @@ COA Detail
 
 @section('content')
 <div class="container-fluid">
+        <h2 class="text-center display-4">Cari Nama COA Detail</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="/coaDetaile/searchname/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama COA Detail">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+<br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -50,7 +68,9 @@ COA Detail
                                 <td>{{$d->CDet_Name}}</td>  
                                 <td>{{$d->Keterangan}}</td>  
                                 <td>  
-                                
+                                    <a class="btn btn-default bg-info" href="{{route('coaDetail.show',[$d->Cdet])}}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
                                     <a class="btn btn-default bg-info" href="{{route('coaDetail.edit',[$d->Cdet])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>

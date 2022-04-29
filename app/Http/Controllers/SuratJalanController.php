@@ -404,7 +404,7 @@ class SuratJalanController extends Controller
             ->select('surat_jalan_detail.*')
             ->join('surat_jalan','surat_jalan_detail.suratJalanID','=','surat_jalan.id')
             ->where('surat_jalan.hapus',0)
-            ->where('surat_jalan.tanggalDibuat',[$date[0], $date[1]])
+            ->where('surat_jalan.tanggalDibuat',[date($date[0]), date($date[1])])
             ->paginate(10);
         return view('master.note.suratJalan.index',[
             'data' => $data,

@@ -22,7 +22,7 @@ Tambah Perusahaan
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-    <form action="{{route('mPerusahaan.store')}}" method="POST" >
+    <form action="{{route('mPerusahaan.store')}}" method="POST" enctype="multipart/form-data" >
         @csrf
         <div class="card-body">
 
@@ -53,6 +53,22 @@ Tambah Perusahaan
                         <option value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="form-group">
+                <label for="title">Nomor NPWP</label>
+                <input required type="text" name="NomorNPWP" class="form-control" 
+                value="{{old('NomorNPWP','')}}">
+            </div>
+            <div class="form-group">
+                <label for="title">Alamat NPWP</label>
+                <input required type="text" name="AlamatNPWP" class="form-control" 
+                value="{{old('AlamatNPWP','')}}" >
+            </div>
+
+            <div class="form-group">
+                <label for="title">Gambar Perusahaan</label>
+                <input required type="file" name="image" class="form-control" 
+                value="{{old('image','')}}" >
             </div>
 
         </div>

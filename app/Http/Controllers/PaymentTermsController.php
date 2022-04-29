@@ -174,7 +174,7 @@ class PaymentTermsController extends Controller
             ->where('PaymentTerms.Name','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.paymentTerms',[
+        return view('master.paymentTerms.index',[
             'data' => $data,
         ]);
     }

@@ -24,7 +24,7 @@ Kartu Stok
                     <div class="input-group">
                     <select class="form-control selectpicker col-md-8" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="searchgudangid">
                         <option value="">
-                            --Pilih Gudang--
+                            --Semua Gudang--
                         </option>
                         @foreach($dataGudang as $data)
                             <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
@@ -60,7 +60,7 @@ Kartu Stok
                                 <th scope="col">Item</th>
                                 <th scope="col">Satuan</th>
                                 <th scope="col">Jumlah Barang</th>
-                                <th scope="col">Handle</th>
+
                             </tr>
                           </thead>
                         <tbody>
@@ -79,9 +79,7 @@ Kartu Stok
                                 <td>
                                     {{$stok->totalQuantity}}                                
                                 </td>                 
-                                 <a class="btn btn-default bg-info" href="{{route('inventoryTransaction.show',[$stok->ItemTransactionID])}}">
-                                        <i class="fas fa-eye"></i> 
-                                </a>
+
                             </tr>
                             @endforeach
                         </tbody>
@@ -90,7 +88,8 @@ Kartu Stok
                                 <th scope="col">Gudang</th>
                                 <th scope="col">Item</th>
                                 <th scope="col">Satuan</th>
-                                <th scope="col">Jumlah Barang</th>                  
+                                <th scope="col">Jumlah Barang</th>
+        
                             </tr>
                         </tfoot>
                     </table>

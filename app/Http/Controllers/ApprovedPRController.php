@@ -242,7 +242,27 @@ class ApprovedPRController extends Controller
             ->where('UserIDManager1', $user->id)
             ->get();
         $prKeluar = null;
-        if(count($kepalaGudang)>0){
+        if(count($managerPerusahaan1)>0 && count($kepalaGudang)>0){
+            $arrkepala = array();
+            foreach($kepalaGudang as $val){
+                array_push($arrkepala, $val->MGudangID);
+            }
+            $arrmanager = array();
+            foreach($managerPerusahaan1 as $val){
+                array_push($arrmanager, $val->MPerusahaanID);
+            }
+            $prKeluar= DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
+                ->where('approved', "!=",2)
+                ->where('approvedAkhir',0)
+                ->where('hapus',0)
+                ->whereIn('purchase_request.MGudangID',$arrkepala)
+                ->WhereIn('MGudang.cidp', $arrmanager)
+                ->where('purchase_request.name','like','%'.$name.'%')
+                ->paginate(10);
+                //dd($prKeluar);
+        }
+        else if(count($kepalaGudang)>0){
             $arrkepala = array();
             foreach($kepalaGudang as $val){
                 array_push($arrkepala, $val->MGudangID);
@@ -266,7 +286,7 @@ class ApprovedPRController extends Controller
                 ->where('approved',1)
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
-                ->whereIn('MGudang.MPerusahaanID', $arrmanager)
+                ->whereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->paginate(10);
             //->get();
@@ -286,7 +306,7 @@ class ApprovedPRController extends Controller
     {
         $date=$request->input('dateRangeSearch');
         $user = Auth::user();
-
+        $date = explode("-", $date);
         $kepalaGudang = DB::table('MGudang')
             ->where('UserIDKepalaDivisi', $user->id)
             ->get();
@@ -295,7 +315,27 @@ class ApprovedPRController extends Controller
             ->where('UserIDManager1', $user->id)
             ->get();
         $prKeluar = null;
-        if(count($kepalaGudang)>0){
+        if(count($managerPerusahaan1)>0 && count($kepalaGudang)>0){
+            $arrkepala = array();
+            foreach($kepalaGudang as $val){
+                array_push($arrkepala, $val->MGudangID);
+            }
+            $arrmanager = array();
+            foreach($managerPerusahaan1 as $val){
+                array_push($arrmanager, $val->MPerusahaanID);
+            }
+            $prKeluar= DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
+                ->where('approved', "!=",2)
+                ->where('approvedAkhir',0)
+                ->where('hapus',0)
+                ->whereIn('purchase_request.MGudangID',$arrkepala)
+                ->WhereIn('MGudang.cidp', $arrmanager)
+                ->whereBetween('tanggalDibuat', [ date($date[0]), date($date[1]) ])
+                ->paginate(10);
+                //dd($prKeluar);
+        }
+        else if(count($kepalaGudang)>0){
             $arrkepala = array();
             foreach($kepalaGudang as $val){
                 array_push($arrkepala, $val->MGudangID);
@@ -305,7 +345,7 @@ class ApprovedPRController extends Controller
                 ->where('approved',0)
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
-                ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
+                ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
                 ->paginate(10);
             //->get();
         }
@@ -319,8 +359,8 @@ class ApprovedPRController extends Controller
                 ->where('approved',1)
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
-                ->whereIn('MGudang.MPerusahaanID', $arrmanager)
-                ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
+                ->whereIn('MGudang.cidp', $arrmanager)
+                ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
                 ->paginate(10);
             //->get();
         }

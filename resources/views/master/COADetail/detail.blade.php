@@ -1,82 +1,63 @@
 @extends('layouts.home_master')
-<?php 
-$currentUrl = Route::current()->getName();  //buat dapetno nama directory nya / route yang diapakek
-
-?>
 <style>
             p {
                 font-family: 'Nunito', sans-serif;
             }
  </style>
+
+@section('judul')
+Detail COA Detail
+@endsection
+
+@section('pathjudul')
+<li class="breadcrumb-item"><a href="/home">Home</a></li>
+<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item"><a href="{{route('coaDetail.index')}}">COA Detail</a></li>
+<li class="breadcrumb-item active">Detail</li>
+@endsection
 @section('content')
 <div class="container-fluid">
 
 <!-- Page Heading -->
-<div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">item Type -> Detail</h1>
-</div>
+<div class="card card-primary">
+    <!-- form start -->
+    <form method="POST" >
+        @csrf
+        @method('PUT')
+        <div class="card-body">
+            <div class="form-group">
+                <label>COA Head</label>
+                <select readonly name="coahead" class="form-control select2bs4" style="width: 100%;">
+                    <option value="0">--Pilih Pulau--</option>
+                    @foreach($dataCOAHead as $data)
+                        @if($data->CH_ID == $coaDetail->CoaHead)
+                            <option selected value="{{$data->CH_ID}}"{{$data->Nama == $data->CH_ID? 'selected' :'' }}>{{$data->Nama}}</option>
+                        @else
+                            <option value="{{$data->CH_ID}}"{{$data->Nama == $data->CH_ID? 'selected' :'' }}>{{$data->Nama}}</option>
+                        @endif
+                    @endforeach
+                </select>
+            </div>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    Detail item Type
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="title">Nama</label>
+                    <input readonly type="text" maxlength="50" name="cdet_name" class="form-control" 
+                        value="{{old('cdet_name',$coaDetail->CDet_Name)}}" >
                 </div>
-                 
-                <div class="card-body">
-            
-                    <form  method="POST" >
-                      @csrf
-             
-                        <div class="form-group">
-                           <label for="title">Nama Item Kategori</label>
-                           <input require type="text" name="Name" class="form-control" 
-                           value="{{old('Name',$itemCategory->Name)}}" disabled>
-                        </div>
-
-                         <div class="form-group">
-                           <label for="title">Remarks</label>
-                           <input require type="text" name="remarks" class="form-control" 
-                           value="{{old('Remarks',$itemCategory->Remarks)}}" disabled>
-                        </div>
-
-                        <div class="form-group">
-                           <label for="title">NTB Debet COA</label>
-                           <input require type="number" name="NTBDebetCOA" class="form-control" 
-                           value="{{old('NTBDebetCOA',$itemCategory->NTBDebetCOA)}}" disabled>
-                        </div>
-
-                        <div class="form-group">
-                           <label for="title">NTB Kredit COA</label>
-                           <input require type="number" name="NTBKreditCOA" class="form-control" 
-                           value="{{old('NTBKreditCOA',$itemCategory->NTBKreditCOA)}}" disabled>
-                        </div>
-
-                        <div class="form-group">
-                           <label for="title">Bill VDebet COA</label>
-                           <input require type="number" name="BillVDebetCOA" class="form-control" 
-                           value="{{old('BillVDebetCOA',$itemCategory->BillVDebetCOA)}}" disabled>
-                        </div>
-
-                        <div class="form-group">
-                           <label for="title">Bill VKredit COA</label>
-                           <input require type="number" name="BillVKreditCOA" class="form-control" 
-                           value="{{old('BillVKreditCOA',$itemCategory->BillVKreditCOA)}}" disabled>
-                        </div>
-
-                         <div class="form-group">
-                           <label for="title">Penjualan COA</label>
-                           <input require type="number" name="PenjualanCOA" class="form-control" 
-                           value="{{old('PenjualanCOA',$itemCategory->PenjualanCOA)}}" disabled>
-                        </div>
-                    </form>
-
+            </div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="title">Keterangan</label>
+                    <input readonly type="text" maxlength="50" name="keterangan" class="form-control" 
+                        value="{{old('keterangan',$coaDetail->Keterangan)}}" >
                 </div>
-
             </div>
         </div>
-    </div>
-</div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+            <button readonly type="button" href="{{route('coaDetail.index')}}" class="btn btn-primary">Back</button>
+        </div>
+    </form>
 </div>
 @endsection

@@ -19,6 +19,24 @@ Tag item
 
 @section('content')
 <div class="container-fluid">
+        <h2 class="text-center display-4">Search</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="/itemTage/searchname/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Tag">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+<br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -105,7 +123,7 @@ Tag item
     </div>
     <!-- /.row -->
 </div>
-{{ $dataItem->links('pagination::bootstrap-4') }}
+{{ $data->links('pagination::bootstrap-4') }}
 @endsection
 
 

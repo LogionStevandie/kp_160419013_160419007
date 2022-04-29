@@ -571,7 +571,7 @@ class TerimaBarangSupplierController extends Controller
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
             ->whereNotNull('transaction_gudang_barang.SupplierID')
-            ->whereBetween('transaction_gudang_barang.tanggalDibuat',[$date[0], $date[1]])
+            ->whereBetween('transaction_gudang_barang.tanggalDibuat',[date($date[0]), date($date[1])])
             ->where('transaction_gudang_barang.hapus',0)
             ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
             ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
