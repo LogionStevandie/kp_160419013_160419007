@@ -58,15 +58,15 @@ class MPerusahaanController extends Controller
     {
         //
         $data = $request->collect();
-        $dataFile = $request->file();
+        //$dataFile = $request->file();
         $user = Auth::user();
         //dd($dataFile);
+
         ///image
         $validatedData = $request->validate([
-        'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048',
         ]);
         $path = $request->file('image')->store('public_html/images');
-        $path = base64_encode($path);
         ///
 
         DB::table('MPerusahaan')
@@ -136,10 +136,9 @@ class MPerusahaanController extends Controller
         $user = Auth::user();
         
         $validatedData = $request->validate([
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048',
         ]);
         $path = $request->file('image')->store('public_html/images');
-        $path = base64_encode($path); //jangan lupa di decode waktu manggil di blade 
 
         DB::table('MPerusahaan')
             ->where('MPerusahaanID', $mPerusahaan['MPerusahaanID'])

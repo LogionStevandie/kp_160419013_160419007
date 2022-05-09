@@ -15,6 +15,31 @@ class CheckPRController extends Controller
     public function index()
     {
         $user = Auth::user();
+        //
+        $getLokasi = DB::table('MGudang')
+            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->get();
+        $data = DB::table('purchase_request')
+            ->select('purchase_request.*', 'MGudang.cname as gudangName')
+            ->join('users', 'purchase_request.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
+            ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
+            ->where('purchase_request.hapus','=', 0)    
+            //->paginate(10);
+            ->paginate(10);
+
+        $getPerusahaan = DB::table('MPerusahaan')
+                    ->where('UserIDManager1', $user->id)
+                    ->orWhere('UserIDManager2', $user->id)
+                    ->get();
+        return view('master.check.PurchaseRequest.index',[
+            'data' => $data,
+        ]);
+
+        /*$user = Auth::user();
 
         $prKeluar= DB::table('purchase_request')
             ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
@@ -31,7 +56,7 @@ class CheckPRController extends Controller
         return view('master.check.PurchaseRequest.index',[
             'prKeluar' => $prKeluar,
             'prd' => $prd,
-        ]);
+        ]);*/
 
     }
 
@@ -144,5 +169,90 @@ class CheckPRController extends Controller
     public function destroy(PurchaseRequest $purchaseRequest)
     {
         //
+    }
+
+    public function searchNamePR(Request $request)
+    {
+        $name=$request->input('searchname');
+        $user = Auth::user();
+        //
+        $getLokasi = DB::table('MGudang')
+            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->get();
+        $data = DB::table('purchase_request')
+            ->select('purchase_request.*', 'MGudang.cname as gudangName')
+            ->join('users', 'purchase_request.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
+            ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
+            ->where('purchase_request.hapus','=', 0)    
+            ->where('purchase_request.name','like','%'.$name.'%')
+            //->paginate(10);
+            ->paginate(10);
+
+        return view('master.check.PurchaseRequest.index',[
+            'data' => $data,
+        ]);
+
+    }
+
+    public function searchDatePR(Request $request)
+    {
+        $date=$request->input('dateRangeSearch');
+        $user = Auth::user();
+        $date = explode("-", $date);
+        //
+        $getLokasi = DB::table('MGudang')
+            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->get();
+        $data = DB::table('purchase_request')
+            ->select('purchase_request.*', 'MGudang.cname as gudangName')
+            ->join('users', 'purchase_request.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
+            ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
+            ->where('purchase_request.hapus','=', 0)    
+            ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
+            //->paginate(10);
+            ->paginate(10);
+
+        return view('master.check.PurchaseRequest.index',[
+            'data' => $data,
+        ]);
+
+    }
+
+    public function searchNameDatePR(Request $request)
+    {
+        $name=$request->input('searchname');
+        $date=$request->input('dateRangeSearch');
+        $user = Auth::user();
+        $date = explode("-", $date);
+        //
+        $getLokasi = DB::table('MGudang')
+            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->get();
+        $data = DB::table('purchase_request')
+            ->select('purchase_request.*', 'MGudang.cname as gudangName')
+            ->join('users', 'purchase_request.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
+            ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
+            ->where('purchase_request.hapus','=', 0)    
+            ->where('purchase_request.name','like','%'.$name.'%')
+            ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
+            //->paginate(10);
+            ->paginate(10);
+
+        return view('master.check.PurchaseRequest.index',[
+            'data' => $data,
+        ]);
+
     }
 }

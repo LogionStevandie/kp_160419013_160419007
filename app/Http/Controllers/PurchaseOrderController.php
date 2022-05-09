@@ -625,6 +625,7 @@ class PurchaseOrderController extends Controller
     public function searchDatePO(Request $request)
     {
         $date=$request->input('dateRangeSearch');
+        $date = explode("-", $date);
         $user = Auth::user();
         
         $getPerusahaan = DB::table('MPerusahaan')
@@ -639,6 +640,37 @@ class PurchaseOrderController extends Controller
             ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)
+            ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
+            ->paginate(10);
+        //->get();
+
+        //dd($data);
+        return view('master.PurchaseOrder.index',[
+            'data' => $data,
+        ]);
+
+    }
+
+    public function searchNameDatePO(Request $request)
+    {
+        $name=$request->input('searchname');
+        $date=$request->input('dateRangeSearch');
+        $date = explode("-", $date);
+        $user = Auth::user();
+        
+        $getPerusahaan = DB::table('MPerusahaan')
+            ->join('MGudang','MPerusahaan.MPerusahaanID','=','MPerusahaan.MPerusahaanID')  
+            ->where('MGudangID',$user->MGudangID)
+            ->get();
+
+        $data = DB::table('purchase_order')
+            ->select('purchase_order.*')
+            ->join('users', 'purchase_order.created_by', '=', 'users.id')
+            ->join('MGudang','users.MGudangID','=','MGudang.MGudangID')  
+            ->join('MKota','MGudang.cidkota', '=', 'MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_order.hapus','=', 0)
+            ->where('purchase_order.name','like', '%'.$name.'%') 
             ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
             ->paginate(10);
         //->get();

@@ -609,4 +609,32 @@ class KirimBarangPesananController extends Controller
             'dataDetail' => $dataDetail,
         ]);
     }
+
+    public function searchTGBNameDate(Request $request)
+    {
+        $name = $request->input('searchname');
+        $date = $request->input('searchdate');
+        $date = explode("-", $date);
+        $user = Auth::user();
+        $data = DB::table('transaction_gudang_barang')
+            ->select('transaction_gudang_barang.*','ItemTransaction.Name as itemTransactionName','MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
+            ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
+            ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
+            ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
+            ->whereNotNull('SupplierID')
+            ->where('isMenerima',0)
+            ->where('transaction_gudang_barang.name','like','%'.$name.'%')
+            ->whereBetween('transaction_gudang_barang.tanggalDibuat',[$date[0], $date[1]])
+            ->where('MGudangIDAwal',$user->MGudangID)
+            ->where('transaction_gudang_barang.hapus',0)
+            //->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->paginate(10);
+        //->get();
+        $dataDetail = DB::table('transaction_gudang_barang_detail')
+            ->get();
+        return view('master.note.kirimBarangPesanan.index',[
+            'data' => $data,
+            'dataDetail' => $dataDetail,
+        ]);
+    }
 }

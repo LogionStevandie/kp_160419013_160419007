@@ -95,7 +95,7 @@ class StokAwalController extends Controller
 
         $totalIndex = str_pad(strval(count($dataPo) + 1),4,'0',STR_PAD_LEFT);
 
-        $idStokAwal = DB::table('surat_jalan')->insertGetId(array(
+        $idStokAwal = DB::table('StokAwal')->insertGetId(array(
             'name' => 'STAW/'.$dataLokasi[0]->perusahaanCode.'/'.$dataLokasi[0]->ckode.'/'.$year.'/'.$month."/".$totalIndex,
             'ItemID' => $data['ItemID'],  
             'tanggalDibuat' => $data['tanggalDibuat'],  
@@ -219,7 +219,7 @@ class StokAwalController extends Controller
         $user = Auth::user();
         $data = $request->collect();
             
-        DB::table('surat_jalan')
+        DB::table('StokAwal')
             ->where('id', $stokAwal->id)
             ->update(array(
                 'ItemID' => $data['ItemID'],  
@@ -316,6 +316,27 @@ class StokAwalController extends Controller
             ->leftjoin('Item','StokAwal.ItemID','=','Item.ItemID')
             ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('StokAwal.hapus',0)
+            ->whereBetween('StokAwal.tanggalDibuat',[$date[0], $date[1]])
+            ->paginate(10);
+        
+        return view('nota.StokAwal.index',[
+            'data' => $data,
+        ]);
+
+    }
+
+    public function searchStokAwalNameDate(Request $request)
+    {
+        $name = $request->input('searchname');
+        $date = $request->input('searchdate');
+        $date = explode("-", $date);
+        $user = Auth::user();
+        $data = DB::table('StokAwal')
+            ->select('StokAwal.*','Item.ItemName as itemName', 'Unit.Name as unitName')
+            ->leftjoin('Item','StokAwal.ItemID','=','Item.ItemID')
+            ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('StokAwal.hapus',0)
+            ->where('StokAwal.name','like','%'.$name.'%')
             ->whereBetween('StokAwal.tanggalDibuat',[$date[0], $date[1]])
             ->paginate(10);
         

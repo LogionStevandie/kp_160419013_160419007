@@ -20,7 +20,10 @@ class MSupplierController extends Controller
     public function index()
     {
         //
-        $data = DB::table('MSupplier')
+        $data = DB::table('MSupplier')//menkrap
+            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
+                    'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
+                    'COA.Nama as coaName')
             ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
             ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
             ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
@@ -130,11 +133,32 @@ class MSupplierController extends Controller
      * @param  \App\Models\MSupplier  $mSupplier
      * @return \Illuminate\Http\Response
      */
-    public function show(MSupplier $mSupplier)
+    public function show(MSupplier $msupplier)
     {
         //
+        $infoSupplier = DB::table('infoSupplier')
+            ->get();
+        $MCurrency = DB::table('MCurrency')
+            ->get();
+        $Tax = DB::table('Tax')
+            ->get();
+        $PaymentTerms = DB::table('PaymentTerms')
+            ->get();
+        $MKota = DB::table('MKota')
+            ->get();
+        $COA = DB::table('COA')
+            ->get();
+         $Bank = DB::table('bank')
+            ->get();
         return view('master.msupplier.detail',[
-            'mSupplier' => $mSupplier,
+             'infoSupplier' => $infoSupplier,
+                'MCurrency' => $MCurrency,
+                'Tax' => $Tax,
+                'PaymentTerms' => $PaymentTerms,
+                'MKota' => $MKota,
+                'COA' => $COA,
+                'msupplier' => $msupplier,
+                'bank' => $Bank,
         ]);
     }
 
@@ -254,6 +278,9 @@ class MSupplierController extends Controller
     {
         $name = $request->input('searchname');
         $data = DB::table('MSupplier')
+            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
+                'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
+                'COA.Nama as coaName')
             ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
             ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
             ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
@@ -273,6 +300,9 @@ class MSupplierController extends Controller
     {
         $name = $request->input('searchatasnama');
         $data = DB::table('MSupplier')
+            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
+                'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
+                'COA.Nama as coaName')
             ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
             ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
             ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
@@ -292,6 +322,9 @@ class MSupplierController extends Controller
     {
         $lokasi = $request->input('searchlokasi');
         $data = DB::table('MSupplier')
+            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
+                'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
+                'COA.Nama as coaName')
             ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
             ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
             ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')

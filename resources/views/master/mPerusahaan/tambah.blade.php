@@ -66,9 +66,12 @@ Tambah Perusahaan
             </div>
 
             <div class="form-group">
-                <label for="title">Gambar Perusahaan</label>
-                <input required type="file" name="image" class="form-control" 
-                value="{{old('image','')}}" >
+                <label for="title">Gambar Bendera Perusahaan</label>
+                <input required type="file" class="form-control" name="image" placeholder="Choose image" id="image" value="{{old('image','')}}">
+                @error('image')
+                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                @enderror
+                <small>Maksimum Unggah Gambar 2Mb</small>
             </div>
 
         </div>

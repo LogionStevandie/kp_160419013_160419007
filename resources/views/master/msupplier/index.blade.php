@@ -18,6 +18,24 @@ List Supplier
 
 @section('content')
 <div class="container-fluid">
+        <h2 class="text-center display-4">Search</h2>
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <form action="/msuppliere/searchname/" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Supplier">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-lg btn-default">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+<br>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -36,7 +54,13 @@ List Supplier
                          <thead>
                             <tr>
                               <th scope="col">#</th>
-                              <th scope="col">TaxID</th>
+                              <th scope="col">Tax</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">infoSupplierName</th>
+                              <th scope="col">currencyName</th>
+                              <th scope="col">paymentTermsName</th>
+                              <th scope="col">kotaName</th>
+                              <th scope="col">coaName</th>
                               <th scope="col">Contact Person</th>
                               <th scope="col">Handle</th>
                             </tr>
@@ -45,7 +69,13 @@ List Supplier
                            @foreach($data as $supplier)          
                              <tr>
                                 <th scope="row" name='id'>{{$supplier->SupplierID}}</th>
-                                <td>{{$supplier->TaxID}}</td>
+                                <td>{{$supplier->taxName}}</td>
+                                <td>{{$supplier->Name}}</td>
+                                <td>{{$supplier->infoSupplierName}}</td>
+                                <td>{{$supplier->currencyName}}</td>
+                                <td>{{$supplier->paymentTermsName}}</td>
+                                <td>{{$supplier->kotaName}}</td>
+                                <td>{{$supplier->coaName}}</td>
                                 <td>{{$supplier->ContactPerson}}</td>
                                 <td>  
                                 
@@ -71,7 +101,13 @@ List Supplier
                         <tfoot>
                              <tr>
                               <th scope="col">#</th>
-                              <th scope="col">TaxID</th>
+                              <th scope="col">Tax</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">infoSupplierName</th>
+                              <th scope="col">currencyName</th>
+                              <th scope="col">paymentTermsName</th>
+                              <th scope="col">kotaName</th>
+                              <th scope="col">coaName</th>
                               <th scope="col">Contact Person</th>
                               <th scope="col">Handle</th>
                             </tr>

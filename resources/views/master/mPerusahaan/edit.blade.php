@@ -64,6 +64,26 @@ Edit Perusahaan
                 </select>
             </div>
 
+            <div class="form-group">
+                <label for="title">Nomor NPWP</label>
+                <input required type="text" name="NomorNPWP" class="form-control" 
+                value="{{old('NomorNPWP',$mPerusahaan->NomorNPWP)}}">
+            </div>
+            <div class="form-group">
+                <label for="title">Alamat NPWP</label>
+                <input required type="text" name="AlamatNPWP" class="form-control" 
+                value="{{old('AlamatNPWP',$mPerusahaan->AlamatNPWP)}}" >
+            </div>
+
+            <div class="form-group">
+                <label for="title">Gambar Bendera Perusahaan</label>
+                <input required type="file" class="form-control" name="image" placeholder="Choose image" id="image" value="{{old('image',$mPerusahaan->image)}}">
+                @error('image')
+                    <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                @enderror
+                <small>Maksimum Unggah Gambar 2Mb</small>
+            </div>
+
         </div>
         <!-- /.card-body -->
         <div class="card-footer">

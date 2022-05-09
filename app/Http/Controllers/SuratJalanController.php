@@ -411,4 +411,29 @@ class SuratJalanController extends Controller
             'dataDetail' => $dataDetail,
         ]);
     }
+
+    public function searchSuratJalanNameDate(Request $request)
+    {
+        $name = $request->input('searchname');
+        $date = $request->input('searchdate');
+        $date = explode("-", $date);
+        $user = Auth::user();
+        $data = DB::table('surat_jalan')
+            ->where('hapus',0)
+            ->where('surat_jalan.name','like','%'.$name.'%')
+            ->whereBetween('surat_jalan.tanggalDibuat',[$date[0], $date[1]])
+            ->paginate(10);
+
+        $dataDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*')
+            ->join('surat_jalan','surat_jalan_detail.suratJalanID','=','surat_jalan.id')
+            ->where('surat_jalan.hapus',0)
+            ->where('surat_jalan.name','like','%'.$name.'%')
+            ->where('surat_jalan.tanggalDibuat',[date($date[0]), date($date[1])])
+            ->paginate(10);
+        return view('master.note.suratJalan.index',[
+            'data' => $data,
+            'dataDetail' => $dataDetail,
+        ]);
+    }
 }

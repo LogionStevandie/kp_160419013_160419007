@@ -256,7 +256,49 @@ class ApprovedPOController extends Controller
                 ->where('approved',0)
                 ->where('hapus',0)
                 ->whereIn('MPerusahaanID', $arrPerusahaan)
-                ->whereBetween('tanggalDibuat',[date($date[0]), date($date[1])])
+                ->whereBetween('purchase_order.tanggalDibuat',[date($date[0]), date($date[1])])
+                ->paginate(10);
+        }
+        //dd($poKeluar);
+        $pod = DB::table('purchase_order_detail')
+            ->select("purchase_order_detail.*",'Item.ItemName as namaItem','Tax.Name as namaTax','Unit.Name as namaUnit')
+            ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->join('Tax','purchase_order_detail.idTax','=','Tax.TaxID')
+            //->paginate(10);
+            ->get();
+        
+        return view('master.approved.PurchaseOrder.index',[
+            'poKeluar' => $poKeluar,
+            'pod' => $pod,
+        ]);
+
+    }
+
+    public function searchNameDatePO(Request $request)
+    {
+        $name=$request->input('searchname');
+        $date=$request->input('dateRangeSearch');
+        $user = Auth::user();
+        $date = explode("-", $date);
+        $managerPerusahaan2 = DB::table('MPerusahaan')
+            ->where('UserIDManager2', $user->id)
+            ->get();
+
+        $poKeluar = null;
+        //belum
+        $arrPerusahaan = array();
+        foreach($managerPerusahaan2 as $val){
+            array_push($arrPerusahaan, $val->MPerusahaanID);
+        }
+        //dd($arrPerusahaan);
+        if(count($managerPerusahaan2)>0){
+            $poKeluar= DB::table('purchase_order')
+                ->where('approved',0)
+                ->where('hapus',0)
+                ->whereIn('MPerusahaanID', $arrPerusahaan)
+                ->where('name','like', '%'.$name.'%')
+                ->whereBetween('purchase_order.tanggalDibuat',[date($date[0]), date($date[1])])
                 ->paginate(10);
         }
         //dd($poKeluar);
