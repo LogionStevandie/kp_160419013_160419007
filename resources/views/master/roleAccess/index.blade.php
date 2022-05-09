@@ -24,7 +24,7 @@ Role Access
                 <div class="card-header">
                     <h3 class="card-title">Role Access</h3>
                     
-                    <!--<a href="{{route('role.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Role
+                    <!--<a href="{{route('roleAccess.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Role
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                         </svg>
@@ -55,11 +55,11 @@ Role Access
                                 </td>
                                 <td>  
                                 
-                                    <a class="btn btn-default bg-info" href="{{route('role.edit',[$d->id])}}">
+                                    <a class="btn btn-default bg-info" href="{{route('roleAccess.edit',[$d->id])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <button type="button" class="btn btn-default bg-info" data-toggle="modal" data-target="#detail_{{$d->id}}">
+                                    <!--<button type="button" class="btn btn-default bg-info" data-toggle="modal" data-target="#detail_{{$d->id}}">
                                      <i class="fas fa-eye"></i> 
                                     </button>
                                     <div class="modal fade" id="detail_{{$d->id}}">
@@ -79,18 +79,18 @@ Role Access
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                         <!-- /.modal-content -->
                                         </div>
-                                        <!-- /.modal-dialog -->
-                                    </div>
-                                    <form action="{{route('role.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
+                                        <!-- /.modal-dialog 
+                                    </div>-->
+                                    <!--<form action="{{route('roleAccess.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
                                         @csrf
                                         @method('DELETE')
                                           <button action="{{route('role.destroy',[$d->id])}}" class="btn btn-default bg-danger">
                                             <i class="fas fa-trash"></i> 
                                           </button>
-                                    </form>  
+                                    </form>  -->
                                 </td>
                             </tr>
                             @endforeach
@@ -113,5 +113,5 @@ Role Access
     </div>
     <!-- /.row -->
 </div>
-{{ $dataItem->links('pagination::bootstrap-4') }}
+{{ $data->links('pagination::bootstrap-4') }}
 @endsection

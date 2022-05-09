@@ -284,11 +284,11 @@ Edit Supplier
                              <div class="form-group">
                              <label for="title">Petani</label><br>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Petani" value="1"{{'1' == old('Petani',$msupplier->Petani)? 'checked' :'' }} disabled>
+                                <input disabled class="form-check-input" type="radio" name="Petani" value="1"{{'1' == old('Petani',$msupplier->Petani)? 'checked' :'' }} >
                                 <label class="form-check-label" for="inlineRadio1">Ya</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Petani" value="0"{{'0'== old('Petani',$msupplier->Petani)? 'checked' :'' }} disabled>
+                                <input disabled class="form-check-input" type="radio" name="Petani" value="0"{{'0'== old('Petani',$msupplier->Petani)? 'checked' :'' }} >
                                 <label class="form-check-label" for="inlineRadio2">Tidak</label>
                             </div><br>
                         </div>
@@ -297,11 +297,11 @@ Edit Supplier
                         <div class="form-group">
                             <label for="title">Khusus</label><br>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Khusus" value="1"{{'1' == old('Khusus',$msupplier->Khusus)? 'checked' :'' }}disabled >
+                                <input disabled class="form-check-input" type="radio" name="Khusus" value="1"{{'1' == old('Khusus',$msupplier->Khusus)? 'checked' :'' }} >
                                 <label class="form-check-label" for="inlineRadio1">Ya</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Khusus" value="0"{{'0'== old('Khusus',$msupplier->Khusus)? 'checked' :'' }} disabled>
+                                <input disabled class="form-check-input" type="radio" name="Khusus" value="0"{{'0'== old('Khusus',$msupplier->Khusus)? 'checked' :'' }} >
                                 <label class="form-check-label" for="inlineRadio2">Tidak</label>
                             </div><br>
                         </div>

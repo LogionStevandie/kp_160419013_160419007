@@ -43,6 +43,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route('stokAwal.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p> 
+                Stok Barang Awal di Gudang
+              </p>
+            </a>
+          </li>
 
           <li class="nav-header">PEMBUATAN NOTA</li>
           <li class="nav-item">
@@ -145,6 +153,19 @@
               </p>
             </a>
           </li>
+          <!-- END Permintaan-->
+
+            <!--Permintaan-->
+          <li class="nav-header">PENYESUAIAN STOK BARANG</li>
+          <li class="nav-item">
+            <a href="{{route('adjustmentStock.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Penyesuaian Stok
+              </p>
+            </a>
+          </li>
+         
           <!-- END Permintaan-->
 
           <li class="nav-header">MASTER</li>
@@ -407,6 +428,13 @@
                 <a href="{{route('role.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Role</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('roleAccess.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Akses Role</p>
                 </a>
               </li>
             </ul>

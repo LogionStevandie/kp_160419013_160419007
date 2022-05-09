@@ -94,14 +94,45 @@ Tag item
                                         </div>
                                         <!-- /.modal-dialog -->
                                     </div>
-                                    <form action="{{route('itemTag.destroy',[$tag->ItemTagID])}}" method="POST" class="btn btn-responsive">
-                                        @csrf
-                                        @method('DELETE')
-                                          <button action="{{route('itemTag.destroy',[$tag->ItemTagID])}}" class="btn btn-default bg-danger">
-                                            <i class="fas fa-trash"></i> 
-                                          </button>
-                                        @csrf
-                                    </form>  
+
+                                     <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$tag->ItemTagID}}">
+                                     <i class="fas fa-trash"></i> 
+                                    </button>
+
+                                     <div class="modal fade" id="delete_{{$tag->ItemTagID}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Konfirmasi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> 
+                                                </div>
+                                               
+                                                <div class="modal-body">
+                                                     Apakah anda yakin mau menghapus  "{{$tag->Name}}"
+                                                </div>
+                                            
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                     <form action="{{route('itemTag.destroy',[$tag->ItemTagID])}}" method="POST" class="btn btn-responsive">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button action="{{route('itemTag.destroy',[$tag->ItemTagID])}}" class="btn btn-default bg-danger">
+                                                            Hapus
+                                                        </button>
+                                                        @csrf
+                                                    </form> 
+                                                </div>
+                                                
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                     </div>
+                                 
+                                     
                                 </td>
                             </tr>
                             @endforeach

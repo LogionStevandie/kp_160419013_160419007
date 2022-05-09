@@ -105,15 +105,44 @@ Item
                                      <a href="{{route('item.show',[$data->ItemID])}}" class="btn btn-default bg-info"><i class="fas fa-eye"></i> </a> 
 
                                  
-                                    
-                                    <form action="{{route('item.destroy',[$data->ItemID])}}" method="POST" class="btn btn-responsive">
-                                        @csrf
-                                        @method('DELETE')
-                                          <button action="{{route('item.destroy',[$data->ItemID])}}" class="btn btn-default bg-danger">
-                                            <i class="fas fa-trash"></i> 
-                                          </button>
-                                        @csrf
-                                    </form>  
+                                    <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$data->ItemID}}">
+                                     <i class="fas fa-trash"></i> 
+                                    </button>
+
+                                     <div class="modal fade" id="delete_{{$data->ItemID}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Konfirmasi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> 
+                                                </div>
+                                               
+                                                <div class="modal-body">
+                                                     Apakah anda yakin mau menghapus  "{{$data->ItemName}}"
+                                                </div>
+                                            
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                    <form action="{{route('item.destroy',[$data->ItemID])}}" method="POST" class="btn btn-responsive">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button action="{{route('item.destroy',[$data->ItemID])}}" class="btn btn-default bg-danger">
+                                                            Hapus
+                                                        </button>
+                                                        @csrf
+                                                    </form>  
+                                                </div>
+                                                
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                     </div>
+                                 
+                                     
                                 </td>
                             </tr>
                             @endforeach

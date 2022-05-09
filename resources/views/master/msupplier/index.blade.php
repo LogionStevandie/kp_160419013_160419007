@@ -85,15 +85,44 @@ List Supplier
 
                                      <a href="{{route('msupplier.show',[$supplier->SupplierID])}}" class="btn btn-default bg-info"><i class="fas fa-eye"></i> </a> 
 
+                                       <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$supplier->SupplierID}}">
+                                     <i class="fas fa-trash"></i> 
+                                    </button>
+
+                                     <div class="modal fade" id="delete_{{$supplier->SupplierID}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Konfirmasi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> 
+                                                </div>
+                                               
+                                                <div class="modal-body">
+                                                     Apakah anda yakin mau menghapus "{{$supplier->Name}}"
+                                                </div>
+                                            
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                         <form action="{{route('msupplier.destroy',[$supplier->SupplierID])}}" method="POST" class="btn btn-responsive">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button action="{{route('msupplier.destroy',[$supplier->SupplierID])}}" class="btn btn-default bg-danger">
+                                                                Hapus
+                                                            </button>
+                                                            @csrf
+                                                        </form>    
+                                                </div>
+                                                
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                     </div>
                                     
-                                    <form action="{{route('msupplier.destroy',[$supplier->SupplierID])}}" method="POST" class="btn btn-responsive">
-                                        @csrf
-                                        @method('DELETE')
-                                          <button action="{{route('msupplier.destroy',[$supplier->SupplierID])}}" class="btn btn-default bg-danger">
-                                            <i class="fas fa-trash"></i> 
-                                          </button>
-                                        @csrf
-                                    </form>  
+                                  
                                 </td>
                             </tr>
                             @endforeach

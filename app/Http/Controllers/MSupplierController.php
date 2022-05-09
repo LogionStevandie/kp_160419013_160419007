@@ -257,14 +257,14 @@ class MSupplierController extends Controller
      * @param  \App\Models\MSupplier  $mSupplier
      * @return \Illuminate\Http\Response
      */
-    public function destroy(MSupplier $mSupplier)
+    public function destroy(MSupplier $msupplier)
     {
         //
         //$data = $request->collect();
         $user = Auth::user();
-        dd($mSupplier);
+        //dd($msupplier);
         DB::table('MSupplier')
-            ->where('SupplierID', $mSupplier->SupplierID)
+            ->where('SupplierID', $msupplier['SupplierID'])
             ->update(array(
                 'Hapus' => 1,
                 'UpdatedBy'=> $user->id,

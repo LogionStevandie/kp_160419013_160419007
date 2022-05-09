@@ -29,7 +29,7 @@ class RoleController extends Controller
             ->leftjoin('menu','role_access.idMenu','=','menu.MenuID')
             ->get();
         */
-        $data = DB::table('roles')->get();
+        $data = DB::table('roles')->paginate(10);;
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->paginate(10);
@@ -200,7 +200,7 @@ class RoleController extends Controller
     {
         $name=$request->input('searchname');
 
-        $data = DB::table('roles')->where('name','like','%'.$name.'%')->get();
+        $data = DB::table('roles')->where('name','like','%'.$name.'%')->paginate(10);;
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->paginate(10);

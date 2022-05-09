@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Auth;
 
 class RoleAccessController extends Controller
 {
@@ -15,10 +17,10 @@ class RoleAccessController extends Controller
     public function index()
     {
         //
-        $data = DB::table('roles')->get();
+        $data = DB::table('roles')->paginate(10);;
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
-            ->paginate(10);
+            ->get();
         //->get();    
         return view('master.roleAccess.index',[
             'data' => $data,
@@ -53,14 +55,14 @@ class RoleAccessController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function show(Role $role)
+    public function show(Role $roleAccess)
     {
         //
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->get();    
         return view('master.roleAccess.show',[
-            'role' => $role,
+            'role' => $roleAccess,
             'dataAccess' => $dataAccess,
         ]);
     }
@@ -71,14 +73,14 @@ class RoleAccessController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit(Role $roleAccess)
     {
         //
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->get();    
         return view('master.roleAccess.edit',[
-            'role' => $role,
+            'roleAccess' => $roleAccess,
             'dataAccess' => $dataAccess,
         ]);
     }
@@ -90,7 +92,7 @@ class RoleAccessController extends Controller
      * @param  \App\Models\Role  $role
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, Role $roleAccess)
     {
         //
         $data=$request->collect();
@@ -98,13 +100,13 @@ class RoleAccessController extends Controller
         //$dataRoleAccess = DB::table('role_access')->where('idRole', $role->id)->get();
 
         DB::table('role_access')
-            ->where('idRole','=',$role->id)
+            ->where('idRole','=',$roleAccess->id)
             ->delete();
 
         for($i = 0; $i < count($data['menu']); $i++){
         DB::table('role_access')
             ->insert(array(
-                'idRole' => $role->id,
+                'idRole' => $roleAccess->id,
                 'idMenu' => $data['menu'][$i],
                 )
             ); 

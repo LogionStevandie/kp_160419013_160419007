@@ -36,7 +36,11 @@ Route::resource('menu', 'App\Http\Controllers\MenuController');
 Route::get('/menue/searchname/',[App\Http\Controllers\MenuController::class, 'searchMenuName']);
 //Role(ex:Pegawai, ketua divisi)
 Route::resource('role', 'App\Http\Controllers\RoleController');
-    
+Route::get('/rolee/searchname/',[App\Http\Controllers\RoleController::class, 'searchRoleName']); //cobak gini ta
+
+Route::resource('roleAccess', 'App\Http\Controllers\RoleAccessController');
+
+
 //SubMenu (ex:barang_tambah, barang_edit, npp_tambah, po_tambah, dll   nyimpen id menu) 
 //Route::resource('submenu', 'App\Http\Controllers\SubMenuController');
 
@@ -129,6 +133,8 @@ Route::resource('infoSupplier', 'App\Http\Controllers\InfoSupplierController');/
 Route::get('/infoSuppliere/searchname/',[App\Http\Controllers\InfoSupplierController::class, 'searchInfoSupplierName']);//cobak gini ta
 //mGudang
 Route::resource('mCurrency', 'App\Http\Controllers\MCurrencyController');
+Route::get('/mCurrencye/searchname/',[App\Http\Controllers\MCurrencyController::class, 'searhMCurrencyName']);//cobak gini ta
+
 Route::resource('prosesTransaksi', 'App\Http\Controllers\ProsesTransaksiController');
 
 //mSupplier
@@ -178,3 +184,14 @@ Route::get('suratJalane/searchdate/',[App\Http\Controllers\KirimBarangPesananCon
 
 Route::resource('inventoryTransaction','App\Http\Controllers\InventoryTransactionController');
 Route::get('/kartuStok/searchgudang/',[App\Http\Controllers\InventoryTransactionController::class, 'searchIndexByGudang']);
+
+Route::resource('stokAwal','App\Http\Controllers\StokAwalController');
+Route::get('/stokAwale/searchname/',[App\Http\Controllers\StokAwalController::class, 'searchStokAwalName']);
+Route::get('/stokAwale/searchdate/',[App\Http\Controllers\StokAwalController::class, 'searchStokAwalNameDate']);
+
+Route::resource('adjustmentStock','App\Http\Controllers\AdjustmentStockController');  ///Item Adjustment Stock
+Route::get('/adjustmentStocke/searchname/',[App\Http\Controllers\StokAwalController::class, 'searchNameAS']);
+Route::get('/adjustmentStocke/searchdate/',[App\Http\Controllers\StokAwalController::class, 'searchDateAS']);
+Route::get('/adjustmentStocke/searchnamedate/',[App\Http\Controllers\StokAwalController::class, 'searchNameDateAS']);
+
+Route::resource('tagValuesMGudang', 'App\Http\Controllers\MGudangValuesController');
