@@ -69,7 +69,7 @@ $currentUrl = Route::current()->getName();  //buat dapetno nama directory nya / 
                                           @endif
                                         </td><!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
                                         <td scope="col">{{$data->tipeTransaksi}}</td>
-                                         <td scope="col"> {{$data->Quantity}}</td>
+                                        <td scope="col"> {{$data->Quantity}}</td>
                                          
                                         
                                         <!--<td scope="col">{{abs($data->Quantity * $data->UnitPrice)}}</td>     -->                                 

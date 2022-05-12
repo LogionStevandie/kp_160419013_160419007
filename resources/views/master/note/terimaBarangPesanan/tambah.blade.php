@@ -54,8 +54,8 @@ Pembuatan Nota Terima Pesanan
 
                               <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for="lastName">Pilih Gudang Awal</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
+                                    <label for="lastName">Pilih Gudang Pengirim</label> 
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
                                       <option value="">
                                             --Pilih Gudang Awal--
                                         </option>
@@ -70,13 +70,17 @@ Pembuatan Nota Terima Pesanan
 
                               <div class="col-md-6">
                                     <div class="form-group">
-                                    <label for="lastName">Pilih Gudang Tujuan</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
+                                    <label for="lastName">Pilih Gudang Penerima</label> 
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
                                       <option value="">
                                             --Pilih Gudang Tujuan--
                                         </option>
                                         @foreach($dataGudang as $key => $data)
-                                            <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                            @if($user->MGudangID == $data->MGudangID)
+                                                <option selected name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                            @else
+                                                <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                            @endif
                                         @endforeach
                                 
                                     </select>
@@ -259,6 +263,22 @@ Pembuatan Nota Terima Pesanan
 
     $(document).ready(function(){
 
+        var id = $("#idGudangTujuan option:selected").val();
+
+        var optionnya = '';
+        var suratJalan = <?php echo json_encode($suratJalan); ?>;
+        optionnya += '<option value="pilih" selected>--Pilih Surat Jalan--</option>\n';
+        $.each(suratJalan, function( key, value ){
+            if(value.MGudangIDTujuan.toString() == id.toString()){
+                optionnya += '<option id="idSj" idPurchaseReq="'+value.PurchaseRequestID +'" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';    
+            }
+        });
+
+        $("#SuratJalanID").empty();
+        $("#SuratJalanID").append(optionnya);
+        $('.selectpicker').selectpicker('refresh');
+
+
         $("#idGudangTujuan").on("change",function(){  //sudah
                 
                 var id = this.value;
@@ -303,9 +323,22 @@ Pembuatan Nota Terima Pesanan
             });
 
         $("#SuratJalanID").on("change",function(){  //sudah
-                
+            
+            var id = $("#SuratJalanID option:selected").attr("idPurchaseReq");
+            var optionnya = '';
+            var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
+            optionnya += '<option value="pilih">--Pilih Purchase Request--</option>\n';
+            $.each(dataPurchaseRequest, function( key, value ){
+                if(value.id.toString() == id.toString()){
+                    optionnya += '<option selected id="idPr" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';       
+                }
+            });                     
+            $("#PurchaseRequestID").empty();
+            $("#PurchaseRequestID").append(optionnya);
+
+
             var pr = $("#SuratJalanID option:selected").attr("idPurchaseReq");
-            alert(pr);
+            //alert(pr);
             var optionnya = '';
         
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;

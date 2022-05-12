@@ -49,7 +49,7 @@ Edit Nota Kirim Pesanan
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Awal</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
                                       <option value="">
                                             --Pilih Gudang Awal--
                                         </option>
@@ -97,7 +97,7 @@ Edit Nota Kirim Pesanan
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Data Purchase Request</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
  
                                     </select>
                                     </div>
@@ -328,8 +328,8 @@ Edit Nota Kirim Pesanan
         $('.selectpicker').selectpicker('refresh');
                 
         $("#idGudangTujuan").on("change",function(){  //sudah
-                
                 var id = this.value;
+                /*var id = this.value;
                 var optionnya = '';
             
                 var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
@@ -348,7 +348,7 @@ Edit Nota Kirim Pesanan
                                     
                 $("#PurchaseRequestID").empty();
                 $("#PurchaseRequestID").append(optionnya);
-                //$('.selectpicker').selectpicker('refresh');
+                //$('.selectpicker').selectpicker('refresh');*/
                 var optionnya = '';
             
                 var suratJalan = <?php echo json_encode($suratJalan); ?>;
@@ -372,6 +372,20 @@ Edit Nota Kirim Pesanan
 
         $("#SuratJalanID").on("change",function(){  //sudah
                 
+            var id = $("#SuratJalanID option:selected").attr("idPurchaseReq");
+            var optionnya = '';
+            var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
+            optionnya += '<option value="pilih" selected>--Pilih Purchase Request--</option>\n';
+            $.each(dataPurchaseRequest, function( key, value ){
+                
+                if(value.id.toString() == id.toString()){
+                    optionnya += '<option selected id="idPr" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';     
+                }
+            });           
+            $("#PurchaseRequestID").empty();
+            $("#PurchaseRequestID").append(optionnya);
+
+
             var pr = $("#SuratJalanID option:selected").attr("idPurchaseReq");
             //alert(pr);
             var optionnya = '';

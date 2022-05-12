@@ -126,6 +126,7 @@ class TerimaBarangPesananController extends Controller
             'dataPurchaseRequest' => $dataPurchaseRequest,
             'dataGudang'=>$dataGudang,
             'dataItemTransaction' => $dataItemTransaction,
+            'user' => $user,
         ]);
     }
 

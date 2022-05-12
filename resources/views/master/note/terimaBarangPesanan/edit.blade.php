@@ -55,7 +55,7 @@ Pembuatan Nota Terima Pesanan
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Awal</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDAwal">
                                       <option value="">
                                             --Pilih Gudang Awal--
                                         </option>
@@ -75,7 +75,7 @@ Pembuatan Nota Terima Pesanan
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Gudang Tujuan</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="MGudangIDTujuan">
                                       <option value="">
                                             --Pilih Gudang Tujuan--
                                         </option>
@@ -103,7 +103,7 @@ Pembuatan Nota Terima Pesanan
                                <div class="col-md-6">
                                     <div class="form-group">
                                    <label for="lastName">Data Purchase Request</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="PurchaseRequestID" id="PurchaseRequestID">
 
                                     </select>
                                     </div>
@@ -377,21 +377,35 @@ Pembuatan Nota Terima Pesanan
             });
 
         $("#SuratJalanID").on("change",function(){  //sudah
-                
+            
+            var id = $("#SuratJalanID option:selected").attr("idPurchaseReq");
+            var optionnya = '';
+            var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
+            optionnya += '<option value="pilih">--Pilih Purchase Request--</option>\n';
+            $.each(dataPurchaseRequest, function( key, value ){
+                if(value.id.toString() == id.toString()){
+                    optionnya += '<option selected id="idPr" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';       
+                }
+            });                     
+            $("#PurchaseRequestID").empty();
+            $("#PurchaseRequestID").append(optionnya);
+
+
             var pr = $("#SuratJalanID option:selected").attr("idPurchaseReq");
             //alert(pr);
             var optionnya = '';
         
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
             
-            //alert('masuk sini');
+            alert('masuk sini');
             optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            alert(optionnya);   
             $.each(suratJalanDetail, function( key, value ){    
                 if(value.idPR.toString() == pr.toString()){
                     //alert('masuk'); 
                     //alert("masuk cek");
                     optionnya += '<option id="namaBarang" namaBarang='+value.itemName +' idPrdId='+ value.PurchaseRequestDetailID +' value="'+value.ItemID+'">'+value.itemName+'<nbsp>('+value.unitName+')</option>\n';
-                    //alert(optionnya);         
+                    alert(optionnya);         
                 }
             });
         
