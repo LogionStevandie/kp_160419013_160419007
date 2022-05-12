@@ -33,9 +33,12 @@ class TransactionGudangBarangController extends Controller
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
+          $dataGudang =DB::table('MGudang')
+            ->get();  
         return view('master.note.transactionGudang.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
+            'dataGudang' => $dataGudang,
         ]);
     }
 

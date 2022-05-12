@@ -38,6 +38,7 @@ class InventoryTransactionController extends Controller
             DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
             ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
             ->paginate(10);
         //dd($dataReport);
@@ -140,6 +141,7 @@ class InventoryTransactionController extends Controller
             DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
             ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $mGudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
@@ -214,6 +216,7 @@ class InventoryTransactionController extends Controller
                 ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
                 ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
                 ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+                ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
                 ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
                 ->paginate(10);
         }
@@ -222,6 +225,7 @@ class InventoryTransactionController extends Controller
                 ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
                 ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
                 ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+                ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
                 ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
                 ->where('ItemInventoryTransactionLine.MGudangID','=', $gudang)
                 ->paginate(10);
@@ -302,7 +306,7 @@ class InventoryTransactionController extends Controller
             ->where('ItemInventoryTransactionLine.MGudangID', $mGudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
             ->get();
-        // dd($dataReport);
+        //dd($dataReport);
         $dataReportSingle = DB::table('ItemInventoryTransactionLine')
             ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName as namaBarang', 
             DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"), 'MPerusahaan.cname as perusahaanName','Unit.Name as satuan')
@@ -310,6 +314,7 @@ class InventoryTransactionController extends Controller
             ->leftjoin('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')//asfasfasfasf seng pake modals
+            ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $mGudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName','MPerusahaan.cname','Unit.Name')
@@ -387,10 +392,19 @@ class InventoryTransactionController extends Controller
         $inventoryTransaction = DB::table('ItemInventoryTransaction')
             ->get();
 
+        $checkDataSemua = 0;
         $dataReport = null;
         $dataReportSingle = null;
         $dataReportSingleSebelum = null;
-        if($gudang == null || $item == null || $date == null){
+        $dataReportItem = DB::table('ItemInventoryTransactionLine')
+            ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', 
+            DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
+            ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+            ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+            ->get();
+        if($gudang == null || $item == null || $date == null || $gudang == "" || $item == "" || $date == ""){
+            //dd($dataReport);
             return view('kartuStok.indexlengkap',[
                 'dataSupplier' => $dataSupplier,
                 'dataBarangTag' => $dataBarangTag,
@@ -404,8 +418,12 @@ class InventoryTransactionController extends Controller
                 'dataReport' => $dataReport,
                 'dataReportSingle' => $dataReportSingle,
                 'dataReportSingleSebelum' => $dataReportSingleSebelum,
+                'dataReportItem' => $dataReportItem,
+                'checkDataSemua' => $checkDataSemua,
             ]);
         }
+        $checkDataSemua = 1;
+        
 
         $dataReport = DB::table('ItemInventoryTransactionLine')
             //->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName',)
@@ -416,9 +434,9 @@ class InventoryTransactionController extends Controller
             ->join('ItemTransaction','ItemInventoryTransaction.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $gudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
-            ->whereBetween('ItemInventoryTransaction.Date', [$date[0], $date[1]])
+            ->whereBetween('ItemInventoryTransaction.Date', [date($date[0]), date($date[1])])
             ->get();
-        // dd($dataReport);
+        //dd($dataReport);
         $dataReportSingle = DB::table('ItemInventoryTransactionLine')
             ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName as namaBarang', 
             DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"), 'MPerusahaan.cname as perusahaanName','Unit.Name as satuan')
@@ -429,7 +447,7 @@ class InventoryTransactionController extends Controller
             ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $gudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
-            ->whereDate('ItemInventoryTransaction.Date','<=', $date[1])
+            ->whereDate('ItemInventoryTransaction.Date','<=', date($date[1]))
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName','MPerusahaan.cname','Unit.Name')
             ->get();
 
@@ -443,7 +461,7 @@ class InventoryTransactionController extends Controller
             ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $gudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
-            ->whereDate('ItemInventoryTransaction.Date', '<', $date[0])
+            ->whereDate('ItemInventoryTransaction.Date', '<', date($date[0]))
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName','MPerusahaan.cname','Unit.Name')
             ->get();
             //dd($dataReportSingle);
@@ -461,6 +479,9 @@ class InventoryTransactionController extends Controller
             'stokAwal' => $stokAwal,
             'dataReport' => $dataReport,
             'dataReportSingle' => $dataReportSingle,
+            'dataReportSingleSebelum' => $dataReportSingleSebelum,
+            'dataReportItem' => $dataReportItem,
+            'checkDataSemua' => $checkDataSemua,
         ]);
     }
 }

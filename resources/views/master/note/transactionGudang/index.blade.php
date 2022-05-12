@@ -59,7 +59,7 @@ Transaksi Gudang Barang
                             @endif
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $data->MGudangIDAwal)
-                                    <td>{{$dataGudang->cname}}</td>
+                                    <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach                        
                             <td>  
@@ -72,7 +72,7 @@ Transaksi Gudang Barang
                                 <form action="{{route('transactionGudang.destroy',[$data->id])}}" method="POST" class="btn btn-responsive">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-default bg-danger" action="{{route('transactionGudang.destroy',[$purchaseOrder->id])}}">
+                                    <button class="btn btn-default bg-danger" action="{{route('transactionGudang.destroy',[$data->id])}}">
                                         <i class="fas fa-trash"></i> 
                                     </button>
                                 </form>  

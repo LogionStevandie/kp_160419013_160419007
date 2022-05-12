@@ -165,15 +165,17 @@
                                     @endforeach
                                 
                                   <td>{{$data->jumlah}}</td>
-                                  <td>{{$data->harga}}</td>    
+                                  <td>@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>
+                                    
                                     @foreach($dataTax as $dataTx)     
                                       @if($data->idTax==$dataTx->TaxID)
                                           <td>{{$dataTx->Name}}</td>  
                                       @endif
                                     @endforeach
                                 
-                                  <td>{{$data->diskon}}</td>                                            
-                                  <td>{{(((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0}}</td>                                          
+                                                                             
+                           <td>@php echo "Rp " . number_format($data->diskon,2,',','.'); @endphp</td>
+                                  <td>@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>                                          
                                 @endif
                             </tr>
                            @endforeach

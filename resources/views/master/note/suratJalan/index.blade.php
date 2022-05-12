@@ -83,33 +83,33 @@ Surat Jalan
                             </tr>
                           </thead>
                          <tbody>
-                            @foreach($data as $data)
+                            @foreach($data as $d)
                             <tr >
-                            <th scope="row" name='id'>{{$data->id}}</th>
-                            <td>{{$data->name}}</td>
-                            <td>{{$data->tanggalDibuat}}</td>
+                            <th scope="row" name='id'>{{$d->id}}</th>
+                            <td>{{$d->name}}</td>
+                            <td>{{$d->tanggalDibuat}}</td>
                             @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDAwal)
+                                @if($gudang->MGudangID == $d->MGudangIDAwal)
                                     <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach     
                             @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDTujuan)
+                                @if($gudang->MGudangID == $d->MGudangIDTujuan)
                                     <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach 
-                            <td>{{$data->keteranganPenerima}}</td>                 
+                            <td>{{$d->keteranganPenerima}}</td>                 
                             <td>  
-                                <a class="btn btn-default bg-info" href="{{route('suratJalan.show',[$data->id])}}">
+                                <a class="btn btn-default bg-info" href="{{route('suratJalan.show',[$d->id])}}">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a class="btn btn-default bg-info" href="{{route('suratJalan.edit',[$data->id])}}">
+                                <a class="btn btn-default bg-info" href="{{route('suratJalan.edit',[$d->id])}}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{route('suratJalan.destroy',[$data->id])}}" method="POST" class="btn btn-responsive">
+                                <form action="{{route('suratJalan.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-default bg-danger" action="{{route('suratJalan.destroy',[$data->id])}}">
+                                    <button class="btn btn-default bg-danger" action="{{route('suratJalan.destroy',[$d->id])}}">
                                         <i class="fas fa-trash"></i> 
                                     </button>
                                 </form>  

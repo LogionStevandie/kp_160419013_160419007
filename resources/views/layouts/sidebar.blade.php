@@ -62,14 +62,14 @@
             </a>
             <ul class="nav nav-treeview">
             
-                <li class="nav-item">
+                <!--<li class="nav-item">
                   <a href="{{route('transactionGudang.index')}}" class="nav-link">
                     <i class="nav-icon fas fa-columns"></i>
                     <p>
                       Transaksi Gudang
                     </p>
                   </a>
-                </li>
+                </li>-->
 
                 <li class="nav-item">
                   <a href="{{route('kirimBarangPesanan.index')}}" class="nav-link">

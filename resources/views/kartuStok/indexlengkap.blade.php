@@ -20,9 +20,9 @@ Kartu Stok
         <h2 class="text-center display-4">Search Gudang</h2>
         <div class="row">
             <div class="col-md-8 offset-md-2">
-                <form action="/kartuStok/searchgudang/" method="get">
+                <form action="/kartuStok/searchLengkap/" method="get">
                     <div class="input-group">
-                    <select class="form-control selectpicker col-md-8" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="searchgudangid">
+                    <select class="form-control selectpicker " data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="searchgudangid">
                         <option value="">
                             --Semua Gudang--
                         </option>
@@ -31,6 +31,18 @@ Kartu Stok
                         @endforeach
                 
                     </select>
+                    <select class="form-control selectpicker " data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idItemSearch" name="searchitemid">
+                        <option value="">
+                            --Semua Barang--
+                        </option>
+                
+                    </select>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">
+                            <i class="far fa-calendar-alt"></i>
+                        </span>
+                    </div>
+                    <input type="text" name="searchdateid" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan','')}}" >
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-lg btn-default">
                                 <i class="fa fa-search"></i>
@@ -73,72 +85,83 @@ Kartu Stok
                             </tr>
                           </thead>
                         <tbody>
-                            @if($dataReport != null)      
+                            @if($dataReport != null )
                                 @php    
                                 $awal = 0;               
-                                $akhirStok = 0;                              
-                                @foreach($dataReport as $stok)     
-                                    @if($loop->first)
-                                        @foreach($dataReportSingleSebelum as $stoksebelum)
-                                            <tr>  
-                                                <td scope="col">{{ $loop->index + 1 }}</td> $awal = $awal + 1;
-                                                <td scope="col">{{$data->Name}}</td>
-                                                <td scope="col">{{date("d-m-Y", strtotime($data->Date))}}</td>
-                                                <td scope="col">
-                                                @if($data->AdjustmentID != null)
-                                                    Penyesuaian Item
-                                                @elseif($data->SuratJalanID != null)
-                                                    Transaksi Menggunakan Surat Jalan
-                                                @elseif($data->StokAwalID != null)
-                                                    Stok Awal Gudang
-                                                @else
-                                                    Transaksi
-                                                @endif
-                                                </td><!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
-                                                <td scope="col">{{$data->tipeTransaksi}}</td>
+                                $akhirStok = 0;  
+                                @endphp                            
+                                    @foreach($dataReport as $stok)     
+                                        @if($loop->first)
+                                            @foreach($dataReportSingleSebelum as $stoksebelum)
+                                                <tr>  
+                                                    <td scope="col">{{ $loop->index + 1 }}</td> 
+                                                    @php
+                                                    $awal = $awal + 1;
+                                                    @endphp
+                                                    <td scope="col">Data awal</td>
+                                                    <td scope="col">{{date("d-m-Y", strtotime($data->Date))}}</td>
+                                                    <td scope="col">
+                                                    @if($data->AdjustmentID != null)
+                                                        Penyesuaian Item
+                                                    @elseif($data->SuratJalanID != null)
+                                                        Transaksi Menggunakan Surat Jalan
+                                                    @elseif($data->StokAwalID != null)
+                                                        Stok Awal Gudang
+                                                    @else
+                                                        Transaksi
+                                                    @endif
+                                                    </td><!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
+                                                    <td scope="col">{{$data->tipeTransaksi}}</td>
 
-                                                <td >{{$stok->ItemName}}</td>
-                                                <td>{{$stok->totalQuantity}}</td>                 
-                                                <td>0</td>                 
-                                                <td>0</td>                 
-                                                <td>{{$stok->totalQuantity}}</td>   
-                                                $akhirStok = 30;               
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                    
-                                    <tr>  
-                                        <td scope="col">{{ $loop->index + 1 + $awal }}</td>
-                                        <td scope="col">{{$data->Name}}</td>
-                                        <td scope="col">{{date("d-m-Y", strtotime($data->Date))}}</td>
-                                        <td scope="col">
-                                          @if($data->AdjustmentID != null)
-                                            Penyesuaian Item
-                                          @elseif($data->SuratJalanID != null)
-                                            Transaksi Menggunakan Surat Jalan
-                                          @elseif($data->StokAwalID != null)
-                                            Stok Awal Gudang
-                                          @else
-                                            Transaksi
-                                          @endif
-                                        </td><!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
-                                        <td scope="col">{{$data->tipeTransaksi}}</td>
+                                                    <td >{{$stok->ItemName}}</td>
+                                                    <td>{{$stok->totalQuantity}}</td>                 
+                                                    <td>0</td>                 
+                                                    <td>0</td>                 
+                                                    <td>{{$stok->totalQuantity}}</td> 
+                                                    @php
+                                                    $akhirStok = $stok->totalQuantity;    
+                                                    @endphp  
+                                                               
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                        
+                                        <tr>  
+                                            <td scope="col">{{ $loop->index + 1 + $awal }}</td>
+                                            <td scope="col">{{$stok->Name}}</td>
+                                            <td scope="col">{{date("d-m-Y", strtotime($stok->Date))}}</td>
+                                            <td scope="col">
+                                            @if($stok->AdjustmentID != null)
+                                                Penyesuaian Item
+                                            @elseif($stok->SuratJalanID != null)
+                                                Transaksi Menggunakan Surat Jalan
+                                            @elseif($stok->StokAwalID != null)
+                                                Stok Awal Gudang
+                                            @else
+                                                Transaksi
+                                            @endif
+                                            </td><!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
+                                            <td scope="col">{{$stok->tipeTransaksi}}</td>
 
-                                        <td >{{$stok->ItemName}}</td>
-                                        <td>{{$akhirStok}}</td>    
-                                        @if($stok->Quantity > 0)
-                                            <td>{{$stok->Quantity}}</td>                 
-                                            <td>0</td> 
-                                            <td>{{$stok->Quantity->sum($akhirStok)}}</td>
-                                        @else
-                                            <td>0</td>                 
-                                            <td>{{abs($stok->Quantity)}}</td> 
-                                            <td>{{$stok->Quantity->sum($akhirStok)}}</td>
-                                        @endif                
-                                                         
-                                    </tr>
-                                @endforeach
-                                @endphp
+                                            <td >{{$stok->ItemName}}</td>
+                                            <td>{{$akhirStok}}</td>    
+                                            @if($stok->Quantity > 0)
+                                                <td>{{$stok->Quantity}}</td>                 
+                                                <td>0</td> 
+                                                <td>{{$stok->Quantity+($akhirStok)}}</td>
+                                            @else
+                                                <td>0</td>                 
+                                                <td>{{abs($stok->Quantity)}}</td> 
+                                                <td>{{$stok->Quantity+($akhirStok)}}</td>
+                                                
+                                            @endif  
+                                            @php
+                                                $akhirStok = $stok->Quantity+($akhirStok);    
+                                            @endphp              
+                                                            
+                                        </tr>
+                                    @endforeach
+                                
                             @endif
                         </tbody>
                         <tfoot>
@@ -166,6 +189,32 @@ Kartu Stok
     <!-- /.row -->
 </div>
 
+<script>
+    $(document).ready(function(){
+        $("#idGudangTujuan").on("change",function(){  //sudah
+            var id = this.value;
+            var optionnya = '';
+        
+            var dataReportItem = <?php echo json_encode($dataReportItem); ?>;
+
+            //alert('masuk sini');
+            //optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            $.each(dataReportItem, function( key, value ){
+                
+                if(value.MGudangID.toString() == id.toString()){
+                    //alert('masuk'); 
+                    optionnya += '<option id="itemid" value="'+value.ItemID+'">'+value.ItemName+'</option>\n';
+                    //alert(optionnya);         
+                }
+            });
+
+            $("#idItemSearch").empty();
+            $("#idItemSearch").append(optionnya);
+
+            $('.selectpicker').selectpicker('refresh');
+        });
+    });
+</script>
 @endsection
 
 

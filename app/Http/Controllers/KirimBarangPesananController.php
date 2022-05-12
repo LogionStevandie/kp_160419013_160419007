@@ -33,7 +33,7 @@ class KirimBarangPesananController extends Controller
             ->where('transaction_gudang_barang.hapus',0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
             ->paginate(10);
-        //->get();
+       // ->get();
         //dd($data);
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();

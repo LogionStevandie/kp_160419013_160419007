@@ -83,33 +83,33 @@ Kirim pesanan
                             </tr>
                           </thead>
                          <tbody>
-                            @foreach($data as $data)
+                            @foreach($data as $d)
                             <tr >
-                            <th scope="row" name='id'>{{$data->id}}</th>
-                            <td>{{$data->name}}</td>
-                            <td>{{$data->tanggalDibuat}}</td>
+                            <th scope="row" name='id'>{{$d->id}}</th>
+                            <td>{{$d->name}}</td>
+                            <td>{{$d->tanggalDibuat}}</td>
                             @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDAwal)
+                                @if($gudang->MGudangID == $d->MGudangIDAwal)
                                     <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach     
                             @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDTujuan)
+                                @if($gudang->MGudangID == $d->MGudangIDTujuan)
                                     <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach 
-                            <td>{{$data->keteranganPemudi}}</td>                 
+                            <td>{{$d->keteranganPemudi}}</td>                 
                             <td>  
-                                <a class="btn btn-default bg-info" href="{{route('kirimBarangPesanan.show',[$data->id])}}">
+                                <a class="btn btn-default bg-info" href="{{route('kirimBarangPesanan.show',[$d->id])}}">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a class="btn btn-default bg-info" href="{{route('kirimBarangPesanan.edit',[$data->id])}}">
+                                <a class="btn btn-default bg-info" href="{{route('kirimBarangPesanan.edit',[$d->id])}}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{route('kirimBarangPesanan.destroy',[$data->id])}}" method="POST" class="btn btn-responsive">
+                                <form action="{{route('kirimBarangPesanan.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-default bg-danger" action="{{route('kirimBarangPesanan.destroy',[$data->id])}}">
+                                    <button class="btn btn-default bg-danger" action="{{route('kirimBarangPesanan.destroy',[$d->id])}}">
                                         <i class="fas fa-trash"></i> 
                                     </button>
                                 </form>  
@@ -141,4 +141,5 @@ Kirim pesanan
     <!-- /.row -->
 </div>
 {{ $data->links('pagination::bootstrap-4') }}
+
 @endsection

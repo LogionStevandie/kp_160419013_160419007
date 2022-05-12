@@ -107,16 +107,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                             
 
                                             @foreach($dataDetail as $data) 
                                             <tr>
                                                 @if($data->idPurchaseRequest==$purchaseRequest->id)
-                                                <th scope="row">{{$data->id}}</th>
-                                                <th scope="row">{{$data->ItemID}}</th>
+                                               
+                                                <th >{{$data->id}}</th>
+                                                <th >{{$data->ItemID}}</th>
                                                 <td>{{$data->jumlah}}</td>
-                                                <td>{{$data->harga}}</td>              
+                                                
+                                                <td >@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>           
                                                 <td>{{$data->keterangan_jasa}}</td>                                          
-                                                <td>{{$data->jumlah * $data->harga}}</td>                                          
+                                                <td>@php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp</td>                                          
                                                 @endif
                                             </tr>
                                             @endforeach
@@ -128,16 +131,22 @@
                                             <th scope="col" colspan="5"  id="hargaTotal" hargaT="{{$purchaseRequest->totalHarga}}"> {{$purchaseRequest->totalHarga}} </th>
                                         </tr>
                                     </thead>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" colspan="2">Approvel 1 :<br><br><br><br><br><br>Tanda tangan</th>
-                                            <th scope="col" colspan="2">Approvel 2 :<br><br><br><br><br><br>Tanda tangan</th>
-                                            <th scope="col" colspan="2">Pembuat :<br><br><br><br><br><br>Tanda tangan</th>
-                                        </tr>
-                                    </thead>
+
+                                   
+                                    
                            
 
                         </table>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th colspan="3">Approvel 1 :<br><br><br><br><br><br>Tanda tangan</th>
+                                    <th  colspan="3">Approvel 2 :<br><br><br><br><br><br>Tanda tangan</th>
+                                    <th colspan="3">Pembuat :<br><br><br><br><br><br>Tanda tangan</th>
+                                </tr>
+                            </thead>
+                          </table>
+                       
                     </div>
                   <!-- /.col -->
                 </div>
@@ -153,6 +162,8 @@
 <script type="text/javascript">
   window.addEventListener("load", window.print());
 $('#hargaTotal').html("Rp." +formatRupiah($('#hargaTotal').attr('hargaT')));
+//$('#hargaY').html("Rp." +formatRupiah($('#hargaY').attr('harga')));
+//$('#hargaZ').html("Rp." +formatRupiah($('#hargaZ').attr('hargaTasd')));
 /* Fungsi */
 function formatRupiah(angka, prefix)
 {
