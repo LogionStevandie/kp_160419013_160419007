@@ -103,7 +103,7 @@
                                   <th scope="col" colspan="3">
                                       <b>Keterangan:</b>
                                       <br>
-                                      <b>Lokasi:</b>{{$purchaseOrder->keteranganLokasi}} Lorem ipsum dolor sit amet consectetur adipisicing elit. Eos dolores quis accusamus. Natus ipsam sequi quisquam eius veniam, totam reiciendis sit facere? Modi mollitia ex ratione eius possimus accusantium quibusdam?<br>
+                                      <b>Lokasi:</b>{{$purchaseOrder->keteranganLokasi}} <br>
                                       <b>Pembayaran:</b> {{$purchaseOrder->keteranganPembayaran}}<br>
                                       <b>Penagihan:</b> {{$purchaseOrder->keteranganPenagihan}}<br>
                                   </th>

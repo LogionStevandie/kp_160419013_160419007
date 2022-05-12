@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class InventoryTransaction extends Model
 {
     use HasFactory;
+    protected $table = 'ItemInventoryTransaction';
+    protected $primaryKey='TransactionID';
 }

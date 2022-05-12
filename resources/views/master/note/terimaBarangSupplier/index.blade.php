@@ -82,28 +82,28 @@ Terima Barang Supplier
                             </tr>
                           </thead>
                          <tbody>
-                            @foreach($data as $data)
+                            @foreach($data as $d)
                             <tr >
-                            <th scope="row" name='id'>{{$data->id}}</th>
-                            <td>{{$data->name}}</td>
-                            <td>{{$data->tanggalDibuat}}</td>   
+                            <th scope="row" name='id'>{{$d->id}}</th>
+                            <td>{{$d->name}}</td>
+                            <td>{{$d->tanggalDibuat}}</td>   
                             @foreach($dataGudang as $gudang)
-                                @if($gudang->MGudangID == $data->MGudangIDTujuan)
+                                @if($gudang->MGudangID == $d->MGudangIDTujuan)
                                     <td>{{$gudang->cname}}</td>
                                 @endif
                             @endforeach 
-                            <td>{{$data->keteranganTransaksi}}</td>                 
+                            <td>{{$d->keteranganTransaksi}}</td>                 
                             <td>  
-                                <a class="btn btn-default bg-info" href="{{route('terimaBarangSupplier.show',[$data->id])}}">
+                                <a class="btn btn-default bg-info" href="{{route('terimaBarangSupplier.show',[$d->id])}}">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a class="btn btn-default bg-info" href="{{route('terimaBarangSupplier.edit',[$data->id])}}">
+                                <a class="btn btn-default bg-info" href="{{route('terimaBarangSupplier.edit',[$d->id])}}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{route('terimaBarangSupplier.destroy',[$data->id])}}" method="POST" class="btn btn-responsive">
+                                <form action="{{route('terimaBarangSupplier.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-default bg-danger" action="{{route('terimaBarangSupplier.destroy',[$data->id])}}">
+                                    <button class="btn btn-default bg-danger" action="{{route('terimaBarangSupplier.destroy',[$d->id])}}">
                                         <i class="fas fa-trash"></i> 
                                     </button>
                                 </form>  

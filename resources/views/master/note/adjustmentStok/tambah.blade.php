@@ -63,8 +63,8 @@ Pembuatan Penyesuaian Stok Barang
 
             <div class="form-group">
                 <label for="title">Jumlah Stok Barang Awal</label>
-                <input readonly  type="number" step=".01" min="1"  name="QuantityAwal" class="form-control" 
-                value="{{old('QuantityAwal','')}}" disabled>
+                <input readonly  type="number" step=".01" min="1" id="stokAwalBarang" name="QuantityAwal" class="form-control" 
+                value="{{old('QuantityAwal','')}}">
             </div>
 
             <div class="form-group">
@@ -93,13 +93,13 @@ Pembuatan Penyesuaian Stok Barang
             //alert(id);
             var optionnya = '';
         
-            var dataBarang = <?php echo json_encode($dataBarang); ?>;
+            var dataReport = <?php echo json_encode($dataReport); ?>;
 
             //alert('masuk sini');
             optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
-            $.each(dataBarang, function( key, value ){
+            $.each(dataReport, function( key, value ){
                
-                if(value.ItemID.toString() == id.toString()){
+                if(value.MGudangID.toString() == id.toString()){
 
                     optionnya += '<option value="'+value.ItemID+'">'+value.ItemName+'</option>\n';      
                     //alert(optionnya);         
@@ -111,7 +111,28 @@ Pembuatan Penyesuaian Stok Barang
             $('.selectpicker').selectpicker('refresh');
         });
 
-       
+        $("#ItemID").on("change",function(){     
+            var id = this.value;
+            if(id == "pilih" || id == ""){
+                $("#stokAwalBarang").val("");     
+                
+            }
+            else{
+                var idGudang = $("#idGudang option:selected").val();
+                //alert(id);
+                var optionnya = '';
+            
+                var dataReport = <?php echo json_encode($dataReport); ?>;
+
+                $.each(dataReport, function( key, value ){          
+                    if(value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString()){
+                        $("#stokAwalBarang").val(value.totalQuantity);     
+                    }
+                });    
+            }
+            
+        });
+
     });
 
 </script>

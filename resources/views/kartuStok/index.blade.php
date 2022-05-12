@@ -60,7 +60,7 @@ Kartu Stok
                                 <th scope="col">Item</th>
                                 <th scope="col">Satuan</th>
                                 <th scope="col">Jumlah Barang</th>
-
+                                <th scope="col">Handle</th>
                             </tr>
                           </thead>
                         <tbody>
@@ -78,7 +78,13 @@ Kartu Stok
                                 </td>
                                 <td>
                                     {{$stok->totalQuantity}}                                
-                                </td>                 
+                                </td>      
+                                <td>  
+                                   
+                                    <a class="btn btn-default bg-info" href=" /kartuStoke/report/{{$stok->MGudangID}}/{{$stok->ItemID}}" method="get" >
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>              
 
                             </tr>
                             @endforeach
@@ -89,6 +95,7 @@ Kartu Stok
                                 <th scope="col">Item</th>
                                 <th scope="col">Satuan</th>
                                 <th scope="col">Jumlah Barang</th>
+                                <th scope="col">Handle</th>
         
                             </tr>
                         </tfoot>

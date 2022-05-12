@@ -184,7 +184,7 @@ Route::get('suratJalane/searchdate/',[App\Http\Controllers\KirimBarangPesananCon
 
 Route::resource('inventoryTransaction','App\Http\Controllers\InventoryTransactionController');
 Route::get('/kartuStok/searchgudang/',[App\Http\Controllers\InventoryTransactionController::class, 'searchIndexByGudang']);
-
+Route::get('/kartuStoke/report/{idGudang}/{idItem}',[App\Http\Controllers\InventoryTransactionController::class, 'report']);
 Route::resource('stokAwal','App\Http\Controllers\StokAwalController');
 Route::get('/stokAwale/searchname/',[App\Http\Controllers\StokAwalController::class, 'searchStokAwalName']);
 Route::get('/stokAwale/searchdate/',[App\Http\Controllers\StokAwalController::class, 'searchStokAwalNameDate']);
