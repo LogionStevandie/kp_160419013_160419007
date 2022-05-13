@@ -22,7 +22,7 @@ Edit Perusahaan
 <!-- Page Heading -->
 <div class="card card-primary">
     <!-- form start -->
-    <form action="{{route('mPerusahaan.update', [$mPerusahaan->MPerusahaanID])}}" method="POST" >
+    <form action="{{route('mPerusahaan.update', [$mPerusahaan->MPerusahaanID])}}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="card-body">
@@ -76,8 +76,10 @@ Edit Perusahaan
             </div>
 
             <div class="form-group">
-                <label for="title">Gambar Bendera Perusahaan</label>
-                <input required type="file" class="form-control" name="image" placeholder="Choose image" id="image" value="{{old('image',$mPerusahaan->image)}}">
+                <label for="title">Gambar Bendera Perusahaan </label> 
+                <input type="file" class="form-control" name="image" placeholder="Choose image" id="image" src="{{asset($mPerusahaan->Gambar)}}" value="{{old('image',$mPerusahaan->Gambar)}}"
+                accept="image/png, image/jpeg,image/jpg">
+                <img src='{{asset($mPerusahaan->Gambar)}}' alt='' width='100'>
                 @error('image')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                 @enderror

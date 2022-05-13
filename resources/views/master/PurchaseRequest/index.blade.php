@@ -89,7 +89,7 @@ Purchase Request
                                 <th>{{$d->id}}</th>
                                 <td>{{$d->name}}</td>
                                 <td>{{$d->gudangName}}</td>
-                                <td>{{$d->totalHarga}}</td>
+                                <td> @php echo "Rp " . number_format($d->totalHarga,2,',','.'); @endphp </td>
                                 <td>
                                     @if($d->approved == 0)
                                         Belum Diproses

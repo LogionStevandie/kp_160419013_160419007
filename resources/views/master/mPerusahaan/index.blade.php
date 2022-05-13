@@ -57,6 +57,9 @@ Perusahaan
                                 <th>Nama Perusahaan</th>
                                 <th>Manager 1</th>
                                 <th>Manager 2</th>
+                                <th>NPWP</th>
+                                <th>Alamat NPWP</th>
+                                <th>Gambar</th>
                                 <th>Action</th>
                              </tr>
                         </thead>
@@ -79,6 +82,9 @@ Perusahaan
                                         @endif
                                     @endforeach
                                 </td>    
+                                <td>{{$d->NomorNPWP}}</td> 
+                                <td>{{$d->AlamatNPWP}}</td> 
+                                <td> <img src='{{asset($d->Gambar)}}' alt='' width='100'></td> 
                                 <td>  
                               
                                     <a class="btn btn-default bg-info" href="{{route('mPerusahaan.edit',[$d->MPerusahaanID])}}">
@@ -165,10 +171,13 @@ Perusahaan
                         </tbody>
                         <tfoot>
                             <tr>
-                                <th>ID</th>
+                            <th>ID</th>
                                 <th>Nama Perusahaan</th>
                                 <th>Manager 1</th>
                                 <th>Manager 2</th>
+                                <th>NPWP</th>
+                                <th>Alamat NPWP</th>
+                                <th>Gambar</th>
                                 <th>Action</th>
                              </tr>
                         </tfoot>

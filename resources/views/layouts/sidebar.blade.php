@@ -444,7 +444,7 @@
           </li>
           <!--End Menu-->
 
-          <!--COA-->
+          <!--COA
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-search"></i>
@@ -476,7 +476,7 @@
               </li>
             </ul>
           </li>
-          <!--End COA-->
+          End COA-->
 
         </ul>
       </nav>

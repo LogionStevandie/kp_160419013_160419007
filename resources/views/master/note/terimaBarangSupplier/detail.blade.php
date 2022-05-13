@@ -1,181 +1,616 @@
 @extends('layouts.home_master')
+<style>
+            p {
+                font-family: 'Nunito', sans-serif;
+            }
+ </style>
 
 @section('judul')
-Detail Pulau
+Detail Terima Barang Supplier
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('mPulau.index')}}">Pulau</a></li>
-<li class="breadcrumb-item active">Detail</li>
+<li class="breadcrumb-item"><a href="{{route('terimaBarangSupplier.index')}}">Terima Barang Supplier</a></li>
+<li class="breadcrumb-item active">Edit</li>
 @endsection
 
 @section('content')
+<form action="{{route('terimaBarangSupplier.show',[$transactionGudangBarang->id])}}" method="POST" >
+  @csrf
+  @method('PUT')
+    <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="callout callout-info">
-              <h5><i class="fas fa-info"></i> Note:</h5>
-              This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+            <!--<div class="callout callout-info">
+              <h2>Pembuatan Nota Permintaan Pembelian</h2><br>
             </div>
 
 
-            <!-- Main content -->
-            <div class="invoice p-3 mb-3">
-              <!-- title row -->
-              <div class="row">
-                <div class="col-12">
-                  <h4>
-                    <i class="fas fa-globe"></i> AdminLTE, Inc.
-                    <small class="float-right">Date: 2/10/2014</small>
-                  </h4>
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- info row -->
-              <div class="row invoice-info">
-                <div class="col-sm-4 invoice-col">
-                  From
-                  <address>
-                    <strong>Admin, Inc.</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (804) 123-5432<br>
-                    Email: info@almasaeedstudio.com
-                  </address>
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-4 invoice-col">
-                  To
-                  <address>
-                    <strong>John Doe</strong><br>
-                    795 Folsom Ave, Suite 600<br>
-                    San Francisco, CA 94107<br>
-                    Phone: (555) 539-1037<br>
-                    Email: john.doe@example.com
-                  </address>
-                </div>
-                <!-- /.col -->
-                <div class="col-sm-4 invoice-col">
-                  <b>Invoice #007612</b><br>
-                  <br>
-                  <b>Order ID:</b> 4F3S8J<br>
-                  <b>Payment Due:</b> 2/22/2014<br>
-                  <b>Account:</b> 968-34567
-                </div>
-                <!-- /.col -->
-              </div>
+             Main content -->
+            <div class="invoice p-2 mb-3">
+              
               <!-- /.row -->
 
-              <!-- Table row -->
+              <!-- isi row -->
               <div class="row">
-                <div class="col-12 table-responsive">
-                  <table class="table table-striped">
-                    <thead>
-                    <tr>
-                      <th>Qty</th>
-                      <th>Product</th>
-                      <th>Serial #</th>
-                      <th>Description</th>
-                      <th>Subtotal</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>Call of Duty</td>
-                      <td>455-981-221</td>
-                      <td>El snort testosterone trophy driving gloves handsome</td>
-                      <td>$64.50</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Need for Speed IV</td>
-                      <td>247-925-726</td>
-                      <td>Wes Anderson umami biodiesel</td>
-                      <td>$50.00</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Monsters DVD</td>
-                      <td>735-845-642</td>
-                      <td>Terry Richardson helvetica tousled street art master</td>
-                      <td>$10.70</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>Grown Ups Blue Ray</td>
-                      <td>422-568-642</td>
-                      <td>Tousled lomo letterpress</td>
-                      <td>$25.99</td>
-                    </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- /.col -->
-              </div>
-              <!-- /.row -->
+                <div class="col-12 ">
+                  <div class="py-5 ">
+                     
+                        <div class="row">
+                        <div class="col-md-6 mb-3"> 
+                                  <label for="lastName">Tanggal Pembuatan</label>
+                                  <input disabled name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$transactionGudangBarang->tanggalDibuat}}" required="">
+                                  <div class="invalid-feedback"> Valid last name is required. </div>
+                              </div>
+                              <div class="col-md-6 mb-3"> 
+                                  <label for="lastName">Tanggal Datang</label>
+                                  <input disabled name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="{{$transactionGudangBarang->tanggalDatang}}" required="">
+                                  <div class="invalid-feedback"> Valid last name is required. </div>
+                              </div>
 
-              <div class="row">
-                <!-- accepted payments column -->
-                <div class="col-6">
-                  <p class="lead">Payment Methods:</p>
-                  <img src="../../dist/img/credit/visa.png" alt="Visa">
-                  <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-                  <img src="../../dist/img/credit/american-express.png" alt="American Express">
-                  <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for="lastName">Pilih Gudang Penerima</label> 
+                                    <select disabled class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudang" name="MGudangIDTujuan">
+                                      <option value="">
+                                            --Pilih Gudang--
+                                        </option>
+                                        @foreach($dataGudang as $key => $data)
+                                            @if($data->MGudangID == $transactionGudangBarang->MGudangIDTujuan)
+                                                <option selected name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                            @else
+                                                <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                            @endif
+                                        @endforeach
+                                
+                                    </select>
+                                    </div>
+                                 
+                              </div>
 
-                  <p class="text-muted well well-sm shadow-none" style="margin-top: 10px;">
-                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem
-                    plugg
-                    dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
-                  </p>
-                </div>
-                <!-- /.col -->
-                <div class="col-6">
-                  <p class="lead">Amount Due 2/22/2014</p>
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                    <label for="lastName">Pilih Supplier</label> 
+                                    <select disabled class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idSupplierDipilih" name="Supplier">
+                                      <option value=""> 
+                                            --Pilih Supplier--
+                                        </option>
+                                        @foreach($dataSupplier as $key => $data)
+                                            @if($data->SupplierID == $transactionGudangBarang->SupplierID)
+                                                <option selected name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
+                                            @else
+                                                <option name="idSupplier" value="{{$data->SupplierID}}"{{$data->Name == $data->SupplierID? 'selected' :'' }}>{{$data->Name}}</option>
+                                            @endif
+                                        @endforeach
+                                
+                                    </select>
+                                    </div>
+                                 
+                              </div>
+                           
+                              <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Jenis Transaksi</label> 
+                                    <select disabled class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="ItemTransaction" readonly>
+                                      <option value="">
+                                          --Pilih Jenis Transaksi--
+                                      </option>
+                                    @foreach($dataItemTransaction as $key => $data)
+                                        @if($data->ItemTransactionID == $transactionGudangBarang->idItemTransaction)
+                                            <option selected name="idItemTransaction" value="{{$data->ItemTransactionID}}"{{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
+                                        @else
+                                            <option name="idItemTransaction" value="{{$data->ItemTransactionID}}"{{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
+                                        @endif
+                                    @endforeach
+                                
+                                    </select>
+                                    </div>
+                                 
+                               </div>
 
-                  <div class="table-responsive">
-                    <table class="table">
-                      <tr>
-                        <th style="width:50%">Subtotal:</th>
-                        <td>$250.30</td>
-                      </tr>
-                      <tr>
-                        <th>Tax (9.3%)</th>
-                        <td>$10.34</td>
-                      </tr>
-                      <tr>
-                        <th>Shipping:</th>
-                        <td>$5.80</td>
-                      </tr>
-                      <tr>
-                        <th>Total:</th>
-                        <td>$265.24</td>
-                      </tr>
-                    </table>
+                               <div class="col-md-6">
+                                    <div class="form-group">
+                                   <label for="lastName">Data Purchase Order</label> 
+                                    <select disabled class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="poID" id="idPurchaseOrder">
+                                      <!--<option value=""> 
+                                          --Pilih Purchase Order--
+                                      </option>
+                                      @foreach($dataPurchaseOrder as $key => $data)
+                                          <option name="idPO" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}-({{$data->tanggalDibuat}})</option>
+                                      @endforeach  -->
+                                    </select>
+                                    </div>
+                               </div>
+                                        
+
+                               <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Kendaraan</label>
+                                  <textarea disabled rows="3"  type="text" name="keteranganKendaraan" class="form-control" value="{{old('keteranganKendaraan',$transactionGudangBarang->keteranganKendaraan)}}" >{{$transactionGudangBarang->keteranganKendaraan}}</textarea>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Nomor Polisi</label>
+                                  <textarea disabled rows="3"  type="text" name="keteranganNomorPolisi" class="form-control" value="{{old('keteranganNomorPolisi',$transactionGudangBarang->keteranganNomorPolisi)}}" >{{$transactionGudangBarang->keteranganNomorPolisi}}</textarea>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Pemudi</label>
+                                  <textarea disabled rows="3"  type="text" name="keteranganPemudi" class="form-control" value="{{old('keteranganPemudi',$transactionGudangBarang->keteranganPemudi)}}" >{{$transactionGudangBarang->keteranganPemudi}}</textarea>
+                              </div>
+
+                              <div class="col-md-6 mb-3">
+                                  <label for="lastName">Keterangan Transaksi</label>
+                                  <textarea disabled rows="3"  type="text" name="keteranganTransaksi" class="form-control" value="{{old('keteranganTransaksi',$transactionGudangBarang->keteranganTransaksi)}}" >{{$transactionGudangBarang->keteranganTransaksi}}</textarea>
+                              </div>
+
+                                                  
+                        </div>     
                   </div>
+                  <!-- Page Heading -->
+                    <div class="card card-primary">
+                        <!-- form start -->
+                     
+                          
+
+                            <div class="row">
+                              <div class="col-md-6">
+
+                                <div class="card card-danger">
+                                  <div class="card-header">
+                                    <h3 class="card-title">Pemilihan Barang</h3>
+                                  </div>
+                                  <div class="card-body">                                     
+                             
+                                 <div class="form-group"  id='tmbhBarang'>
+                                    <label for="title">Barang</label>
+                                    <select disabled class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="barang" id="barang">
+                                  
+                                        <option value="pilih">--Pilih barang--</option>
+                                        <!--@foreach($dataBarang as $key => $data)
+                                        <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
+                                        @endforeach-->
+                                    </select>
+                                    <input disabled id="jumlahBarang" value="1" min="1"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                </div>
+
+                                    <div class="form-group " id="ket">
+                                        <label for="Keterangan">Keterangan</label>
+                                        <textarea disabled rows="3" id="keteranganBarang" class="form-control" value="{{old('keterangan','')}}" ></textarea>
+                                    </div>
+                                   
+                               
+                             
+                                    
+                                  </div>
+                                  <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+
+                              </div>
+                              <!-- /.col (left) -->
+                              <div class="col-md-6">
+                                <div class="card card-primary">
+                                  <div class="card-header">
+                                    <h3 class="card-title">Keranjang</h3>
+                                  </div>
+                                  <div class="card-body">
+                                    <!-- Date -->
+                                      <!--<input type="hidden" name="tanggalDibutuhkan" value="{{old('tanggalDibutuhkanVal')}}">
+                                      <input type="hidden" name="gudang" value="{{old('tanggalDibutuhkanVal')}}">
+                                      <input type="hidden" name="tanggalAkhir" value="{{old('tanggalAkhirVal')}}">-->
+                                      <h4 class="d-flex justify-content-between align-items-center mb-3">
+                                          <span class="text-muted">Keranjang</span>
+                                          <span class="badge badge-secondary badge-pill" name="totalBarangnya" id="totalBarangnya" value={{count($dataTotalDetail)}}>{{count($dataTotalDetail)}}</span>
+                                      </h4>
+                                      <ul class="list-group mb-3 sticky-top" id="keranjang">
+                                        @foreach($dataTotalDetail as $data)
+                                        <li class="list-group-item d-flex justify-content-between lh-condensed">
+                                            <div id="hiddenDiv">
+                                                <input type="hidden" class="cekId" name="itemId[]" value="{{$data->ItemID}}">
+                                                <input type="hidden" id="cekJumlah" class="cekJumlah" name="itemJumlah[]" value="{{$data->jumlah}}">
+                                                <input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="{{$data->keterangan}}">
+                                                <input type="hidden" class="cekHarga" name="itemHarga[]" value="{{$data->hargaPOD}}">
+                                                <input type="hidden" class="cekPod" name="podID[]" value="{{$data->idPOD}}">
+                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="'+jumlahBarang+'">{{$data->jumlah}}</small> </h6>
+                                                <small class="text-muted keteranganVal" value="'+keteranganBarang+'">{{$data->keterangan}}</small><br>
+                                            </div>
+                                            <div>
+                                                <button disabled class="btn btn-primary copyKe" type="button" id="copyKe">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
+                                                <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+                                                </svg>
+                                                </button>
+                                                <button disabled class="btn btn-danger" type="button" id="hapusKeranjang">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>
+                                                </svg>
+                                                </button>
+                                            </div>
+                                        </li>
+                                        @endforeach          
+                                      </ul>
+                                      <!--<li class="list-group-item d-flex justify-content-between">
+                                              <span>Total (Rupiah)</span>
+                                              <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga=0>0</strong>
+                                      </li>--> 
+                                    <!-- /.form group -->
+                                  </div>  <!---->
+                              
+                                  <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                              </div>
+                              <!-- /.col (right) -->
+                            </div>
+
+                           
+                        </form>
+                    </div>
                 </div>
                 <!-- /.col -->
               </div>
-              <!-- /.row -->
+              
 
               <!-- this row will not appear when printing -->
-              <div class="row no-print">
-                <div class="col-12">
-                  <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                  <button type="button" class="btn btn-success float-right"><i class="far fa-credit-card"></i> Submit
-                    Payment
-                  </button>
-                  <button type="button" class="btn btn-primary float-right" style="margin-right: 5px;">
-                    <i class="fas fa-download"></i> Generate PDF
-                  </button>
-                </div>
-              </div>
-            </div>
+           
             <!-- /.invoice -->
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
-@endsection
+    </section>
+    <!-- /.content -->
+</form>
+
+<script type="text/javascript">
+    var tambahCombo = "";
+    var totalTambah = 0;
+    $('#TotalHargaKeranjang').val(0);
+
+
+   
+
+    $(document).ready(function(){
+        var id =$("#idSupplierDipilih option:selected").val();
+        
+        var optionnya = '';
+        var dataPurchaseOrder = <?php echo json_encode($dataPurchaseOrder); ?>;
+        var dataTransaksi = <?php echo json_encode($transactionGudangBarang); ?>;
+        optionnya += '<option value="pilih" selected>--Pilih Purchase Order--</option>\n';
+        $.each(dataPurchaseOrder, function( key, value ){
+        
+            if(value.idSupplier.toString() == id.toString()){
+                //alert('masuk'); 
+                if(dataTransaksi.PurchaseOrderID == value.id){
+                    optionnya += '<option selected id="idPO" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';        
+                }
+                else{
+                    optionnya += '<option id="idPO" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';        
+                }
+            }
+        });
+                            
+        $("#idPurchaseOrder").empty();
+        $("#idPurchaseOrder").append(optionnya);
+
+        var id = $("#idPurchaseOrder option:selected").val();;
+        var optionnya = '';
+
+        var dataPurchaseOrderDetail = <?php echo json_encode($dataPurchaseOrderDetail); ?>;
+
+        //alert('masuk sini');
+        optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+        $.each(dataPurchaseOrderDetail, function( key, value ){
+            
+            if(value.idPurchaseOrder.toString() == id.toString()){
+                optionnya += '<option id="namaBarang" namaBarang='+value.ItemName +' harga='+ value.harga +' idPodId='+ value.id +' value="'+value.idItem+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';      
+            }
+        });
+                            
+        $("#barang").empty();
+        $("#barang").append(optionnya);
+
+
+        $('.selectpicker').selectpicker('refresh');
+
+        $("#idSupplierDipilih").on("change",function(){  //sudah
+                
+                var id = this.value;
+                //alert(id);
+                //var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+                //alert(singkatan);
+                var optionnya = '';
+            
+                var dataPurchaseOrder = <?php echo json_encode($dataPurchaseOrder); ?>;
+    
+                //alert('masuk sini');
+                optionnya += '<option value="pilih" selected>--Pilih Purchase Order--</option>\n';
+                $.each(dataPurchaseOrder, function( key, value ){
+                   
+                    if(value.idSupplier.toString() == id.toString()){
+                        //alert('masuk'); 
+                        optionnya += '<option id="idPO" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';
+                        //alert(optionnya);         
+                    }
+                });
+            
+                                    
+                $("#idPurchaseOrder").empty();
+                $("#idPurchaseOrder").append(optionnya);
+                $('.selectpicker').selectpicker('refresh');
+            });
+
+        $("#idPurchaseOrder").on("change",function(){  //sudah
+                
+            var id = this.value;
+            //alert(id);
+            //var singkatan = $("#perusahaanID option:selected").attr('singkatan');
+            //alert(singkatan);
+            var optionnya = '';
+        
+            var dataPurchaseOrderDetail = <?php echo json_encode($dataPurchaseOrderDetail); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            $.each(dataPurchaseOrderDetail, function( key, value ){
+               
+                if(value.idPurchaseOrder.toString() == id.toString()){
+                    //alert('masuk'); 
+                    //alert("masuk cek");
+                    optionnya += '<option id="namaBarang" namaBarang='+value.ItemName +' harga='+ value.harga +' idPodId='+ value.id +' value="'+value.idItem+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';
+                    //alert(optionnya);         
+                }
+            });
+        
+                                
+            $("#barang").empty();
+            $("#barang").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });
+
+         /*$("#pReq").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var optionnya = '';
+            //var dataBarangTag = <?php //echo json_encode($dataBarangTag); ?>;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            //alert('masuk sini');
+            optionnya += '<option value="" selected>--Pilih barang--</option>\n';
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.idPurchaseRequest.toString() == id.toString()){
+                    //alert('masuk');
+                    optionnya += '<option id="namaBarang" idPr='+ value.ItemID +' value="'+value.id+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';               
+                }
+            });
+            //alert(optionnya);
+            
+                                
+            $("#barang").empty();
+            $("#barang").append(optionnya);
+            $('.selectpicker').selectpicker('refresh');
+        });*/
+
+        
+        /*$("#barang").change(function() {
+            //alert(this.value);
+            var id = this.value;
+            var dataPurchaseRequestDetail = <?php //echo json_encode($dataPurchaseRequestDetail); ?>;
+
+            $.each(dataPurchaseRequestDetail, function( key, value ){
+                //alert(value.ItemName);
+                if(value.id.toString() == id.toString()){
+                    var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    //alert(maxAngka);
+                    $("#jumlahBarang").attr({
+                        "max" : maxAngka,        
+                        "min" : 1,
+                        "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                        "value" : "",   
+                    }); 
+                }
+            });
+            
+        });*/
+
+    });
+
+     $('body').on('click','#copyKe', function(){ //belum
+        //alert($(this).index('.copyKe'));
+        var i = $(this).index('#copyKe');
+        
+        var idBarang = $('.cekId:eq('+i+')').val();
+        var jumlahBarang = $('.cekJumlah:eq('+i+')').val();
+
+        var hargaBarang = $('.cekHarga:eq('+i+')').val();
+        var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
+        var diskonBarang = $('.cekDiskon:eq('+i+')').val();
+
+        $("#barang").val(idBarang);
+        $("#jumlahBarang").val(jumlahBarang);
+        $("#keteranganBarang").val(keteranganBarang);
+
+        //$('.selectpicker').selectpicker('refresh');
+        
+    });
+
+
+
+    $('body').on('click','#hapusKeranjang', function(){
+        //alert($('.cekId:eq(2)').val());
+        //alert($('.cekId').length);cekJumlah
+        var jumlah = $(this).parent().parent().children("#hiddenDiv").children(".cekJumlah").val();
+        //alert(jumlah);
+        $("#jumlahBarang").attr({
+            "max" : parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah),        
+            "min" : 1,
+            "placeholder" : "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",       
+            "value" : "",         
+        }); 
+        $(this).parent().parent().remove();
+        var totalSekarang = $('#totalBarangnya').attr("value");
+        totalSekarang -= 1
+        $('#totalBarangnya').val(totalSekarang);
+        $('#totalBarangnya').html(totalSekarang);
+    });
+
+    $('body').on('click','#tambahKeranjang', function(){
+        
+        var idBarang = $("#barang").val();//
+        var namaBarang = $("#barang option:selected").html();//
+        var idpodID = $("#barang option:selected").attr("idPodId");
+        var hargaBarang = $("#barang option:selected").attr("harga");
+        var jumlahBarang = parseFloat($("#jumlahBarang").val());//
+        var keteranganBarang = $("#keteranganBarang").val();//
+
+        var indexSama = null;
+        for(let i=0;i<$('.cekId').length;i++){
+            if($('.cekId:eq('+i+')').val() == idBarang){
+                if($('.cekPod:eq('+i+')').val() == idpodID){
+                    indexSama = i;
+                }
+            }
+        }
+        
+        if(idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == ""){
+            alert('Harap lengkapi atau isi data Barang dengan benar');
+            die;
+        }
+        else if(indexSama != null){
+            //alert("masuk indexSama");
+            var jumlah = $('.cekJumlah:eq('+indexSama+')').val();
+            $('.cekJumlah:eq('+indexSama+')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));
+            var keterangan = $('.cekKeterangan:eq('+indexSama+')').val();
+            $('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang);
+            
+            $('.keteranganVal:eq('+indexSama+')').html($('.cekKeterangan:eq('+indexSama+')').val());
+            $('.jumlahVal:eq('+indexSama+')').html(($('.cekJumlah:eq('+indexSama+')').val()));
+
+            var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
+        }
+        else{
+            //alert("masuk");
+            var htmlKeranjang = "";
+            htmlKeranjang += '<li class="list-group-item d-flex justify-content-between lh-condensed">\n';
+            htmlKeranjang += '<div id="hiddenDiv">\n';
+            htmlKeranjang += '<input type="hidden" class="cekId" name="itemId[]" value="'+idBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemJumlah[]" value="'+jumlahBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="'+keteranganBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="'+hargaBarang+'">\n';
+            htmlKeranjang += '<input type="hidden" class="cekPod" name="podID[]" value="'+idpodID+'">\n';
+            htmlKeranjang += '<h6 class="my-0">'+ namaBarang +'<small class="jumlahVal" value="'+jumlahBarang+'">('+jumlahBarang+')</small> </h6>\n';
+            htmlKeranjang += '<small class="text-muted keteranganVal" value="'+keteranganBarang+'">'+keteranganBarang+'</small><br>\n';
+            htmlKeranjang += '</div>\n';
+            htmlKeranjang += '<div>\n';
+            htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
+            htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
+            htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
+            htmlKeranjang += '</svg>\n';
+            htmlKeranjang += '</button>\n';
+            htmlKeranjang += '<button class="btn btn-danger" type="button" id="hapusKeranjang">\n';
+            htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">\n';
+            htmlKeranjang += '<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>\n';
+            htmlKeranjang += '</svg>\n';
+            htmlKeranjang += '</button>\n';
+            htmlKeranjang += '</div>\n';
+            htmlKeranjang += '</li>\n';
+
+            $('#keranjang').append(htmlKeranjang);
+            var totalSekarang = $('#totalBarangnya').attr("value");
+            totalSekarang += 1
+            $('#totalBarangnya').val(totalSekarang);
+            $('#totalBarangnya').html(totalSekarang);
+
+        }
+        
+
+    });
+
+    /* Tanpa Rupiah */
+    var tanpa_rupiah = document.getElementById('tanpa-rupiah');
+    tanpa_rupiah.addEventListener('keyup', function(e)
+    {
+        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        //alert(this.value.toString().replace(/\./g, ''));
+        tanpa_rupiah.value = formatRupiah(this.value);
+    });
+
+    var tanpa_rupiah_diskon = document.getElementById('tanpa-rupiah-diskon');
+    tanpa_rupiah_diskon.addEventListener('keyup', function(e)
+    {
+        $('#diskonBarang').val(this.value.toString().replace(/\./g, ''));
+        tanpa_rupiah_diskon.value = formatRupiah(this.value);
+    });
+
+    /* Dengan Rupiah */
+    var dengan_rupiah = document.getElementById('dengan-rupiah');
+    dengan_rupiah.addEventListener('keyup', function(e)
+    {
+        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
+    });
+
+    /* Fungsi */
+    function formatRupiah(angka, prefix)
+    {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split    = number_string.split(','),
+            sisa     = split[0].length % 3,
+            rupiah     = split[0].substr(0, sisa),
+            ribuan     = split[0].substr(sisa).match(/\d{3}/gi);
+            
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+
+    $(document).ready(function(){
+        $('input[name=jenis0]').click(function(){
+
+            if($("#barang").is(':checked'))
+            {
+              $("#tmbhBarang").show();
+              $("#total").show();
+              $("#ket").hide();
+               //$("#buttonBarang").show();
+            }
+            else
+            {
+              $("#ket").show();
+              $("#tmbhBarang").hide();
+              //$("#buttonBarang").hide();
+            }
+        });
+    });
+    
+    /*$('#myForm input').on('change', function() {
+           $("input[name=jenis]").change(function(){
+
+            if($("#barang").is(':checked'))
+            {
+              $("#tmbhBarang").show();
+              $("#total").show();
+               $("#ket").hide();
+               //$("#buttonBarang").show();
+            }
+            else
+            {
+              $("#ket").show();
+              $("#tmbhBarang").hide();
+              //$("#buttonBarang").hide();
+            }
+        });
+      //alert($('input[name=jenis]:checked', '#myForm').val()); 
+    });*/
+
+</script>  
+@endsection   
+
+

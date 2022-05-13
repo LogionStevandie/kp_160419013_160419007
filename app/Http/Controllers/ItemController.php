@@ -141,13 +141,13 @@ class ItemController extends Controller
             'CanBeSell'=> $data['CanBeSell'],
             'CanBePurchased'=> $data['CanBePurchased'],
             'ItemTracingID'=> $data['itemTracing'],//comboBox
-            'RoutesToManufactured'=> $data['RoutesToManufactured'],
+            //'RoutesToManufactured'=> $data['RoutesToManufactured'],
             'CreatedBy'=> $user->id,//
             'CreatedOn'=> date("Y-m-d h:i:sa"),//
             'UpdatedBy'=> $user->id,//
             'UpdatedOn'=> date("Y-m-d h:i:sa"),//
             'Hapus' => 0,//
-            'HaveExpiredDate' => $data['expiredDate'],
+            //'HaveExpiredDate' => $data['expiredDate'],
             )
         ); 
 
@@ -285,11 +285,11 @@ class ItemController extends Controller
                 'CanBeSell'=> $data['CanBeSell'],
                 'CanBePurchased'=> $data['CanBePurchased'],
                 'ItemTracingID'=> $data['itemTracing'],//comboBox
-                'RoutesToManufactured'=> $data['RoutesToManufactured'],
+                //'RoutesToManufactured'=> $data['RoutesToManufactured'],
                 'UpdatedBy'=> $user->id,//
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),//
                 'Hapus' => 0,//
-                'HaveExpiredDate' => $data['expiredDate'],
+                //'HaveExpiredDate' => $data['expiredDate'],
         ));
 
         /*$dataTagValues = DB::table('ItemTagValues')

@@ -387,7 +387,7 @@ Edit Surat Jalan
     $('body').on('click','#tambahKeranjang', function(){
         
         var idBarang = $("#barang").val();//
-        var namaBarang = $("#barang option:selected").attr("namaBarang");//
+        var namaBarang = $("#barang option:selected").html();//
         var idprdID = $("#barang option:selected").attr("idPrdId");
         //alert(idprdID);
         //var hargaBarang = $("#barang option:selected").attr("harga");

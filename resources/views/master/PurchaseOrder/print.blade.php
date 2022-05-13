@@ -94,7 +94,21 @@
                                 <th scope="col" colspan="3"><h2> <img src="" alt="">PURCHASE ORDER</h2></th>
                                 <th scope="col" colspan="3">
                                     <b>PO :  {{$purchaseOrder->name}}</b><br>
-                                    <b>Tanggal pembuatan :{{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</b><br>
+                                    <b>Tanggal pembuatan :{{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</b>
+
+                                  
+                                   
+                                </th>
+                                <th scope="col" colspan="1">
+                                    @foreach($dataPerusahaan as $key => $data)
+                                      
+                                      @if($data->MPerusahaanID == $purchaseOrder->MPerusahaanID)
+                                        @if($data->Gambar !="" || $data->Gambar !=null)
+                                          <img src='{{asset($data->Gambar)}}' alt='' width='50' height='50'>
+                                        @endif
+                                      @endif
+                                        
+                                    @endforeach
                                 </th>
                                 </tr>
                             </thead>
@@ -107,13 +121,15 @@
                                       <b>Pembayaran:</b> {{$purchaseOrder->keteranganPembayaran}}<br>
                                       <b>Penagihan:</b> {{$purchaseOrder->keteranganPenagihan}}<br>
                                   </th>
-                                  <th scope="col" colspan="3">
+                                  <th scope="col" colspan="4">
                                     <b>Jatuh Tempo:</b> {{date("d-m-Y", strtotime($purchaseOrder->tanggal_akhir))}}<br>
                                     
                                     @foreach($dataPerusahaan as $key => $data)
                                       
                                       @if($data->MPerusahaanID == $purchaseOrder->MPerusahaanID)
                                           <b>Perusahaan:</b> {{$data->cname}}<br>
+                                          <b>Nomor NPWP:</b> {{$data->NomorNPWP}}<br>
+                                          <b>Alamat NPWP:</b> {{$data->AlamatNPWP}} <br>
                                       @endif
                                         
                                     @endforeach

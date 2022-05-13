@@ -350,7 +350,7 @@ Pembuatan Terima Barang Supplier
     $('body').on('click','#tambahKeranjang', function(){
         
         var idBarang = $("#barang").val();//
-        var namaBarang = $("#barang option:selected").attr("namaBarang");//
+        var namaBarang = $("#barang option:selected").html();//
         var idpodID = $("#barang option:selected").attr("idPodId");
         var hargaBarang = $("#barang option:selected").attr("harga");
         var jumlahBarang = parseFloat($("#jumlahBarang").val());//

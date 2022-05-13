@@ -75,6 +75,7 @@ Purchase Order
                             <tr>
                               <th scope="col">#</th>
                               <th scope="col">Nama</th>
+                              <th scope="col">Total Harga</th>
                                <th scope="col">Proses</th>
                               <th scope="col">Status Approved</th>
                               <th scope="col">Handle</th>
@@ -85,6 +86,7 @@ Purchase Order
                             <tr >
                               <th scope="row" name='id'>{{$purchaseOrder->id}}</th>
                               <td>{{$purchaseOrder->name}}</td>
+                              <td>@php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp</td>
                               <td>{{$purchaseOrder->proses}}</td>
                               @if($purchaseOrder->approved==0)
                               <td>Pending</td>
@@ -122,6 +124,7 @@ Purchase Order
                             <tr>
                              <th scope="col">#</th>
                               <th scope="col">Nama</th>
+                              <th scope="col">Total Harga</th>
                                <th scope="col">Proses</th>
                               <th scope="col">Status Approved</th>
                               <th scope="col">Handle</th>

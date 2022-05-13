@@ -49,6 +49,12 @@ Persetujuan Order
                                         Gudang :{{$data->cname}} <nbsp> ({{$purchaseOrder->MPerusahaanID}}) <br> 
                                         @endif 
                                     @endforeach
+
+                                    @foreach($dataSupplier as $data)
+                                        @if($data->SupplierID == $purchaseOrder->idSupplier)
+                                        Supplier :{{$data->Name}}  <br> 
+                                        @endif 
+                                    @endforeach
                                     Jenis permintaan : {{$purchaseOrder->jenisProses}} <br>
                                     Tanggal batas akhir : {{$purchaseOrder->tanggal_akhir}}
                                     </th>

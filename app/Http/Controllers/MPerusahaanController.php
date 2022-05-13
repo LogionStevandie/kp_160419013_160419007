@@ -66,7 +66,16 @@ class MPerusahaanController extends Controller
         $validatedData = $request->validate([
             'image' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048',
         ]);
-        $path = $request->file('image')->store('public_html/images');
+        $path = "";
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $image_name = $image->getClientOriginalName();
+            $image->move(public_path('/images'),$image_name);
+        
+            $path = '/images/' . $image_name;
+        }
+        
+        //$path = $request->file('image')->store('/images');
         ///
 
         DB::table('MPerusahaan')
@@ -136,9 +145,16 @@ class MPerusahaanController extends Controller
         $user = Auth::user();
         
         $validatedData = $request->validate([
-            'image' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048',
+            'image' => 'image|mimes:jpg,png,jpeg,svg|max:2048',
         ]);
-        $path = $request->file('image')->store('public_html/images');
+        $path = $mPerusahaan->Gambar;
+        if($request->hasFile('image')){
+            $image = $request->file('image');
+            $image_name = $image->getClientOriginalName();
+            $image->move(public_path('/images'),$image_name);
+        
+            $path = '/images/' . $image_name;
+        }
 
         DB::table('MPerusahaan')
             ->where('MPerusahaanID', $mPerusahaan['MPerusahaanID'])
@@ -147,7 +163,8 @@ class MPerusahaanController extends Controller
                 'cnames' => $data['names'],
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:s"),
-                'UserIDManager' => $data['manager'],
+                'UserIDManager1' => $data['manager1'],
+                'UserIDManager2' => $data['manager2'],
                 'NomorNPWP' => $data['NomorNPWP'],
                 'AlamatNPWP' => $data['AlamatNPWP'],
                 'Gambar' => $path,

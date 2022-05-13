@@ -239,12 +239,9 @@ class TerimaBarangSupplierController extends Controller
      * @param  \App\Models\TransactionGudang  $transactionGudang
      * @return \Illuminate\Http\Response
      */
-    public function show(TransactionGudangBarang $transactionGudangBarang)
+    public function show(TransactionGudangBarang $terimaBarangSupplier)
     {
-        //
-        
-        //
-        $user = Auth::user();
+          $user = Auth::user();
 
         $dataSupplier = DB::table('MSupplier')
             ->get();
@@ -268,19 +265,63 @@ class TerimaBarangSupplierController extends Controller
 
         $dataGudang =DB::table('MGudang')
             ->get();  
+
+        $dataItemTransaction = DB::table("ItemTransaction")->get();
         
+        $dataTotalDetail = DB::table('transaction_gudang_barang_detail')
+            ->select('transaction_gudang_barang_detail.*','purchase_order_detail.harga as hargaPOD', 'purchase_order_detail.id as idPOD','Item.ItemName as itemName' )
+            ->join('purchase_order_detail', 'transaction_gudang_barang_detail.purchaseOrderDetailID','=','purchase_order_detail.id')
+            ->join('Item', 'transaction_gudang_barang_detail.ItemID','=','Item.ItemID')
+            ->where('transactionID', $terimaBarangSupplier->id)
+            ->get();
+        
+        
+
         //data Purchase Request yang disetujui
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
-            ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName','transaction_gudang_barang_detail.transactionID','purchase_order.id as poid')//
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=','purchase_order.id')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->join('transaction_gudang_barang_detail', 'purchase_order_detail.id','=','transaction_gudang_barang_detail.purchaseOrderDetailID')
+            //->where('transaction_gudang_barang_detail.transactionID', '!=', $terimaBarangSupplier->id)
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
             ->where('purchase_order.proses', 1)
-            ->where('purchase_order_detail.jumlahProses', '<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
+            ->where(function($query) use($terimaBarangSupplier){
+                $query->when(request('transaction_gudang_barang_detail.transactionID', $terimaBarangSupplier->id), function ($q, $data) { 
+                return $q->where(DB::raw('purchase_order_detail.jumlahProses '),'<', DB::raw('purchase_order_detail.jumlah'))
+                    ->orWhere(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'));
+                    
+                });
+            })
+            /*->where(function($query) use ($user) {
+                $query->where(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'))
+                    ->orWhere(DB::raw('purchase_order_detail.jumlahProses'),'<', DB::raw('purchase_order_detail.jumlah'));
+            })*/
+            //->where(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
             ->get();
+        
+        
+        /*$getIDPO = $dataPurchaseOrderDetail
+            ->where("transactionID",'=',$terimaBarangSupplier->id);
+        //dd($getIDPO);
+        //dd($dataPurchaseOrderDetail);
 
+        $arridpo = array();
+        foreach($getIDPO as $id){
+            array_push($arridpo, $id->poid);
+        }
+        $dataPurchaseOrderDetail = $dataPurchaseOrderDetail
+            ->where("transactionID",'==',$terimaBarangSupplier->id)
+            ->whereIn('poid', $arridpo)
+            ->where(function($query) use ($arridpo, $terimaBarangSupplier) {
+                $query->where("transactionID",'!=',$terimaBarangSupplier->id)
+                    ->whereIn('poid', $arridpo);
+            });
+
+        dd($dataPurchaseOrderDetail);
+        */
         $dataPurchaseOrder = DB::table('purchase_order')
             ->select('purchase_order.*')
             ->where('purchase_order.approved', 1)
@@ -288,16 +329,22 @@ class TerimaBarangSupplierController extends Controller
             ->where('purchase_order.proses', 1)
             ->get();
 
+        
+        
 
         return view('master.note.terimaBarangSupplier.detail',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
             'dataBarang' => $dataBarang,
             'dataTag' => $dataTag,
+            'dataGudang' => $dataGudang,
+            'dataItemTransaction' => $dataItemTransaction,
             'dataPurchaseOrderDetail' => $dataPurchaseOrderDetail,
             'dataPurchaseOrder' => $dataPurchaseOrder,
-            'transactionGudangBarang' => $transactionGudangBarang,
+            'transactionGudangBarang' => $terimaBarangSupplier,
+            'dataTotalDetail' => $dataTotalDetail,
         ]);
+    
     
     }
 

@@ -17,7 +17,7 @@ Edit Nota Kirim Pesanan
 @endsection
 
 @section('content')
-<form action="{{route('kirimBarangPesanan.update', [$transactionGudangBarang->id])}}" method="POST" >
+<form action="{{route('kirimBarangPesanan.show', [$transactionGudangBarang->id])}}" method="POST" >
   @csrf
   @method('PUT')
     <section class="content">

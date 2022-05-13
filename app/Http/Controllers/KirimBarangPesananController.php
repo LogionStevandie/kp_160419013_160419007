@@ -253,7 +253,7 @@ class KirimBarangPesananController extends Controller
      * @param  \App\Models\TransactionGudangBarang  $transactionGudangBarang
      * @return \Illuminate\Http\Response
      */
-    public function show(TransactionGudangBarang $transactionGudangBarang)
+    public function show(TransactionGudangBarang $kirimBarangPesanan)
     {
         
         
@@ -315,7 +315,14 @@ class KirimBarangPesananController extends Controller
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
             ->get();
-
+   $dataItemTransaction = DB::table("ItemTransaction")
+            ->get();
+            $dataTotalDetail = DB::table('transaction_gudang_barang_detail')
+            ->select('transaction_gudang_barang_detail.*', 'purchase_request_detail.id as idPRD','Item.ItemName as itemName' )
+            ->join('purchase_request_detail', 'transaction_gudang_barang_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item', 'transaction_gudang_barang_detail.ItemID','=','Item.ItemID')
+            ->where('transaction_gudang_barang_detail.transactionID', $kirimBarangPesanan->id)
+            ->get();
         return view('master.note.kirimBarangPesanan.detail',[
             'dataSupplier' => $dataSupplier,
             'dataBarangTag' => $dataBarangTag,
@@ -324,8 +331,11 @@ class KirimBarangPesananController extends Controller
             'suratJalan' => $suratJalan,
             'suratJalanDetail' => $suratJalanDetail,
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+            'dataGudang' => $dataGudang,
             'dataPurchaseRequest' => $dataPurchaseRequest,
-            'transactionGudangBarang' => $transactionGudangBarang,
+            'transactionGudangBarang' => $kirimBarangPesanan,
+            'dataItemTransaction' => $dataItemTransaction,
+            'dataTotalDetail' => $dataTotalDetail,
         ]);
     
     

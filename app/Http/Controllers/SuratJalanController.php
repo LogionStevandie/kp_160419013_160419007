@@ -178,7 +178,30 @@ class SuratJalanController extends Controller
     public function show(SuratJalan $suratJalan)
     {
         //
-        $user = Auth::user();
+          $dataGudang =DB::table('MGudang')
+            ->get();  
+
+
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->get();
 
         $dataBarang = DB::table('Item')
             ->select('Item.*', 'Unit.Name as unitName')
@@ -197,39 +220,22 @@ class SuratJalanController extends Controller
         $dataTag = DB::table('ItemTag')
             ->get();
 
-        $dataGudang =DB::table('MGudang')
-            ->get(); 
-
-        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
-            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
-            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
-            ->join('Unit','Item.UnitID','=','Unit.UnitID')
-            ->where('purchase_request.approved', 1)
-            ->where('purchase_request.approvedAkhir', 1)
-            ->where('purchase_request.hapus', 0)
-            ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+         $dataTotalDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*', 'purchase_request_detail.id as idPRD','Item.ItemName as itemName' )
+            ->join('purchase_request_detail', 'surat_jalan_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item', 'surat_jalan_detail.ItemID','=','Item.ItemID')
+            ->where('suratJalanID', $suratJalan->id)
             ->get();
-        //dd($dataPurchaseRequestDetail);
         
-        $dataPurchaseRequest = DB::table('purchase_request')
-            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
-            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
-            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
-            ->where('purchase_request.approved', 1)
-            ->where('purchase_request.approvedAkhir', 1)
-            ->where('purchase_request.hapus', 0)
-            ->where('purchase_request.proses', 1)
-            ->get();
         return view('master.note.suratJalan.detail',[
-            'dataBarangTag' => $dataBarangTag,
-            'dataBarang' => $dataBarang,
-            'dataTag' => $dataTag,
             'dataGudang' => $dataGudang,
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
             'dataPurchaseRequest' => $dataPurchaseRequest,
+            'dataBarang' => $dataBarang,
+            'dataBarangTag' => $dataBarangTag,
+            'dataTag' => $dataTag,
             'suratJalan' => $suratJalan,
+            'dataTotalDetail' => $dataTotalDetail,
         ]);
     }
 

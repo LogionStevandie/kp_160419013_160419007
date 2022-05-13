@@ -113,6 +113,8 @@ class ApprovedPOController extends Controller
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->join('Tax','purchase_order_detail.idTax','=','Tax.TaxID')
             ->get();
+        $dataSupplier = DB::table('MSupplier')//
+                     ->get();
         //dd($approvedPurchaseRequest['id']);
         if($approvedPurchaseOrder->approved == 0){
             return view('master.approved.PurchaseOrder.approve',[
@@ -120,6 +122,7 @@ class ApprovedPOController extends Controller
                 'dataPerusahaan'=>$dataPerusahaan,
                 'dataBarang'=>$dataBarang,
                 'pod'=>$pod,
+                'dataSupplier'=>$dataSupplier,
             ]);
         }
         else{

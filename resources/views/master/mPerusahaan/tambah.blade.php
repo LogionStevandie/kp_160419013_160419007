@@ -67,7 +67,8 @@ Tambah Perusahaan
 
             <div class="form-group">
                 <label for="title">Gambar Bendera Perusahaan</label>
-                <input required type="file" class="form-control" name="image" placeholder="Choose image" id="image" value="{{old('image','')}}">
+                <input required type="file" class="form-control" name="image" placeholder="Choose image" id="image" value="{{old('image','')}}"
+                accept="image/png, image/jpeg,image/jpg">
                 @error('image')
                     <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                 @enderror

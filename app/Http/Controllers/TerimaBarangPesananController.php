@@ -263,6 +263,7 @@ class TerimaBarangPesananController extends Controller
     {
         
         //
+       //
         $user = Auth::user();
 
         $dataSupplier = DB::table('MSupplier')
@@ -287,16 +288,19 @@ class TerimaBarangPesananController extends Controller
 
         $dataGudang =DB::table('MGudang')
             ->get();  
-
+ 
         $suratJalan = DB::table('surat_jalan')
             ->where('hapus', 0)
             ->get();
+
         $suratJalanDetail = DB::table('surat_jalan_detail')
-            ->select('surat_jalan_detail.*')
+            ->select('surat_jalan_detail.*','Item.ItemName as itemName','Item.ItemID as ItemID', 'Unit.Name as unitName', 'purchase_request_detail.idPurchaseRequest as idPR')
             ->join('surat_jalan', 'surat_jalan_detail.suratJalanID','=','surat_jalan.id')
+            ->join('purchase_request_detail', 'surat_jalan_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item','surat_jalan_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
             ->where('surat_jalan.hapus', 0)
-            ->get();
-        
+            ->get();  
 
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
             ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
@@ -320,10 +324,16 @@ class TerimaBarangPesananController extends Controller
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
             ->get();
+        $dataItemTransaction = DB::table("ItemTransaction")
+            ->get();
 
-        $dataGudang =DB::table('MGudang')
-        ->get();  
-
+        $dataTotalDetail = DB::table('transaction_gudang_barang_detail')
+            ->select('transaction_gudang_barang_detail.*', 'purchase_request_detail.id as idPRD','Item.ItemName as itemName' )
+            ->join('purchase_request_detail', 'transaction_gudang_barang_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item', 'transaction_gudang_barang_detail.ItemID','=','Item.ItemID')
+            ->where('transaction_gudang_barang_detail.transactionID', $terimaBarangPesanan->id)
+            ->get();
+        //dd($dataTotalDetail);
 
         return view('master.note.terimaBarangPesanan.detail',[
             'dataSupplier' => $dataSupplier,
@@ -335,6 +345,9 @@ class TerimaBarangPesananController extends Controller
             'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
             'dataPurchaseRequest' => $dataPurchaseRequest,
             'transactionGudangBarang' => $terimaBarangPesanan,
+            'dataGudang'=>$dataGudang,
+            'dataItemTransaction' => $dataItemTransaction,
+            'dataTotalDetail' => $dataTotalDetail,
         ]);
     
     }
