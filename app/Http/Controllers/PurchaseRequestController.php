@@ -37,7 +37,8 @@ class PurchaseRequestController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
-            //->paginate(10);
+                ->orderByDesc('purchase_request.tanggalDibuat')
+                //->paginate(10);
             ->paginate(10);
 
         $getPerusahaan = DB::table('MPerusahaan')
@@ -253,13 +254,38 @@ class PurchaseRequestController extends Controller
     public function show(PurchaseRequest $purchaseRequest)
     {
         //
+         $user = Auth::user();
+
+        $getLokasi = DB::table('MGudang')
+            ->where('MGudang.MGudangID', '=', $user->MGudangID)
+            ->get();
+
+        $dataGudang = DB::table('MGudang')
+            ->select('MGudang.*')
+            ->join('MKota','MGudang.cidkota','=','MKota.cidkota')
+            ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('MKota.cidkota', $getLokasi[0]->cidkota)
+            ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
+            ->get();
+          
+        $dataBarang = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->where('Item.Hapus',0)
+            ->get();
+
         $dataDetail = DB::table('purchase_request_detail')
             ->where('purchase_request_detail.idPurchaseRequest', '=', $purchaseRequest->id)
             ->get();
-        return view('master.purchase_request_tambah',[
-            'purchaseRequest' => $purchaseRequest,
-            'dataDetail' => $dataDetail,
-        ]);
+
+       
+            return view('master.PurchaseRequest.detail',[
+                'purchaseRequest'=>$purchaseRequest,
+                'dataDetail'=>$dataDetail,
+                'dataGudang' => $dataGudang,
+                'dataBarang' => $dataBarang,
+            ]);
+       
     }
 
     /**
@@ -476,7 +502,8 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
             ->where('purchase_request.name','like','%'.$name.'%')
-            ->paginate(10);
+                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->paginate(10);
         //->get();
         return view('master.PurchaseRequest.index',[
             'data' => $data,
@@ -504,7 +531,8 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
             ->whereBetween('purchase_request.tanggalDibuat',[ date($date[0]), date($date[1]) ])
-            ->paginate(10);
+                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->paginate(10);
         //->get();
         //dd($data);
         return view('master.PurchaseRequest.index',[
@@ -535,7 +563,8 @@ class PurchaseRequestController extends Controller
             ->where('purchase_request.hapus','=', 0)    
             ->where('purchase_request.name','like','%'.$name.'%')
             ->whereBetween('purchase_request.tanggalDibuat',[ date($date[0]), date($date[1]) ])
-            ->paginate(10);
+                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->paginate(10);
         //->get();
         //dd($data);
         return view('master.PurchaseRequest.index',[

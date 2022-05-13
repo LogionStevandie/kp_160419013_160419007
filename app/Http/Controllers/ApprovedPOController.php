@@ -36,9 +36,12 @@ class ApprovedPOController extends Controller
         //dd($arrPerusahaan);
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
-                ->where('approved',0)
-                ->where('hapus',0)
-                ->whereIn('MPerusahaanID', $arrPerusahaan)
+                ->select('purchase_order.*','MSupplier.Name as supplierName','MSupplier.Alamat as supplierAlamat')
+                ->leftjoin('MSupplier','purchase_order.idSupplier','=','MSupplier.SupplierID')
+                ->where('purchase_order.approved',0)
+                ->where('purchase_order.hapus',0)
+                ->whereIn('purchase_order.MPerusahaanID', $arrPerusahaan)
+                ->orderByDesc('purchase_order.tanggalDibuat')
                 ->paginate(10);
         }
         //dd($poKeluar);
@@ -213,10 +216,13 @@ class ApprovedPOController extends Controller
         //dd($arrPerusahaan);
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
-                ->where('approved',0)
-                ->where('hapus',0)
-                ->whereIn('MPerusahaanID', $arrPerusahaan)
-                ->where('name','like', '%'.$name.'%')
+                ->select('purchase_order.*','MSupplier.Name as supplierName','MSupplier.Alamat as supplierAlamat')
+                ->leftjoin('MSupplier','purchase_order.idSupplier','=','MSupplier.SupplierID')
+                ->where('purchase_order.approved',0)
+                ->where('purchase_order.hapus',0)
+                ->whereIn('purchase_order.MPerusahaanID', $arrPerusahaan)
+                ->where('purchase_order.name','like', '%'.$name.'%')
+                ->orderByDesc('purchase_order.tanggalDibuat')
                 ->paginate(10);
         }
         //dd($poKeluar);
@@ -253,10 +259,13 @@ class ApprovedPOController extends Controller
         //dd($arrPerusahaan);
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
-                ->where('approved',0)
-                ->where('hapus',0)
-                ->whereIn('MPerusahaanID', $arrPerusahaan)
+                ->select('purchase_order.*','MSupplier.Name as supplierName','MSupplier.Alamat as supplierAlamat')
+                ->leftjoin('MSupplier','purchase_order.idSupplier','=','MSupplier.SupplierID')
+                ->where('purchase_order.approved',0)
+                ->where('purchase_order.hapus',0)
+                ->whereIn('purchase_order.MPerusahaanID', $arrPerusahaan)
                 ->whereBetween('purchase_order.tanggalDibuat',[date($date[0]), date($date[1])])
+                ->orderByDesc('purchase_order.tanggalDibuat')
                 ->paginate(10);
         }
         //dd($poKeluar);
@@ -294,11 +303,14 @@ class ApprovedPOController extends Controller
         //dd($arrPerusahaan);
         if(count($managerPerusahaan2)>0){
             $poKeluar= DB::table('purchase_order')
-                ->where('approved',0)
-                ->where('hapus',0)
+                ->select('purchase_order.*','MSupplier.Name as supplierName','MSupplier.Alamat as supplierAlamat')
+                ->leftjoin('MSupplier','purchase_order.idSupplier','=','MSupplier.SupplierID')
+                ->where('purchase_order.approved',0)
+                ->where('purchase_order.hapus',0)
                 ->whereIn('MPerusahaanID', $arrPerusahaan)
-                ->where('name','like', '%'.$name.'%')
+                ->where('purchase_order.name','like', '%'.$name.'%')
                 ->whereBetween('purchase_order.tanggalDibuat',[date($date[0]), date($date[1])])
+                ->orderByDesc('purchase_order.tanggalDibuat')
                 ->paginate(10);
         }
         //dd($poKeluar);

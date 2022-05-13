@@ -23,6 +23,8 @@ class AdjustmentStockController extends Controller
             ->leftjoin('Unit','ItemAdjustmentDetail.UnitID','=','Unit.UnitID')
             ->leftjoin('MGudang','ItemAdjustmentDetail.MGudangID','=','MGudang.MGudangID')
             ->where('ItemAdjustment.Deleted',0)
+            ->where('ItemAdjustment.Deleted',0)
+            ->orderByDesc('ItemAdjustment.Tanggal')
             ->paginate(10);
         return view('master.note.adjustmentStok.index',[
             'data' => $data,
@@ -62,6 +64,15 @@ class AdjustmentStockController extends Controller
             DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
             ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+            ->get();
+        
+        $dataReportUntukStok = DB::table('ItemInventoryTransactionLine')//dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.Quantity','ItemInventoryTransactionLine.ItemID','Item.ItemName','ItemInventoryTransaction.Date')
+            ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+            ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
             ->get();
         //dd($dataReport);
@@ -72,6 +83,7 @@ class AdjustmentStockController extends Controller
             'dataTag' => $dataTag,
             'dataGudang' => $dataGudang,
             'dataReport' => $dataReport,
+            'dataReportUntukStok' => $dataReportUntukStok,
         ]);
     }
 
@@ -161,16 +173,72 @@ class AdjustmentStockController extends Controller
     public function show(AdjustmentStock $adjustmentStock)
     {
         //
-        $data = DB::table('ItemAdjustment')
-            ->join('ItemAdjustmentDetail','ItemAdjustment.ItemAdjustmentID','=','ItemAdjustmentDetail.ItemAdjustmentID')
-            ->leftjoin('Item','ItemAdjustmentDetail.ItemID','=','Item.ItemID')
-            ->leftjoin('Unit','ItemAdjustmentDetail.UnitID','=','Unit.UnitID')
-            ->leftjoin('MGudang','ItemAdjustmentDetail.MGudangID','=','MGudang.MGudangID')
-            ->where('ItemAdjustment.Deleted',0)
-            ->paginate(10);
+        //
+        $dataBarang = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+
+        $dataBarangTag = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName','ItemTagValues.ItemTagID')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->join('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+        //dd($dataBarangTag);
+        $dataTag = DB::table('ItemTag')
+            ->get();
+
+        $dataGudang = DB::table('MGudang')
+            ->get();
+        
+        $dataReport = DB::table('ItemInventoryTransactionLine')//dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', 
+            DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
+            ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+            ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransaction.TransactionID','=','ItemInventoryTransactionLine.TransactionID')
+            //->where('ItemInventoryTransaction.AdjustmentID','!=', $adjustmentStock['ItemAdjustmentID'])
+            ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+            ->get();
+        
+        $dataReportDetailStokAwal = DB::table('ItemInventoryTransactionLine')//dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName', 
+            DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
+            ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+            ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransaction.TransactionID','=','ItemInventoryTransactionLine.TransactionID')
+            ->where('ItemInventoryTransaction.AdjustmentID','!=', $adjustmentStock['ItemAdjustmentID'])
+            ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+            ->get();
+
+            //dd($dataReportDetailStokAwal);
+        //dd($adjustmentStock);
+        $adjustmentStockDetail = DB::table('ItemAdjustmentDetail')
+            ->where('ItemAdjustmentID', $adjustmentStock['ItemAdjustmentID'])
+            ->get();
+        //dd($adjustmentStockDetail);
+    
+        $dataReportUntukStok = DB::table('ItemInventoryTransactionLine')//dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName','ItemInventoryTransaction.Date')
+            ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+            ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+            ->get();
+
         return view('master.note.adjustmentStok.detail',[
-            'data' => $data,
+            'dataBarang' => $dataBarang,
+            'dataBarangTag' => $dataBarangTag,
+            'dataTag' => $dataTag,
+            'dataGudang' => $dataGudang,
+            'dataReport' => $dataReport,
+            'dataReportUntukStok' => $dataReportUntukStok,
+            'dataReportDetailStokAwal' => $dataReportDetailStokAwal,
             'adjustmentStock' => $adjustmentStock,
+            'adjustmentStockDetail' => $adjustmentStockDetail,
         ]);
     }
 
@@ -208,7 +276,7 @@ class AdjustmentStockController extends Controller
             DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
             ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
-            ->leftjoin('ItemInventoryTransaction','ItemInventoryTransaction.TransactionID','=','ItemInventoryTransactionLine.TransactionID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransaction.TransactionID','=','ItemInventoryTransactionLine.TransactionID')
             //->where('ItemInventoryTransaction.AdjustmentID','!=', $adjustmentStock['ItemAdjustmentID'])
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
             ->get();
@@ -218,7 +286,7 @@ class AdjustmentStockController extends Controller
             DB::raw("sum(ItemInventoryTransactionLine.Quantity) as totalQuantity"))
             ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
-            ->leftjoin('ItemInventoryTransaction','ItemInventoryTransaction.TransactionID','=','ItemInventoryTransactionLine.TransactionID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransaction.TransactionID','=','ItemInventoryTransactionLine.TransactionID')
             ->where('ItemInventoryTransaction.AdjustmentID','!=', $adjustmentStock['ItemAdjustmentID'])
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
             ->get();
@@ -229,6 +297,14 @@ class AdjustmentStockController extends Controller
             ->where('ItemAdjustmentID', $adjustmentStock['ItemAdjustmentID'])
             ->get();
         //dd($adjustmentStockDetail);
+    
+        $dataReportUntukStok = DB::table('ItemInventoryTransactionLine')//dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName','ItemInventoryTransactionLine.MGudangID','ItemInventoryTransactionLine.ItemID','Item.ItemName','ItemInventoryTransaction.Date')
+            ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
+            ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
+            ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
+            ->get();
 
         return view('master.note.adjustmentStok.edit',[
             'dataBarang' => $dataBarang,
@@ -236,6 +312,7 @@ class AdjustmentStockController extends Controller
             'dataTag' => $dataTag,
             'dataGudang' => $dataGudang,
             'dataReport' => $dataReport,
+            'dataReportUntukStok' => $dataReportUntukStok,
             'dataReportDetailStokAwal' => $dataReportDetailStokAwal,
             'adjustmentStock' => $adjustmentStock,
             'adjustmentStockDetail' => $adjustmentStockDetail,
@@ -359,6 +436,7 @@ class AdjustmentStockController extends Controller
             ->leftjoin('MGudang','ItemAdjustmentDetail.MGudangID','=','MGudang.MGudangID')
             ->where('ItemAdjustment.Deleted',0)
             ->where('ItemAdjustment.Name','like', '%'.$name.'%')
+            ->orderByDesc('ItemAdjustment.Tanggal')
             ->paginate(10);
         return view('master.note.adjustmentStok.index',[
             'data' => $data,
@@ -380,6 +458,7 @@ class AdjustmentStockController extends Controller
             ->leftjoin('MGudang','ItemAdjustmentDetail.MGudangID','=','MGudang.MGudangID')
             ->where('ItemAdjustment.Deleted',0)
             ->whereBetween('ItemAdjustment.Tanggal',[date($date[0]), date($date[1])])
+            ->orderByDesc('ItemAdjustment.Tanggal')
             ->paginate(10);
         return view('master.note.adjustmentStok.index',[
             'data' => $data,
@@ -402,6 +481,7 @@ class AdjustmentStockController extends Controller
             ->where('ItemAdjustment.Deleted',0)
             ->where('ItemAdjustment.Name','like', '%'.$name.'%')
             ->whereBetween('ItemAdjustment.Tanggal',[date($date[0]), date($date[1])])
+            ->orderByDesc('ItemAdjustment.Tanggal')
             ->paginate(10);
         return view('master.note.adjustmentStok.index',[
             'data' => $data,

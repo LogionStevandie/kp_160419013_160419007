@@ -302,7 +302,7 @@ class InventoryTransactionController extends Controller
             ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
             ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
-            ->join('ItemTransaction','ItemInventoryTransaction.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
+            ->leftjoin('ItemTransaction','ItemInventoryTransaction.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $mGudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
             ->get();
@@ -431,7 +431,7 @@ class InventoryTransactionController extends Controller
             ->join('MGudang','ItemInventoryTransactionLine.MGudangID','=','MGudang.MGudangID')
             ->join('Item','ItemInventoryTransactionLine.ItemID','=','Item.ItemID')
             ->join('ItemInventoryTransaction','ItemInventoryTransactionLine.TransactionID','=','ItemInventoryTransaction.TransactionID')
-            ->join('ItemTransaction','ItemInventoryTransaction.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
+            ->leftjoin('ItemTransaction','ItemInventoryTransaction.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $gudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
             ->whereBetween('ItemInventoryTransaction.Date', [date($date[0]), date($date[1])])

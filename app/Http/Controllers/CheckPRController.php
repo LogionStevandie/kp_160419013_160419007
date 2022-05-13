@@ -28,7 +28,7 @@ class CheckPRController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
-            //->paginate(10);
+            ->orderByDesc('purchase_request.tanggalDibuat')
             ->paginate(10);
 
         $getPerusahaan = DB::table('MPerusahaan')
@@ -189,7 +189,8 @@ class CheckPRController extends Controller
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
             ->where('purchase_request.name','like','%'.$name.'%')
-            //->paginate(10);
+                ->orderByDesc('purchase_request.tanggalDibuat')
+                //->paginate(10);
             ->paginate(10);
 
         return view('master.check.PurchaseRequest.index',[
@@ -217,7 +218,8 @@ class CheckPRController extends Controller
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
             ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
-            //->paginate(10);
+                ->orderByDesc('purchase_request.tanggalDibuat')
+                //->paginate(10);
             ->paginate(10);
 
         return view('master.check.PurchaseRequest.index',[
@@ -247,7 +249,8 @@ class CheckPRController extends Controller
             ->where('purchase_request.hapus','=', 0)    
             ->where('purchase_request.name','like','%'.$name.'%')
             ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
-            //->paginate(10);
+                ->orderByDesc('purchase_request.tanggalDibuat')
+                //->paginate(10);
             ->paginate(10);
 
         return view('master.check.PurchaseRequest.index',[

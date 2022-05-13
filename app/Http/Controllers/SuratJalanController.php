@@ -23,12 +23,14 @@ class SuratJalanController extends Controller
         //
         $data = DB::table('surat_jalan')
             ->where('hapus',0)
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
 
         $dataDetail = DB::table('surat_jalan_detail')
             ->select('surat_jalan_detail.*')
             ->join('surat_jalan','surat_jalan_detail.suratJalanID','=','surat_jalan.id')
             ->where('surat_jalan.hapus',0)
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
 
         $dataGudang =DB::table('MGudang')
@@ -376,6 +378,7 @@ class SuratJalanController extends Controller
         $data = DB::table('surat_jalan')
             ->where('hapus',0)
             ->where('surat_jalan.name','like','%'.$name.'%')
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
 
         $dataDetail = DB::table('surat_jalan_detail')
@@ -383,6 +386,7 @@ class SuratJalanController extends Controller
             ->join('surat_jalan','surat_jalan_detail.suratJalanID','=','surat_jalan.id')
             ->where('surat_jalan.hapus',0)
             ->where('surat_jalan.name','like','%'.$name.'%')
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
         return view('master.note.suratJalan.index',[
             'data' => $data,
@@ -398,6 +402,7 @@ class SuratJalanController extends Controller
         $data = DB::table('surat_jalan')
             ->where('hapus',0)
             ->whereBetween('surat_jalan.tanggalDibuat',[$date[0], $date[1]])
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
 
         $dataDetail = DB::table('surat_jalan_detail')
@@ -405,6 +410,7 @@ class SuratJalanController extends Controller
             ->join('surat_jalan','surat_jalan_detail.suratJalanID','=','surat_jalan.id')
             ->where('surat_jalan.hapus',0)
             ->where('surat_jalan.tanggalDibuat',[date($date[0]), date($date[1])])
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
         return view('master.note.suratJalan.index',[
             'data' => $data,
@@ -422,6 +428,7 @@ class SuratJalanController extends Controller
             ->where('hapus',0)
             ->where('surat_jalan.name','like','%'.$name.'%')
             ->whereBetween('surat_jalan.tanggalDibuat',[$date[0], $date[1]])
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
 
         $dataDetail = DB::table('surat_jalan_detail')
@@ -430,6 +437,7 @@ class SuratJalanController extends Controller
             ->where('surat_jalan.hapus',0)
             ->where('surat_jalan.name','like','%'.$name.'%')
             ->where('surat_jalan.tanggalDibuat',[date($date[0]), date($date[1])])
+            ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
         return view('master.note.suratJalan.index',[
             'data' => $data,

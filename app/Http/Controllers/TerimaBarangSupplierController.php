@@ -27,10 +27,13 @@ class TerimaBarangSupplierController extends Controller
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
             ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
-            ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->where('transaction_gudang_barang.hapus',0)
-            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
-            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
+            ->whereNotNull('transaction_gudang_barang.SupplierID')   
+            ->where(function($query) use ($user) {
+                $query->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+                    ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID);
+            })
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //dd($data);
         //->get();
@@ -336,19 +339,60 @@ class TerimaBarangSupplierController extends Controller
 
         $dataItemTransaction = DB::table("ItemTransaction")->get();
         
+        $dataTotalDetail = DB::table('transaction_gudang_barang_detail')
+            ->select('transaction_gudang_barang_detail.*','purchase_order_detail.harga as hargaPOD', 'purchase_order_detail.id as idPOD','Item.ItemName as itemName' )
+            ->join('purchase_order_detail', 'transaction_gudang_barang_detail.purchaseOrderDetailID','=','purchase_order_detail.id')
+            ->join('Item', 'transaction_gudang_barang_detail.ItemID','=','Item.ItemID')
+            ->where('transactionID', $terimaBarangSupplier->id)
+            ->get();
+        
+        
+
         //data Purchase Request yang disetujui
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
-            ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->select('purchase_order_detail.*','purchase_order.name','Item.ItemName as ItemName','Unit.Name as UnitName','transaction_gudang_barang_detail.transactionID','purchase_order.id as poid')//
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=','purchase_order.id')
             ->join('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->join('transaction_gudang_barang_detail', 'purchase_order_detail.id','=','transaction_gudang_barang_detail.purchaseOrderDetailID')
+            //->where('transaction_gudang_barang_detail.transactionID', '!=', $terimaBarangSupplier->id)
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
             ->where('purchase_order.proses', 1)
-            ->where('purchase_order_detail.jumlahProses', '<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
+            ->where(function($query) use($terimaBarangSupplier){
+                $query->when(request('transaction_gudang_barang_detail.transactionID', $terimaBarangSupplier->id), function ($q, $data) { 
+                return $q->where(DB::raw('purchase_order_detail.jumlahProses '),'<', DB::raw('purchase_order_detail.jumlah'))
+                    ->orWhere(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'));
+                    
+                });
+            })
+            /*->where(function($query) use ($user) {
+                $query->where(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'))
+                    ->orWhere(DB::raw('purchase_order_detail.jumlahProses'),'<', DB::raw('purchase_order_detail.jumlah'));
+            })*/
+            //->where(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
             ->get();
-        //dd($dataPurchaseRequestDetail);
         
+        
+        /*$getIDPO = $dataPurchaseOrderDetail
+            ->where("transactionID",'=',$terimaBarangSupplier->id);
+        //dd($getIDPO);
+        //dd($dataPurchaseOrderDetail);
+
+        $arridpo = array();
+        foreach($getIDPO as $id){
+            array_push($arridpo, $id->poid);
+        }
+        $dataPurchaseOrderDetail = $dataPurchaseOrderDetail
+            ->where("transactionID",'==',$terimaBarangSupplier->id)
+            ->whereIn('poid', $arridpo)
+            ->where(function($query) use ($arridpo, $terimaBarangSupplier) {
+                $query->where("transactionID",'!=',$terimaBarangSupplier->id)
+                    ->whereIn('poid', $arridpo);
+            });
+
+        dd($dataPurchaseOrderDetail);
+        */
         $dataPurchaseOrder = DB::table('purchase_order')
             ->select('purchase_order.*')
             ->where('purchase_order.approved', 1)
@@ -357,12 +401,7 @@ class TerimaBarangSupplierController extends Controller
             ->get();
 
         
-        $dataTotalDetail = DB::table('transaction_gudang_barang_detail')
-            ->select('transaction_gudang_barang_detail.*','purchase_order_detail.harga as hargaPOD', 'purchase_order_detail.id as idPOD','Item.ItemName as itemName' )
-            ->join('purchase_order_detail', 'transaction_gudang_barang_detail.purchaseOrderDetailID','=','purchase_order_detail.id')
-            ->join('Item', 'transaction_gudang_barang_detail.ItemID','=','Item.ItemID')
-            ->where('transactionID', $terimaBarangSupplier->id)
-            ->get();
+        
 
         return view('master.note.terimaBarangSupplier.edit',[
             'dataSupplier' => $dataSupplier,
@@ -518,18 +557,41 @@ class TerimaBarangSupplierController extends Controller
      * @param  \App\Models\TransactionGudang  $transactionGudang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TransactionGudangBarang $transactionGudangBarang)
+    public function destroy(TransactionGudangBarang $terimaBarangSupplier)
     {
         //
         
         //
         $user = Auth::user();
-        DB::table('transaction_gudang_barang')
-            ->where('id', $transactionGudangBarang->id)
+        //dd($terimaBarangSupplier->id);
+
+        $data = DB::table('transaction_gudang_barang_detail')
+            ->where('transactionID','=', $terimaBarangSupplier->id)
+            ->get();
+
+        foreach ($data as $d){ 
+            DB::table('purchase_order_detail')
+                ->where('id', $d->purchaseOrderDetailID)
+                ->decrement('jumlahProses', $d->jumlah);
+        }
+        DB::table('purchase_order_detail')
+            ->where('id','=', $terimaBarangSupplier->id)
             ->update(array(
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                'Hapus' => 1,
+                'hapus' => 1,
+        ));
+
+        DB::table('transaction_gudang_barang_detail')
+            ->where('transactionID','=', $terimaBarangSupplier->id)
+            ->delete();
+
+        DB::table('transaction_gudang_barang')
+            ->where('id','=', $terimaBarangSupplier->id)
+            ->update(array(
+                'UpdatedBy'=> $user->id,
+                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'hapus' => 1,
         ));
 
         return redirect()->route('terimaBarangSupplier.index')->with('status','Success!!');
@@ -548,8 +610,11 @@ class TerimaBarangSupplierController extends Controller
             ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->where('transaction_gudang_barang.name','like','%'.$name.'%')
             ->where('transaction_gudang_barang.hapus',0)
-            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
-            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
+            ->where(function($query) use ($user) {
+                $query->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+                    ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID);
+            })
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -573,8 +638,11 @@ class TerimaBarangSupplierController extends Controller
             ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->whereBetween('transaction_gudang_barang.tanggalDibuat',[date($date[0]), date($date[1])])
             ->where('transaction_gudang_barang.hapus',0)
-            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
-            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
+            ->where(function($query) use ($user) {
+                $query->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+                    ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID);
+            })
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -600,8 +668,11 @@ class TerimaBarangSupplierController extends Controller
             ->where('transaction_gudang_barang.name','like','%'.$name.'%')
             ->whereBetween('transaction_gudang_barang.tanggalDibuat',[date($date[0]), date($date[1])])
             ->where('transaction_gudang_barang.hapus',0)
-            ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
-            ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
+            ->where(function($query) use ($user) {
+                $query->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
+                    ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID);
+            })
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')

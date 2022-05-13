@@ -120,15 +120,18 @@ Pembuatan Penyesuaian Stok Barang
             else{
                 var idGudang = $("#idGudang option:selected").val();
                 //alert(id);
-                var optionnya = '';
+                var total = 0;
             
-                var dataReport = <?php echo json_encode($dataReport); ?>;
+                var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
 
-                $.each(dataReport, function( key, value ){          
+                $.each(dataReportUntukStok, function( key, value ){          
                     if(value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString()){
-                        $("#stokAwalBarang").val(value.totalQuantity);     
+                        //$("#stokAwalBarang").val(value.totalQuantity);     
+                        total = total + parseFloat(value.Quantity);
                     }
                 });    
+                $("#stokAwalBarang").val(total);     
+
             }
             
         });

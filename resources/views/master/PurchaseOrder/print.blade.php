@@ -183,7 +183,7 @@
                        <thead class="thead-light justify-content-center">
                             <tr>
                                 <th scope="col" colspan="6" > <h3>Total</h3> </th>
-                                <th scope="col" colspan="6"  id="hargaTotal" hargaT="{{$purchaseOrder->totalHarga}}"> <h3>{{$purchaseOrder->totalHarga}}</h3> </th>
+                                <th scope="col" colspan="6"  > <h3>@php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp</h3> </th>
                             </tr>
                         </thead>
                         <thead>

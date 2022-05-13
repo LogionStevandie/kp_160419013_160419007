@@ -33,6 +33,7 @@ class TerimaBarangPesananController extends Controller
             //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID) asli
             ->where('transaction_gudang_barang.MGudangIDTujuan',1) //debug
             //->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID) ya
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -577,11 +578,11 @@ class TerimaBarangPesananController extends Controller
         //
         $user = Auth::user();
         DB::table('transaction_gudang_barang')
-            ->where('id', $transactionGudangBarang->id)
+            ->where('id', $transactionGudangBarang['id'])
             ->update(array(
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                'Hapus' => 1,
+                'hapus' => 1,
         ));
 
         return redirect()->route('terimaBarangPesanan.index')->with('status','Success!!');
@@ -602,6 +603,7 @@ class TerimaBarangPesananController extends Controller
             ->where('transaction_gudang_barang.name','like','%'.$name.'%')
             ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
             //->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -628,6 +630,7 @@ class TerimaBarangPesananController extends Controller
             ->whereBetween('transaction_gudang_barang.tanggalDibuat',[date($date[0]), date($date[1])])
             ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
             //->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -656,6 +659,7 @@ class TerimaBarangPesananController extends Controller
             ->whereBetween('transaction_gudang_barang.tanggalDibuat',[date($date[0]), date($date[1])])
             ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
             //->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')

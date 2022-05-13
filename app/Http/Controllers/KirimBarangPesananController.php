@@ -32,6 +32,7 @@ class KirimBarangPesananController extends Controller
             ->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
             ->where('transaction_gudang_barang.hapus',0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
        // ->get();
         //dd($data);
@@ -550,12 +551,13 @@ class KirimBarangPesananController extends Controller
     {
         //
         $user = Auth::user();
+
         DB::table('transaction_gudang_barang')
-            ->where('id', $kirimBarangPesanan->id)
+            ->where('id', $kirimBarangPesanan['id'])
             ->update(array(
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                'Hapus' => 1,
+                'hapus' => 1,
         ));
 
         return redirect()->route('kirimBarangPesanan.index')->with('status','Success!!');
@@ -575,6 +577,7 @@ class KirimBarangPesananController extends Controller
             ->where('MGudangIDAwal',$user->MGudangID)
             ->where('transaction_gudang_barang.hapus',0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -601,6 +604,7 @@ class KirimBarangPesananController extends Controller
             ->where('MGudangIDAwal',$user->MGudangID)
             ->where('transaction_gudang_barang.hapus',0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -629,6 +633,7 @@ class KirimBarangPesananController extends Controller
             ->where('MGudangIDAwal',$user->MGudangID)
             ->where('transaction_gudang_barang.hapus',0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')

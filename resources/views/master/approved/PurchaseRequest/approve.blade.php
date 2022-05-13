@@ -74,18 +74,19 @@ Persetujuan Pembelian
                                                 <th scope="row">{{$data->id}}</th>
                                                 <th scope="row">{{$data->ItemName}}</th>
                                                 <td>{{$data->jumlah}}</td>
-                                                <td>{{$data->harga}}</td>              
+                                                <td>@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp </td>              
                                                 <td>{{$data->keterangan_jasa}}</td>                                          
-                                                <td>{{$data->jumlah * $data->harga}}</td>                                          
+                                                <td> @php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp </td>                                          
                                                 @endif
                                             </tr>
                                             @endforeach
                                     
                                     </tbody>
+                                     
                                     <thead class="thead-light">
                                         <tr>
                                             <th scope="col" colspan="5"> <h3>Total</h3> </th>
-                                            <th scope="col" colspan="5"  id="hargaTotal" hargaT="{{$purchaseRequest->totalHarga}}"> {{$purchaseRequest->totalHarga}} </th>
+                                            <th scope="col" colspan="5" > @php echo "Rp " . number_format($purchaseRequest->totalHarga,2,',','.'); @endphp </th>
                                         
                                         </tr>
                                     </thead>

@@ -296,7 +296,8 @@ Pembuatan Nota Terima Pesanan
                             
         $("#PurchaseRequestID").empty();
         $("#PurchaseRequestID").append(optionnya);
-        //$('.selectpicker').selectpicker('refresh');
+        $('.selectpicker').selectpicker('refresh');
+
         var optionnya = '';
     
         var suratJalan = <?php echo json_encode($suratJalan); ?>;

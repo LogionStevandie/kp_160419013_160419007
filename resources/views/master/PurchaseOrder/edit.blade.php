@@ -306,7 +306,7 @@ Edit Nota Purchase Order
 
 <script type="text/javascript">
     var tambahCombo = "";
-    var totalTambah = $('#totalBarangnya').html();
+    var totalTambah = parseInt($('#totalBarangnya').html());
 
     //$('#TotalHargaKeranjang').val(0);
 

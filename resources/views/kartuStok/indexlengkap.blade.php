@@ -99,27 +99,17 @@ Kartu Stok
                                                     $awal = $awal + 1;
                                                     @endphp
                                                     <td scope="col">Data awal</td>
-                                                    <td scope="col">{{date("d-m-Y", strtotime($data->Date))}}</td>
-                                                    <td scope="col">
-                                                    @if($data->AdjustmentID != null)
-                                                        Penyesuaian Item
-                                                    @elseif($data->SuratJalanID != null)
-                                                        Transaksi Menggunakan Surat Jalan
-                                                    @elseif($data->StokAwalID != null)
-                                                        Stok Awal Gudang
-                                                    @else
-                                                        Transaksi
-                                                    @endif
-                                                    </td><!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
-                                                    <td scope="col">{{$data->tipeTransaksi}}</td>
+                                                    <td scope="col">Sebelum ({{date("d-m-Y", strtotime($stok->Date))}})</td>
+                                                    <td scope="col">-</td>
+                                                    <td scope="col">-</td>
 
                                                     <td >{{$stok->ItemName}}</td>
-                                                    <td>{{$stok->totalQuantity}}</td>                 
+                                                    <td>{{$stoksebelum->totalQuantity}}</td>                 
                                                     <td>0</td>                 
                                                     <td>0</td>                 
-                                                    <td>{{$stok->totalQuantity}}</td> 
+                                                    <td>{{$stoksebelum->totalQuantity}}</td> 
                                                     @php
-                                                    $akhirStok = $stok->totalQuantity;    
+                                                    $akhirStok = $stoksebelum->totalQuantity;    
                                                     @endphp  
                                                                
                                                 </tr>
@@ -198,7 +188,7 @@ Kartu Stok
             var dataReportItem = <?php echo json_encode($dataReportItem); ?>;
 
             //alert('masuk sini');
-            //optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            optionnya += '<option value="" selected>--Pilih Barang--</option>\n';
             $.each(dataReportItem, function( key, value ){
                 
                 if(value.MGudangID.toString() == id.toString()){

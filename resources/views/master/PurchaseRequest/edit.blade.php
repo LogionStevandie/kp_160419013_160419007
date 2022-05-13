@@ -6,7 +6,7 @@
  </style>
 
 @section('judul')
-Pembuatan Nota Permintaan Pembelian
+Edit Nota Permintaan Pembelian
 @endsection
 
 @section('pathjudul')

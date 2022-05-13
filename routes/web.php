@@ -128,7 +128,8 @@ Route::get('/tagValuesMGudange/searchname/',[App\Http\Controllers\MGudangValuesC
 //mKota
 Route::resource('msupplier', 'App\Http\Controllers\MSupplierController');//selese
 Route::get('/msuppliere/searchname/',[App\Http\Controllers\MSupplierController::class, 'searchSupplierName']);
-
+Route::get('/msuppliere/searchalamat/',[App\Http\Controllers\MSupplierController::class, 'searchSupplierName']);
+Route::get('/msuppliere/searchketerangan/',[App\Http\Controllers\MSupplierController::class, 'searchSupplierName']);
 Route::resource('infoSupplier', 'App\Http\Controllers\InfoSupplierController');//selese
 Route::get('/infoSuppliere/searchname/',[App\Http\Controllers\InfoSupplierController::class, 'searchInfoSupplierName']);//cobak gini ta
 //mGudang

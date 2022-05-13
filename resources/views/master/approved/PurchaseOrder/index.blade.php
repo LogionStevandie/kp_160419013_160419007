@@ -72,6 +72,8 @@ Persetujuan Order
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
                                 <th scope="col">Total Harga</th>
+                                <th scope="col">Suplier</th>
+                                <th scope="col">Alamat Suplier</th>
                                 <th scope="col">Tanggal Dibuat</th>
                                 <th scope="col">Status Approve</th>
                                 <th scope="col">Handle</th>
@@ -84,6 +86,8 @@ Persetujuan Order
                                 <th scope="row" name='id'>{{$purchaseOrder->id}}</th>
                                 <td>{{$purchaseOrder->name}}</td>
                                 <td id="dengan-rupiah">{{$purchaseOrder->totalHarga}}</td>
+                                <td>{{$purchaseOrder->supplierName}}</td>
+                                <td>{{$purchaseOrder->supplierAlamat}}</td>
                                 <td>{{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</td>
                                 @if($purchaseOrder->approved==0)
                                 <td>Pending</td>

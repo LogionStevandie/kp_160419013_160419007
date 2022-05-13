@@ -128,7 +128,7 @@
                                     <thead class="thead-light justify-content-center">
                                         <tr>
                                             <th scope="col" colspan="5" > <h3>Total</h3> </th>
-                                            <th scope="col" colspan="5"  id="hargaTotal" hargaT="{{$purchaseRequest->totalHarga}}"> {{$purchaseRequest->totalHarga}} </th>
+                                            <th scope="col" colspan="5" > @php echo "Rp " . number_format($purchaseRequest->totalHarga,2,',','.'); @endphp </th>
                                         </tr>
                                     </thead>
 

@@ -47,6 +47,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -60,6 +61,7 @@ class ApprovedPRController extends Controller
                 ->where('approved',0)
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }
@@ -74,6 +76,7 @@ class ApprovedPRController extends Controller
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
                 ->whereIn('MGudang.cidp', $arrmanager)
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }
@@ -259,6 +262,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -273,6 +277,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->where('purchase_request.name','like','%'.$name.'%')
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }
@@ -288,6 +293,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }
@@ -332,6 +338,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -346,6 +353,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }
@@ -361,6 +369,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('MGudang.cidp', $arrmanager)
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }
@@ -407,6 +416,7 @@ class ApprovedPRController extends Controller
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -422,6 +432,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }
@@ -438,6 +449,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
+                ->orderByDesc('purchase_request.tanggalDibuat')
                 ->paginate(10);
             //->get();
         }

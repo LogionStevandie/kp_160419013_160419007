@@ -27,6 +27,7 @@ class StokAwalController extends Controller
             ->leftjoin('Unit','Item.UnitID','=','Unit.UnitID')
             ->leftjoin('MGudang','StokAwal.MGudangID','=','MGudang.MGudangID')
             ->where('StokAwal.hapus',0)
+            ->orderByDesc('StokAwal.tanggalDibuat')
             ->paginate(10);
         //dd($data);
         return view('master.note.stokAwal.index',[
@@ -309,6 +310,7 @@ class StokAwalController extends Controller
             ->leftjoin('MGudang','StokAwal.MGudangID','=','MGudang.MGudangID')
             ->where('StokAwal.hapus',0)
             ->where('StokAwal.name','like','%'.$name.'%')
+            ->orderByDesc('StokAwal.tanggalDibuat')
             ->paginate(10);
         
         return view('master.note.stokAwal.index',[
@@ -328,6 +330,7 @@ class StokAwalController extends Controller
             ->leftjoin('MGudang','StokAwal.MGudangID','=','MGudang.MGudangID')
             ->where('StokAwal.hapus',0)
             ->whereBetween('StokAwal.tanggalDibuat',[$date[0], $date[1]])
+            ->orderByDesc('StokAwal.tanggalDibuat')
             ->paginate(10);
         
         return view('master.note.stokAwal.index',[
@@ -350,6 +353,7 @@ class StokAwalController extends Controller
             ->where('StokAwal.hapus',0)
             ->where('StokAwal.name','like','%'.$name.'%')
             ->whereBetween('StokAwal.tanggalDibuat',[$date[0], $date[1]])
+            ->orderByDesc('StokAwal.tanggalDibuat')
             ->paginate(10);
         
         return view('master.note.stokAwal.index',[

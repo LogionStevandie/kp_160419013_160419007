@@ -36,6 +36,7 @@ class PurchaseOrderController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)  
             //->where('MPerusahaan.MPerusahaanID', $getPerusahaan[0]->MPerusahaanID)  
+            ->orderByDesc('purchase_order.tanggalDibuat')
             ->paginate(10);
         //->get();
 
@@ -242,13 +243,84 @@ class PurchaseOrderController extends Controller
     public function show(PurchaseOrder $purchaseOrder)
     {
         //
+         $user = Auth::user();
+        
+        $dataSupplier = DB::table('MSupplier')//
+            ->get();
+
+        $dataPayment = DB::table('PaymentTerms')//
+            ->select('PaymentTerms.*', 'Payment.Name as PaymentName', 'Payment.Deskripsi as PaymentDeskripsi')
+            ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
+            ->get();
+
+        $dataBarang = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->where('Item.Hapus',0)
+            ->get();
+
+        //data Purchase Request yang disetujui
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name as prName','Item.ItemName as ItemName','Unit.Name as UnitName') //'purchase_order_detail.jumlah as podJumlah')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            //->leftjoin('purchase_order_detail','purchase_request_detail.id','=','purchase_order_detail.idPurchaseRequestDetail')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+        //dd($dataPurchaseRequestDetail);
         $dataDetail = DB::table('purchase_order_detail')
+            ->select('purchase_order_detail.*','Item.ItemName as itemName','Tax.TaxPercent')
+            //->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
+            ->leftjoin('Tax', 'purchase_order_detail.idTax','=','Tax.TaxID')
+            ->leftjoin('Item','purchase_order_detail.idItem','=','Item.ItemID')
             ->where('purchase_order_detail.idPurchaseOrder', '=', $purchaseOrder->id)
             ->get();
-        return view('master.PurchaseOrder.detail',[
-            'purchaseOrder' => $purchaseOrder,
-            'dataDetail' => $dataDetail,
-        ]);
+        //dd($dataDetail);
+
+        $dataDetailBarang = DB::table('purchase_order_detail')
+            ->select('purchase_order_detail.*','Item.ItemName as itemName','Tax.TaxPercent')
+            //->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
+            ->leftjoin('Tax', 'purchase_order_detail.idTax','=','Tax.TaxID')
+            ->leftjoin('Item','purchase_order_detail.idItem','=','Item.ItemID')
+            ->where('purchase_order_detail.idPurchaseOrder', '!=', $purchaseOrder->id)
+            ->get();
+        $dataTax=DB::table('Tax')
+            ->select('Tax.*')
+            ->get();
+
+        $dataPerusahaan =DB::table('MPerusahaan')//
+            ->get();
+
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->get();
+
+            
+        
+            return view('master.PurchaseOrder.detail',[
+                'purchaseOrder'=>$purchaseOrder,
+                'dataDetail'=>$dataDetail,
+                'dataSupplier' => $dataSupplier,
+                'dataPayment' => $dataPayment,
+                'dataBarang' => $dataBarang,
+                'dataTax' => $dataTax,
+                'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+                'dataPurchaseRequest' => $dataPurchaseRequest,
+                'dataPerusahaan' => $dataPerusahaan,
+                'dataDetailBarang' => $dataDetailBarang,
+            ]);
+        
     }
 
     /**
@@ -612,6 +684,7 @@ class PurchaseOrderController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)  
             ->where('purchase_order.name','like', '%'.$name.'%')  
+            ->orderByDesc('purchase_order.tanggalDibuat')
             ->paginate(10);
         //->get();
 
@@ -641,6 +714,7 @@ class PurchaseOrderController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp','=','MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus','=', 0)
             ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
+            ->orderByDesc('purchase_order.tanggalDibuat')
             ->paginate(10);
         //->get();
 
@@ -672,6 +746,7 @@ class PurchaseOrderController extends Controller
             ->where('purchase_order.hapus','=', 0)
             ->where('purchase_order.name','like', '%'.$name.'%') 
             ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
+            ->orderByDesc('purchase_order.tanggalDibuat')
             ->paginate(10);
         //->get();
 
