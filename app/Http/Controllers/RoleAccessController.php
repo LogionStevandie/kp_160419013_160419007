@@ -129,7 +129,7 @@ class RoleAccessController extends Controller
     {
         $name=$request->input('searchname');
 
-        $data = DB::table('roles')->where('name','like','%'.$name.'%')->get();
+        $data = DB::table('roles')->where('name','like','%'.$name.'%')->paginate(10);
         $dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->paginate(10);

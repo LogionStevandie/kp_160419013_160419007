@@ -24,7 +24,7 @@ Tambah item
     <form action="{{route('item.store')}}" method="POST" >
         @csrf
         <div class="card-body">
-              <div class="form-group invisible">
+              <div class="form-group ">
                              <label for="title">Tipe item</label>
                             <select name="typeItem" class="form-control">
                                     <option value="">--Pilih Tipe Item--</option>
@@ -68,7 +68,7 @@ Tambah item
                            value="{{old('note','')}}" maxlength="256">
                         </div>
 
-                           <div class="form-group invisible" >
+                           <div class="form-group " >
                             <label for="active">Bisa dibeli</label><br>
                             <div class="form-check form-check-inline">
                                 <input  checked class="form-check-input" type="radio" name="CanBePurchased" value="1"{{'1' == old('CanBePurchased','')? 'checked' :'' }}>
@@ -80,7 +80,7 @@ Tambah item
                             </div><br>
                         </div>
 
-                         <div class="form-group invisible">
+                         <div class="form-group ">
                             <label for="active">Bisa dijual</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="CanBeSell" value="1"{{'1' == old('CanBeSell','')? 'checked' :'' }}>
@@ -92,7 +92,7 @@ Tambah item
                             </div><br>
                         </div>
 
-                         <div class="form-group invisible">
+                         <div class="form-group ">
                             <label for="title">Item Tracing</label>
                             <select name="itemTracing" class="form-control">
                                     <option value="">--Pilih Tracing Item--</option>
@@ -103,10 +103,10 @@ Tambah item
                         </div>
 
                       
-                         <div class="form-group invisible">
+                         <div class="form-group ">
                             <label for="active">Memiliki tanggal kadaluarsa</label><br>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="expiredDate" value="1"{{'1' == old('HaveExpiredDate','')? 'checked' :'' }}>
+                                <input checked class="form-check-input" type="radio" name="expiredDate" value="1"{{'1' == old('HaveExpiredDate','')? 'checked' :'' }}>
                                 <label class="form-check-label" for="inlineRadio1">Ya</label>
                             </div>
                             <div class="form-check form-check-inline">
@@ -116,14 +116,14 @@ Tambah item
                         </div>
                        
         
-                        <div class="form-group invisible">
+                        <div class="form-group ">
                             <label for="active">Untuk Diproduksi</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="RoutesToManufactured" value="1"{{'1' == old('RoutesToManufactured','')? 'checked' :'' }}>
                                 <label class="form-check-label" for="inlineRadio1">Ya</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="RoutesToManufactured" value="0"{{'0'== old('RoutesToManufactured','')? 'checked' :'' }}>
+                                <input checked class="form-check-input" type="radio" name="RoutesToManufactured" value="0"{{'0'== old('RoutesToManufactured','')? 'checked' :'' }}>
                                 <label class="form-check-label" for="inlineRadio2">Tidak</label>
                             </div><br>
                         </div>
@@ -138,3 +138,4 @@ Tambah item
     </form>
 </div>
 @endsection
+

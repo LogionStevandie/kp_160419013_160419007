@@ -39,7 +39,7 @@ Route::resource('role', 'App\Http\Controllers\RoleController');
 Route::get('/rolee/searchname/',[App\Http\Controllers\RoleController::class, 'searchRoleName']); //cobak gini ta
 
 Route::resource('roleAccess', 'App\Http\Controllers\RoleAccessController');
-
+Route::get('/roleAccesse/searchname/',[App\Http\Controllers\RoleAccessController::class, 'searchRoleName']); 
 
 //SubMenu (ex:barang_tambah, barang_edit, npp_tambah, po_tambah, dll   nyimpen id menu) 
 //Route::resource('submenu', 'App\Http\Controllers\SubMenuController');
@@ -131,7 +131,7 @@ Route::get('/msuppliere/searchname/',[App\Http\Controllers\MSupplierController::
 Route::get('/msuppliere/searchalamat/',[App\Http\Controllers\MSupplierController::class, 'searchSupplierName']);
 Route::get('/msuppliere/searchketerangan/',[App\Http\Controllers\MSupplierController::class, 'searchSupplierName']);
 Route::resource('infoSupplier', 'App\Http\Controllers\InfoSupplierController');//selese
-Route::get('/infoSuppliere/searchname/',[App\Http\Controllers\InfoSupplierController::class, 'searchInfoSupplierName']);//cobak gini ta
+Route::get('/infoSuppliere/searchname/',[App\Http\Controllers\InfoSupplierController::class, 'searchName']);//cobak gini ta
 //mGudang
 Route::resource('mCurrency', 'App\Http\Controllers\MCurrencyController');
 Route::get('/mCurrencye/searchname/',[App\Http\Controllers\MCurrencyController::class, 'searhMCurrencyName']);//cobak gini ta

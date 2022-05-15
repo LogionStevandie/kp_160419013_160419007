@@ -28,7 +28,7 @@ Edit item
            @csrf
            @method('PUT')
 
-              <div class="form-group invisible">
+              <div class="form-group ">
                             <label for="title">Tipe item</label>
                             <select name="typeItem" class="form-control" disable>
                                     <option value="">--Pilih Tipe Item--</option>
@@ -83,7 +83,7 @@ Edit item
                            value="{{old('note',$item->Notes)}}" maxlength="256">
                         </div>
 
-                        <div class="form-group invisible">
+                        <div class="form-group ">
                             <label for="active">Bisa dibeli</label><br>
                             <div class="form-check form-check-inline">
                                 <input checked class="form-check-input" type="radio" name="CanBePurchased" value="1"{{'1' == old('CanBePurchased',$item->CanBePurchased)? 'checked' :'' }}>
@@ -95,7 +95,7 @@ Edit item
                             </div><br>
                         </div>
 
-                         <div class="form-group invisible">
+                         <div class="form-group ">
                             <label for="active">Bisa dijual</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="CanBeSell" value="1"{{'1' == old('CanBeSell',$item->CanBeSell)? 'checked' :'' }}>
@@ -109,7 +109,7 @@ Edit item
 
                         
 
-                         <div class="form-group invisible">
+                         <div class="form-group ">
                             <label for="title">Item Tracing</label>
                             <select name="itemTracing" class="form-control">
                                     <option value="">--Pilih Tracing Item--</option>
@@ -124,7 +124,7 @@ Edit item
                         </div>
 
                       
-                         <div class="form-group invisible">
+                         <div class="form-group ">
                             <label for="active">Memiliki tanggal kadaluarsa</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="expiredDate" value="1"{{'1' == old('HaveExpiredDate',$item->HaveExpiredDate)? 'checked' :'' }}>
@@ -137,7 +137,7 @@ Edit item
                         </div>
                        
         
-                        <div class="form-group invisible">
+                        <div class="form-group ">
                             <label for="active">Untuk Diproduksi</label><br>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="radio" name="RoutesToManufactured" value="1"{{'1' == old('RoutesToManufactured',$item->RoutesToManufactured)? 'checked' :'' }}>
