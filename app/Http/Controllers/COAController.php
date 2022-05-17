@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\COA;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class COAController extends Controller
 {
@@ -148,7 +148,7 @@ class COAController extends Controller
      * @param  \App\Models\COA  $cOA
      * @return \Illuminate\Http\Response
      */
-    public function destroy(COA $cOA)
+    public function destroy(COA $cOADetail)
     {
         //
         //$cOA->delete();

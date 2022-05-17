@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 class ItemTagValuesController extends Controller
 {
     public function __construct()
@@ -171,7 +171,7 @@ class ItemTagValuesController extends Controller
      * @param  \App\Models\ItemTagValues  $itemTagValues
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ItemTagValues $itemTagValues)
+    public function destroy(Item $itemTagValues)
     {
         //
     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AdjustmentStock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 class AdjustmentStockController extends Controller
 {
     /**
@@ -468,6 +468,7 @@ class AdjustmentStockController extends Controller
     public function searchNameDateAS(Request $request)
     {
         //
+        $name=$request->input('searchname');
         $date=$request->input('dateRangeSearch');
         $user = Auth::user();
         $date = explode("-", $date);

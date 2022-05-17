@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tax;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class TaxController extends Controller
 {

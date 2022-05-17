@@ -510,6 +510,7 @@ Edit Nota Purchase Order
         var taxPercent = parseFloat($("#tax option:selected").attr("taxPercent"));
         var taxId = $("#tax option:selected").val();
         var idBarang = $("#barang option:selected").attr("idPr");
+        var totalHarga= 0;
         //alert(taxPercent);
 
         var indexSama = null;
@@ -555,10 +556,9 @@ Edit Nota Purchase Order
             
             var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
 
-            totalHarga= ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+            totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * ((100.0+taxPercent) / 100.0);
             $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
             $('#TotalHargaKeranjang').html("Rp." +formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
-
 
             $("#pReq").val("").change();
             $("#barang").val("").change();
@@ -657,7 +657,7 @@ Edit Nota Purchase Order
         tambahCombo += '<select require name="barang[]" class="form-control" id="barang'+totalTambah+'">\n';
         tambahCombo += '<option value="">--Pilih barang--</option>\n';
         tambahCombo += '@foreach($dataBarang as $key => $data)\n';
-        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
+        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? "selected" :"" }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
         tambahCombo += '@endforeach\n';
         tambahCombo += '</select>\n';
         tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';

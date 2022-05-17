@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\COADetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 
 class COADetailController extends Controller

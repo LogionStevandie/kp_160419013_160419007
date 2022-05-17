@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SuratJalan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class SuratJalanController extends Controller
 {
@@ -366,6 +366,7 @@ class SuratJalanController extends Controller
     public function destroy(SuratJalan $suratJalan)
     {
         //
+        $user = Auth::user();
         DB::table('surat_jalan')
             ->where('id', $suratJalan->id)
             ->update(array(

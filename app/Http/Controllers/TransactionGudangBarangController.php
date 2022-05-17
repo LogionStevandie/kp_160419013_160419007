@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TransactionGudangBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionGudangBarangController extends Controller
 {
@@ -224,7 +224,7 @@ class TransactionGudangBarangController extends Controller
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
         for($i = 0; $i < count($data['itemId']); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
-                'transactionID' => $idpo,
+                'transactionID' => $idItemInventoryTransaction,
                 'purchaseOrderDetailID' => $data['podID'][$i],
                 'idItem' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],
@@ -552,7 +552,7 @@ class TransactionGudangBarangController extends Controller
             ->get();
 
         $dataDetailTotal = DB::table('transaction_gudang_barang_detail')
-            ->where('idPurchaseOrder', $purchaseOrder->id)
+            ->where('idPurchaseOrder', $dataTransactionID->id)
             ->get();
 
         //pengurangan jumlah proses lalu diupdate
@@ -570,7 +570,7 @@ class TransactionGudangBarangController extends Controller
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
         for($i = 0; $i < count($data['itemId']); $i++){
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(array(
-                'transactionID' => $idpo,
+                'transactionID' => $transactionGudangBarang->id,
                 'purchaseOrderDetailID' => $data['podID'][$i],
                 'idItem' => $data['itemId'][$i],
                 'jumlah' => $data['itemJumlah'][$i],

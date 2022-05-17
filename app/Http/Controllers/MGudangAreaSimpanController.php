@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MGudangAreaSimpan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class MGudangAreaSimpanController extends Controller
 {

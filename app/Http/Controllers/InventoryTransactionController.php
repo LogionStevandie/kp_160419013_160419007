@@ -7,7 +7,7 @@ use App\Models\MGudang;
 use App\Models\Item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class InventoryTransactionController extends Controller
 {
