@@ -361,4 +361,38 @@ class StokAwalController extends Controller
         ]);
 
     }
+
+    public function print(StokAwal $stokAwal)
+    {
+       //
+        $dataBarang = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+
+        $dataBarangTag = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName','ItemTagValues.ItemTagID')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->join('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+        //dd($dataBarangTag);
+        $dataTag = DB::table('ItemTag')
+            ->get();
+
+        $dataGudang =DB::table('MGudang')
+            ->select('MGudang.*','MPerusahaan.cname as perusahaanName','MPerusahaan.Gambar as perusahaanGambar')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->get();  
+        
+        return view('master.note.stokAwal.detail',[
+            'dataBarang' => $dataBarang,
+            'dataBarangTag' => $dataBarangTag,
+            'dataTag' => $dataTag,
+            'stokAwal' => $stokAwal,
+            'dataGudang' => $dataGudang,
+        ]);
+    }
 }

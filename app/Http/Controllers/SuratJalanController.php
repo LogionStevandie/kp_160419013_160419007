@@ -451,4 +451,70 @@ class SuratJalanController extends Controller
             'dataDetail' => $dataDetail,
         ]);
     }
+
+    public function print(SuratJalan $suratJalan)
+    {
+        //
+          $dataGudang =DB::table('MGudang')
+            ->select('MGudang.*','MPerusahaan.cname as perusahaanName','MPerusahaan.Gambar as perusahaanGambar')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->get();  
+
+
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->get();
+
+        $dataBarang = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+
+        $dataBarangTag = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName','ItemTagValues.ItemTagID')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->join('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+        //dd($dataBarangTag);
+        $dataTag = DB::table('ItemTag')
+            ->get();
+
+         $dataTotalDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*', 'purchase_request_detail.id as idPRD','Item.ItemName as itemName' )
+            ->join('purchase_request_detail', 'surat_jalan_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item', 'surat_jalan_detail.ItemID','=','Item.ItemID')
+            ->where('suratJalanID', $suratJalan->id)
+            ->get();
+        
+        return view('master.note.suratJalan.print',[
+            'dataGudang' => $dataGudang,
+            'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+            'dataPurchaseRequest' => $dataPurchaseRequest,
+            'dataBarang' => $dataBarang,
+            'dataBarangTag' => $dataBarangTag,
+            'dataTag' => $dataTag,
+            'suratJalan' => $suratJalan,
+            'dataTotalDetail' => $dataTotalDetail,
+        ]);
+    }
 }

@@ -106,6 +106,7 @@ Terima Barang Pesanan
                                     <a class="btn btn-default bg-info" href="{{route('terimaBarangPesanan.edit',[$d->id])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
+                                     <a href="/terimaBarangPesanane/print/{{$d->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                                     <form action="{{route('terimaBarangPesanan.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
                                         @csrf
                                         @method('DELETE')

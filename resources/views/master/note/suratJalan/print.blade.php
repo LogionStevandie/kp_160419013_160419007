@@ -73,18 +73,20 @@
                       <table class="table table-bordered">
                                     <thead class="thead-light">
                                         <tr>
-                                        <th scope="col" colspan="3"><h2>TERIMA BARANG SUPPLIER</h2></th>
+                                        <th scope="col" colspan="3"><h2>SURAT JALAN</h2></th>
                                         <th scope="col" colspan="2">
-                                            Tanggal pembuatan : {{$transactionGudangBarang->tanggalDibuat}}<br>
-                                            Tanggal datang : {{$transactionGudangBarang->tanggalDatang}}<br>
+                                            Tanggal pembuatan : {{$suratJalan->tanggalDibuat}}<br>
                                             @foreach($dataGudang as $key => $data)
-                                                @if($data->MGudangID == $transactionGudangBarang->MGudangIDAwal)
-                                                    Gudang penerima :{{$data->cname}}<br>
+                                                @if($data->MGudangID == $suratJalan->MGudangIDAwal)
+                                                    Gudang awal :{{$data->cname}}<br>
                                                 @endif
                                             @endforeach
 
-
-
+                                            @foreach($dataGudang as $key => $data)
+                                                @if($data->MGudangID == $suratJalan->MGudangIDTujuan)
+                                                    Gudang Tujuan :{{$data->cname}}<br>
+                                                @endif
+                                            @endforeach
                                         </th>
                                         </tr>
                                     </thead>
@@ -92,29 +94,14 @@
                                         <tr>
                                         <th scope="col"colspan="6"cellspacing="3" >
 
-
-                                        
-                                 
-                                          @foreach($dataSupplier as $key => $data)
-                                            @if($data->SupplierID == $transactionGudangBarang->SupplierID)
-                                               Nama Supplier: {{$data->Name}} <br>
-                                            @endif
-                                        @endforeach
-
-                                          @foreach($dataItemTransaction as $key => $data)
-                                            @if($data->ItemTransactionID == $transactionGudangBarang->idItemTransaction)
-                                                Jenis Transaksi :{{$data->Name}} <br>
-                                            @endif
-                                        @endforeach
-
-                                         @foreach($dataPurchaseOrder as $key => $data)
-                                            @if($data->idSupplier == $transactionGudangBarang->SupplierID)
-                                                  @if($data->id == $transactionGudangBarang->PurchaseOrderID)
-                                                        Data Order pembelian :{{$data->name}} - {{$data->tanggalDibuat}}<br>
+                                         @foreach($dataPurchaseRequest as $key => $data)
+                                            @if($data->MGudangID == $suratJalan->MGudangIDTujuan)
+                                                  @if($data->id == $suratJalan->PurchaseRequestID)
+                                                        Data Permintaan pembelian :{{$data->name}} - {{$data->tanggalDibuat}}<br>
                                                   @endif
                                             @endif
                                           @endforeach
-                           
+
 
                                         </th>
                                         </tr>
@@ -122,10 +109,12 @@
                                       <thead class="thead-light">
                                         <tr>
                                         <th scope="col"colspan="6"cellspacing="2" >
-                                          Keterangan kendaraan: {{$transactionGudangBarang->keteranganKendaraan}} <br>
-                                          Keterangan nomor polisi: {{$transactionGudangBarang->keteranganNomorPolisi}} <br>
-                                          Keterangan pemudi: {{$transactionGudangBarang->keteranganPemudi}} <br>
-                                          Keterangan transaksi: {{$transactionGudangBarang->keteranganTransaksi}}
+                                          Keterangan kendaraan: {{$suratJalan->keteranganKendaraan}} <br>
+                                          Keterangan nomor polisi: {{$suratJalan->keteranganNomorPolisi}} <br>
+                                          Keterangan pemudi: {{$suratJalan->keteranganPemudi}} <br>
+                                          Keterangan transaksi: {{$suratJalan->keteranganTransaksi}}<br>
+                                          Keterangan Gudang Tujuan: {{$suratJalan->keteranganGudangTujuan}}<br>
+                                          Keterangan Penerima: {{$suratJalan->keteranganPenerima}}
                                         </th>
                                         </tr>
                                     </thead>
@@ -148,7 +137,6 @@
                                                 <td>{{$data->keterangan}}</td>
                                             </tr>
                                         @endforeach  
-                                        
                                     </tbody>
 
                         </table>

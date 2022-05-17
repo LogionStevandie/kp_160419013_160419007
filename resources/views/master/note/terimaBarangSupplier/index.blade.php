@@ -100,6 +100,7 @@ Terima Barang Supplier
                                 <a class="btn btn-default bg-info" href="{{route('terimaBarangSupplier.edit',[$d->id])}}">
                                     <i class="fas fa-edit"></i>
                                 </a>
+                                 <a href="/terimaBarangSuppliere/print/{{$d->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                                 <form action="{{route('terimaBarangSupplier.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
                                     @csrf
                                     @method('DELETE')

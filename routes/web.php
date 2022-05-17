@@ -170,18 +170,23 @@ Route::resource('transactionGudang','App\Http\Controllers\TransactionGudangBaran
 Route::resource('kirimBarangPesanan','App\Http\Controllers\KirimBarangPesananController');
 Route::get('kirimBarangPesanane/searchname/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchTGBName']);
 Route::get('kirimBarangPesanane/searchdate/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchTGBDate']);
+Route::get('kirimBarangPesanane/print/{kirimBarangPesanan}',[App\Http\Controllers\KirimBarangPesananController::class, 'print']);
 
 Route::resource('terimaBarangPesanan','App\Http\Controllers\TerimaBarangPesananController');
-Route::get('terimaBarangPesanane/searchname/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchTGBName']);
-Route::get('terimaBarangPesanane/searchdate/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchTGBDate']);
+Route::get('terimaBarangPesanane/searchname/',[App\Http\Controllers\TerimaBarangPesananController::class, 'searchTGBName']);
+Route::get('terimaBarangPesanane/searchdate/',[App\Http\Controllers\TerimaBarangPesananController::class, 'searchTGBDate']);
+Route::get('terimaBarangPesanane/print/{terimaBarangPesanan}',[App\Http\Controllers\TerimaBarangPesananController::class, 'print']);
+
 
 Route::resource('terimaBarangSupplier','App\Http\Controllers\TerimaBarangSupplierController');
-Route::get('terimaBarangSuppliere/searchname/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchTGBName']);
-Route::get('terimaBarangSuppliere/searchdate/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchTGBDate']);
+Route::get('terimaBarangSuppliere/searchname/',[App\Http\Controllers\TerimaBarangSupplierController::class, 'searchTGBName']);
+Route::get('terimaBarangSuppliere/searchdate/',[App\Http\Controllers\TerimaBarangSupplierController::class, 'searchTGBDate']);
+Route::get('terimaBarangSuppliere/print/{terimaBarangSupplier}',[App\Http\Controllers\TerimaBarangSupplierController::class, 'print']);
 
 Route::resource('suratJalan','App\Http\Controllers\SuratJalanController');
-Route::get('suratJalane/searchname/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchSuratJalanName']);
-Route::get('suratJalane/searchdate/',[App\Http\Controllers\KirimBarangPesananController::class, 'searchSuratJalanDate']);
+Route::get('suratJalane/searchname/',[App\Http\Controllers\SuratJalanController::class, 'searchSuratJalanName']);
+Route::get('suratJalane/searchdate/',[App\Http\Controllers\SuratJalanController::class, 'searchSuratJalanDate']);
+Route::get('suratJalane/print/{suratJalan}',[App\Http\Controllers\SuratJalanController::class, 'print']);
 
 Route::resource('inventoryTransaction','App\Http\Controllers\InventoryTransactionController');
 Route::get('/kartuStok/searchgudang/',[App\Http\Controllers\InventoryTransactionController::class, 'searchIndexByGudang']);
@@ -192,10 +197,12 @@ Route::get('/kartuStoke/report/{idGudang}/{idItem}',[App\Http\Controllers\Invent
 Route::resource('stokAwal','App\Http\Controllers\StokAwalController');
 Route::get('/stokAwale/searchname/',[App\Http\Controllers\StokAwalController::class, 'searchStokAwalName']);
 Route::get('/stokAwale/searchdate/',[App\Http\Controllers\StokAwalController::class, 'searchStokAwalNameDate']);
+Route::get('stokAwale/print/{stokAwal}',[App\Http\Controllers\StokAwalController::class, 'print']);
 
 Route::resource('adjustmentStock','App\Http\Controllers\AdjustmentStockController');  ///Item Adjustment Stock
-Route::get('/adjustmentStocke/searchname/',[App\Http\Controllers\StokAwalController::class, 'searchNameAS']);
-Route::get('/adjustmentStocke/searchdate/',[App\Http\Controllers\StokAwalController::class, 'searchDateAS']);
-Route::get('/adjustmentStocke/searchnamedate/',[App\Http\Controllers\StokAwalController::class, 'searchNameDateAS']);
+Route::get('/adjustmentStocke/searchname/',[App\Http\Controllers\AdjustmentStockController::class, 'searchNameAS']);
+Route::get('/adjustmentStocke/searchdate/',[App\Http\Controllers\AdjustmentStockController::class, 'searchDateAS']);
+Route::get('/adjustmentStocke/searchnamedate/',[App\Http\Controllers\AdjustmentStockController::class, 'searchNameDateAS']);
+Route::get('adjustmentStocke/print/{adjustmentStock}',[App\Http\Controllers\AdjustmentStockController::class, 'print']);
 
 Route::resource('tagValuesMGudang', 'App\Http\Controllers\MGudangValuesController');

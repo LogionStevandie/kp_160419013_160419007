@@ -586,12 +586,12 @@ class TerimaBarangPesananController extends Controller
      * @param  \App\Models\TransactionGudangBarang  $transactionGudangBarang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TransactionGudangBarang $transactionGudangBarang)
+    public function destroy(TransactionGudangBarang $terimaBarangPesanan)
     {
         //
         $user = Auth::user();
         DB::table('transaction_gudang_barang')
-            ->where('id', $transactionGudangBarang['id'])
+            ->where('id', $terimaBarangPesanan['id'])
             ->update(array(
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
@@ -680,6 +680,104 @@ class TerimaBarangPesananController extends Controller
         return view('master.note.transactionGudang.index',[
             'data' => $data,
             'dataDetail' => $dataDetail,
+        ]);
+    }
+    public function print(TransactionGudangBarang $terimaBarangPesanan)
+    {
+        $user = Auth::user();
+
+
+        $dataSupplier = DB::table('MSupplier')
+            ->get();
+
+        $dataBarang = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+
+        $dataBarangTag = DB::table('Item')
+            ->select('Item.*', 'Unit.Name as unitName','ItemTagValues.ItemTagID')
+            ->join('Unit','Item.UnitID', '=', 'Unit.UnitID')
+            ->join('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
+            ->where('Item.Hapus',0)
+            ->get();
+        //dd($dataBarangTag);
+        $dataTag = DB::table('ItemTag')
+            ->get();
+
+        
+        $dataGudang =DB::table('MGudang')
+            ->select('MGudang.*','MPerusahaan.cname as perusahaanName','MPerusahaan.Gambar as perusahaanGambar')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->get();  
+
+        $dataItemTransaction = DB::table("ItemTransaction")->get();
+        
+        $dataTotalDetail = DB::table('transaction_gudang_barang_detail')
+            ->select('transaction_gudang_barang_detail.*', 'purchase_request_detail.id as idPRD','Item.ItemName as itemName' )
+            ->join('purchase_request_detail', 'transaction_gudang_barang_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item', 'transaction_gudang_barang_detail.ItemID','=','Item.ItemID')
+            ->where('transaction_gudang_barang_detail.transactionID', $terimaBarangPesanan->id)
+            ->get();
+        //dd($dataTotalDetail);
+        
+        
+
+        //data Purchase Request yang disetujui
+        $suratJalan = DB::table('surat_jalan')
+            ->where('hapus', 0)
+            ->get();
+
+        $suratJalanDetail = DB::table('surat_jalan_detail')
+            ->select('surat_jalan_detail.*','Item.ItemName as itemName','Item.ItemID as ItemID', 'Unit.Name as unitName', 'purchase_request_detail.idPurchaseRequest as idPR')
+            ->join('surat_jalan', 'surat_jalan_detail.suratJalanID','=','surat_jalan.id')
+            ->join('purchase_request_detail', 'surat_jalan_detail.PurchaseRequestDetailID','=','purchase_request_detail.id')
+            ->join('Item','surat_jalan_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('surat_jalan.hapus', 0)
+            ->get();  
+
+        $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','purchase_request.name','Item.ItemName as ItemName','Unit.Name as UnitName')//
+            ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=','purchase_request.id')
+            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Unit','Item.UnitID','=','Unit.UnitID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah'))//errorr disini
+            ->get();
+        //dd($dataPurchaseRequestDetail);
+        
+        $dataPurchaseRequest = DB::table('purchase_request')
+            ->select('purchase_request.*','MPerusahaan.MPerusahaanID as cidp')
+            ->join('MGudang','purchase_request.MGudangID','=','MGudang.MGudangID')
+            ->join('MPerusahaan','MGudang.cidp','=','MPerusahaan.MPerusahaanID')
+            ->where('purchase_request.approved', 1)
+            ->where('purchase_request.approvedAkhir', 1)
+            ->where('purchase_request.hapus', 0)
+            ->where('purchase_request.proses', 1)
+            ->get();
+
+        
+        
+
+        return view('master.note.terimaBarangPesanan.print',[
+            'dataSupplier' => $dataSupplier,
+            'dataBarangTag' => $dataBarangTag,
+            'dataBarang' => $dataBarang,
+            'dataTag' => $dataTag,
+            'dataGudang' => $dataGudang,
+            'dataItemTransaction' => $dataItemTransaction,
+            'suratJalan' => $suratJalan,
+            'suratJalanDetail' => $suratJalanDetail,
+            'dataPurchaseRequestDetail' => $dataPurchaseRequestDetail,
+            'dataPurchaseRequest' => $dataPurchaseRequest,
+            'transactionGudangBarang' => $terimaBarangPesanan,
+            'dataTotalDetail' => $dataTotalDetail,
         ]);
     }
 }
