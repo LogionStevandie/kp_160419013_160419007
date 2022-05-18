@@ -30,6 +30,9 @@ class CheckPRController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
+            ->where('purchase_request.approved','=', 1)    
+            ->where('purchase_request.approvedAkhir','=', 1)    
+            ->where('purchase_request.proses','=', 1)    
             ->orderByDesc('purchase_request.tanggalDibuat')
             ->paginate(10);
 
@@ -37,7 +40,7 @@ class CheckPRController extends Controller
                     ->where('UserIDManager1', $user->id)
                     ->orWhere('UserIDManager2', $user->id)
                     ->get();
-        return view('master.check.PurchaseRequest.index',[
+        return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
 
@@ -101,17 +104,20 @@ class CheckPRController extends Controller
      * @param  \App\Models\PurchaseRequest  $purchaseRequest
      * @return \Illuminate\Http\Response
      */
-    public function edit(PurchaseRequest $purchaseRequest)
+    public function edit(PurchaseRequest $checkPurchaseRequest)
     {
         //\\
+        $dataGudang = DB::table('MGudang')
+            ->get();
         $prd = DB::table('purchase_request_detail')
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->get();
-        
-        if($purchaseRequest->approved == 2 && $purchaseRequest->approvedAkhir == 2){
-            return view('master.check.PurchaseRequest.index',[
-                'purchaseRequest' => $purchaseRequest,
+       // dd($checkPurchaseRequest);
+        if($checkPurchaseRequest->approved == 1 && $checkPurchaseRequest->approvedAkhir == 1){
+            return view('master.checkPurchaseRequest.check',[
+                'purchaseRequest' => $checkPurchaseRequest,
                 'prd' => $prd,
+                'dataGudang' => $dataGudang,
             ]);
         }
         else{
@@ -127,30 +133,33 @@ class CheckPRController extends Controller
      * @param  \App\Models\PurchaseRequest  $purchaseRequest
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, PurchaseRequest $purchaseRequest)
+    public function update(Request $request, PurchaseRequest $checkPurchaseRequest)
     {
         //
         $data = $request->collect();
         $user = Auth::user();
         //dd($approvedPurchaseRequest['id']);
-        if($purchaseRequest['proses'] == 1){
+        if($checkPurchaseRequest['proses'] == 1){
             DB::table('purchase_request')
-            ->where('id', $purchaseRequest['id'])
+            ->where('id', $checkPurchaseRequest['id'])
             ->update(array(
-                'proses' => $data['proses'],
-                'updated_by' => $data['approve'],
+                'updated_on' => date("Y-m-d h:i:sa"),
+                'updated_by' => $user->id,
             ));
 
             if($data['proses'] == 2){
+                //selesai
                 DB::table('purchase_request')
-                ->where('id', $purchaseRequest['id'])
+                ->where('id', $checkPurchaseRequest['id'])
                 ->update(array(
                     'proses' => 2,
+                    'keteranganProses' => $data['keterangan'],
                 ));
             }
             else{
+                //selesai
                 DB::table('purchase_request')
-                ->where('id', $purchaseRequest['id'])
+                ->where('id', $checkPurchaseRequest['id'])
                 ->update(array(
                     'proses' => 1,
                 ));
@@ -190,12 +199,15 @@ class CheckPRController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
+            ->where('purchase_request.approved','=', 1)    
+            ->where('purchase_request.approvedAkhir','=', 1)    
+            ->where('purchase_request.proses','=', 1)   
             ->where('purchase_request.name','like','%'.$name.'%')
                 ->orderByDesc('purchase_request.tanggalDibuat')
                 //->paginate(10);
             ->paginate(10);
 
-        return view('master.check.PurchaseRequest.index',[
+        return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
 
@@ -219,12 +231,15 @@ class CheckPRController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
+            ->where('purchase_request.approved','=', 1)    
+            ->where('purchase_request.approvedAkhir','=', 1)    
+            ->where('purchase_request.proses','=', 1)   
             ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
                 ->orderByDesc('purchase_request.tanggalDibuat')
                 //->paginate(10);
             ->paginate(10);
 
-        return view('master.check.PurchaseRequest.index',[
+        return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
 
@@ -249,13 +264,16 @@ class CheckPRController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID','=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus','=', 0)    
+            ->where('purchase_request.approved','=', 1)    
+            ->where('purchase_request.approvedAkhir','=', 1)    
+            ->where('purchase_request.proses','=', 1)   
             ->where('purchase_request.name','like','%'.$name.'%')
             ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
                 ->orderByDesc('purchase_request.tanggalDibuat')
                 //->paginate(10);
             ->paginate(10);
 
-        return view('master.check.PurchaseRequest.index',[
+        return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
 

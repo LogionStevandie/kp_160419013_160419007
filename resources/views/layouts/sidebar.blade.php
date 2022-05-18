@@ -125,6 +125,8 @@
                           </p>
                         </a>
                       </li>
+
+
               
             </ul>
           </li>
@@ -154,6 +156,17 @@
             </a>
           </li>
           <!-- END Permintaan-->
+
+          <li class="nav-header">CEK SELESAI NOTA</li>
+          <li class="nav-item">
+            <a href="{{route('checkPurchaseRequest.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-columns"></i>
+              <p>
+                Permintaan Pembelian
+              </p>
+            </a>
+          </li>
+       
 
             <!--Permintaan-->
           <li class="nav-header">PENYESUAIAN STOK BARANG</li>

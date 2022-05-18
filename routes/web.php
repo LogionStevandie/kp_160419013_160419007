@@ -207,3 +207,9 @@ Route::get('/adjustmentStocke/searchnamedate/',[App\Http\Controllers\AdjustmentS
 Route::get('adjustmentStocke/print/{adjustmentStock}',[App\Http\Controllers\AdjustmentStockController::class, 'print']);
 
 Route::resource('tagValuesMGudang', 'App\Http\Controllers\MGudangValuesController');
+
+
+Route::resource('checkPurchaseRequest', 'App\Http\Controllers\CheckPRController');
+Route::get('checkPurchaseRequeste/searchname/',[App\Http\Controllers\CheckPRController::class, 'searchNamePR']);
+Route::get('checkPurchaseRequeste/searchdate/',[App\Http\Controllers\CheckPRController::class, 'searchDatePR']);
+Route::get('checkPurchaseRequeste/searchnamedate/',[App\Http\Controllers\CheckPRController::class, 'searchNameDatePR']);
