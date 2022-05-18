@@ -455,7 +455,7 @@ Edit Nota Permintaan Pembelian
 
     }
   });
-  /* Tanpa Rupiah */
+ /* Tanpa Rupiah */
   var tanpa_rupiah = document.getElementById('tanpa-rupiah');
   tanpa_rupiah.addEventListener('keyup', function(e) {
     $('#hargaBarang').val(this.value.replaceAll('.', '')); //aku nambah dewe buat simpen di hidden
