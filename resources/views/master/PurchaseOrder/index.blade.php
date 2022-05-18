@@ -104,13 +104,43 @@ Purchase Order
                                     <a class="btn btn-info btn-sm" href="{{route('purchaseOrder.edit',[$purchaseOrder->id])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form action="{{route('purchaseOrder.destroy',[$purchaseOrder->id])}}" method="POST" class="btn btn-responsive">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-danger btn-sm" action="{{route('purchaseOrder.destroy',[$purchaseOrder->id])}}">
-                                            <i class="fas fa-trash"></i> 
-                                        </button>
-                                    </form>
+                                       <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$purchaseOrder->id}}">
+                                     <i class="fas fa-trash"></i> 
+                                    </button>
+
+                                     <div class="modal fade" id="delete_{{$purchaseOrder->id}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Konfirmasi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> 
+                                                </div>
+                                               
+                                                <div class="modal-body">
+                                                     Apakah anda yakin mau menghapus "{{$purchaseOrder->name}}"
+                                                </div>
+                                            
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                          <form action="{{route('purchaseOrder.destroy',[$purchaseOrder->id])}}" method="POST" class="btn btn-responsive">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-danger btn-sm" action="{{route('purchaseOrder.destroy',[$purchaseOrder->id])}}">
+                                                                Hapus
+                                                            </button>
+                                                        </form>  
+                                                </div>
+                                                
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                     </div>
+
+                                   
                                 @endif
                                 
                                 <a href="/PurchaseOrdere/print/{{$purchaseOrder->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i>Print</a>

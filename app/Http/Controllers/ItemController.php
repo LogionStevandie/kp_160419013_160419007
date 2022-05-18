@@ -133,21 +133,21 @@ class ItemController extends Controller
         $user = Auth::user();
 
         $idItem = DB::table('Item')->insertGetId(array(
-            'ItemTypeID' => $data['typeItem'],//comboBox
+            //'ItemTypeID' => $data['typeItem'],//comboBox
             'ItemName' => $data['nameItem'],
             'UnitID' => $data['itemUnit'],//comboBox
             'ItemCategoryID'=> $data['itemCategory'],//comboBox
             'Notes'=> $data['note'],
-            'CanBeSell'=> $data['CanBeSell'],
-            'CanBePurchased'=> $data['CanBePurchased'],
-            'ItemTracingID'=> $data['itemTracing'],//comboBox
-            'RoutesToManufactured'=> $data['RoutesToManufactured'],
+            'CanBeSell'=> 0,
+            'CanBePurchased'=> 1,
+            //'ItemTracingID'=> $data['itemTracing'],//comboBox
+            //'RoutesToManufactured'=> $data['RoutesToManufactured'],
             'CreatedBy'=> $user->id,//
             'CreatedOn'=> date("Y-m-d h:i:sa"),//
             'UpdatedBy'=> $user->id,//
             'UpdatedOn'=> date("Y-m-d h:i:sa"),//
             'Hapus' => 0,//
-            'HaveExpiredDate' => $data['expiredDate'],
+            //'HaveExpiredDate' => $data['expiredDate'],
             )
         ); 
 
@@ -277,19 +277,19 @@ class ItemController extends Controller
         DB::table('Item')
             ->where('ItemID', $item->ItemID)
             ->update(array(
-                'ItemTypeID' => $data['typeItem'],//comboBox
+                //'ItemTypeID' => $data['typeItem'],//comboBox
                 'ItemName' => $data['nameItem'],
                 'UnitID' => $data['itemUnit'],//comboBox
                 'ItemCategoryID'=> $data['itemCategory'],//comboBox
                 'Notes'=> $data['note'],
-                'CanBeSell'=> $data['CanBeSell'],
-                'CanBePurchased'=> $data['CanBePurchased'],
-                'ItemTracingID'=> $data['itemTracing'],//comboBox
-                'RoutesToManufactured'=> $data['RoutesToManufactured'],
+                //'CanBeSell'=> $data['CanBeSell'],
+                //'CanBePurchased'=> $data['CanBePurchased'],
+                //'ItemTracingID'=> $data['itemTracing'],//comboBox
+                //'RoutesToManufactured'=> $data['RoutesToManufactured'],
                 'UpdatedBy'=> $user->id,//
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),//
                 'Hapus' => 0,//
-                'HaveExpiredDate' => $data['expiredDate'],
+                //'HaveExpiredDate' => $data['expiredDate'],
         ));
 
         /*$dataTagValues = DB::table('ItemTagValues')

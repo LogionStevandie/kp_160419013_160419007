@@ -192,6 +192,7 @@ Route::resource('inventoryTransaction','App\Http\Controllers\InventoryTransactio
 Route::get('/kartuStok/searchgudang/',[App\Http\Controllers\InventoryTransactionController::class, 'searchIndexByGudang']);
 Route::get('/kartuStok/searchLengkap/',[App\Http\Controllers\InventoryTransactionController::class, 'reportLengkap']);
 Route::get('/kartuStoke/report/{idGudang}/{idItem}',[App\Http\Controllers\InventoryTransactionController::class, 'report']);
+Route::get('/kartuStoke/print/{idGudang}/{idItem}',[App\Http\Controllers\InventoryTransactionController::class, 'print']);
 
 
 Route::resource('stokAwal','App\Http\Controllers\StokAwalController');

@@ -621,13 +621,13 @@ class TerimaBarangSupplierController extends Controller
                 ->where('id', $d->purchaseOrderDetailID)
                 ->decrement('jumlahProses', $d->jumlah);
         }
-        DB::table('purchase_order_detail')
+        /*DB::table('purchase_order_detail')
             ->where('id','=', $terimaBarangSupplier->id)
             ->update(array(
                 'UpdatedBy'=> $user->id,
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
                 'hapus' => 1,
-        ));
+        ));*/
 
         DB::table('transaction_gudang_barang_detail')
             ->where('transactionID','=', $terimaBarangSupplier->id)

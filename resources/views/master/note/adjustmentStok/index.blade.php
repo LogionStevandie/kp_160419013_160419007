@@ -80,13 +80,45 @@ Terima Barang Supplier
                                 <a class="btn btn-default bg-info" href="{{route('adjustmentStock.edit',[$d->ItemAdjustmentID])}}">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{route('adjustmentStock.destroy',[$d->ItemAdjustmentID])}}" method="POST" class="btn btn-responsive">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-default bg-danger" action="{{route('adjustmentStock.destroy',[$d->ItemAdjustmentID])}}">
-                                        <i class="fas fa-trash"></i> 
+
+                                 <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$d->ItemAdjustmentID}}">
+                                     <i class="fas fa-trash"></i> 
                                     </button>
-                                </form>  
+
+                                     <div class="modal fade" id="delete_{{$d->ItemAdjustmentID}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Konfirmasi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> 
+                                                </div>
+                                               
+                                                <div class="modal-body">
+                                                     Apakah anda yakin mau menghapus "{{$d->Name}}"
+                                                </div>
+
+                                                  <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                          <form action="{{route('adjustmentStock.destroy',[$d->ItemAdjustmentID])}}" method="POST" class="btn btn-responsive">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button class="btn btn-default bg-danger" action="{{route('adjustmentStock.destroy',[$d->ItemAdjustmentID])}}">
+                                                                <i class="fas fa-trash"></i> 
+                                                            </button>
+                                                        </form>  
+                                                </div>
+                                            
+                                              
+                                                
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                     </div>
+                               
                             </td>
                               
                             </tr>

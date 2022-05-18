@@ -92,13 +92,45 @@ Ketentuan Pembayaran
                                     <a class="btn btn-default bg-info" href="{{route('paymentTerms.edit',[$d->PaymentTermsID])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form method="POST" action="{{route('paymentTerms.destroy',[$d->PaymentTermsID])}}"  class="btn btn-responsive">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button class="btn btn-default bg-danger" href="{{route('paymentTerms.destroy',[$d->PaymentTermsID])}}">
-                                            <i class="fas fa-trash"></i> 
-                                        </button>
-                                    </form>  
+
+                                    <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$d->PaymentTermsID}}">
+                                     <i class="fas fa-trash"></i> 
+                                    </button>
+
+                                     <div class="modal fade" id="delete_{{$d->PaymentTermsID}}">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title">Konfirmasi</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button> 
+                                                </div>
+                                               
+                                                <div class="modal-body">
+                                                     Apakah anda yakin mau menghapus "{{$d->Name}}"
+                                                </div>
+                                            
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                          
+                                                    <form method="POST" action="{{route('paymentTerms.destroy',[$d->PaymentTermsID])}}"  class="btn btn-responsive">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-default bg-danger" href="{{route('paymentTerms.destroy',[$d->PaymentTermsID])}}">
+                                                        Hapus 
+                                                        </button>
+                                                    </form>  
+                                                </div>
+                                                
+                                            </div>
+                                        <!-- /.modal-content -->
+                                        </div>
+                                        <!-- /.modal-dialog -->
+                                     </div>
+
+                                  
                                 </td>
                             </tr>
                             @endforeach

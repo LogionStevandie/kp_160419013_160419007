@@ -365,14 +365,14 @@ class SuratJalanController extends Controller
      */
     public function destroy(SuratJalan $suratJalan)
     {
-        //
+      
         $user = Auth::user();
         DB::table('surat_jalan')
             ->where('id', $suratJalan->id)
             ->update(array(
                 'hapus' => '1',  
-                'updated_by'=> $user->id,
-                'updated_on'=> date("Y-m-d h:i:sa"),
+                'UpdatedBy'=> $user->id,
+                'UpdatedOn'=> date("Y-m-d h:i:sa"),
             )
         ); 
         return redirect()->route('suratJalan.index')->with('status','Success!!');

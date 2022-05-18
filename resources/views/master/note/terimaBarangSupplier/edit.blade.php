@@ -99,7 +99,7 @@ Edit Terima Barang Supplier
                                           --Pilih Jenis Transaksi--
                                       </option>
                                     @foreach($dataItemTransaction as $key => $data)
-                                        @if($data->ItemTransactionID == $transactionGudangBarang->idItemTransaction)
+                                        @if($data->ItemTransactionID == $transactionGudangBarang->ItemTransactionID)
                                             <option selected name="idItemTransaction" value="{{$data->ItemTransactionID}}"{{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
                                         @else
                                             <option name="idItemTransaction" value="{{$data->ItemTransactionID}}"{{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>

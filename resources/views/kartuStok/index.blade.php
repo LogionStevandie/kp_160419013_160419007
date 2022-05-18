@@ -88,6 +88,8 @@ Kartu Stok
                                     <a class="btn btn-default bg-info" href=" /kartuStoke/report/{{$stok->MGudangID}}/{{$stok->ItemID}}" method="get" >
                                         <i class="fas fa-eye"></i>
                                     </a>
+
+                                    <a href="/kartuStoke/print/{{$stok->MGudangID}}/{{$stok->ItemID}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
                                 </td>              
 
                             </tr>
