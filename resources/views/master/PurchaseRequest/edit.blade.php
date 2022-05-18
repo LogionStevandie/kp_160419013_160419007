@@ -265,8 +265,7 @@ Edit Nota Permintaan Pembelian
 
       var dataBarangTag = <?php echo json_encode($dataBarangTag); ?>;
 
-      //<option id="namaBarang" value="{{$data->ItemID}}" {{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
-
+      
       optionnya += '<option value="pilih" selected>--Pilih barang--</option>\n';
       $.each(dataBarangTag, function(key, value) {
         if (value.ItemTagID.toString() == id.toString()) {
@@ -492,7 +491,7 @@ Edit Nota Permintaan Pembelian
 
     }
   });
-  /* Tanpa Rupiah */
+ /* Tanpa Rupiah */
   var tanpa_rupiah = document.getElementById('tanpa-rupiah');
   tanpa_rupiah.addEventListener('keyup', function(e) {
     $('#hargaBarang').val(this.value.replace('.', '')); //aku nambah dewe buat simpen di hidden
