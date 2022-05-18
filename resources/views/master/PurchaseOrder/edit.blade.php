@@ -554,7 +554,7 @@ Edit Nota Purchase Order
                 "value" : "",         
             }); 
             
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.','');
 
             totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * ((100.0+taxPercent) / 100.0);
             $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
@@ -625,7 +625,7 @@ Edit Nota Purchase Order
             $('#TotalHargaKeranjang').html(totalHargaKeranjang);
             $('#TotalHargaKeranjang').val(totalHargaKeranjang);*/
 
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.','');
 
             totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
             $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
@@ -690,7 +690,7 @@ Edit Nota Purchase Order
     var tanpa_rupiah = document.getElementById('tanpa-rupiah');
     tanpa_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        $('#hargaBarang').val(this.value.toString().replaceAll(/\./g, ''));
         //alert(this.value.toString().replace(/\./g, ''));
         tanpa_rupiah.value = formatRupiah(this.value);
     });
@@ -698,7 +698,7 @@ Edit Nota Purchase Order
     var tanpa_rupiah_diskon = document.getElementById('tanpa-rupiah-diskon');
     tanpa_rupiah_diskon.addEventListener('keyup', function(e)
     {
-        $('#diskonBarang').val(this.value.toString().replace(/\./g, ''));
+        $('#diskonBarang').val(this.value.toString().replaceAll(/\./g, ''));
         tanpa_rupiah_diskon.value = formatRupiah(this.value);
     });
 
@@ -706,7 +706,7 @@ Edit Nota Purchase Order
     var dengan_rupiah = document.getElementById('dengan-rupiah');
     dengan_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        $('#hargaBarang').val(this.value.toString().replaceAll(/\./g, ''));
         dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
     });
 

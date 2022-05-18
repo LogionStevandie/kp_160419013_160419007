@@ -26,9 +26,11 @@ class TerimaBarangSupplierController extends Controller
             ->select('transaction_gudang_barang.*','ItemTransaction.Name as itemTransactionName','MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
             ->leftjoin('ItemTransaction','transaction_gudang_barang.ItemTransactionID','=','ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier','transaction_gudang_barang.SupplierID','=','MSupplier.SupplierID')
-            ->leftjoin('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
+            ->join('purchase_order','transaction_gudang_barang.PurchaseOrderID','=','purchase_order.id')
             ->where('transaction_gudang_barang.hapus',0)
             ->whereNotNull('transaction_gudang_barang.SupplierID')   
+            ->where('transaction_gudang_barang.isMenerima',1)   
+            //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->where(function($query) use ($user) {
                 $query->where('transaction_gudang_barang.MGudangIDAwal',$user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID);

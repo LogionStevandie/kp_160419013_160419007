@@ -30,8 +30,8 @@ class TerimaBarangPesananController extends Controller
             ->whereNotNull('transaction_gudang_barang.SuratJalanID')
             ->where('transaction_gudang_barang.isMenerima',1)
             ->where('transaction_gudang_barang.hapus',0)
-            //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID) asli
-            ->where('transaction_gudang_barang.MGudangIDTujuan',1) //debug
+            ->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID) //asli
+            //->where('transaction_gudang_barang.MGudangIDTujuan',1) //debug
             //->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID) ya
             ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
             ->paginate(10);

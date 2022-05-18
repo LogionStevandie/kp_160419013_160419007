@@ -129,7 +129,7 @@ Edit Nota Permintaan Pembelian
                           <div class="form-group">
                             <label>Tag Barang</label>
                             <select class="form-control selectpicker" id="tagBarang" data-live-search="true" data-show-subtext="true">
-                              <option value="pilih">--Pilih Tag--</option>
+                              <option value="">--Pilih Semua Tag--</option>
                               @foreach($dataTag as $key => $data)
                               <option id="namaTag" value="{{$data->ItemTagID}}" {{$data->Name == $data->ItemTagID? 'selected' :'' }}>{{$data->Name}}</option>
                               @endforeach
@@ -196,11 +196,11 @@ Edit Nota Permintaan Pembelian
                                 <input type="hidden" class="cekJumlah" name="itemTotal[]" value="{{$data->jumlah}}">
                                 <input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="{{$data->keterangan_jasa}}">
                                 <input type="hidden" class="cekHarga" name="itemHarga[]" value="{{$data->harga}}">
-                                <h6 class="my-0">{{$item->ItemName}}<small class="hargaVal">({{$data->jumlah}})</small> </h6>
+                                <h6 class="my-0">{{$item->ItemName}}<small class="jumlahVal">({{$data->jumlah}})</small> </h6>
                                 <small class="text-muted keteranganVal">{{$data->keterangan_jasa}}</small><br>
                               </div>
                               <div>
-                                <strong>Rp.{{$data->harga*$data->jumlah}},-</strong>
+                                <strong class="hargaVal">Rp.{{$data->harga*$data->jumlah}},-</strong>
                                 <button class="btn btn-primary copyKe" type="button" id="copyKe">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
@@ -265,11 +265,11 @@ Edit Nota Permintaan Pembelian
 
       var dataBarangTag = <?php echo json_encode($dataBarangTag); ?>;
 
-      //<option id="namaBarang" value="{{$data->ItemID}}" {{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
-
       optionnya += '<option value="pilih" selected>--Pilih barang--</option>\n';
       $.each(dataBarangTag, function(key, value) {
-        if (value.ItemTagID.toString() == id.toString()) {
+        if (id == '') {
+          optionnya += '<option id="namaBarang" value="' + value.ItemID + '" {{' + value.ItemName + ' == ' + value.ItemID + '? "selected" :"" }}>' + value.ItemName + '(' + value.unitName + ')' + '</option>\n';
+        } else if (value.ItemTagID.toString() == id.toString()) {
           optionnya += '<option id="namaBarang" value="' + value.ItemID + '" {{' + value.ItemName + ' == ' + value.ItemID + '? "selected" :"" }}>' + value.ItemName + '(' + value.unitName + ')' + '</option>\n';
         }
       });
@@ -339,26 +339,15 @@ Edit Nota Permintaan Pembelian
 
       $('.keteranganVal:eq(' + indexSama + ')').html($('.cekKeterangan:eq(' + indexSama + ')').val());
       $('.jumlahVal:eq(' + indexSama + ')').html(($('.cekJumlah:eq(' + indexSama + ')').val()));
-      $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ($('.cekJumlah:eq(' + indexSama + ')').val() * $("#hargaBarang").val()) + ',-');
+      $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + (parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * parseFloat(hargaBarang)) + ',-');
+      //$('.hargaVal:eq(' + indexSama + ')').val("Rp. " + (parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * parseFloat(hargaBarang)) + ',-');
 
       //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
-      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.', '');
-      //var totalHargaKeranjang = $('#TotalHargaKeranjang').val(parseInt(hargaBarang * jumlahBarang));
-      //totalHargaKeranjang += parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * parseFloat($("#hargaBarang").val());
-      //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
-      //alert(totalHargaKeranjang);
-      //alert((totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
-      //$('#TotalHargaKeranjang').html(formatRupiah(totalHargaKeranjang));
-      //$('#TotalHargaKeranjang').val(totalHargaKeranjang);
+      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
 
       totalHarga = hargaBarang * jumlahBarang;
-      $('#TotalHargaKeranjang').attr('jumlahHarga', parseInt(totalHargaKeranjang) + parseInt(totalHarga));
+      $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
       $('#TotalHargaKeranjang').html("Rp. " + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
-
-
-
-      //$('#TotalHargaKeranjang').val(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang));
-      //$('#TotalHargaKeranjang').html(formatRupiah(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang)));
 
       $("#barang").val("").change();
       $("#jumlahBarang").val(1);
@@ -368,6 +357,11 @@ Edit Nota Permintaan Pembelian
       $('#tanpa-rupiah').val(0);
       $('#tanpa-rupiah').html(0);
       $('.selectpicker').selectpicker('refresh');
+
+      //$('#TotalHargaKeranjang').val(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang));
+      //$('#TotalHargaKeranjang').html(formatRupiah(parseInt(totalHargaKeranjang) + parseInt(hargaBarang * jumlahBarang)));
+
+
 
 
     } else {
@@ -397,14 +391,11 @@ Edit Nota Permintaan Pembelian
       htmlKeranjang += '</li>\n';
 
       $('#keranjang').append(htmlKeranjang);
-      var totalBarangnya = $('#totalBarangnya').attr('totalKeranjang');
-      alert(totalBarangnya);
       totalTambah += 1
       $('#totalBarangnya').val(totalTambah);
-      $('#totalBarangnya').attr('totalKeranjang', parseInt(totalBarangnya) + parseInt(totalTambah));
-      $('#totalBarangnya').html($('#totalBarangnya').attr('totalKeranjang'));
+      $('#totalBarangnya').html(totalTambah);
 
-      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.', '');
+      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
       /*if(totalHargaKeranjang == "" || totalHargaKeranjang == NaN || totalHargaKeranjang == 0){
       alert(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
         //totalHargaKeranjang = totalHargaKeranjang + parseFloat(hargaBarang * jumlahBarang);
@@ -418,8 +409,9 @@ Edit Nota Permintaan Pembelian
         $('#TotalHargaKeranjang').val(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
       }*/
       totalHarga = hargaBarang * jumlahBarang;
-      $('#TotalHargaKeranjang').attr('jumlahHarga', parseInt(totalHargaKeranjang) + parseInt(totalHarga));
+      $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
       $('#TotalHargaKeranjang').html("Rp." + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+      //alert(totalHargaKeranjang);
 
       $("#barang").val("").change();
       $("#jumlahBarang").val(1);
@@ -451,36 +443,7 @@ Edit Nota Permintaan Pembelian
 
   });
 
-  $("body").on("click", "#tambah", function() {
-    totalTambah++;
-    tambahCombo += '<div class="form-group p-3 mb-2 bg-light text-dark border" id="tmbhBarangJasa' + totalTambah + '">\n';
-    tambahCombo += '<input type="hidden" name="totalRequest[]">\n';
-    tambahCombo += '<div class="form-group" id="tmbhBarang">\n';
-    tambahCombo += '<label for="title">Barang</label>\n';
-    tambahCombo += '<select require name="barang[]" class="form-control" id="barang' + totalTambah + '">\n';
-    tambahCombo += '<option value="">--Pilih barang--</option>\n';
-    tambahCombo += '@foreach($dataBarang as $key => $data)\n';
-    tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? '
-    selected ' :'
-    ' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
-    tambahCombo += '@endforeach\n';
-    tambahCombo += '</select>\n';
-    tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient' + "'" + 's username" aria-describedby="basic-addon2"id="angka" />\n';
-    tambahCombo += '<br id="br">\n';
-    tambahCombo += '</div>\n';
-    tambahCombo += '<div class="form-group" id="harga' + totalTambah + '">\n';
-    tambahCombo += '<label for="title">Harga</label>\n';
-    tambahCombo += '<input require type="number" step=".01" id="tanpa-rupiah" name="harga[]" class="form-control">\n';
-    tambahCombo += '</div>\n';
-    tambahCombo += '<div class="form-group" id="ket' + totalTambah + '">\n';
-    tambahCombo += '<label for="title">Keterangan</label>\n';
-    tambahCombo += '<input require type="text" name="Keterangan[]" class="form-control" >\n';
-    tambahCombo += '</div>\n';
-    tambahCombo += '</div>';
 
-    $('#totalRequest').append(tambahCombo);
-    tambahCombo = "";
-  });
 
   $("body").on("click", "#kurang", function() {
     //$('#barang'+ totalTambah).remove();//i
@@ -495,14 +458,14 @@ Edit Nota Permintaan Pembelian
   /* Tanpa Rupiah */
   var tanpa_rupiah = document.getElementById('tanpa-rupiah');
   tanpa_rupiah.addEventListener('keyup', function(e) {
-    $('#hargaBarang').val(this.value.replace('.', '')); //aku nambah dewe buat simpen di hidden
+    $('#hargaBarang').val(this.value.replaceAll('.', '')); //aku nambah dewe buat simpen di hidden
     tanpa_rupiah.value = formatRupiah(this.value);
   });
 
   /* Dengan Rupiah */
   var dengan_rupiah = document.getElementById('dengan-rupiah');
   dengan_rupiah.addEventListener('keyup', function(e) {
-    $('#hargaBarang').val(this.value.replace('.', '')); //aku nambah dewe buat simpen di hidden
+    $('#hargaBarang').val(this.value.replaceAll('.', '')); //aku nambah dewe buat simpen di hidden
     dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
   });
 

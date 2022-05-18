@@ -86,9 +86,8 @@ Pembuatan Nota Permintaan Pembelian
 
                         <div class="col-md-6 mb-3">
                           <label for="lastName">Jenis Permintaan</label>
-                          <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="jenisProses">
+                          <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="jenisProses">
                             <option value="1" selected>Pembelian Melalui Pusat</option>
-                            <option value="0">Pembelian Melalui Lokal</option>
                           </select>
                         </div>
 
@@ -126,7 +125,7 @@ Pembuatan Nota Permintaan Pembelian
                               <div class="form-group">
                                 <label>Tag Barang</label>
                                 <select class="form-control selectpicker" id="tagBarang" data-live-search="true" data-show-subtext="true">
-                                  <option value="pilih">--Pilih Tag--</option>
+                                  <option value="">--Pilih Semua Tag--</option>
                                   @foreach($dataTag as $key => $data)
                                   <option id="namaTag" value="{{$data->ItemTagID}}" {{$data->Name == $data->ItemTagID? 'selected' :'' }}>{{$data->Name}}</option>
                                   @endforeach
@@ -257,7 +256,10 @@ Pembuatan Nota Permintaan Pembelian
 
       optionnya += '<option value="pilih" selected>--Pilih barang--</option>\n';
       $.each(dataBarangTag, function(key, value) {
-        if (value.ItemTagID.toString() == id.toString()) {
+        if(id==''){
+          optionnya += '<option id="namaBarang" value="' + value.ItemID + '" {{' + value.ItemName + ' == '+value.ItemID+'? "selected" :"" }}>' + value.ItemName + '('+value.unitName+')' + '</option>\n';       
+        }
+        else if (value.ItemTagID.toString() == id.toString()) {
           optionnya += '<option id="namaBarang" value="' + value.ItemID + '" {{' + value.ItemName + ' == '+value.ItemID+'? "selected" :"" }}>' + value.ItemName + '('+value.unitName+')' + '</option>\n';       
         }
       });
@@ -330,7 +332,7 @@ Pembuatan Nota Permintaan Pembelian
       $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ($('.cekJumlah:eq(' + indexSama + ')').val() * hargaBarang) + ',-');
 
       //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
-      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.', '');
+      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
       //var totalHargaKeranjang = $('#TotalHargaKeranjang').val(parseInt(hargaBarang * jumlahBarang));
       //totalHargaKeranjang += parseFloat($('.cekJumlah:eq('+indexSama+')').val()) * parseFloat($("#hargaBarang").val());
       //totalHargaKeranjang = parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang);
@@ -389,7 +391,7 @@ Pembuatan Nota Permintaan Pembelian
       $('#totalBarangnya').val(totalTambah);
       $('#totalBarangnya').html(totalTambah);
 
-      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.', '');
+      var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
       /*if(totalHargaKeranjang == "" || totalHargaKeranjang == NaN || totalHargaKeranjang == 0){
       alert(parseFloat(totalHargaKeranjang) + parseFloat(hargaBarang * jumlahBarang));
         //totalHargaKeranjang = totalHargaKeranjang + parseFloat(hargaBarang * jumlahBarang);
@@ -495,14 +497,15 @@ Pembuatan Nota Permintaan Pembelian
   /* Tanpa Rupiah */
   var tanpa_rupiah = document.getElementById('tanpa-rupiah');
   tanpa_rupiah.addEventListener('keyup', function(e) {
-    $('#hargaBarang').val(this.value.replace('.', '')); //aku nambah dewe buat simpen di hidden
+    //alert(this.value.replaceAll('.', ''));
+    $('#hargaBarang').val(this.value.replaceAll('.', '')); //aku nambah dewe buat simpen di hidden
     tanpa_rupiah.value = formatRupiah(this.value);
   });
 
   /* Dengan Rupiah */
   var dengan_rupiah = document.getElementById('dengan-rupiah');
   dengan_rupiah.addEventListener('keyup', function(e) {
-    $('#hargaBarang').val(this.value.replace('.', '')); //aku nambah dewe buat simpen di hidden
+    $('#hargaBarang').val(this.value.replaceAll('.', '')); //aku nambah dewe buat simpen di hidden
     dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
   });
 

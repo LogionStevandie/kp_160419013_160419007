@@ -480,7 +480,7 @@ Pembuatan Nota Purchase Order
 
 
             
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.','');
         
             totalHarga= ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
             $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
@@ -552,7 +552,7 @@ Pembuatan Nota Purchase Order
             $('#TotalHargaKeranjang').html(totalHargaKeranjang);
             $('#TotalHargaKeranjang').val(totalHargaKeranjang);*/
 
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replace('.','');
+            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.','');
         
             totalHarga = ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
             $('#TotalHargaKeranjang').attr('jumlahHarga',parseFloat(totalHargaKeranjang)+parseFloat(totalHarga));
@@ -575,38 +575,7 @@ Pembuatan Nota Purchase Order
     });
 
 
-    $("body").on("click", "#tambah", function () {  
-        totalTambah++;
-        tambahCombo +='<div class="form-group p-3 mb-2 bg-light text-dark border" id="tmbhBarangJasa'+totalTambah+'">\n';
-        tambahCombo +='<input type="hidden" name="totalRequest[]">\n';
-        tambahCombo += '<div class="form-group" id="tmbhBarang">\n';
-        tambahCombo += '<label for="title">Barang</label>\n';
-        tambahCombo += '<select require name="barang[]" class="form-control" id="barang'+totalTambah+'">\n';
-        tambahCombo += '<option value="">--Pilih barang--</option>\n';
-        tambahCombo += '@foreach($dataBarang as $key => $data)\n';
-        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
-        tambahCombo += '@endforeach\n';
-        tambahCombo += '</select>\n';
-        tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';
-        tambahCombo += '<br id="br">\n';
-        tambahCombo +='</div>\n';
-        //tambahCombo +='<div class="form-group" id="total'+totalTambah+'">\n';
-        //tambahCombo +='<label for="title">Total</label>\n';
-        //tambahCombo +='<input require type="number" name="total[]" class="form-control">\n';
-        //tambahCombo +='</div>\n';
-        tambahCombo +='<div class="form-group" id="harga'+totalTambah+'">\n';
-        tambahCombo +='<label for="title">Harga</label>\n';
-        tambahCombo +='<input require type="number" name="harga[]" class="form-control">\n';
-        tambahCombo +='</div>\n';
-        tambahCombo +='<div class="form-group" id="ket'+totalTambah+'">\n';
-        tambahCombo +='<label for="title">Keterangan</label>\n';
-        tambahCombo +='<input require type="text" name="Keterangan[]" class="form-control" >\n';
-        tambahCombo +='</div>\n';
-        tambahCombo +='</div>';
-        
-        $('#totalRequest').append(tambahCombo);
-        tambahCombo = "";
-    });
+    
     $("body").on("click", "#kurang", function () {
         //$('#barang'+ totalTambah).remove();//i
         //$('#jml'+ totalTambah).remove();//i
@@ -621,7 +590,7 @@ Pembuatan Nota Purchase Order
     var tanpa_rupiah = document.getElementById('tanpa-rupiah');
     tanpa_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        $('#hargaBarang').val(this.value.toString().replaceAll(/\./g, ''));
         //alert(this.value.toString().replace(/\./g, ''));
         tanpa_rupiah.value = formatRupiah(this.value);
     });
@@ -629,7 +598,7 @@ Pembuatan Nota Purchase Order
     var tanpa_rupiah_diskon = document.getElementById('tanpa-rupiah-diskon');
     tanpa_rupiah_diskon.addEventListener('keyup', function(e)
     {
-        $('#diskonBarang').val(this.value.toString().replace(/\./g, ''));
+        $('#diskonBarang').val(this.value.toString().replaceAll(/\./g, ''));
         tanpa_rupiah_diskon.value = formatRupiah(this.value);
     });
 
@@ -637,7 +606,7 @@ Pembuatan Nota Purchase Order
     var dengan_rupiah = document.getElementById('dengan-rupiah');
     dengan_rupiah.addEventListener('keyup', function(e)
     {
-        $('#hargaBarang').val(this.value.toString().replace(/\./g, ''));
+        $('#hargaBarang').val(this.value.toString().replaceAll(/\./g, ''));
         dengan_rupiah.value = formatRupiah(this.value, 'Rp. ');
     });
 
