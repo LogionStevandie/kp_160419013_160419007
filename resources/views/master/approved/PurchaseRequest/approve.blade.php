@@ -51,8 +51,8 @@ Persetujuan Pembelian
                                             @endif 
                                         @endforeach
                                         Jenis permintaan : {{$purchaseRequest->jenisProses}} <br>
-                                        Tanggal dibutuhkan : {{$purchaseRequest->tanggalDibutuhkan}}<br>
-                                        Tanggal batas akhir : {{$purchaseRequest->tanggalAkhirDibutuhkan}}
+                                        Tanggal dibutuhkan : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDibutuhkan))}}<br>
+                                        Tanggal batas akhir : {{date("d-m-Y", strtotime($purchaseRequest->tanggalAkhirDibutuhkan))}}
                                         </th>
                                         </tr>
                                     </thead>

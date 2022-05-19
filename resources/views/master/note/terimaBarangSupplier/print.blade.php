@@ -77,8 +77,8 @@
                       <h2>TERIMA BARANG SUPPLIER</h2>
                     </th>
                     <th scope="col" colspan="2">
-                      Tanggal pembuatan : {{$transactionGudangBarang->tanggalDibuat}}<br>
-                      Tanggal datang : {{$transactionGudangBarang->tanggalDatang}}<br>
+                      Tanggal pembuatan : {{date("d-m-Y", strtotime($transactionGudangBarang->tanggalDibuat))}}<br>
+                      Tanggal datang : {{date("d-m-Y", strtotime($transactionGudangBarang->tanggalDatang))}}<br>
                       @foreach($dataGudang as $key => $data)
                       @if($data->MGudangID == $transactionGudangBarang->MGudangIDAwal)
                       Gudang penerima :{{$data->cname}}<br>
@@ -112,7 +112,7 @@
                       @foreach($dataPurchaseOrder as $key => $data)
                       @if($data->idSupplier == $transactionGudangBarang->SupplierID)
                       @if($data->id == $transactionGudangBarang->PurchaseOrderID)
-                      Data Order pembelian :{{$data->name}} - {{$data->tanggalDibuat}}<br>
+                      Data Order pembelian :{{$data->name}} - {{date("d-m-Y", strtotime($data->tanggalDibuat))}}<br>
                       @endif
                       @endif
                       @endforeach

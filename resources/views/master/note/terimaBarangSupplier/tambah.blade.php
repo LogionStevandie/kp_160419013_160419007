@@ -262,7 +262,7 @@ Pembuatan Terima Barang Supplier
             
                 var dataPurchaseOrder = <?php echo json_encode($dataPurchaseOrder); ?>;
     
-                alert('masuk sini');
+                //alert('masuk sini');
                 optionnya += '<option value="pilih" selected>--Pilih Purchase Order--</option>\n';
                 $.each(dataPurchaseOrder, function( key, value ){
                    
@@ -306,6 +306,34 @@ Pembuatan Terima Barang Supplier
             $("#barang").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
         });
+
+        $("#barang").on("change",function(){  //sudah
+                
+                var id = this.value;
+                var idPodID = $("#barang option:selected").attr('idPodId');
+                var optionnya = '';
+            
+                var dataPurchaseOrderDetail = <?php echo json_encode($dataPurchaseOrderDetail); ?>;
+    
+                $.each(dataPurchaseOrderDetail, function( key, value ){
+                    if(value.id.toString() == idPodID.toString() && value.idItem.toString() == id.toString()){
+                        var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                        $.each($('.cekPod'), function(idx, val) {
+                            if(val.value == value.id){
+                                var jumlahBarang = $('.cekJumlah:eq('+idx+')').val();
+                                maxAngka = maxAngka - jumlahBarang;
+                            }
+                        });
+                        //alert(maxAngka);
+                        $("#jumlahBarang").attr({
+                            "max" : maxAngka,        
+                            "min" : 1,
+                            "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
+                            "value" : "",   
+                        }); 
+                    }
+                });
+            });
 
     });
 

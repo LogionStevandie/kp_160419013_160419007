@@ -101,7 +101,7 @@ class TerimaBarangSupplierController extends Controller
             ->where('purchase_order.proses', 1)
             ->where('purchase_order_detail.jumlahProses', '<', DB::raw('purchase_order_detail.jumlah')) //errorr disini
             ->get();
-        //dd($dataPurchaseRequestDetail);      
+        //dd($dataPurchaseOrderDetail);      
         $dataPurchaseOrder = DB::table('purchase_order')
             ->select('purchase_order.*')
             ->where('purchase_order.approved', 1)

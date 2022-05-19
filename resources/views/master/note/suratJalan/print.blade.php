@@ -75,7 +75,7 @@
                                         <tr>
                                         <th scope="col" colspan="3"><h2>SURAT JALAN</h2></th>
                                         <th scope="col" colspan="2">
-                                            Tanggal pembuatan : {{$suratJalan->tanggalDibuat}}<br>
+                                            Tanggal pembuatan : {{date("d-m-Y", strtotime($suratJalan->tanggalDibuat))}}<br>
                                             @foreach($dataGudang as $key => $data)
                                                 @if($data->MGudangID == $suratJalan->MGudangIDAwal)
                                                     Gudang awal :{{$data->cname}}<br>
@@ -97,7 +97,7 @@
                                          @foreach($dataPurchaseRequest as $key => $data)
                                             @if($data->MGudangID == $suratJalan->MGudangIDTujuan)
                                                   @if($data->id == $suratJalan->PurchaseRequestID)
-                                                        Data Permintaan pembelian :{{$data->name}} - {{$data->tanggalDibuat}}<br>
+                                                        Data Permintaan pembelian :{{$data->name}} - {{date("d-m-Y", strtotime($data->tanggalDibuat))}}<br>
                                                   @endif
                                             @endif
                                           @endforeach

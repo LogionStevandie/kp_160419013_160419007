@@ -55,8 +55,8 @@ Persetujuan Order
                                         Supplier :{{$data->Name}}  <br> 
                                         @endif 
                                     @endforeach
-                                    Jenis permintaan : {{$purchaseOrder->jenisProses}} <br>
-                                    Tanggal batas akhir : {{$purchaseOrder->tanggal_akhir}}
+                                    Jenis permintaan : {{date("d-m-Y", strtotime($purchaseOrder->jenisProses))}} <br>
+                                    Tanggal batas akhir : {{date("d-m-Y", strtotime($purchaseOrder->tanggal_akhir))}}
                                     </th>
                                     </tr>
                                 </thead>
