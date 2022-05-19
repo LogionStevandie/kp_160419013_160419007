@@ -71,12 +71,12 @@ Persetujuan Pembelian
                                             @foreach($prd as $data) 
                                             <tr>
                                                 @if($data->idPurchaseRequest==$purchaseRequest->id)
-                                                <th scope="row">{{$data->id}}</th>
+                                                <td>{{ $loop->index + 1 }}</td>
                                                 <th scope="row">{{$data->ItemName}}</th>
                                                 <td>{{$data->jumlah}}</td>
-                                                <td>@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp </td>              
-                                                <td>{{$data->keterangan_jasa}}</td>                                          
-                                                <td> @php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp </td>                                          
+                                                <td class="text-right" >@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp </td>              
+                                                <td> <span style="white-space: pre-line">{{$data->keterangan_jasa}}</span></td>                                          
+                                                <td class="text-right" > @php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp </td>                                          
                                                 @endif
                                             </tr>
                                             @endforeach
@@ -86,7 +86,7 @@ Persetujuan Pembelian
                                     <thead class="thead-light">
                                         <tr>
                                             <th scope="col" colspan="5"> <h3>Total</h3> </th>
-                                            <th scope="col" colspan="5" > @php echo "Rp " . number_format($purchaseRequest->totalHarga,2,',','.'); @endphp </th>
+                                            <th scope="col" colspan="5" class="text-right" > @php echo "Rp " . number_format($purchaseRequest->totalHarga,2,',','.'); @endphp </th>
                                         
                                         </tr>
                                     </thead>

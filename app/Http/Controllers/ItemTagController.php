@@ -26,9 +26,19 @@ class ItemTagController extends Controller
         $data = DB::table('ItemTag')
             ->paginate(10);
             //->get();
-        return view('master.itemTag.index',[
+       
+
+         $user = Auth::user();
+         $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
+        if ($check) {  
+          return view('master.itemTag.index',[
             'data' => $data,
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+        }
     }
 
     /**
@@ -39,7 +49,21 @@ class ItemTagController extends Controller
     public function create()
     {
         //
-        return view('master.itemTag.tambah');
+      
+
+         $user = Auth::user();
+         $check = $this->checkAccess('itemTag.create', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.itemTag.tambah');
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+        }
+
+
+
+       
     }
 
     /**
@@ -76,9 +100,21 @@ class ItemTagController extends Controller
     public function show(ItemTag $itemTag)
     {
         //
-         return view('master.itemTag.detail',[
+        
+
+          $user = Auth::user();
+         $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
+        if ($check) {  
+           return view('master.itemTag.detail',[
             'ItemTag'=>$itemTag
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+        }
+
+
 
     }
 
@@ -91,9 +127,19 @@ class ItemTagController extends Controller
     public function edit(ItemTag $itemTag)
     {
         //
-        return view('master.itemTag.edit',[
+    
+
+         $user = Auth::user();
+         $check = $this->checkAccess('itemTag.edit', $user->id, $user->idRole);
+        if ($check) {  
+               return view('master.itemTag.edit',[
             'ItemTag'=>$itemTag
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+        }
     }
 
     /**
@@ -143,8 +189,18 @@ class ItemTagController extends Controller
             ->where('Name','like','%'.$name.'%')
             ->paginate(10);
             //->get();
-        return view('master.itemTag.index',[
+        
+
+        $user = Auth::user();
+         $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
+        if ($check) {  
+               return view('master.itemTag.index',[
             'data' => $data,
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+        }
     }
 }

@@ -25,9 +25,18 @@ class BankController extends Controller
         $datas = DB::table('bank')
             ->paginate(10);
             //->get();
-        return view('master.Bank.index',[
+       
+
+        $user = Auth::user();
+
+        $check = $this->checkAccess('bank.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.Bank.index',[
             'datas' => $datas,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Bank');
+        }
     }
 
     /**
@@ -85,9 +94,18 @@ class BankController extends Controller
     public function edit(Bank $bank)
     {
         //
-         return view('master.Bank.edit',[
+         
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('bank.edit', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.Bank.edit',[
              'bank'=>$bank
          ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Bank');
+        }
     }
 
     /**
@@ -135,8 +153,18 @@ class BankController extends Controller
             ->where('name','like','%'.$name.'%')
             ->paginate(10);
             //->get();
-        return view('master.Bank.index',[
+       
+
+        
+         $user = Auth::user();
+
+        $check = $this->checkAccess('bank.index', $user->id, $user->idRole);
+        if ($check) {  
+             return view('master.Bank.index',[
             'datas' => $datas,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Bank');
+        }
     }
 }

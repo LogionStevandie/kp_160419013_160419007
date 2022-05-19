@@ -23,10 +23,17 @@ class MGudangValuesController extends Controller
         $dataTag = DB::table('MGudangValues')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->get();
-        return view('master.tag.mGudang.index',[
-            'data' => $data,
-            'dataTag' => $dataTag,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('tagValuesMGudang.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tag.mGudang.index', [
+                'data' => $data,
+                'dataTag' => $dataTag,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Values Gudang');
+        }
     }
 
     /**
@@ -59,15 +66,15 @@ class MGudangValuesController extends Controller
     public function show(MGudang $tagValuesMGudang)
     {
         //
-         $data = DB::table('MGudangAreaSimpan')
+        $data = DB::table('MGudangAreaSimpan')
             ->get();
         $dataTag = DB::table('MGudangValues')
             ->rightjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
-            ->where('MGudangValues.MGudangID',$tagValuesMGudang->MGudangID)
+            ->where('MGudangValues.MGudangID', $tagValuesMGudang->MGudangID)
             ->get();
         //dd($dataTag);
-        return view('master.tag.mGudang.detail',[
-            'data' =>$data,
+        return view('master.tag.mGudang.detail', [
+            'data' => $data,
             'dataTag' => $dataTag,
             'mGudang' => $tagValuesMGudang,
         ]);
@@ -86,14 +93,22 @@ class MGudangValuesController extends Controller
             ->get();
         $dataTag = DB::table('MGudangValues')
             ->rightjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
-            ->where('MGudangValues.MGudangID',$tagValuesMGudang->MGudangID)
+            ->where('MGudangValues.MGudangID', $tagValuesMGudang->MGudangID)
             ->get();
         //dd($dataTag);
-        return view('master.tag.mGudang.edit',[
-            'data' =>$data,
-            'dataTag' => $dataTag,
-            'mGudang' => $tagValuesMGudang,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('tagValuesMGudang.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tag.mGudang.edit', [
+                'data' => $data,
+                'dataTag' => $dataTag,
+                'mGudang' => $tagValuesMGudang,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Values Gudang');
+        }
     }
 
     /**
@@ -106,47 +121,48 @@ class MGudangValuesController extends Controller
     public function update(Request $request, MGudang $tagValuesMGudang)
     {
         //
-        $data=$request->collect();
+        $data = $request->collect();
         //dd($data);
         $dataGudangValues = DB::table('MGudangValues')
             ->where('MGudangID', $tagValuesMGudang->MGudangID)
             ->get();
 
-        if(count($dataGudangValues) > count($data['gudangAreaSimpan'])){
+        if (count($dataGudangValues) > count($data['gudangAreaSimpan'])) {
             DB::table('MGudangValues')
-                ->where('MGudangID','=',$tagValuesMGudang->MGudangID)
+                ->where('MGudangID', '=', $tagValuesMGudang->MGudangID)
                 ->delete();
 
-            for($i = 0; $i < count($data['gudangAreaSimpan']); $i++){
-            DB::table('MGudangValues')
-                ->insert(array(
-                    'MGudangID' => $tagValuesMGudang->MGudangID,
-                    'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
-                    )
-                ); 
-            }
-        }
-        else{
-            for($i = 0; $i < count($data['gudangAreaSimpan']); $i++){
-                if($i < count($dataGudangValues)){
-                    DB::table('MGudangValues')
-                        ->where('MGudangID', $tagValuesMGudang->MGudangID)
-                        ->update(array(
-                            'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
-                        )
-                    );
-                }
-                else{
-                    DB::table('MGudangValues')
-                        ->insert(array(
+            for ($i = 0; $i < count($data['gudangAreaSimpan']); $i++) {
+                DB::table('MGudangValues')
+                    ->insert(
+                        array(
                             'MGudangID' => $tagValuesMGudang->MGudangID,
                             'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
                         )
-                    ); 
+                    );
+            }
+        } else {
+            for ($i = 0; $i < count($data['gudangAreaSimpan']); $i++) {
+                if ($i < count($dataGudangValues)) {
+                    DB::table('MGudangValues')
+                        ->where('MGudangID', $tagValuesMGudang->MGudangID)
+                        ->update(
+                            array(
+                                'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
+                            )
+                        );
+                } else {
+                    DB::table('MGudangValues')
+                        ->insert(
+                            array(
+                                'MGudangID' => $tagValuesMGudang->MGudangID,
+                                'MGudangAreaSimpanID' => $data['gudangAreaSimpan'][$i],
+                            )
+                        );
                 }
             }
         }
-        return redirect()->route('tagValuesMGudang.index')->with('status','Success!!');
+        return redirect()->route('tagValuesMGudang.index')->with('status', 'Success!!');
     }
 
     /**
@@ -165,13 +181,13 @@ class MGudangValuesController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('MGudang')
-            ->where('cname','like','%'.$name.'%')
+            ->where('cname', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
         $dataTag = DB::table('MGudangValues')
             ->leftjoin('MGudangAreaSimpan', 'MGudangValues.MGudangAreaSimpanID', '=', 'MGudangAreaSimpan.MGudangAreaSimpanID')
             ->get();
-        return view('master.tag.mGudang.index',[
+        return view('master.tag.mGudang.index', [
             'data' => $data,
             'dataTag' => $dataTag,
         ]);

@@ -35,7 +35,7 @@ class TerimaBarangSupplierController extends Controller
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
             ->paginate(10);
         //dd($data);
         //->get();
@@ -691,7 +691,7 @@ class TerimaBarangSupplierController extends Controller
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -726,7 +726,7 @@ class TerimaBarangSupplierController extends Controller
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
@@ -761,7 +761,7 @@ class TerimaBarangSupplierController extends Controller
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
             ->paginate(10);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')

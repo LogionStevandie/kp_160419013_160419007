@@ -21,12 +21,19 @@ class TaxController extends Controller
     public function index()
     {
         //
+
         $data = DB::table('Tax')
             ->paginate(10);
         //->get();
-        return view('master.tax.index',[
-            'data' => $data,
-        ]);
+        $user = Auth::user();
+        $check = $this->checkAccess('tax.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tax.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
+        }
     }
 
     /**
@@ -37,7 +44,14 @@ class TaxController extends Controller
     public function create()
     {
         //
-        return view('master.tax.tambah');
+
+        $user = Auth::user();
+        $check = $this->checkAccess('tax.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tax.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
+        }
     }
 
     /**
@@ -51,20 +65,20 @@ class TaxController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
-        DB::table('Tax')
-            ->insert(array(
-                'Name' => $data['name'],
-                'Deskripsi' => $data['deskripsi'],
-                'TaxPercent' => $data['taxpercent'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-        return redirect()->route('tax.index')->with('status','Success!!');
 
+        DB::table('Tax')
+            ->insert(
+                array(
+                    'Name' => $data['name'],
+                    'Deskripsi' => $data['deskripsi'],
+                    'TaxPercent' => $data['taxpercent'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('tax.index')->with('status', 'Success!!');
     }
 
     /**
@@ -76,9 +90,16 @@ class TaxController extends Controller
     public function show(Tax $tax)
     {
         //
-        return view('master.tax.detail',[
-            'tax' => $tax,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('tax.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tax.detail', [
+                'tax' => $tax,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
+        }
     }
 
     /**
@@ -90,9 +111,16 @@ class TaxController extends Controller
     public function edit(Tax $tax)
     {
         //
-        return view('master.tax.edit',[
-            'tax' => $tax,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('tax.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tax.edit', [
+                'tax' => $tax,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
+        }
     }
 
     /**
@@ -107,18 +135,19 @@ class TaxController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('Tax')
             ->where('TaxID', $tax['TaxID'])
-            ->update(array(
-                'Name' => $data['name'],
-                'Deskripsi' => $data['deskripsi'],
-                'TaxPercent' => $data['taxpercent'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        ); 
-         return redirect()->route('tax.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'Name' => $data['name'],
+                    'Deskripsi' => $data['deskripsi'],
+                    'TaxPercent' => $data['taxpercent'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('tax.index')->with('status', 'Success!!');
     }
 
     /**
@@ -131,29 +160,43 @@ class TaxController extends Controller
     {
         //
         $tax->delete();
-         return redirect()->route('tax.index')->with('status','Success!!');
+        return redirect()->route('tax.index')->with('status', 'Success!!');
     }
 
     public function searchTaxName(Request $request)
     {
         $name = $request->input('searchname');
         $data = DB::table('Tax')
-            ->where('Name','like','%'.$name.'%')
+            ->where('Name', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.tax.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('tax.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tax.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
+        }
     }
 
     public function searchTaxPercent(Request $request)
     {
         $taxPercent = $request->input('searchpercent');
         $data = DB::table('Tax')
-            ->where('TaxPercent','like','%'.$taxPercent.'%')
+            ->where('TaxPercent', 'like', '%' . $taxPercent . '%')
             ->get();
-        return view('master.tax.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('tax.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tax.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
+        }
     }
 }

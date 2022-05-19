@@ -27,10 +27,18 @@ class MPerusahaanController extends Controller
         //->get();
         $dataUser = DB::table('users')
             ->get();
-        return view('master.mPerusahaan.index',[
-            'data' => $data,
-            'dataUser' => $dataUser,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mPerusahaan.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPerusahaan.index', [
+                'data' => $data,
+                'dataUser' => $dataUser,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+        }
     }
 
     /**
@@ -42,10 +50,18 @@ class MPerusahaanController extends Controller
     {
         //
         $users = DB::table('users')
-            ->get();    
-        return view('master.mPerusahaan.tambah',[
-            'users' => $users,
-        ]);
+            ->get();
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mPerusahaan.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPerusahaan.tambah', [
+                'users' => $users,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+        }
     }
 
     /**
@@ -67,33 +83,34 @@ class MPerusahaanController extends Controller
             'image' => 'required|image|mimes:jpg,png,jpeg,svg|max:2048',
         ]);
         $path = "";
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image_name = $image->getClientOriginalName();
-            $image->move(public_path('/images'),$image_name);
-        
+            $image->move(public_path('/images'), $image_name);
+
             $path = '/images/' . $image_name;
         }
-        
+
         //$path = $request->file('image')->store('/images');
         ///
 
         DB::table('MPerusahaan')
-            ->insert(array(
-                'cname' => $data['name'],
-                'cnames' => $data['names'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:s"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:s"),
-                'UserIDManager1' => $data['manager1'],
-                'UserIDManager2' => $data['manager2'],
-                'NomorNPWP' => $data['NomorNPWP'],
-                'AlamatNPWP' => $data['AlamatNPWP'],
-                'Gambar' => $path,
-            )
-        );
-        return redirect()->route('mPerusahaan.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'cname' => $data['name'],
+                    'cnames' => $data['names'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:s"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:s"),
+                    'UserIDManager1' => $data['manager1'],
+                    'UserIDManager2' => $data['manager2'],
+                    'NomorNPWP' => $data['NomorNPWP'],
+                    'AlamatNPWP' => $data['AlamatNPWP'],
+                    'Gambar' => $path,
+                )
+            );
+        return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
     }
 
     /**
@@ -108,10 +125,17 @@ class MPerusahaanController extends Controller
             ->get();
         $dataUser = DB::table('users')
             ->get();
-        return view('master.mPerusahaan.detail',[
-            'mPerusahaan' => $mPerusahaan,
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mPerusahaan.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPerusahaan.detail', [
+                'mPerusahaan' => $mPerusahaan,
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+        }
     }
 
     /**
@@ -124,11 +148,18 @@ class MPerusahaanController extends Controller
     {
         //
         $users = DB::table('users')
-            ->get();    
-        return view('master.mPerusahaan.edit',[
-            'mPerusahaan' => $mPerusahaan,
-            'users' => $users,
-        ]);
+            ->get();
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mPerusahaan.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPerusahaan.edit', [
+                'mPerusahaan' => $mPerusahaan,
+                'users' => $users,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+        }
     }
 
     /**
@@ -143,34 +174,35 @@ class MPerusahaanController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         $validatedData = $request->validate([
             'image' => 'image|mimes:jpg,png,jpeg,svg|max:2048',
         ]);
         $path = $mPerusahaan->Gambar;
-        if($request->hasFile('image')){
+        if ($request->hasFile('image')) {
             $image = $request->file('image');
             $image_name = $image->getClientOriginalName();
-            $image->move(public_path('/images'),$image_name);
-        
+            $image->move(public_path('/images'), $image_name);
+
             $path = '/images/' . $image_name;
         }
 
         DB::table('MPerusahaan')
             ->where('MPerusahaanID', $mPerusahaan['MPerusahaanID'])
-            ->update(array(
-                'cname' => $data['name'],
-                'cnames' => $data['names'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:s"),
-                'UserIDManager1' => $data['manager1'],
-                'UserIDManager2' => $data['manager2'],
-                'NomorNPWP' => $data['NomorNPWP'],
-                'AlamatNPWP' => $data['AlamatNPWP'],
-                'Gambar' => $path,
-            )
-        );
-        return redirect()->route('mPerusahaan.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'cname' => $data['name'],
+                    'cnames' => $data['names'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:s"),
+                    'UserIDManager1' => $data['manager1'],
+                    'UserIDManager2' => $data['manager2'],
+                    'NomorNPWP' => $data['NomorNPWP'],
+                    'AlamatNPWP' => $data['AlamatNPWP'],
+                    'Gambar' => $path,
+                )
+            );
+        return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
     }
 
     /**
@@ -183,7 +215,7 @@ class MPerusahaanController extends Controller
     {
         //
         $mPerusahaan->delete();
-        return redirect()->route('mPerusahaan.index')->with('status','Success!!');
+        return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
     }
 
     public function searchPerusahaanName(Request $request)
@@ -191,14 +223,21 @@ class MPerusahaanController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('MPerusahaan')
-            ->where('cname','like','%'.$name.'%')
+            ->where('cname', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
         $dataUser = DB::table('users')
             ->get();
-        return view('master.mPerusahaan.index',[
-            'data' => $data,
-            'dataUser' => $dataUser,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mPerusahaan.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPerusahaan.index', [
+                'data' => $data,
+                'dataUser' => $dataUser,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+        }
     }
 }

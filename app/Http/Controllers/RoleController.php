@@ -34,10 +34,17 @@ class RoleController extends Controller
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->paginate(10);
         //->get();    
-        return view('master.roles.index',[
-            'data' => $data,
-            'dataAccess' => $dataAccess,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('role.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roles.index',[
+                'data' => $data,
+                'dataAccess' => $dataAccess,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Role');
+        }
     }
 
     /**
@@ -49,7 +56,14 @@ class RoleController extends Controller
     {
         //
         //$dataMenu = DB::table('menu')->get();
-        return view('master.roles.tambah');
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('role.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roles.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Role');
+        }
     }
 
     /**
@@ -95,9 +109,17 @@ class RoleController extends Controller
     public function show(Role $role)
     {
         //
-        return view('master.roles.tambah',[
-            'role' => $role,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('role.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roles.detail',[
+                'role' => $role,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Role');
+        }
     }
 
     /**
@@ -110,10 +132,18 @@ class RoleController extends Controller
     {
         //
         //$dataMenu = DB::table('menu')->get();
-        return view('master.roles.edit',[
-            'role'=>$role,
-            //'dataMenu'=>$dataMenu,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('role.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roles.edit',[
+                'role'=>$role,
+                //'dataMenu'=>$dataMenu,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Role');
+        }
     }
 
     /**
@@ -205,9 +235,16 @@ class RoleController extends Controller
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->paginate(10);
         //->get();    
-        return view('master.roles.index',[
-            'data' => $data,
-            'dataAccess' => $dataAccess,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('role.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roles.index',[
+                'data' => $data,
+                'dataAccess' => $dataAccess,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Role');
+        }
     }
 }

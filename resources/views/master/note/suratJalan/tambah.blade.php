@@ -41,7 +41,7 @@ Pembuatan Surat Jalan
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Pembuatan</label>
-                                            <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="" required="">
+                                            <input name="tanggalDibuat" type="date" class="form-control" id="datePembuatan" placeholder="" value="" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 
@@ -263,6 +263,9 @@ Pembuatan Surat Jalan
             $("#PurchaseRequestID").empty();
             $("#PurchaseRequestID").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
+            $('#keranjang').empty();
+
+
         });
 
         $("#PurchaseRequestID").on("change", function() { //sudah
@@ -291,9 +294,132 @@ Pembuatan Surat Jalan
             $("#barang").empty();
             $("#barang").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
+            $('#keranjang').empty();
+        });
+
+        $("#barang").on("change", function() { //sudah
+
+            var id = this.value;
+            var idPrdID = $("#barang option:selected").attr('idPrdId');
+            var idGudang = $("#idGudang option:selected").val();
+            var datePembuatan = $("#datePembuatan").val();
+            var optionnya = '';
+            var maxAngka = 0;
+
+            var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
+            $.each(dataReportUntukStok, function(key, value) {
+                if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
+                    //$("#stokAwalBarang").val(value.totalQuantity);     
+                    maxAngka = maxAngka + parseFloat(value.Quantity);
+                }
+            });
+            if (maxAngka > 0) {
+                $("#jumlahBarang").attr({
+                    "max": maxAngka,
+                    "min": 1,
+                    "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
+                    "value": "",
+                });
+            } else {
+                $("#jumlahBarang").attr({
+                    "max": 0,
+                    "min": 0,
+                    "placeholder": "Tidak ada barang di gudang",
+                    "value": "",
+                });
+            }
+            //$('#keranjang').empty();
+        });
+        $("#idGudang").on("change", function() { //sudah
+
+            var id = $("#barang option:selected").attr();
+            var idPrdID = $("#barang option:selected").attr('idPrdId');
+            var idGudang = $("#idGudang option:selected").val();
+            var datePembuatan = $("#datePembuatan").val();
+            var optionnya = '';
+            var maxAngka = 0;
+            if (id == "pilih" || id == "") {
+                $("#jumlahBarang").attr({
+                    "max": 0,
+                    "min": 0,
+                    "placeholder": "Belum memilih barang",
+                    "value": "",
+                });
+
+            } else {
+                var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
+                $.each(dataReportUntukStok, function(key, value) {
+                    if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
+                        //$("#stokAwalBarang").val(value.totalQuantity);     
+                        maxAngka = maxAngka + parseFloat(value.Quantity);
+                    }
+                });
+                if (maxAngka > 0) {
+                    $("#jumlahBarang").attr({
+                        "max": maxAngka,
+                        "min": 1,
+                        "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
+                        "value": "",
+                    });
+                } else {
+                    $("#jumlahBarang").attr({
+                        "max": 0,
+                        "min": 0,
+                        "placeholder": "Tidak ada barang di gudang",
+                        "value": "",
+                    });
+                }
+            }
+            $('#keranjang').empty();
+
+
         });
 
 
+        $("#datePembuatan").on("change", function() {
+            var id = $("#ItemID option:selected").val();
+            if (id == "pilih" || id == "") {
+                $("#jumlahBarang").attr({
+                    "max": 0,
+                    "min": 0,
+                    "placeholder": "Belum memilih barang",
+                    "value": "",
+                });
+
+            } else {
+                var idGudang = $("#idGudang option:selected").val();
+                var datePembuatan = $("#datePembuatan").val();
+                var optionnya = '';
+                var maxAngka = 0;
+
+                var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
+                $.each(dataReportUntukStok, function(key, value) {
+                    if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
+                        //$("#stokAwalBarang").val(value.totalQuantity);     
+                        maxAngka = maxAngka + parseFloat(value.Quantity);
+                    }
+                });
+                if (maxAngka > 0) {
+                    $("#jumlahBarang").attr({
+                        "max": maxAngka,
+                        "min": 1,
+                        "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
+                        "value": "",
+                    });
+                } else {
+                    $("#jumlahBarang").attr({
+                        "max": 0,
+                        "min": 0,
+                        "placeholder": "Tidak ada barang di gudang",
+                        "value": "",
+                    });
+                }
+
+            }
+
+            $('#keranjang').empty();
+
+        });
 
     });
 

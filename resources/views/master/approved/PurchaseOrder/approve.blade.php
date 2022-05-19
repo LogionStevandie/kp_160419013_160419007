@@ -77,16 +77,16 @@ Persetujuan Order
                                         @foreach($pod as $data) 
                                         <tr>
                                             @if($data->idPurchaseOrder==$purchaseOrder->id)
-                                            <th scope="row">{{$data->id}}</th>
+                                            <td>{{ $loop->index + 1 }}</td>
                                             <th scope="row">{{$data->namaItem}}</th>
                                             <td>{{$data->jumlah}}</td>
-                                            <td>  @php echo "Rp " . number_format($data->harga,2,',','.'); @endphp   </td>  
+                                            <td class="text-right">  @php echo "Rp " . number_format($data->harga,2,',','.'); @endphp   </td>  
                                           
                                             <td>{{$data->diskon}}</td> 
                                             <td>{{$data->namaTax}}</td>    <!--nntk loopng-->      
-                                            <td>{{$data->keterangan}}</td>  
+                                            <td> <span style="white-space: pre-line">{{$data->keterangan}}</span></td>  
 
-                                            <td> @php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp   </td>                                          
+                                            <td class="text-right"> @php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp   </td>                                          
                                             @endif
                                         </tr>
                                         @endforeach
@@ -95,7 +95,7 @@ Persetujuan Order
                                  <thead class="thead-light justify-content-center">
                                     <tr>
                                         <th scope="col" colspan="7" > <h3>Total</h3> </th>
-                                        <th scope="col" colspan="7"  > <h3>@php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp</h3> </th>
+                                        <th scope="col" colspan="7" class="text-right" > <h3>@php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp</h3> </th>
                                     </tr>
                                 </thead>
                             </table>

@@ -109,12 +109,12 @@
                                       <thead class="thead-light">
                                         <tr>
                                         <th scope="col"colspan="6"cellspacing="2" >
-                                          Keterangan kendaraan: {{$suratJalan->keteranganKendaraan}} <br>
-                                          Keterangan nomor polisi: {{$suratJalan->keteranganNomorPolisi}} <br>
-                                          Keterangan pemudi: {{$suratJalan->keteranganPemudi}} <br>
-                                          Keterangan transaksi: {{$suratJalan->keteranganTransaksi}}<br>
-                                          Keterangan Gudang Tujuan: {{$suratJalan->keteranganGudangTujuan}}<br>
-                                          Keterangan Penerima: {{$suratJalan->keteranganPenerima}}
+                                          Keterangan kendaraan:  <span style="white-space: pre-line">{{$suratJalan->keteranganKendaraan}} </span><br>
+                                          Keterangan nomor polisi:  <span style="white-space: pre-line">{{$suratJalan->keteranganNomorPolisi}}</span> <br>
+                                          Keterangan pemudi:  <span style="white-space: pre-line">{{$suratJalan->keteranganPemudi}}</span> <br>
+                                          Keterangan transaksi:  <span style="white-space: pre-line">{{$suratJalan->keteranganTransaksi}}</span><br>
+                                          Keterangan Gudang Tujuan:  <span style="white-space: pre-line">{{$suratJalan->keteranganGudangTujuan}}</span><br>
+                                          Keterangan Penerima:  <span style="white-space: pre-line">{{$suratJalan->keteranganPenerima}}</span>
                                         </th>
                                         </tr>
                                     </thead>
@@ -130,11 +130,11 @@
                                     <tbody>
                                         @foreach($dataTotalDetail as $data)
                                             <tr>
-                                                <td>{{$data->id}}</td>
+                                                <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{$data->itemName}}</td>
                                                 <td>{{$data->jumlah}}</td>
-                                                <td>@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>
-                                                <td>{{$data->keterangan}}</td>
+                                                <td class="text-right">@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>
+                                                <td> <span style="white-space: pre-line">{{$data->keterangan}}</span></td>
                                             </tr>
                                         @endforeach  
                                     </tbody>

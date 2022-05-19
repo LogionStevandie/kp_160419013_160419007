@@ -24,9 +24,16 @@ class MPulauController extends Controller
         $data = DB::table('MPulau')
             ->paginate(10);
         //->get();
-        return view('master.mPulau.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mPulau.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPulau.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+        }
     }
 
     /**
@@ -37,7 +44,14 @@ class MPulauController extends Controller
     public function create()
     {
         //
-        return view('master.mPulau.tambah');
+        $user = Auth::user();
+        $check = $this->checkAccess('mPulau.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPulau.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+        }
+        
     }
 
     /**
@@ -75,9 +89,16 @@ class MPulauController extends Controller
     {
         //
         //$data = DB::table('MPulau')->get();
-        return view('master.mPulau.detail',[
-            'mPulau' => $mPulau,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mPulau.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPulau.detail',[
+                'mPulau' => $mPulau,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+        }
     }
 
     /**
@@ -89,9 +110,17 @@ class MPulauController extends Controller
     public function edit(MPulau $mPulau)
     {
         //
-        return view('master.mPulau.edit',[
-            'mPulau' => $mPulau,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mPulau.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPulau.edit',[
+                'mPulau' => $mPulau,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+        }
     }
 
     /**
@@ -139,8 +168,15 @@ class MPulauController extends Controller
             ->where('cname','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.mPulau.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mPulau.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mPulau.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+        }
     }
 }

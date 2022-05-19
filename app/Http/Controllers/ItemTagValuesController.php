@@ -51,17 +51,19 @@ class ItemTagValuesController extends Controller
             ->orWhere('user_access.idUsers',$user->id)
             ->get();
         */
-       // $check = $this->checkAccess('itemtagvalues.index', $user->id, $user->idRole);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('itemtagvalues.index', $user->id, $user->idRole);
         
-       /* if($check){*/
+        if($check){
             return view('master.tag.item.index',[
                 'dataItem' => $dataItem, //ke close ga gik lek tak close gak tab e sek
                 'dataTag' => $dataTag
             ]);
-       /* }
+        }
         else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
+            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Tag Values Master');
+        }
     }
 
     /**
@@ -125,11 +127,18 @@ class ItemTagValuesController extends Controller
             ->where('ItemTagValues.ItemID',$itemTagValue->ItemID)
             ->get();
         //dd($dataTag);
-        return view('master.tag.item.edit',[
-            'data' =>$data,
-            'dataTag' => $dataTag,
-            'itemTagValues' => $itemTagValue,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('itemtagvalues.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.tag.item.edit',[
+                'data' =>$data,
+                'dataTag' => $dataTag,
+                'itemTagValues' => $itemTagValue,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Tag Values Master');
+        }
 
     }
 
@@ -213,16 +222,16 @@ class ItemTagValuesController extends Controller
             ->orWhere('user_access.idUsers',$user->id)
             ->get();
         */
-       // $check = $this->checkAccess('itemtagvalues.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('itemtagvalues.index', $user->id, $user->idRole);
         
-       /* if($check){*/
+        if($check){
             return view('master.tag.item.index',[
                 'dataItem' => $dataItem, //ke close ga gik lek tak close gak tab e sek
                 'dataTag' => $dataTag
             ]);
-       /* }
+        }
         else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
+            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Tag Values Master');
+        }
     }
 }

@@ -22,14 +22,22 @@ class PaymentTermsController extends Controller
     {
         //
         $data = DB::table('PaymentTerms')
-            ->select('PaymentTerms.*','Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
-            ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
-            ->where('PaymentTerms.Hapus','=',0)
+            ->select('PaymentTerms.*', 'Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
+            ->leftjoin('Payment', 'PaymentTerms.PaymentID', '=', 'Payment.PaymentID')
+            ->where('PaymentTerms.Hapus', '=', 0)
             ->paginate(10);
         //->get();
-        return view('master.paymentTerms.index',[
-            'data' => $data,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('paymentTerms.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.paymentTerms.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
+        }
     }
 
     /**
@@ -42,9 +50,17 @@ class PaymentTermsController extends Controller
         //
         $dataPayment = DB::table('Payment')
             ->get();
-        return view('master.paymentTerms.tambah',[
-            'dataPayment' => $dataPayment,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('paymentTerms.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.paymentTerms.tambah', [
+                'dataPayment' => $dataPayment,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
+        }
     }
 
     /**
@@ -61,24 +77,24 @@ class PaymentTermsController extends Controller
         //dd($data);
         $user = Auth::user();
         $isPenjualan = 0;
-        if($data['isPembelian'] == "0") $isPenjualan = 1;
+        if ($data['isPembelian'] == "0") $isPenjualan = 1;
         DB::table('PaymentTerms')
-            ->insert(array(
-                'Name' => $data['name'],
-                'Deskripsi' => $data['deskripsi'],
-                'Days' => $data['days'],
-                'IsPembelian' => $data['isPembelian'],
-                'IsPenjualan' => $isPenjualan,
-                'PaymentID' => $data['paymentID'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                'Hapus' => 0,
-            )
-        );
-        return redirect()->route('paymentTerms.index')->with('status','Success!!');
-
+            ->insert(
+                array(
+                    'Name' => $data['name'],
+                    'Deskripsi' => $data['deskripsi'],
+                    'Days' => $data['days'],
+                    'IsPembelian' => $data['isPembelian'],
+                    'IsPenjualan' => $isPenjualan,
+                    'PaymentID' => $data['paymentID'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    'Hapus' => 0,
+                )
+            );
+        return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
     }
 
     /**
@@ -90,9 +106,16 @@ class PaymentTermsController extends Controller
     public function show(PaymentTerms $paymentTerm)
     {
         //
-        return view('master.paymentTerms.detail',[
-            'paymentTerms' => $paymentTerm,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('paymentTerms.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.paymentTerms.detail', [
+                'paymentTerms' => $paymentTerm,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
+        }
     }
 
     /**
@@ -106,10 +129,18 @@ class PaymentTermsController extends Controller
         //
         $dataPayment = DB::table('Payment')
             ->get();
-        return view('master.paymentTerms.edit',[
-            'paymentTerms' => $paymentTerm,
-            'dataPayment' => $dataPayment,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('paymentTerms.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.paymentTerms.edit', [
+                'paymentTerms' => $paymentTerm,
+                'dataPayment' => $dataPayment,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
+        }
     }
 
     /**
@@ -125,22 +156,23 @@ class PaymentTermsController extends Controller
         $data = $request->collect();
         //dd($data);
         $isPenjualan = 0;
-        if($data['isPembelian'] == "0") $isPenjualan = 1;
+        if ($data['isPembelian'] == "0") $isPenjualan = 1;
         $user = Auth::user();
         DB::table('PaymentTerms')
             ->where('PaymentTermsID', $paymentTerm['PaymentTermsID'])
-            ->update(array(
-                'Name' => $data['name'],
-                'Deskripsi' => $data['deskripsi'],
-                'Days' => $data['days'],
-                'IsPembelian' => $data['isPembelian'],
-                'IsPenjualan' => $isPenjualan,
-                'PaymentID' => $data['paymentID'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        ); 
-        return redirect()->route('paymentTerms.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'Name' => $data['name'],
+                    'Deskripsi' => $data['deskripsi'],
+                    'Days' => $data['days'],
+                    'IsPembelian' => $data['isPembelian'],
+                    'IsPenjualan' => $isPenjualan,
+                    'PaymentID' => $data['paymentID'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
     }
 
     /**
@@ -153,14 +185,15 @@ class PaymentTermsController extends Controller
     {
         //
         //dd($paymentTerm);
-        $user = Auth::user();  
+        $user = Auth::user();
         DB::table('PaymentTerms')
             ->where('PaymentTermsID', $paymentTerm['PaymentTermsID'])
-            ->update(array(
-                'Hapus' => 1,
-            )
-        ); 
-        return redirect()->route('paymentTerms.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'Hapus' => 1,
+                )
+            );
+        return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
     }
 
     public function searchPaymentTermsName(Request $request)
@@ -168,15 +201,23 @@ class PaymentTermsController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('PaymentTerms')
-            ->select('PaymentTerms.*','Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
-            ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
-            ->where('PaymentTerms.Hapus','=',0)
-            ->where('PaymentTerms.Name','like','%'.$name.'%')
+            ->select('PaymentTerms.*', 'Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
+            ->leftjoin('Payment', 'PaymentTerms.PaymentID', '=', 'Payment.PaymentID')
+            ->where('PaymentTerms.Hapus', '=', 0)
+            ->where('PaymentTerms.Name', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.paymentTerms.index',[
-            'data' => $data,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('paymentTerms.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.paymentTerms.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
+        }
     }
 
     public function searchPaymentTermsDay(Request $request)
@@ -184,15 +225,20 @@ class PaymentTermsController extends Controller
         //
         $day = $request->input('searchday');
         $data = DB::table('PaymentTerms')
-            ->select('PaymentTerms.*','Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
-            ->leftjoin('Payment', 'PaymentTerms.PaymentID','=','Payment.PaymentID')
-            ->where('PaymentTerms.Hapus','=',0)
-            ->where('PaymentTerms.Days','like','%'.$day.'%')
+            ->select('PaymentTerms.*', 'Payment.Name as paymentName', 'Payment.Deskripsi as paymentDeskripsi')
+            ->leftjoin('Payment', 'PaymentTerms.PaymentID', '=', 'Payment.PaymentID')
+            ->where('PaymentTerms.Hapus', '=', 0)
+            ->where('PaymentTerms.Days', 'like', '%' . $day . '%')
             ->paginate(10);
         //->get();
-        return view('master.paymentTerms',[
-            'data' => $data,
-        ]);
+        $user = Auth::user();
+        $check = $this->checkAccess('paymentTerms.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.paymentTerms.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
+        }
     }
-
 }

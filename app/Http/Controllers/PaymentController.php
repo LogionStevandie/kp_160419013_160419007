@@ -25,9 +25,16 @@ class PaymentController extends Controller
         $data = DB::table('Payment')
             ->paginate(10);
         //->get();
-        return view('master.payment.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('payment.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.payment.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Jenis Pembayaran');
+        }
     }
 
     /**
@@ -38,7 +45,14 @@ class PaymentController extends Controller
     public function create()
     {
         //
-        return view('master.payment.tambah');
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('payment.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.payment.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Jenis Pembayaran');
+        }
     }
 
     /**
@@ -75,9 +89,16 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         //
-        return view('master.payment.detail',[
-            'payment' => $payment,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('payment.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.payment.detail',[
+                'payment' => $payment,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Jenis Pembayaran');
+        }
     }
 
     /**
@@ -89,9 +110,17 @@ class PaymentController extends Controller
     public function edit(Payment $payment)
     {
         //
-        return view('master.payment.edit',[
-            'payment' => $payment,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('payment.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.payment.edit',[
+                'payment' => $payment,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Jenis Pembayaran');
+        }
     }
 
     /**
@@ -138,8 +167,15 @@ class PaymentController extends Controller
             ->where('Name','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.payment.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('payment.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.payment.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Jenis Pembayaran');
+        }
     }
 }

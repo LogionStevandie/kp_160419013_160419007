@@ -25,9 +25,16 @@ class ItemTypeController extends Controller
         $data = DB::table('ItemType')
         ->paginate(10);
         //->get();
-        return view('master.itemType.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('itemType.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemType.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tipe Item');
+        }
     }
 
     /**

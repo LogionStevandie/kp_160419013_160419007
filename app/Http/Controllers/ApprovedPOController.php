@@ -41,7 +41,7 @@ class ApprovedPOController extends Controller
                 ->where('purchase_order.approved',0)
                 ->where('purchase_order.hapus',0)
                 ->whereIn('purchase_order.MPerusahaanID', $arrPerusahaan)
-                ->orderByDesc('purchase_order.tanggalDibuat')
+                ->orderByDesc('purchase_order.tanggalDibuat','purchase_order.id')
                 ->paginate(10);
         }
         //dd($poKeluar);
@@ -53,10 +53,20 @@ class ApprovedPOController extends Controller
             //->paginate(10);
             ->get();
         
-        return view('master.approved.PurchaseOrder.index',[
+        
+
+        
+         $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseOrder.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseOrder.index',[
             'poKeluar' => $poKeluar,
             'pod' => $pod,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+        }
     }
 
     /**
@@ -117,13 +127,22 @@ class ApprovedPOController extends Controller
                      ->get();
         //dd($approvedPurchaseRequest['id']);
         if($approvedPurchaseOrder->approved == 0){
-            return view('master.approved.PurchaseOrder.approve',[
+            $user = Auth::user();
+
+            $check = $this->checkAccess('approvedPurchaseOrder.edit', $user->id, $user->idRole);
+            if ($check) {  
+                return view('master.approved.PurchaseOrder.approve',[
                 'purchaseOrder'=>$approvedPurchaseOrder,
                 'dataPerusahaan'=>$dataPerusahaan,
                 'dataBarang'=>$dataBarang,
                 'pod'=>$pod,
                 'dataSupplier'=>$dataSupplier,
             ]);
+           
+            } else {
+                return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Order Pembelian');
+            }
+            
         }
         else{
             return redirect()->route('approvedPurchaseOrder.index')->with('status','Failed');
@@ -225,7 +244,7 @@ class ApprovedPOController extends Controller
                 ->where('purchase_order.hapus',0)
                 ->whereIn('purchase_order.MPerusahaanID', $arrPerusahaan)
                 ->where('purchase_order.name','like', '%'.$name.'%')
-                ->orderByDesc('purchase_order.tanggalDibuat')
+                ->orderByDesc('purchase_order.tanggalDibuat','purchase_order.id')
                 ->paginate(10);
         }
         //dd($poKeluar);
@@ -237,10 +256,20 @@ class ApprovedPOController extends Controller
             //->paginate(10);
             ->get();
         
-        return view('master.approved.PurchaseOrder.index',[
+        
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseOrder.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseOrder.index',[
             'poKeluar' => $poKeluar,
             'pod' => $pod,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+        }
+        
 
     }
 
@@ -268,7 +297,7 @@ class ApprovedPOController extends Controller
                 ->where('purchase_order.hapus',0)
                 ->whereIn('purchase_order.MPerusahaanID', $arrPerusahaan)
                 ->whereBetween('purchase_order.tanggalDibuat',[date($date[0]), date($date[1])])
-                ->orderByDesc('purchase_order.tanggalDibuat')
+                ->orderByDesc('purchase_order.tanggalDibuat','purchase_order.id')
                 ->paginate(10);
         }
         //dd($poKeluar);
@@ -280,10 +309,19 @@ class ApprovedPOController extends Controller
             //->paginate(10);
             ->get();
         
-        return view('master.approved.PurchaseOrder.index',[
+      
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseOrder.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseOrder.index',[
             'poKeluar' => $poKeluar,
             'pod' => $pod,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+        }
 
     }
 
@@ -313,7 +351,7 @@ class ApprovedPOController extends Controller
                 ->whereIn('MPerusahaanID', $arrPerusahaan)
                 ->where('purchase_order.name','like', '%'.$name.'%')
                 ->whereBetween('purchase_order.tanggalDibuat',[date($date[0]), date($date[1])])
-                ->orderByDesc('purchase_order.tanggalDibuat')
+                ->orderByDesc('purchase_order.tanggalDibuat','purchase_order.id')
                 ->paginate(10);
         }
         //dd($poKeluar);
@@ -325,10 +363,17 @@ class ApprovedPOController extends Controller
             //->paginate(10);
             ->get();
         
-        return view('master.approved.PurchaseOrder.index',[
+        $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseOrder.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseOrder.index',[
             'poKeluar' => $poKeluar,
             'pod' => $pod,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+        }
 
     }
 }

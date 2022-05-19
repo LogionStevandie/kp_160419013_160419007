@@ -24,11 +24,19 @@ class AdjustmentStockController extends Controller
             ->leftjoin('MGudang','ItemAdjustmentDetail.MGudangID','=','MGudang.MGudangID')
             ->where('ItemAdjustment.Deleted',0)
             ->where('ItemAdjustment.Deleted',0)
-            ->orderByDesc('ItemAdjustment.Tanggal')
+            ->orderByDesc('ItemAdjustment.Tanggal','ItemAdjustment.ItemAdjustmentID')
             ->paginate(10);
-        return view('master.note.adjustmentStok.index',[
+         $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.note.adjustmentStok.index',[
             'data' => $data,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
+        
     }
 
     /**
@@ -77,7 +85,13 @@ class AdjustmentStockController extends Controller
             ->get();
         //dd($dataReport);
         
-        return view('master.note.adjustmentStok.tambah',[
+       
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.create', $user->id, $user->idRole);
+        if ($check) {
+             return view('master.note.adjustmentStok.tambah',[
             'dataBarang' => $dataBarang,
             'dataBarangTag' => $dataBarangTag,
             'dataTag' => $dataTag,
@@ -85,6 +99,9 @@ class AdjustmentStockController extends Controller
             'dataReport' => $dataReport,
             'dataReportUntukStok' => $dataReportUntukStok,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 
     /**
@@ -229,6 +246,12 @@ class AdjustmentStockController extends Controller
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName','ItemInventoryTransactionLine.Quantity','ItemInventoryTransaction.Date')
             ->get();
 
+
+        $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.show', $user->id, $user->idRole);
+        if ($check) {
+             
         return view('master.note.adjustmentStok.detail',[
             'dataBarang' => $dataBarang,
             'dataBarangTag' => $dataBarangTag,
@@ -240,6 +263,9 @@ class AdjustmentStockController extends Controller
             'adjustmentStock' => $adjustmentStock,
             'adjustmentStockDetail' => $adjustmentStockDetail,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 
     /**
@@ -307,6 +333,14 @@ class AdjustmentStockController extends Controller
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName','ItemInventoryTransactionLine.Quantity','ItemInventoryTransaction.Date')
             ->get();
 
+        
+
+        
+        $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.edit', $user->id, $user->idRole);
+        if ($check) {
+             
         return view('master.note.adjustmentStok.edit',[
             'dataBarang' => $dataBarang,
             'dataBarangTag' => $dataBarangTag,
@@ -318,6 +352,9 @@ class AdjustmentStockController extends Controller
             'adjustmentStock' => $adjustmentStock,
             'adjustmentStockDetail' => $adjustmentStockDetail,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 
     /**
@@ -437,11 +474,20 @@ class AdjustmentStockController extends Controller
             ->leftjoin('MGudang','ItemAdjustmentDetail.MGudangID','=','MGudang.MGudangID')
             ->where('ItemAdjustment.Deleted',0)
             ->where('ItemAdjustment.Name','like', '%'.$name.'%')
-            ->orderByDesc('ItemAdjustment.Tanggal')
+            ->orderByDesc('ItemAdjustment.Tanggal','ItemAdjustment.ItemAdjustmentID')
             ->paginate(10);
-        return view('master.note.adjustmentStok.index',[
+      
+
+          $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        if ($check) {  
+          return view('master.note.adjustmentStok.index',[
             'data' => $data,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 
     public function searchDateAS(Request $request)
@@ -459,11 +505,20 @@ class AdjustmentStockController extends Controller
             ->leftjoin('MGudang','ItemAdjustmentDetail.MGudangID','=','MGudang.MGudangID')
             ->where('ItemAdjustment.Deleted',0)
             ->whereBetween('ItemAdjustment.Tanggal',[date($date[0]), date($date[1])])
-            ->orderByDesc('ItemAdjustment.Tanggal')
+            ->orderByDesc('ItemAdjustment.Tanggal','ItemAdjustment.ItemAdjustmentID')
             ->paginate(10);
-        return view('master.note.adjustmentStok.index',[
+      
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.note.adjustmentStok.index',[
             'data' => $data,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 
     public function searchNameDateAS(Request $request)
@@ -483,11 +538,20 @@ class AdjustmentStockController extends Controller
             ->where('ItemAdjustment.Deleted',0)
             ->where('ItemAdjustment.Name','like', '%'.$name.'%')
             ->whereBetween('ItemAdjustment.Tanggal',[date($date[0]), date($date[1])])
-            ->orderByDesc('ItemAdjustment.Tanggal')
+            ->orderByDesc('ItemAdjustment.Tanggal','ItemAdjustment.ItemAdjustmentID')
             ->paginate(10);
-        return view('master.note.adjustmentStok.index',[
+       
+
+          $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        if ($check) {  
+             return view('master.note.adjustmentStok.index',[
             'data' => $data,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 
     public function print(AdjustmentStock $adjustmentStock)
@@ -551,7 +615,13 @@ class AdjustmentStockController extends Controller
             ->groupBy('ItemInventoryTransactionLine.MGudangID','MGudang.cname','ItemInventoryTransactionLine.ItemID','Item.ItemName')
             ->get();
 
-        return view('master.note.adjustmentStok.detail',[
+        
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('adjustmentStok.show', $user->id, $user->idRole);
+        if ($check) {  
+             return view('master.note.adjustmentStok.detail',[
             'dataBarang' => $dataBarang,
             'dataBarangTag' => $dataBarangTag,
             'dataTag' => $dataTag,
@@ -562,5 +632,8 @@ class AdjustmentStockController extends Controller
             'adjustmentStock' => $adjustmentStock,
             'adjustmentStockDetail' => $adjustmentStockDetail,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 }

@@ -127,10 +127,10 @@
                                       <thead class="thead-light">
                                         <tr>
                                         <th scope="col"colspan="6"cellspacing="2" >
-                                          Keterangan kendaraan: {{$transactionGudangBarang->keteranganKendaraan}} <br>
-                                          Keterangan nomor polisi: {{$transactionGudangBarang->keteranganNomorPolisi}} <br>
-                                          Keterangan pemudi: {{$transactionGudangBarang->keteranganPemudi}} <br>
-                                          Keterangan transaksi: {{$transactionGudangBarang->keteranganTransaksi}}
+                                          Keterangan kendaraan: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganKendaraan}}</span> <br>
+                                          Keterangan nomor polisi: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganNomorPolisi}}</span> <br>
+                                          Keterangan pemudi: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganPemudi}}</span> <br>
+                                          Keterangan transaksi: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganTransaksi}}</span>
                                         </th>
                                         </tr>
                                     </thead>
@@ -146,11 +146,11 @@
                                     <tbody>
                                         @foreach($dataTotalDetail as $data)
                                             <tr>
-                                                <td>{{$data->id}}</td>
+                                                <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{$data->itemName}}</td>
                                                 <td>{{$data->jumlah}}</td>
-                                                <td>@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>
-                                                <td>{{$data->keterangan}}</td>
+                                                <td class="text-right">@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>
+                                                <td><span style="white-space: pre-line">{{$data->keterangan}}</span></td>
                                             </tr>
                                         @endforeach  
                                     </tbody>

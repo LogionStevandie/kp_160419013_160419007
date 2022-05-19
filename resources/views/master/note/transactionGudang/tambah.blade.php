@@ -363,9 +363,9 @@ Pembuatan Transaksi Gudang Barang
                
                 if(value.cidp.toString() == id.toString()){
                     //alert('masuk'); 
-                     alert("masuk cek");
+                    // alert("masuk cek");
                     optionnya += '<option id="preqID" idPr='+ value.id +' value="'+value.id+'">'+value.name+'</option>\n';      
-                    alert(optionnya);         
+                   // alert(optionnya);         
                 }
             });
             

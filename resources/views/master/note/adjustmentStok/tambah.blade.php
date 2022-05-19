@@ -142,7 +142,7 @@ Pembuatan Penyesuaian Stok Barang
                     //alert(id);
                     var total = 0;
                     var datePembuatan = $("#tanggalDibuat").val();
-                    alert(datePembuatan);
+                   // alert(datePembuatan);
                     var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
 
                     $.each(dataReportUntukStok, function(key, value) {

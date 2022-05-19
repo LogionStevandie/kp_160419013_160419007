@@ -21,22 +21,35 @@ class MSupplierController extends Controller
     public function index()
     {
         //
-        $data = DB::table('MSupplier')//menkrap
-            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
-                    'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
-                    'COA.Nama as coaName')
-            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
-            ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
-            ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
-            ->leftjoin('PaymentTerms','MSupplier.PaymentTermsID','=','PaymentTerms.PaymentTermsID')
-            ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
-            ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
-            ->where('MSupplier.Hapus','=',0)
+        $data = DB::table('MSupplier') //menkrap
+            ->select(
+                'MSupplier.*',
+                'infoSupplier.name as infoSupplierName',
+                'MCurrency.name as currencyName',
+                'Tax.Name as taxName',
+                'PaymentTerms.Name as paymentTermsName',
+                'MKota.cname as kotaName',
+                'COA.Nama as coaName'
+            )
+            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID', '=', 'infoSupplier.InfoSupplierID')
+            ->leftjoin('MCurrency', 'MSupplier.MCurrencyID', '=', 'MCurrency.MCurrencyID')
+            ->leftjoin('Tax', 'MSupplier.TaxID', '=', 'Tax.TaxID')
+            ->leftjoin('PaymentTerms', 'MSupplier.PaymentTermsID', '=', 'PaymentTerms.PaymentTermsID')
+            ->leftjoin('MKota', 'MSupplier.MKotaID', '=', 'MKota.MKotaID')
+            ->leftjoin('COA', 'MSupplier.COAID', '=', 'COA.COAID')
+            ->where('MSupplier.Hapus', '=', 0)
             ->paginate(10);
         //->get();
-        return view('master.msupplier.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('msupplier.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.msupplier.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
     }
 
     /**
@@ -59,9 +72,14 @@ class MSupplierController extends Controller
             ->get();
         $COA = DB::table('COA')
             ->get();
-         $Bank = DB::table('bank')
+        $Bank = DB::table('bank')
             ->get();
-        return view('master.msupplier.tambah',[
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('msupplier.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.msupplier.tambah', [
                 'infoSupplier' => $infoSupplier,
                 'MCurrency' => $MCurrency,
                 'Tax' => $Tax,
@@ -69,7 +87,10 @@ class MSupplierController extends Controller
                 'MKota' => $MKota,
                 'COA' => $COA,
                 'bank' => $Bank,
-        ]);
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
     }
 
     /**
@@ -83,49 +104,50 @@ class MSupplierController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('MSupplier')
-            ->insert(array(
-                'InfoSupplierID' => $data['infoSupplierID'],//combobox
-                'PaymentTermsID' => $data['PaymentTermsID'],//combobox
-                'MCurrencyID' => $data['mCurrencyID'],//combobox
-                'TaxID' => $data['taxID'],//combobox
-                'COAID' => $data['COAID'],//combobox
-                'Name' => $data['name'],
-                'Alamat' => $data['alamat'],
-                'Kota' => $data['kota'],
-                'KodePos' => $data['kodePos'],
-                'Phone1' => $data['phone1'],
-                'Phone2' => $data['phone2'],
-                'Fax1' => $data['fax1'],
-                'Fax2' => $data['fax2'],//
-                'ContactPerson' => $data['contactPerson'],
-                'Email' => $data['email'],
-                'NPWP' => $data['NPWP'],
-                'RekeningBank' => $data['rekeningBank'],
-                'NoRekening' => $data['noRekening'],
-                'Note' => $data['note'],
-                'AtasNama' => $data['atasNama'],
-                'Lokasi' => $data['lokasi'],
-                'Kode' => $data['kode'],
-                'Hapus' => 0,//
-                'Keterangan' => $data['keterangan'],
-                'SaldoDP' => $data['saldoDP'],
-                'NamaNPWP' => $data['namaNPWP'],
-                'SKT' => $data['SKT'],
-                'SPPKP' => $data['SPPKP'],
-                'KTP' => $data['KTP'],
-                'MKotaID' => $data['mKotaID'],//combobox
-                'Petani'=>$data['Petani'],
-                'Khusus'=>$data['Khusus'],
-                'CreatedBy'=> $user->id,//
-                'CreatedOn'=> date("Y-m-d h:i:sa"),//
-                'UpdatedBy'=> $user->id,//
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),//
-                
-            )
-        );
-         return redirect()->route('msupplier.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'InfoSupplierID' => $data['infoSupplierID'], //combobox
+                    'PaymentTermsID' => $data['PaymentTermsID'], //combobox
+                    'MCurrencyID' => $data['mCurrencyID'], //combobox
+                    'TaxID' => $data['taxID'], //combobox
+                    'COAID' => $data['COAID'], //combobox
+                    'Name' => $data['name'],
+                    'Alamat' => $data['alamat'],
+                    'Kota' => $data['kota'],
+                    'KodePos' => $data['kodePos'],
+                    'Phone1' => $data['phone1'],
+                    'Phone2' => $data['phone2'],
+                    'Fax1' => $data['fax1'],
+                    'Fax2' => $data['fax2'], //
+                    'ContactPerson' => $data['contactPerson'],
+                    'Email' => $data['email'],
+                    'NPWP' => $data['NPWP'],
+                    'RekeningBank' => $data['rekeningBank'],
+                    'NoRekening' => $data['noRekening'],
+                    'Note' => $data['note'],
+                    'AtasNama' => $data['atasNama'],
+                    'Lokasi' => $data['lokasi'],
+                    'Kode' => $data['kode'],
+                    'Hapus' => 0, //
+                    'Keterangan' => $data['keterangan'],
+                    'SaldoDP' => $data['saldoDP'],
+                    'NamaNPWP' => $data['namaNPWP'],
+                    'SKT' => $data['SKT'],
+                    'SPPKP' => $data['SPPKP'],
+                    'KTP' => $data['KTP'],
+                    'MKotaID' => $data['mKotaID'], //combobox
+                    'Petani' => $data['Petani'],
+                    'Khusus' => $data['Khusus'],
+                    'CreatedBy' => $user->id, //
+                    'CreatedOn' => date("Y-m-d h:i:sa"), //
+                    'UpdatedBy' => $user->id, //
+                    'UpdatedOn' => date("Y-m-d h:i:sa"), //
+
+                )
+            );
+        return redirect()->route('msupplier.index')->with('status', 'Success!!');
     }
 
     /**
@@ -149,10 +171,15 @@ class MSupplierController extends Controller
             ->get();
         $COA = DB::table('COA')
             ->get();
-         $Bank = DB::table('bank')
+        $Bank = DB::table('bank')
             ->get();
-        return view('master.msupplier.detail',[
-             'infoSupplier' => $infoSupplier,
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('msupplier.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.msupplier.detail', [
+                'infoSupplier' => $infoSupplier,
                 'MCurrency' => $MCurrency,
                 'Tax' => $Tax,
                 'PaymentTerms' => $PaymentTerms,
@@ -160,7 +187,10 @@ class MSupplierController extends Controller
                 'COA' => $COA,
                 'msupplier' => $msupplier,
                 'bank' => $Bank,
-        ]);
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
     }
 
     /**
@@ -184,10 +214,14 @@ class MSupplierController extends Controller
             ->get();
         $COA = DB::table('COA')
             ->get();
-         $Bank = DB::table('bank')
+        $Bank = DB::table('bank')
             ->get();
 
-        return view('master.msupplier.edit',[
+
+        $user = Auth::user();
+        $check = $this->checkAccess('msupplier.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.msupplier.edit', [
                 'infoSupplier' => $infoSupplier,
                 'MCurrency' => $MCurrency,
                 'Tax' => $Tax,
@@ -196,7 +230,10 @@ class MSupplierController extends Controller
                 'COA' => $COA,
                 'msupplier' => $msupplier,
                 'bank' => $Bank,
-        ]);
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
     }
 
     /**
@@ -213,43 +250,44 @@ class MSupplierController extends Controller
         $user = Auth::user();
         DB::table('MSupplier')
             ->where('SupplierID', $msupplier['SupplierID'])
-            ->update(array(
-                'InfoSupplierID' => $data['infoSupplierID'],
-                'MCurrencyID' => $data['mCurrencyID'],
-                'TaxID' => $data['taxID'],
-                'COAID' => $data['COAID'],
-                'Name' => $data['name'],
-                'Alamat' => $data['alamat'],
-                'Kota' => $data['kota'],
-                'KodePos' => $data['kodePos'],
-                'Phone1' => $data['phone1'],
-                'Phone2' => $data['phone2'],
-                'Fax1' => $data['fax1'],
-                'Fax2' => $data['fax2'],
-                'ContactPerson' => $data['contactPerson'],
-                'Email' => $data['email'],
-                'NPWP' => $data['NPWP'],
-                'RekeningBank' => $data['rekeningBank'],
-                'NoRekening' => $data['noRekening'],
-                'Note' => $data['note'],
-                'AtasNama' => $data['atasNama'],
-                'Lokasi' => $data['lokasi'],
-                'Kode' => $data['kode'],
-                'Hapus' => 0,//
-                'Keterangan' => $data['keterangan'],
-                'SaldoDP' => $data['saldoDP'],
-                'NamaNPWP' => $data['namaNPWP'],
-                'SKT' => $data['SKT'],
-                'SPPKP' => $data['SPPKP'],
-                'KTP' => $data['KTP'],
-                'MKotaID' => $data['mKotaID'],
-                'Petani'=>$data['Petani'],
-                'Khusus'=>$data['Khusus'],
-                'UpdatedBy'=> $user->id,//
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),//
-            )
-        );
-        return redirect()->route('msupplier.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'InfoSupplierID' => $data['infoSupplierID'],
+                    'MCurrencyID' => $data['mCurrencyID'],
+                    'TaxID' => $data['taxID'],
+                    'COAID' => $data['COAID'],
+                    'Name' => $data['name'],
+                    'Alamat' => $data['alamat'],
+                    'Kota' => $data['kota'],
+                    'KodePos' => $data['kodePos'],
+                    'Phone1' => $data['phone1'],
+                    'Phone2' => $data['phone2'],
+                    'Fax1' => $data['fax1'],
+                    'Fax2' => $data['fax2'],
+                    'ContactPerson' => $data['contactPerson'],
+                    'Email' => $data['email'],
+                    'NPWP' => $data['NPWP'],
+                    'RekeningBank' => $data['rekeningBank'],
+                    'NoRekening' => $data['noRekening'],
+                    'Note' => $data['note'],
+                    'AtasNama' => $data['atasNama'],
+                    'Lokasi' => $data['lokasi'],
+                    'Kode' => $data['kode'],
+                    'Hapus' => 0, //
+                    'Keterangan' => $data['keterangan'],
+                    'SaldoDP' => $data['saldoDP'],
+                    'NamaNPWP' => $data['namaNPWP'],
+                    'SKT' => $data['SKT'],
+                    'SPPKP' => $data['SPPKP'],
+                    'KTP' => $data['KTP'],
+                    'MKotaID' => $data['mKotaID'],
+                    'Petani' => $data['Petani'],
+                    'Khusus' => $data['Khusus'],
+                    'UpdatedBy' => $user->id, //
+                    'UpdatedOn' => date("Y-m-d h:i:sa"), //
+                )
+            );
+        return redirect()->route('msupplier.index')->with('status', 'Success!!');
     }
 
     /**
@@ -266,79 +304,116 @@ class MSupplierController extends Controller
         //dd($msupplier);
         DB::table('MSupplier')
             ->where('SupplierID', $msupplier['SupplierID'])
-            ->update(array(
-                'Hapus' => 1,
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-        return redirect()->route('msupplier.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'Hapus' => 1,
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('msupplier.index')->with('status', 'Success!!');
     }
 
     public function searchSupplierName(Request $request)
     {
         $name = $request->input('searchname');
         $data = DB::table('MSupplier')
-            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
-                'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
-                'COA.Nama as coaName')
-            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
-            ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
-            ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
-            ->leftjoin('PaymentTerms','MSupplier.PaymentTermsID','=','PaymentTerms.PaymentTermsID')
-            ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
-            ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
-            ->where('MSupplier.Hapus','=',0)
-            ->where('MSupplier.Name','like', '%'.$name.'%')
+            ->select(
+                'MSupplier.*',
+                'infoSupplier.name as infoSupplierName',
+                'MCurrency.name as currencyName',
+                'Tax.Name as taxName',
+                'PaymentTerms.Name as paymentTermsName',
+                'MKota.cname as kotaName',
+                'COA.Nama as coaName'
+            )
+            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID', '=', 'infoSupplier.InfoSupplierID')
+            ->leftjoin('MCurrency', 'MSupplier.MCurrencyID', '=', 'MCurrency.MCurrencyID')
+            ->leftjoin('Tax', 'MSupplier.TaxID', '=', 'Tax.TaxID')
+            ->leftjoin('PaymentTerms', 'MSupplier.PaymentTermsID', '=', 'PaymentTerms.PaymentTermsID')
+            ->leftjoin('MKota', 'MSupplier.MKotaID', '=', 'MKota.MKotaID')
+            ->leftjoin('COA', 'MSupplier.COAID', '=', 'COA.COAID')
+            ->where('MSupplier.Hapus', '=', 0)
+            ->where('MSupplier.Name', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.msupplier.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('msupplier.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.msupplier.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
     }
 
     public function searchSupplierAtasNama(Request $request)
     {
         $name = $request->input('searchatasnama');
         $data = DB::table('MSupplier')
-            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
-                'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
-                'COA.Nama as coaName')
-            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
-            ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
-            ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
-            ->leftjoin('PaymentTerms','MSupplier.PaymentTermsID','=','PaymentTerms.PaymentTermsID')
-            ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
-            ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
-            ->where('MSupplier.Hapus','=',0)
-            ->where('MSupplier.AtasNama','like', '%'.$name.'%')
+            ->select(
+                'MSupplier.*',
+                'infoSupplier.name as infoSupplierName',
+                'MCurrency.name as currencyName',
+                'Tax.Name as taxName',
+                'PaymentTerms.Name as paymentTermsName',
+                'MKota.cname as kotaName',
+                'COA.Nama as coaName'
+            )
+            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID', '=', 'infoSupplier.InfoSupplierID')
+            ->leftjoin('MCurrency', 'MSupplier.MCurrencyID', '=', 'MCurrency.MCurrencyID')
+            ->leftjoin('Tax', 'MSupplier.TaxID', '=', 'Tax.TaxID')
+            ->leftjoin('PaymentTerms', 'MSupplier.PaymentTermsID', '=', 'PaymentTerms.PaymentTermsID')
+            ->leftjoin('MKota', 'MSupplier.MKotaID', '=', 'MKota.MKotaID')
+            ->leftjoin('COA', 'MSupplier.COAID', '=', 'COA.COAID')
+            ->where('MSupplier.Hapus', '=', 0)
+            ->where('MSupplier.AtasNama', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.msupplier.index',[
-            'data' => $data,
-        ]);
+        $user = Auth::user();
+        $check = $this->checkAccess('msupplier.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.msupplier.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
     }
 
     public function searchSupplierLokasi(Request $request)
     {
         $lokasi = $request->input('searchlokasi');
         $data = DB::table('MSupplier')
-            ->select('MSupplier.*','infoSupplier.name as infoSupplierName','MCurrency.name as currencyName',
-                'Tax.Name as taxName', 'PaymentTerms.Name as paymentTermsName', 'MKota.cname as kotaName',
-                'COA.Nama as coaName')
-            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID','=','infoSupplier.InfoSupplierID')
-            ->leftjoin('MCurrency','MSupplier.MCurrencyID','=','MCurrency.MCurrencyID')
-            ->leftjoin('Tax','MSupplier.TaxID','=','Tax.TaxID')
-            ->leftjoin('PaymentTerms','MSupplier.PaymentTermsID','=','PaymentTerms.PaymentTermsID')
-            ->leftjoin('MKota','MSupplier.MKotaID','=','MKota.MKotaID')
-            ->leftjoin('COA','MSupplier.COAID','=','COA.COAID')
-            ->where('MSupplier.Hapus','=',0)
-            ->where('MSupplier.AtasNama','like', '%'.$lokasi.'%')
+            ->select(
+                'MSupplier.*',
+                'infoSupplier.name as infoSupplierName',
+                'MCurrency.name as currencyName',
+                'Tax.Name as taxName',
+                'PaymentTerms.Name as paymentTermsName',
+                'MKota.cname as kotaName',
+                'COA.Nama as coaName'
+            )
+            ->leftjoin('infoSupplier', 'MSupplier.InfoSupplierID', '=', 'infoSupplier.InfoSupplierID')
+            ->leftjoin('MCurrency', 'MSupplier.MCurrencyID', '=', 'MCurrency.MCurrencyID')
+            ->leftjoin('Tax', 'MSupplier.TaxID', '=', 'Tax.TaxID')
+            ->leftjoin('PaymentTerms', 'MSupplier.PaymentTermsID', '=', 'PaymentTerms.PaymentTermsID')
+            ->leftjoin('MKota', 'MSupplier.MKotaID', '=', 'MKota.MKotaID')
+            ->leftjoin('COA', 'MSupplier.COAID', '=', 'COA.COAID')
+            ->where('MSupplier.Hapus', '=', 0)
+            ->where('MSupplier.AtasNama', 'like', '%' . $lokasi . '%')
             ->paginate(10);
         //->get();
-        return view('master.msupplier.index',[
-            'data' => $data,
-        ]);
+        $user = Auth::user();
+        $check = $this->checkAccess('msupplier.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.msupplier.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
     }
-
 }

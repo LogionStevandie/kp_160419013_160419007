@@ -51,8 +51,8 @@ Cek Selesai Nota
                                             @endif 
                                         @endforeach
                                         Jenis permintaan : {{$purchaseRequest->jenisProses}} <br>
-                                        Tanggal dibutuhkan : {{$purchaseRequest->tanggalDibutuhkan}}<br>
-                                        Tanggal batas akhir : {{$purchaseRequest->tanggalAkhirDibutuhkan}}
+                                        Tanggal dibutuhkan : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDibutuhkan))}}<br>
+                                        Tanggal batas akhir : {{date("d-m-Y", strtotime($purchaseRequest->tanggalAkhirDibutuhkan))}}
                                         </th>
                                         </tr>
                                     </thead>
@@ -74,9 +74,9 @@ Cek Selesai Nota
                                                 <th scope="row">{{$data->id}}</th>
                                                 <th scope="row">{{$data->ItemName}}</th>
                                                 <td>{{$data->jumlah}}</td>
-                                                <td>@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp </td>              
+                                                <td class="text-right">@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp </td>              
                                                 <td>{{$data->keterangan_jasa}}</td>                                          
-                                                <td> @php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp </td>                                          
+                                                <td class="text-right"> @php echo "Rp " . number_format($data->jumlah * $data->harga,2,',','.'); @endphp </td>                                          
                                                 @endif
                                             </tr>
                                             @endforeach

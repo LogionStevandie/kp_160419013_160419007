@@ -22,10 +22,17 @@ class RoleAccessController extends Controller
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->get();
         //->get();    
-        return view('master.roleAccess.index',[
-            'data' => $data,
-            'dataAccess' => $dataAccess,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('roleAccess.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roleAccess.index',[
+                'data' => $data,
+                'dataAccess' => $dataAccess,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Role Access');
+        }
     }
 
     /**
@@ -58,13 +65,20 @@ class RoleAccessController extends Controller
     public function show(Role $roleAccess)
     {
         //
-        $dataAccess = DB::table('role_access')
+        /*$dataAccess = DB::table('role_access')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->get();    
-        return view('master.roleAccess.show',[
-            'role' => $roleAccess,
-            'dataAccess' => $dataAccess,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('roleAccess.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roleAccess.show',[
+                'role' => $roleAccess,
+                'dataAccess' => $dataAccess,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Role Access');
+        }*/
     }
 
     /**
@@ -91,11 +105,18 @@ class RoleAccessController extends Controller
             ->where('role_access.idRole',$roleAccess->idRole)
             ->get();  
             dd($dataAccess);*/
-        return view('master.roleAccess.edit',[
-            'roleAccess' => $roleAccess,
-            'dataMenu' => $dataMenu,
-            'dataAccess' => $dataAccess,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('roleAccess.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roleAccess.edit',[
+                'roleAccess' => $roleAccess,
+                'dataMenu' => $dataMenu,
+                'dataAccess' => $dataAccess,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Role Access');
+        }
     }
 
     /**
@@ -147,9 +168,16 @@ class RoleAccessController extends Controller
             ->join('menu','role_access.idMenu','=','menu.MenuID')
             ->paginate(10);
         //->get();    
-        return view('master.roleAccess.index',[
-            'data' => $data,
-            'dataAccess' => $dataAccess,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('roleAccess.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.roleAccess.index',[
+                'data' => $data,
+                'dataAccess' => $dataAccess,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Role Access');
+        }
     }
 }

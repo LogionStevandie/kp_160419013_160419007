@@ -29,9 +29,16 @@ class MKotaController extends Controller
             ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
             ->paginate(10);
         //->get();
-        return view('master.mKota.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mKota.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mKota.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+        }
     }
 
     /**
@@ -46,10 +53,17 @@ class MKotaController extends Controller
             ->get();
         $dataMProvinsi = DB::table('MProvinsi')
             ->get();    
-        return view('master.mKota.tambah',[
-            'dataMPulau' => $dataMPulau,
-            'dataMProvinsi' => $dataMProvinsi,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mKota.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mKota.tambah',[
+                'dataMPulau' => $dataMPulau,
+                'dataMProvinsi' => $dataMProvinsi,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+        }
     }
 
     /**
@@ -98,11 +112,19 @@ class MKotaController extends Controller
             ->get();
         $dataMProvinsi = DB::table('MProvinsi')
             ->get();    
-        return view('master.mKota.detail',[
-            'mKota' => $mKotum,
-            'dataMPulau' => $dataMPulau,
-            'dataMProvinsi' => $dataMProvinsi,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mKota.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mKota.detail',[
+                'mKota' => $mKotum,
+                'dataMPulau' => $dataMPulau,
+                'dataMProvinsi' => $dataMProvinsi,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+        }
     }
 
     /**
@@ -118,11 +140,18 @@ class MKotaController extends Controller
             ->get();
         $dataMProvinsi = DB::table('MProvinsi')
             ->get();    
-        return view('master.mKota.edit',[
-            'mKota' => $mKotum,
-            'dataMPulau' => $dataMPulau,
-            'dataMProvinsi' => $dataMProvinsi,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mKota.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mKota.edit',[
+                'mKota' => $mKotum,
+                'dataMPulau' => $dataMPulau,
+                'dataMProvinsi' => $dataMProvinsi,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+        }
     }
 
     /**
@@ -177,8 +206,16 @@ class MKotaController extends Controller
             ->where('MKota.cname','like','%'.$name.'%')
             ->paginate(10);
         //->get();
-        return view('master.mKota.index',[
-            'data' => $data,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mKota.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mKota.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+        }
     }
 }

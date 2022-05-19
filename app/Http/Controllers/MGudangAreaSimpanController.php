@@ -24,9 +24,16 @@ class MGudangAreaSimpanController extends Controller
         $data = DB::table('MGudangAreaSimpan')
             ->paginate(10);
         //->get();
-        return view('master.mGudangAreaSimpan.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mGudangAreaSimpan.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mGudangAreaSimpan.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang Area Simpan');
+        }
     }
 
     /**
@@ -37,7 +44,13 @@ class MGudangAreaSimpanController extends Controller
     public function create()
     {
         //
-         return view('master.mGudangAreaSimpan.tambah');
+        $user = Auth::user();
+        $check = $this->checkAccess('mGudangAreaSimpan.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mGudangAreaSimpan.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang Area Simpan');
+        }
     }
 
     /**
@@ -51,16 +64,17 @@ class MGudangAreaSimpanController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
-        DB::table('MGudangAreaSimpan')->insert(array(
+
+        DB::table('MGudangAreaSimpan')->insert(
+            array(
                 'cname' => $data['name'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-             )
+                'CreatedBy' => $user->id,
+                'CreatedOn' => date("Y-m-d h:i:sa"),
+                'UpdatedBy' => $user->id,
+                'UpdatedOn' => date("Y-m-d h:i:sa"),
+            )
         );
-        return redirect()->route('mGudangAreaSimpan.index')->with('status','Success!!');
+        return redirect()->route('mGudangAreaSimpan.index')->with('status', 'Success!!');
     }
 
     /**
@@ -72,9 +86,16 @@ class MGudangAreaSimpanController extends Controller
     public function show(MGudangAreaSimpan $mGudangAreaSimpan)
     {
         //
-        return view('master.mGudangAreaSimpan.detail',[
-            'mGudangAreaSimpan' => $mGudangAreaSimpan,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mGudangAreaSimpan.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mGudangAreaSimpan.detail', [
+                'mGudangAreaSimpan' => $mGudangAreaSimpan,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang Area Simpan');
+        }
     }
 
     /**
@@ -86,9 +107,17 @@ class MGudangAreaSimpanController extends Controller
     public function edit(MGudangAreaSimpan $mGudangAreaSimpan)
     {
         //
-        return view('master.mGudangAreaSimpan.edit',[
-            'mGudangAreaSimpan' => $mGudangAreaSimpan,
-        ]);
+        
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mGudangAreaSimpan.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mGudangAreaSimpan.edit', [
+                'mGudangAreaSimpan' => $mGudangAreaSimpan,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang Area Simpan');
+        }
     }
 
     /**
@@ -105,14 +134,14 @@ class MGudangAreaSimpanController extends Controller
         $user = Auth::user();
         DB::table('MGudangAreaSimpan')
             ->where('MGudangAreaSimpanID', $mGudangAreaSimpan['MGudangAreaSimpanID'])
-            ->update(array(
-                'cname' => $data['name'],   
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-        return redirect()->route('mGudangAreaSimpan.index')->with('status','Success!!');
-
+            ->update(
+                array(
+                    'cname' => $data['name'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('mGudangAreaSimpan.index')->with('status', 'Success!!');
     }
 
     /**
@@ -134,8 +163,7 @@ class MGudangAreaSimpanController extends Controller
             )
         );*/
         $mGudangAreaSimpan->delete();
-        return redirect()->route('mGudangAreaSimpan.index')->with('status','Success!!');
-
+        return redirect()->route('mGudangAreaSimpan.index')->with('status', 'Success!!');
     }
 
     public function searchGudangAreaSimpanName(Request $request)
@@ -143,12 +171,19 @@ class MGudangAreaSimpanController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('MGudangAreaSimpan')
-            ->where('cname','like','%'.$name.'%')
+            ->where('cname', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.mGudangAreaSimpan.index',[
-            'data' => $data,
-        ]);
-    }
+        
 
+        $user = Auth::user();
+        $check = $this->checkAccess('mGudangAreaSimpan.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mGudangAreaSimpan.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang Area Simpan');
+        }
+    }
 }

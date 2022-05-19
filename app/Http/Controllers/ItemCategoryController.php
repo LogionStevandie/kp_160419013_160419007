@@ -26,10 +26,21 @@ class ItemCategoryController extends Controller
             //->get();
         $dataCOA = DB::table('COA')
             ->get();
-        return view('master.itemCategory.index',[
+        
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('itemCategory.index', $user->id, $user->idRole);
+        if ($check) {  
+          return view('master.itemCategory.index',[
             'dataCategory' => $dataCategory,
             'dataCOA' => $dataCOA,
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+        }
     }
 
     /**
@@ -42,9 +53,18 @@ class ItemCategoryController extends Controller
         //
         $dataCOA = DB::table('COA')
             ->get();
-        return view('master.itemCategory.tambah',[
+       
+            $user = Auth::user();
+         $check = $this->checkAccess('itemCategory.index', $user->id, $user->idRole);
+        if ($check) {  
+          return view('master.itemCategory.tambah',[
             'dataCOA' => $dataCOA,
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+        }
     }
 
     /**
@@ -90,11 +110,21 @@ class ItemCategoryController extends Controller
             ->get();
         $dataCOA = DB::table('COA')
             ->get();
-        return view('master.itemCategory.detail',[
+      
+
+         $user = Auth::user();
+         $check = $this->checkAccess('itemCategory.show', $user->id, $user->idRole);
+        if ($check) {  
+           return view('master.itemCategory.detail',[
             'itemCategory' => $itemCategory,
             'dataCategory' => $dataCategory,
             'dataCOA' => $dataCOA,
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+        }
     }
 
     /**
@@ -108,10 +138,20 @@ class ItemCategoryController extends Controller
         //
         $dataCOA = DB::table('COA')
             ->get();
-        return view('master.itemCategory.edit',[
+        
+
+         $user = Auth::user();
+         $check = $this->checkAccess('itemCategory.edit', $user->id, $user->idRole);
+        if ($check) {  
+          return view('master.itemCategory.edit',[
             'itemCategory' => $itemCategory,
             'dataCOA' => $dataCOA,
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+        }
     }
 
     /**
@@ -168,9 +208,19 @@ class ItemCategoryController extends Controller
             //->get();
         $dataCOA = DB::table('COA')
             ->get();
-        return view('master.itemCategory.index',[
+        
+
+        $user = Auth::user();
+         $check = $this->checkAccess('itemCategory.show', $user->id, $user->idRole);
+        if ($check) {  
+         return view('master.itemCategory.index',[
             'dataCategory' => $dataCategory,
             'dataCOA' => $dataCOA,
         ]);
+
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+        }
     }
 }

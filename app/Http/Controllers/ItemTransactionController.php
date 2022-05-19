@@ -23,11 +23,19 @@ class ItemTransactionController extends Controller
     {
         //
         $data = DB::table('ItemTransaction')
-        ->paginate(10);
+            ->paginate(10);
         //->get();
-        return view('master.itemTransaction.index',[
-            'data' => $data,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTransaction.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTransaction.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+        }
     }
 
     /**
@@ -38,7 +46,13 @@ class ItemTransactionController extends Controller
     public function create()
     {
         //
-        return view('master.itemTransaction.tambah');
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTransaction.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTransaction.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+        }
     }
 
     /**
@@ -52,19 +66,20 @@ class ItemTransactionController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('ItemTransaction')
-            ->insert(array(
-                'Name' => $data['Name'],
-                'Description' => $data['Description'],
-                'Code' => $data['Code'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        ); 
-        return redirect()->route('itemTransaction.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'Name' => $data['Name'],
+                    'Description' => $data['Description'],
+                    'Code' => $data['Code'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
     }
 
     /**
@@ -76,9 +91,17 @@ class ItemTransactionController extends Controller
     public function show(ItemTransaction $itemTransaction)
     {
         //
-        return view('master.itemTransaction.detail',[
-            'itemTransaction'=>$itemTransaction
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTransaction.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTransaction.detail', [
+                'itemTransaction' => $itemTransaction
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+        }
     }
 
     /**
@@ -90,10 +113,16 @@ class ItemTransactionController extends Controller
     public function edit(ItemTransaction $itemTransaction)
     {
         //
-          return view('master.itemTransaction.edit',[
-            'itemTransaction'=>$itemTransaction
-        ]);
 
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTransaction.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTransaction.edit', [
+                'itemTransaction' => $itemTransaction
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+        }
     }
 
     /**
@@ -110,15 +139,16 @@ class ItemTransactionController extends Controller
         $user = Auth::user();
         DB::table('ItemTransaction')
             ->where('ItemTransactionID', $itemTransaction['ItemTransactionID'])
-            ->update(array(
-                'Name' => $data['Name'],
-                'Description' => $data['Description'],
-                'Code' => $data['Code'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-        return redirect()->route('itemTransaction.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'Name' => $data['Name'],
+                    'Description' => $data['Description'],
+                    'Code' => $data['Code'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
     }
 
     /**
@@ -132,7 +162,7 @@ class ItemTransactionController extends Controller
         //
         $itemTransaction->delete();
         DB::table('ItemTransaction')->where('ItemTransactionID', $itemTransaction['ItemTransactionID'])->delete();
-        return redirect()->route('itemTransaction.index')->with('status','Success!!');
+        return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
     }
 
     public function searchItemTransactionName(Request $request)
@@ -141,11 +171,18 @@ class ItemTransactionController extends Controller
         $name = $request->input('searchname');
 
         $data = DB::table('ItemTransaction')
-            ->where('Name','like','%'.$name.'%')
+            ->where('Name', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.itemTransaction.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTransaction.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTransaction.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+        }
     }
 }

@@ -33,16 +33,25 @@ class CheckPRController extends Controller
             ->where('purchase_request.approved','=', 1)    
             ->where('purchase_request.approvedAkhir','=', 1)    
             ->where('purchase_request.proses','=', 1)    
-            ->orderByDesc('purchase_request.tanggalDibuat')
+            ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
             ->paginate(10);
 
         $getPerusahaan = DB::table('MPerusahaan')
                     ->where('UserIDManager1', $user->id)
                     ->orWhere('UserIDManager2', $user->id)
                     ->get();
-        return view('master.checkPurchaseRequest.index',[
+        
+
+          $user = Auth::user();
+
+        $check = $this->checkAccess('checkPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+             return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Check Permintaan Pembelian');
+        }
 
         /*$user = Auth::user();
 
@@ -114,11 +123,21 @@ class CheckPRController extends Controller
             ->get();
        // dd($checkPurchaseRequest);
         if($checkPurchaseRequest->approved == 1 && $checkPurchaseRequest->approvedAkhir == 1){
-            return view('master.checkPurchaseRequest.check',[
+           
+            
+          $user = Auth::user();
+
+        $check = $this->checkAccess('checkPurchaseRequest.edit', $user->id, $user->idRole);
+        if ($check) {  
+              return view('master.checkPurchaseRequest.check',[
                 'purchaseRequest' => $checkPurchaseRequest,
                 'prd' => $prd,
                 'dataGudang' => $dataGudang,
             ]);
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Check Permintaan Pembelian');
+        }
         }
         else{
             return redirect()->route('checkPurchaseRequest.index')->with('status','Success!!');
@@ -203,13 +222,23 @@ class CheckPRController extends Controller
             ->where('purchase_request.approvedAkhir','=', 1)    
             ->where('purchase_request.proses','=', 1)   
             ->where('purchase_request.name','like','%'.$name.'%')
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 //->paginate(10);
             ->paginate(10);
 
-        return view('master.checkPurchaseRequest.index',[
+       
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('checkPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+              return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Check Permintaan Pembelian');
+        }
 
     }
 
@@ -235,13 +264,23 @@ class CheckPRController extends Controller
             ->where('purchase_request.approvedAkhir','=', 1)    
             ->where('purchase_request.proses','=', 1)   
             ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 //->paginate(10);
             ->paginate(10);
 
-        return view('master.checkPurchaseRequest.index',[
+        
+
+          $user = Auth::user();
+
+        $check = $this->checkAccess('checkPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+             return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Check Permintaan Pembelian');
+        }
 
     }
 
@@ -269,13 +308,23 @@ class CheckPRController extends Controller
             ->where('purchase_request.proses','=', 1)   
             ->where('purchase_request.name','like','%'.$name.'%')
             ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 //->paginate(10);
             ->paginate(10);
 
-        return view('master.checkPurchaseRequest.index',[
+    
+        
+          $user = Auth::user();
+
+        $check = $this->checkAccess('checkPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+             return view('master.checkPurchaseRequest.index',[
             'data' => $data,
         ]);
+
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Check Permintaan Pembelian');
+        }
 
     }
 }

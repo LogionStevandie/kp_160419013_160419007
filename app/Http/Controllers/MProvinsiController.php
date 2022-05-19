@@ -24,9 +24,16 @@ class MProvinsiController extends Controller
         $data = DB::table('MProvinsi')
             ->paginate(10);
         //->get();
-        return view('master.mProvinsi.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mProvinsi.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mProvinsi.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+        }
     }
 
     /**
@@ -37,7 +44,13 @@ class MProvinsiController extends Controller
     public function create()
     {
         //
-        return view('master.mProvinsi.tambah');
+        $user = Auth::user();
+        $check = $this->checkAccess('mProvinsi.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mProvinsi.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+        }
     }
 
     /**
@@ -51,18 +64,19 @@ class MProvinsiController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('MProvinsi')
-            ->insert(array(
-                'cidprov' => $data['cid'],
-                'cname' => $data['name'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:s"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:s"),
-            )
-        );
-        return redirect()->route('mProvinsi.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'cidprov' => $data['cid'],
+                    'cname' => $data['name'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:s"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:s"),
+                )
+            );
+        return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
     }
 
     /**
@@ -75,9 +89,16 @@ class MProvinsiController extends Controller
     {
         //
         //$data = DB::table('MProvinsi')->get();
-        return view('master.mProvinsi.detail',[
-            'mProvinsi' => $mProvinsi,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mProvinsi.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mProvinsi.detail', [
+                'mProvinsi' => $mProvinsi,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+        }
     }
 
     /**
@@ -89,9 +110,16 @@ class MProvinsiController extends Controller
     public function edit(MProvinsi $mProvinsi)
     {
         //
-        return view('master.mProvinsi.edit',[
-            'mProvinsi' => $mProvinsi,
-        ]);       
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mProvinsi.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mProvinsi.edit', [
+                'mProvinsi' => $mProvinsi,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+        }
     }
 
     /**
@@ -108,15 +136,15 @@ class MProvinsiController extends Controller
         $user = Auth::user();
         DB::table('MProvinsi')
             ->where('MProvinsiID', $mProvinsi['MProvinsiID'])
-            ->update(array(
-                'cidprov' => $data['cid'],
-                'cname' => $data['name'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:s"),
-            )
-        );
-        return redirect()->route('mProvinsi.index')->with('status','Success!!');
-        
+            ->update(
+                array(
+                    'cidprov' => $data['cid'],
+                    'cname' => $data['name'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:s"),
+                )
+            );
+        return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
     }
 
     /**
@@ -129,7 +157,7 @@ class MProvinsiController extends Controller
     {
         //
         $mProvinsi->delete();
-        return redirect()->route('mProvinsi.index')->with('status','Success!!');
+        return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
     }
 
     public function searchProvinsiName(Request $request)
@@ -138,11 +166,18 @@ class MProvinsiController extends Controller
         $name = $request->input('searchname');
 
         $data = DB::table('MProvinsi')
-            ->where('cname','like','%'.$name.'%')
+            ->where('cname', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.mProvinsi.inde',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('mProvinsi.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.mProvinsi.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+        }
     }
 }

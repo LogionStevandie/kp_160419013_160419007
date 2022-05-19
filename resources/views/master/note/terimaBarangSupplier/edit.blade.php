@@ -392,13 +392,13 @@ Edit Terima Barang Supplier
                 var id = this.value;
                 var idPodID = $("#barang option:selected").attr('idPodId');
                 var optionnya = '';
-            
+                var maxAngka = 0;
                 var dataPurchaseOrderDetail = <?php echo json_encode($dataPurchaseOrderDetail); ?>;
                 var dataDetail = <?php echo json_encode($dataTotalDetail); ?>;
     
                 $.each(dataPurchaseOrderDetail, function( key, value ){
                     if(value.id.toString() == idPodID.toString() && value.idItem.toString() == id.toString()){
-                        var maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                        maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
 
                         $.each(dataDetail, function( k, v ){
                             if(v.purchaseOrderDetailID.toString() == value.id.toString() && value.ItemID.toString() == v.ItemID.toString()){

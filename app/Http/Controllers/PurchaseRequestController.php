@@ -37,7 +37,7 @@ class PurchaseRequestController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID', '=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus', '=', 0)
-            ->orderByDesc('purchase_request.tanggalDibuat')
+            ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
             //->paginate(10);
             ->paginate(10);
 
@@ -55,9 +55,16 @@ class PurchaseRequestController extends Controller
                 ->where('purchase_request.hapus','=', 0)    
                 ->get();
         } dipakek kalo udah wenak*/
-        return view('master.PurchaseRequest.index', [
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.PurchaseRequest.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
+        }
     }
 
     public function detailPR(Request $request)
@@ -132,15 +139,22 @@ class PurchaseRequestController extends Controller
         $namaNpp = 'NPP/' . $dataLokasi[0]->perusahaanCode . '/' . $dataLokasi[0]->ckode . '/' . $year . '/' . $month . "/" . $totalIndex;
 
 
-        return view('master.PurchaseRequest.tambah', [
-            'dataGudang' => $dataGudang,
-            'dataBarangTag' => $dataBarangTag,
-            'dataBarang' => $dataBarang,
-            'namaNpp' => $namaNpp,
-            'date' => $date,
-            'dataTag' => $dataTag,
-            'dataPerusahaan' => $dataPerusahaan,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.PurchaseRequest.tambah', [
+                'dataGudang' => $dataGudang,
+                'dataBarangTag' => $dataBarangTag,
+                'dataBarang' => $dataBarang,
+                'namaNpp' => $namaNpp,
+                'date' => $date,
+                'dataTag' => $dataTag,
+                'dataPerusahaan' => $dataPerusahaan,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
+        }
     }
 
     /**
@@ -277,12 +291,20 @@ class PurchaseRequestController extends Controller
             ->get();
 
 
-        return view('master.PurchaseRequest.detail', [
-            'purchaseRequest' => $purchaseRequest,
-            'dataDetail' => $dataDetail,
-            'dataGudang' => $dataGudang,
-            'dataBarang' => $dataBarang,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.PurchaseRequest.detail', [
+                'purchaseRequest' => $purchaseRequest,
+                'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
+                'dataBarang' => $dataBarang,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
+        }
     }
 
     /**
@@ -328,17 +350,25 @@ class PurchaseRequestController extends Controller
             ->where('purchase_request_detail.idPurchaseRequest', '=', $purchaseRequest->id)
             ->get();
 
-        if ($purchaseRequest->approved == 1 || $purchaseRequest->approved == 2) {
-            return redirect()->route('purchaseRequest.index')->with('status', 'Tidak dapat mengubah data');
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.edit', $user->id, $user->idRole);
+        if ($check) {
+            if ($purchaseRequest->approved == 1 || $purchaseRequest->approved == 2) {
+                return redirect()->route('purchaseRequest.index')->with('status', 'Tidak dapat mengubah data');
+            } else {
+                return view('master.PurchaseRequest.edit', [
+                    'purchaseRequest' => $purchaseRequest,
+                    'dataDetail' => $dataDetail,
+                    'dataGudang' => $dataGudang,
+                    'dataBarang' => $dataBarang,
+                    'dataBarangTag' => $dataBarangTag,
+                    'dataTag' => $dataTag,
+                ]);
+            }
         } else {
-            return view('master.PurchaseRequest.edit', [
-                'purchaseRequest' => $purchaseRequest,
-                'dataDetail' => $dataDetail,
-                'dataGudang' => $dataGudang,
-                'dataBarang' => $dataBarang,
-                'dataBarangTag' => $dataBarangTag,
-                'dataTag' => $dataTag,
-            ]);
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
         }
     }
 
@@ -504,12 +534,19 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID', '=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus', '=', 0)
             ->where('purchase_request.name', 'like', '%' . $name . '%')
-            ->orderByDesc('purchase_request.tanggalDibuat')
+            ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
             ->paginate(10);
         //->get();
-        return view('master.PurchaseRequest.index', [
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.PurchaseRequest.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
+        }
     }
 
     public function searchDatePR(Request $request)
@@ -532,13 +569,19 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID', '=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus', '=', 0)
             ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
-            ->orderByDesc('purchase_request.tanggalDibuat')
+            ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
             ->paginate(10);
         //->get();
         //dd($data);
-        return view('master.PurchaseRequest.index', [
-            'data' => $data,
-        ]);
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.PurchaseRequest.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
+        }
     }
 
     public function searchNameDatePR(Request $request)
@@ -563,12 +606,18 @@ class PurchaseRequestController extends Controller
             ->where('purchase_request.hapus', '=', 0)
             ->where('purchase_request.name', 'like', '%' . $name . '%')
             ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
-            ->orderByDesc('purchase_request.tanggalDibuat')
+            ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
             ->paginate(10);
         //->get();
         //dd($data);
-        return view('master.PurchaseRequest.index', [
-            'data' => $data,
-        ]);
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.PurchaseRequest.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
+        }
     }
 }

@@ -26,9 +26,16 @@ class ProsesTransaksiController extends Controller
         $data = DB::table('proses_transaksi')
             ->paginate(10);
         //->get();
-        return view('master.prosesTransaksi.index',[
-            'data' => $data,
-        ]);
+        
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseOrder.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.prosesTransaksi.index',[
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Purchase Order');
+        }
     }
 
     /**

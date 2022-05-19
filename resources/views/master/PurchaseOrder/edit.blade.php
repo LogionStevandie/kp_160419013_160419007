@@ -54,7 +54,7 @@ Edit Nota Purchase Order
                               <div class="col-md-6">
                                     <div class="form-group">
                                     <label for="lastName">Pilih Perusahaan</label> 
-                                    <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="perusahaanID" name="perusahaan">
+                                    <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="perusahaanID" name="perusahaan">
                                       <option value="">
                                             --Pilih Perusahaan--
                                       </option>
@@ -187,7 +187,7 @@ Edit Nota Purchase Order
 
                                     <div class="form-group"  id='taxDiv'>
                                         <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="tax" id="tax">
-                                            <option value="pilih">--Pajak--</option>
+                                            <option value="">--Pajak--</option>
                                             @foreach($dataTax as $key => $data)
                                             <option id="taxId" taxPercent={{$data->TaxPercent}} value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
                                             @endforeach

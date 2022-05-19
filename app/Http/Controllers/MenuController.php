@@ -24,9 +24,16 @@ class MenuController extends Controller
         $data = DB::Table('menu')
             ->paginate(10);
         //->get();
-        return view('master.menu.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('menu.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.menu.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+        }
     }
 
     /**
@@ -37,7 +44,13 @@ class MenuController extends Controller
     public function create()
     {
         //
-        return view('master.menu.tambah');
+        $user = Auth::user();
+        $check = $this->checkAccess('menu.create', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.menu.tambah');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+        }
     }
 
     /**
@@ -51,19 +64,20 @@ class MenuController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('menu')
-            ->insert(array(
-                'Name' => $data['Name'],
-                'Url' => $data['Url'],
-                'Deskripsi' => $data['Deskripsi'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        ); 
-        return redirect()->route('menu.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'Name' => $data['Name'],
+                    'Url' => $data['Url'],
+                    'Deskripsi' => $data['Deskripsi'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('menu.index')->with('status', 'Success!!');
     }
 
     /**
@@ -75,9 +89,17 @@ class MenuController extends Controller
     public function show(Menu $menu)
     {
         //
-        return view('master.menu.detail',[
-            'menu' => $menu,
-        ]);
+
+
+        $user = Auth::user();
+        $check = $this->checkAccess('menu.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.menu.detail', [
+                'menu' => $menu,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+        }
     }
 
     /**
@@ -89,9 +111,16 @@ class MenuController extends Controller
     public function edit(Menu $menu)
     {
         //
-        return view('master.menu.edit',[
-            'menu' => $menu,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('menu.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.menu.edit', [
+                'menu' => $menu,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+        }
     }
 
     /**
@@ -108,15 +137,16 @@ class MenuController extends Controller
         $user = Auth::user();
         DB::table('menu')
             ->where('MenuID', $menu['MenuID'])
-            ->update(array(
-                'Name' => $data['Name'],
-                'Url' => $data['Url'],
-                'Deskripsi' => $data['Deskripsi'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-          return redirect()->route('menu.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'Name' => $data['Name'],
+                    'Url' => $data['Url'],
+                    'Deskripsi' => $data['Deskripsi'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('menu.index')->with('status', 'Success!!');
     }
 
     /**
@@ -129,7 +159,7 @@ class MenuController extends Controller
     {
         //
         $menu->delete();
-        return redirect()->route('menu.index')->with('status','Success!!');
+        return redirect()->route('menu.index')->with('status', 'Success!!');
     }
 
     public function searchMenuName(Request $request)
@@ -137,12 +167,19 @@ class MenuController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::Table('menu')
-            ->where('Name','like','%'.$name.'%')
+            ->where('Name', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        return view('master.menu.index',[
-            'data' => $data,
-        ]);
+
+        $user = Auth::user();
+        $check = $this->checkAccess('menu.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.menu.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+        }
     }
 
     public function searchMenuDeskripsi(Request $request)
@@ -150,11 +187,17 @@ class MenuController extends Controller
         //
         $desc = $request->input('searchdeskripsi');
         $data = DB::Table('menu')
-            ->where('deskripsi','like','%'.$desc.'%')
+            ->where('deskripsi', 'like', '%' . $desc . '%')
             ->paginate(10);
         //->get();
-        return view('master.menu.index',[
-            'data' => $data,
-        ]);
+        $user = Auth::user();
+        $check = $this->checkAccess('menu.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.menu.index', [
+                'data' => $data,
+            ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+        }
     }
 }

@@ -47,7 +47,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -61,7 +61,7 @@ class ApprovedPRController extends Controller
                 ->where('approved',0)
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -76,7 +76,7 @@ class ApprovedPRController extends Controller
                 ->where('approvedAkhir',0)
                 ->where('hapus',0)
                 ->whereIn('MGudang.cidp', $arrmanager)
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -84,10 +84,19 @@ class ApprovedPRController extends Controller
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->get();
         
-        return view('master.approved.PurchaseRequest.index',[
+        
+
+         $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseRequest.index',[
             'prKeluar' => $prKeluar,
             'prd' => $prd,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+        }
 
     }
 
@@ -143,11 +152,20 @@ class ApprovedPRController extends Controller
             ->get();
         //dd($approvedPurchaseRequest['id']);
         if($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0){
+            
+
+            $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseRequest.edit', $user->id, $user->idRole);
+        if ($check) {  
             return view('master.approved.PurchaseRequest.approve',[
                 'purchaseRequest'=>$approvedPurchaseRequest,
                 'dataGudang'=>$dataGudang,
                 'prd'=>$prd,
             ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+        }
         }
         else{
             return redirect()->route('approvedPurchaseRequest.index')->with('status','Failed');    
@@ -262,7 +280,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -277,7 +295,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->where('purchase_request.name','like','%'.$name.'%')
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -293,7 +311,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -301,10 +319,19 @@ class ApprovedPRController extends Controller
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->get();
         
-        return view('master.approved.PurchaseRequest.index',[
+        
+
+        $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseRequest.index',[
             'prKeluar' => $prKeluar,
             'prd' => $prd,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+        }
 
     }
 
@@ -338,7 +365,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -353,7 +380,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -369,7 +396,7 @@ class ApprovedPRController extends Controller
                 ->where('hapus',0)
                 ->whereIn('MGudang.cidp', $arrmanager)
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -377,10 +404,19 @@ class ApprovedPRController extends Controller
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->get();
         
-        return view('master.approved.PurchaseRequest.index',[
+    
+
+        $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseRequest.index',[
             'prKeluar' => $prKeluar,
             'prd' => $prd,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+        }
 
     }
 
@@ -416,7 +452,7 @@ class ApprovedPRController extends Controller
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->whereBetween('purchase_request.tanggalDibuat', [ date($date[0]), date($date[1]) ])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
                 //dd($prKeluar);
         }
@@ -432,7 +468,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('purchase_request.MGudangID',$arrkepala)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -449,7 +485,7 @@ class ApprovedPRController extends Controller
                 ->whereIn('MGudang.cidp', $arrmanager)
                 ->where('purchase_request.name','like','%'.$name.'%')
                 ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
-                ->orderByDesc('purchase_request.tanggalDibuat')
+                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
                 ->paginate(10);
             //->get();
         }
@@ -457,10 +493,19 @@ class ApprovedPRController extends Controller
             ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
             ->get();
         
-        return view('master.approved.PurchaseRequest.index',[
+    
+
+        $user = Auth::user();
+
+        $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
+        if ($check) {  
+            return view('master.approved.PurchaseRequest.index',[
             'prKeluar' => $prKeluar,
             'prd' => $prd,
         ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+        }
 
     }
 
@@ -477,11 +522,19 @@ class ApprovedPRController extends Controller
             ->get();
         //dd($approvedPurchaseRequest['id']);
         if($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0){
-            return view('master.approved.PurchaseRequest.print',[
-                'purchaseRequest'=>$approvedPurchaseRequest,
-                'dataGudang'=>$dataGudang,
-                'prd'=>$prd,
-            ]);
+
+                $user = Auth::user();
+
+                $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
+                if ($check) {  
+                    return view('master.approved.PurchaseRequest.print',[
+                        'purchaseRequest'=>$approvedPurchaseRequest,
+                        'dataGudang'=>$dataGudang,
+                        'prd'=>$prd,
+                    ]);
+                } else {
+                    return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+                }
         }
         else{
             return redirect()->route('approvedPurchaseRequest.index')->with('status','Failed');    
