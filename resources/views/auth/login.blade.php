@@ -86,14 +86,14 @@
 
 
       <p class="mb-1">
-        @if (Route::has('password.request'))
+        <!--@if (Route::has('password.request'))
             <a href="{{ route('password.request') }}">
                 {{ __('Forgot Your Password?') }}
             </a>
-        @endif
+        @endif-->
       </p>
       <p class="mb-0">
-        <a class="text-center" href="{{ route('register') }}">{{ __('Register') }}</a>
+        <!--<a class="text-center" href="{{ route('register') }}">{{ __('Register') }}</a>-->
       </p>
     </div>
     <!-- /.card-body -->

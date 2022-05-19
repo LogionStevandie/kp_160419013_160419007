@@ -59,21 +59,6 @@ Edit Supplier
                         </div>
 
                         <div class="form-group">
-                            <label for="title">Tax</label>
-                            <select name="taxID" class="form-control select2">
-                                    <option value="">--Pilih Tax--</option>
-                                    @foreach($Tax as $key => $data)
-                                    @if($data->TaxID==$msupplier->TaxID)
-                                    <option selected value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
-                                    @else
-                                    <option value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
-                                    @endif
-                                    @endforeach
-                            </select>
-
-                        </div>
-
-                        <div class="form-group">
                             <label for="title">Payment Terms</label>
                             <select name="PaymentTermsID"class="form-control select2">
                                     <option value="">--Pilih Payment Terms--</option>
@@ -89,26 +74,6 @@ Edit Supplier
 
                         </div>
 
-                         <div class="form-group">
-                            <label for="title">COA</label>
-                            <select name="COAID" class="form-control select2">
-                                    <option value="">--Pilih COA--</option>
-                                    @foreach($COA as $key => $data)
-                                    @if($data->COAID==$msupplier->COAID)
-                                    <option value="{{$data->COAID}}"{{$data->Nama == $data->COAID? 'selected' :'' }}>{{$data->Nama}}</option>
-                                    @else
-                                    <option selected value="{{$data->COAID}}"{{$data->Nama == $data->COAID? 'selected' :'' }}>{{$data->Nama}}</option>
-                                    @endif
-                                    @endforeach
-                            </select>
-
-                        </div>
-
-
-
-
-
-                
                         <div class="form-group">
                             <label for="title">Nama Supplier</label>
                            <input require type="text" name="name" class="form-control" 
@@ -238,11 +203,6 @@ Edit Supplier
                            value="{{old('Keterangan',$msupplier->Keterangan)}}" >
                         </div>
 
-                          <div class="form-group">
-                            <label for="title">saldo DP</label>
-                            <input require type="number" name="saldoDP" class="form-control" 
-                           value="{{old('SaldoDP',$msupplier->SaldoDP)}}" >
-                        </div>
 
                           <div class="form-group">
                             <label for="title">Nama NPWP</label>
@@ -250,17 +210,7 @@ Edit Supplier
                            value="{{old('NamaNPWP',$msupplier->NamaNPWP)}}" >
                         </div>
 
-                        <div class="form-group">
-                            <label for="title">SKT</label>
-                            <input require type="text" name="SKT" class="form-control" 
-                           value="{{old('SKT',$msupplier->SKT)}}" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="title">SPPKP</label>
-                            <input require type="text" name="SPPKP" class="form-control" 
-                           value="{{old('SPPKP',$msupplier->SPPKP)}}" >
-                        </div>
+                     
 
                         <div class="form-group">
                             <label for="title">KTP</label>

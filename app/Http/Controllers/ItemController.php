@@ -26,20 +26,26 @@ class ItemController extends Controller
 
         $dataItem = DB::table('Item')
             //->limit(100)
-            
-            ->select('Item.*', 'ItemType.Name as typeName' ,'ItemType.Notes as typeNotes', 'Unit.Name as unitName', 
-            'ItemCategory.Name as categoryName', 'ItemTracing.Name as tracingName')
+
+            ->select(
+                'Item.*',
+                'ItemType.Name as typeName',
+                'ItemType.Notes as typeNotes',
+                'Unit.Name as unitName',
+                'ItemCategory.Name as categoryName',
+                'ItemTracing.Name as tracingName'
+            )
             //, 'ItemTag.ItemTagID as tagID', 'ItemTag.Name as tagName')
-            
+
             ->leftjoin('ItemType', 'Item.ItemTypeID', '=', 'ItemType.ItemTypeID')
-            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID') 
-            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')  
+            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')
             ->leftjoin('ItemTracing', 'Item.ItemTracingID', '=', 'ItemTracing.ItemTracingID')
             //->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             //->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
             ->paginate(10);
-            //->get();
+        //->get();
         //dd($dataItem);
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
@@ -58,26 +64,24 @@ class ItemController extends Controller
             ->orWhere('user_access.idUsers',$user->id)
             ->get();
         */
-        /*$check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        
-        if($check){*/
-            return view('master.item.index',[
+        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+
+        if ($check) {
+            return view('master.item.index', [
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
-                'dataCategory'=>$dataCategory,
+                'dataCategory' => $dataCategory,
             ]);
-        /*}
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
-        
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+        }
+
         /*$dataSatuan = DB::table('satuan')
             ->get();
         return view('/master/barang',[
             'dataBarang' => $dataBarang,
             'dataSatuan' => $dataSatuan,
         ]);*/
-
     }
 
     /**
@@ -100,22 +104,19 @@ class ItemController extends Controller
         $dataTag = DB::table('ItemTag')
             ->get();
 
-        
-        /*$check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){*/
-            return view('master.item.tambah',[
-                'dataType'=>$dataType,
-                'dataUnit'=>$dataUnit,
-                'dataCategory'=>$dataCategory,
-                'dataTracing'=>$dataTracing,
-                'dataTag'=>$dataTag,
+
+        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.item.tambah', [
+                'dataType' => $dataType,
+                'dataUnit' => $dataUnit,
+                'dataCategory' => $dataCategory,
+                'dataTracing' => $dataTracing,
+                'dataTag' => $dataTag,
             ]);
-      /*  }
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
-        
-        
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+        }
     }
 
     /**
@@ -132,24 +133,25 @@ class ItemController extends Controller
         $data = $request->collect();
         $user = Auth::user();
 
-        $idItem = DB::table('Item')->insertGetId(array(
-            //'ItemTypeID' => $data['typeItem'],//comboBox
-            'ItemName' => $data['nameItem'],
-            'UnitID' => $data['itemUnit'],//comboBox
-            'ItemCategoryID'=> $data['itemCategory'],//comboBox
-            'Notes'=> $data['note'],
-            'CanBeSell'=> 0,
-            'CanBePurchased'=> 1,
-            //'ItemTracingID'=> $data['itemTracing'],//comboBox
-            //'RoutesToManufactured'=> $data['RoutesToManufactured'],
-            'CreatedBy'=> $user->id,//
-            'CreatedOn'=> date("Y-m-d h:i:sa"),//
-            'UpdatedBy'=> $user->id,//
-            'UpdatedOn'=> date("Y-m-d h:i:sa"),//
-            'Hapus' => 0,//
-            //'HaveExpiredDate' => $data['expiredDate'],
+        $idItem = DB::table('Item')->insertGetId(
+            array(
+                //'ItemTypeID' => $data['typeItem'],//comboBox
+                'ItemName' => $data['nameItem'],
+                'UnitID' => $data['itemUnit'], //comboBox
+                'ItemCategoryID' => $data['itemCategory'], //comboBox
+                'Notes' => $data['note'],
+                'CanBeSell' => 0,
+                'CanBePurchased' => 1,
+                //'ItemTracingID'=> $data['itemTracing'],//comboBox
+                //'RoutesToManufactured'=> $data['RoutesToManufactured'],
+                'CreatedBy' => $user->id, //
+                'CreatedOn' => date("Y-m-d h:i:sa"), //
+                'UpdatedBy' => $user->id, //
+                'UpdatedOn' => date("Y-m-d h:i:sa"), //
+                'Hapus' => 0, //
+                //'HaveExpiredDate' => $data['expiredDate'],
             )
-        ); 
+        );
 
         //dd($data);
 
@@ -161,7 +163,7 @@ class ItemController extends Controller
            );
         }*/
 
-        return redirect()->route('item.index')->with('status','Success!!');
+        return redirect()->route('item.index')->with('status', 'Success!!');
     }
 
     /**
@@ -196,20 +198,19 @@ class ItemController extends Controller
             ->get();
         $dataTracing = DB::table('ItemTracing')
             ->get();
-      /*  $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){*/
-            return view('master.item.detail',[
-                'item'=>$item,
-                'dataType'=>$dataType,
-                'dataUnit'=>$dataUnit,
-                'dataCategory'=>$dataCategory,
-                'dataTracing'=>$dataTracing,
+        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+
+        if ($check) {
+            return view('master.item.detail', [
+                'item' => $item,
+                'dataType' => $dataType,
+                'dataUnit' => $dataUnit,
+                'dataCategory' => $dataCategory,
+                'dataTracing' => $dataTracing,
             ]);
-       /* }
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
-        
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+        }
     }
 
     /**
@@ -221,7 +222,7 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
         $user = Auth::user();
-        
+
         //
         /*$dataItem = DB::table('Item')
             ->join('ItemType', 'Item.ItemTypeID', '=', 'ItemType.ItemTypeID')
@@ -244,21 +245,20 @@ class ItemController extends Controller
             ->get();
         $dataTag = DB::table('ItemTag')
             ->get();
-        
-        /*$check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){*/
-            return view('master.item.edit',[
-                'item'=>$item,
-                'dataType'=>$dataType,
-                'dataUnit'=>$dataUnit,
-                'dataCategory'=>$dataCategory,
-                'dataTracing'=>$dataTracing,
-                'dataTag'=>$dataTag,
+
+        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.item.edit', [
+                'item' => $item,
+                'dataType' => $dataType,
+                'dataUnit' => $dataUnit,
+                'dataCategory' => $dataCategory,
+                'dataTracing' => $dataTracing,
+                'dataTag' => $dataTag,
             ]);
-      /*  }
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+        }
     }
 
     /**
@@ -273,24 +273,24 @@ class ItemController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('Item')
             ->where('ItemID', $item->ItemID)
             ->update(array(
                 //'ItemTypeID' => $data['typeItem'],//comboBox
                 'ItemName' => $data['nameItem'],
-                'UnitID' => $data['itemUnit'],//comboBox
-                'ItemCategoryID'=> $data['itemCategory'],//comboBox
-                'Notes'=> $data['note'],
+                'UnitID' => $data['itemUnit'], //comboBox
+                'ItemCategoryID' => $data['itemCategory'], //comboBox
+                'Notes' => $data['note'],
                 //'CanBeSell'=> $data['CanBeSell'],
                 //'CanBePurchased'=> $data['CanBePurchased'],
                 //'ItemTracingID'=> $data['itemTracing'],//comboBox
                 //'RoutesToManufactured'=> $data['RoutesToManufactured'],
-                'UpdatedBy'=> $user->id,//
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),//
-                'Hapus' => 0,//
+                'UpdatedBy' => $user->id, //
+                'UpdatedOn' => date("Y-m-d h:i:sa"), //
+                'Hapus' => 0, //
                 //'HaveExpiredDate' => $data['expiredDate'],
-        ));
+            ));
 
         /*$dataTagValues = DB::table('ItemTagValues')
             ->where('ItemID', $item->ItemID)
@@ -330,8 +330,8 @@ class ItemController extends Controller
                 }
             }
         }*/
-        
-        return redirect()->route('item.index')->with('status','Success!!');
+
+        return redirect()->route('item.index')->with('status', 'Success!!');
     }
 
     /**
@@ -347,40 +347,46 @@ class ItemController extends Controller
         DB::table('Item')
             ->where('ItemID', $item->ItemID)
             ->update(array(
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdatedBy' => $user->id,
+                'UpdatedOn' => date("Y-m-d h:i:sa"),
                 'Hapus' => 1,
-        ));
+            ));
 
-        return redirect()->route('item.index')->with('status','Success!!');
+        return redirect()->route('item.index')->with('status', 'Success!!');
     }
 
     public function searchItemName(Request $request)
     {
         //
         //dd($request);
-        $name=$request->input('searchname');
+        $name = $request->input('searchname');
         $user = Auth::user();
         $dataItem = DB::table('Item')
             //->limit(100) 
-            ->select('Item.*', 'ItemType.Name as typeName' ,'ItemType.Notes as typeNotes', 'Unit.Name as unitName', 
-            'ItemCategory.Name as categoryName', 'ItemTracing.Name as tracingName')
+            ->select(
+                'Item.*',
+                'ItemType.Name as typeName',
+                'ItemType.Notes as typeNotes',
+                'Unit.Name as unitName',
+                'ItemCategory.Name as categoryName',
+                'ItemTracing.Name as tracingName'
+            )
             //, 'ItemTag.ItemTagID as tagID', 'ItemTag.Name as tagName')
             ->leftjoin('ItemType', 'Item.ItemTypeID', '=', 'ItemType.ItemTypeID')
-            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID') 
-            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')  
+            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')
             ->leftjoin('ItemTracing', 'Item.ItemTracingID', '=', 'ItemTracing.ItemTracingID')
             //->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             //->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
-            ->where('Item.ItemName','like','%'.$name.'%')
+            ->where('Item.ItemName', 'like', '%' . $name . '%')
             ->paginate(10);
-        
+
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
             ->get();
         $dataCategory = DB::table('ItemCategory')
-        ->get();
+            ->get();
 
 
         /*$access = DB::table('menu')
@@ -391,18 +397,17 @@ class ItemController extends Controller
             ->orWhere('user_access.idUsers',$user->id)
             ->get();
         */
-        //$check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        
-        /*if($check){*/
-            return view('master.item.index',[
+        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+
+        if ($check) {
+            return view('master.item.index', [
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
                 'dataCategory' => $dataCategory,
             ]);
-       /* }
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }*/
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+        }
     }
 
     public function searchItemId($itemId)
@@ -411,21 +416,27 @@ class ItemController extends Controller
         $user = Auth::user();
         $dataItem = DB::table('Item')
             //->limit(100)
-            
-            ->select('Item.*', 'ItemType.Name as typeName' ,'ItemType.Notes as typeNotes', 'Unit.Name as unitName', 
-            'ItemCategory.Name as categoryName', 'ItemTracing.Name as tracingName')
+
+            ->select(
+                'Item.*',
+                'ItemType.Name as typeName',
+                'ItemType.Notes as typeNotes',
+                'Unit.Name as unitName',
+                'ItemCategory.Name as categoryName',
+                'ItemTracing.Name as tracingName'
+            )
             //, 'ItemTag.ItemTagID as tagID', 'ItemTag.Name as tagName')
-            
+
             ->leftjoin('ItemType', 'Item.ItemTypeID', '=', 'ItemType.ItemTypeID')
-            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID') 
-            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')  
+            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')
             ->leftjoin('ItemTracing', 'Item.ItemTracingID', '=', 'ItemTracing.ItemTracingID')
             //->leftjoin('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             //->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
-            ->where('Item.ItemID','like','%'.$itemId.'%')
+            ->where('Item.ItemID', 'like', '%' . $itemId . '%')
             ->paginate(10);
-        
+
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
             ->get();
@@ -440,117 +451,131 @@ class ItemController extends Controller
             ->get();
         */
         $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        
-        if($check){
-            return view('master.item.index',[
+
+        if ($check) {
+            return view('master.item.index', [
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
             ]);
-        }
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
         }
     }
 
     public function searchItemTagName(Request $request)
     {
         //
-        $tag=$request->input('searchtag');
+        $tag = $request->input('searchtag');
         $user = Auth::user();
         $dataItem = DB::table('Item')
             //->limit(100)
-            
-            ->select('Item.*', 'ItemType.Name as typeName' ,'ItemType.Notes as typeNotes', 'Unit.Name as unitName', 
-            'ItemCategory.Name as categoryName', 'ItemTracing.Name as tracingName')
+
+            ->select(
+                'Item.*',
+                'ItemType.Name as typeName',
+                'ItemType.Notes as typeNotes',
+                'Unit.Name as unitName',
+                'ItemCategory.Name as categoryName',
+                'ItemTracing.Name as tracingName'
+            )
             ->leftjoin('ItemType', 'Item.ItemTypeID', '=', 'ItemType.ItemTypeID')
-            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID') 
-            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')  
+            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')
             ->leftjoin('ItemTracing', 'Item.ItemTracingID', '=', 'ItemTracing.ItemTracingID')
             ->join('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             ->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
-            ->where('ItemTag.Name','like','%'.$tag.'%')
+            ->where('ItemTag.Name', 'like', '%' . $tag . '%')
             ->paginate(10);
 
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
-            ->get(); 
+            ->get();
 
 
         $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){
-            return view('master.item.index',[
+        if ($check) {
+            return view('master.item.index', [
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
             ]);
-        }
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
         }
     }
 
 
-    public function searchItemTagMulti(Request $request) //nantik
+    /*public function searchItemTagMulti(Request $request) //nantik
     {
         //
-        $tag=$request->input('searchtag');
+        $tag = $request->input('searchtag');
         $user = Auth::user();
         $dataItem1 = DB::table('Item')
             //->limit(100)
-            
-            ->select('Item.*', 'ItemType.Name as typeName' ,'ItemType.Notes as typeNotes', 'Unit.Name as unitName', 
-            'ItemCategory.Name as categoryName', 'ItemTracing.Name as tracingName')
+
+            ->select(
+                'Item.*',
+                'ItemType.Name as typeName',
+                'ItemType.Notes as typeNotes',
+                'Unit.Name as unitName',
+                'ItemCategory.Name as categoryName',
+                'ItemTracing.Name as tracingName'
+            )
             ->leftjoin('ItemType', 'Item.ItemTypeID', '=', 'ItemType.ItemTypeID')
-            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID') 
-            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')  
+            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')
             ->leftjoin('ItemTracing', 'Item.ItemTracingID', '=', 'ItemTracing.ItemTracingID')
             ->join('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             ->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
             //->where('ItemTag.Name','like','%'.$tag.'%');
             //->where('ItemTag.Name','like','pipil Kering')->where('ItemTag.Name','like','Jagung')->get();
-            ->where('ItemTagValues.ItemTagID','like','2')->get();
-            //->simplePaginate(10);
-        
-        
+            ->where('ItemTagValues.ItemTagID', 'like', '2')->get();
+        //->simplePaginate(10);
+
+
         $dataItem2 = DB::table('Item')
             //->limit(100)
-            
-            ->select('Item.*', 'ItemType.Name as typeName' ,'ItemType.Notes as typeNotes', 'Unit.Name as unitName', 
-            'ItemCategory.Name as categoryName', 'ItemTracing.Name as tracingName')
+
+            ->select(
+                'Item.*',
+                'ItemType.Name as typeName',
+                'ItemType.Notes as typeNotes',
+                'Unit.Name as unitName',
+                'ItemCategory.Name as categoryName',
+                'ItemTracing.Name as tracingName'
+            )
             ->leftjoin('ItemType', 'Item.ItemTypeID', '=', 'ItemType.ItemTypeID')
-            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID') 
-            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')  
+            ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('ItemCategory', 'Item.ItemCategoryID', '=', 'ItemCategory.ItemCategoryID')
             ->leftjoin('ItemTracing', 'Item.ItemTracingID', '=', 'ItemTracing.ItemTracingID')
             ->join('ItemTagValues', 'Item.ItemID', '=', 'ItemTagValues.ItemID')
             ->leftjoin('ItemTag', 'ItemTagValues.ItemTagID', '=', 'ItemTag.ItemTagID')
             ->where('Item.Hapus', '=', 0)
             //->where('ItemTag.Name','like','%'.$tag.'%');
             //->where('ItemTag.Name','like','pipil Kering')->where('ItemTag.Name','like','Jagung')->get();
-            ->where('ItemTagValues.ItemTagID','like','1')->get();
-        
-        $dataItem = null;
-        foreach($dataItem1 as $data){
-            foreach($dataItem2 as $data){
+            ->where('ItemTagValues.ItemTagID', 'like', '1')->get();
 
+        $dataItem = null;
+        foreach ($dataItem1 as $data) {
+            foreach ($dataItem2 as $data) {
             }
         }
 
         dd($dataItem);
         $dataTag = DB::table('ItemTag')
             ->leftjoin('ItemTagValues', 'ItemTag.ItemTagID', '=', 'ItemTagValues.ItemTagID')
-            ->get(); 
+            ->get();
 
 
         $check = $this->checkAccess('item.index', $user->id, $user->idRole);
-        if($check){
-            return view('master.item.index',[
+        if ($check) {
+            return view('master.item.index', [
                 'dataItem' => $dataItem,
                 'dataTag' => $dataTag,
             ]);
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
         }
-        else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Master');
-        }
-    }
+    }*/
 }

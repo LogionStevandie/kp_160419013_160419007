@@ -76,11 +76,24 @@ class RoleAccessController extends Controller
     public function edit(Role $roleAccess)
     {
         //
+           //
+        $dataMenu = DB::table('menu')
+            ->get();
+        
         $dataAccess = DB::table('role_access')
+            ->rightjoin('menu', 'role_access.idMenu', '=', 'menu.MenuID')
+            ->where('role_access.idRole',$roleAccess->id)
+            ->get();
+        //dd($dataAccess);
+        /*$dataAccess = DB::table('role_access')
+            ->select('menu.Name as name', 'menu.MenuID as MenuID')
             ->join('menu','role_access.idMenu','=','menu.MenuID')
-            ->get();    
+            ->where('role_access.idRole',$roleAccess->idRole)
+            ->get();  
+            dd($dataAccess);*/
         return view('master.roleAccess.edit',[
             'roleAccess' => $roleAccess,
+            'dataMenu' => $dataMenu,
             'dataAccess' => $dataAccess,
         ]);
     }

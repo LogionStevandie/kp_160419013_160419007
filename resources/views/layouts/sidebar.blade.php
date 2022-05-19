@@ -257,15 +257,7 @@
                   <i class="far fa-circle nav-icon"></i>
                   <p>Kategori item</p>
                 </a>
-              </li>
-
-              
-              <li class="nav-item">
-                <a href="{{route('itemTracing.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tracing item</p>
-                </a>
-              </li>
+              </li>        
               
               <li class="nav-item">
                 <a href="{{route('itemTag.index')}}" class="nav-link">
@@ -281,13 +273,6 @@
                 </a>
               </li>
 
-              
-              <li class="nav-item">
-                <a href="{{route('itemType.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Tipe item</p>
-                </a>
-              </li>
 
               <li class="nav-item">
                 <a href="{{route('unit.index')}}" class="nav-link">
@@ -326,24 +311,7 @@
             </ul>
           </li>
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-search"></i>
-              <p>
-                 Mata uang
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                <a href="{{route('mCurrency.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>List Mata uang</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
+       
 
             <li class="nav-item">
             <a href="#" class="nav-link">
@@ -398,25 +366,6 @@
           </li>
           <!--End Payment-->
 
-           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-search"></i>
-              <p>
-                 Bank
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-                <li class="nav-item">
-                <a href="{{route('bank.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>bank</p>
-                </a>
-              </li>
-              
-            </ul>
-          </li>
-
          
 
 
@@ -425,7 +374,7 @@
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-search"></i>
               <p>
-                Menu & Role
+                Menu & User Role
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
@@ -434,6 +383,13 @@
                 <a href="{{route('menu.index')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Menu</p>
+                </a>
+              </li>
+
+              <li class="nav-item">
+                <a href="{{route('users.index')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Users</p>
                 </a>
               </li>
 
@@ -457,39 +413,7 @@
           </li>
           <!--End Menu-->
 
-          <!--COA
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-search"></i>
-              <p>
-                COA
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('coaHead.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>COA Head</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="{{route('coaDetail.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>COA Detail</p>
-                </a>
-              </li>
-
-              <li class="nav-item">
-                <a href="{{route('coa.index')}}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>COA</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-          End COA-->
+       
 
         </ul>
       </nav>

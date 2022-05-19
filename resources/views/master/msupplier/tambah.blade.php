@@ -47,16 +47,6 @@ Tambah Supplier
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="title">Tax</label>
-                               <select class="form-control select2" style="width: 100%;" name="taxID">
-                                    <option value="">--Pilih Tax--</option>
-                                    @foreach($Tax as $key => $data)
-                                    <option value="{{$data->TaxID}}"{{$data->Name == $data->TaxID? 'selected' :'' }}>{{$data->Name}}</option>
-                                    @endforeach
-                            </select>
-
-                        </div>
 
                
                         <div class="form-group">
@@ -71,16 +61,6 @@ Tambah Supplier
                                  
                             
 
-                         <div class="form-group">
-                            <label for="title">COA</label>
-                             <select class="form-control select2" style="width: 100%;" name="COAID">
-                                    <option value="">--Pilih COA--</option>
-                                    @foreach($COA as $key => $data)
-                                    <option value="{{$data->COAID}}"{{$data->Nama == $data->COAID? 'selected' :'' }}>{{$data->Nama}}</option>
-                                    @endforeach
-                            </select>
-
-                        </div>
                      
 
                         <div class="form-group">
@@ -206,11 +186,6 @@ Tambah Supplier
                            value="{{old('Keterangan','')}}" >
                         </div>
 
-                          <div class="form-group">
-                            <label for="title">saldo DP</label>
-                            <input require type="number" name="saldoDP" class="form-control" 
-                           value="{{old('SaldoDP','')}}" >
-                        </div>
 
                           <div class="form-group">
                             <label for="title">Nama NPWP</label>
@@ -218,17 +193,6 @@ Tambah Supplier
                            value="{{old('NamaNPWP','')}}" >
                         </div>
 
-                        <div class="form-group">
-                            <label for="title">SKT</label>
-                            <input require type="text" name="SKT" class="form-control" 
-                           value="{{old('SKT','')}}" >
-                        </div>
-
-                        <div class="form-group">
-                            <label for="title">SPPKP</label>
-                            <input require type="text" name="SPPKP" class="form-control" 
-                           value="{{old('SPPKP','')}}" >
-                        </div>
 
                         <div class="form-group">
                             <label for="title">KTP</label>

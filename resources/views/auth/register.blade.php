@@ -123,4 +123,7 @@
 <!-- AdminLTE App -->
 <script src="{{asset('assets/dist/js/adminlte.min.js')}}"></script>
 </body>
+<script type="text/javascript">
+    window.location = "{{url('/')}}";//here double curly bracket
+</script>
 </html>

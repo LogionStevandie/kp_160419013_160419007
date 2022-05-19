@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemTagValuesController;
+use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,8 +24,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 /*bank   - no debug still dont know  belum dibuat blade nya*/
-Route::resource('bank', 'App\Http\Controllers\BankController');
-Route::get('/banke/searchname/',[App\Http\Controllers\BankController::class, 'searchName']); //cobak gini ta
+/*Route::resource('bank', 'App\Http\Controllers\BankController');
+Route::get('/banke/searchname/',[App\Http\Controllers\BankController::class, 'searchName']);*/ //gak dipakek
 
 
 
@@ -80,17 +81,19 @@ Route::resource('itemCategory', 'App\Http\Controllers\ItemCategoryController');
 Route::get('/itemCategorye/searchname/',[App\Http\Controllers\ItemCategoryController::class, 'selectItemCategoryName']); //udah
 
 Route::resource('itemTag', 'App\Http\Controllers\ItemTagController');
-Route::get('/itemTage/searchname/',[App\Http\Controllers\ItemTagController::class, 'searchItemTagName']);//udah
-
+Route::get('/itemTage/searchname/',[App\Http\Controllers\ItemTagController::class, 'searchItemTagName']);
+/*
 Route::resource('itemTracing', 'App\Http\Controllers\ItemTracingController');
-Route::get('/itemTracinge/searchname/',[App\Http\Controllers\ItemTracingController::class, 'searchItemTracingName']); //udah
-Route::get('/itemTracinge/searchket/',[App\Http\Controllers\ItemTracingController::class, 'searchItemTracingKeterangan']); //udah
+Route::get('/itemTracinge/searchname/',[App\Http\Controllers\ItemTracingController::class, 'searchItemTracingName']); 
+Route::get('/itemTracinge/searchket/',[App\Http\Controllers\ItemTracingController::class, 'searchItemTracingKeterangan']);
+
+Route::resource('itemType', 'App\Http\Controllers\ItemTypeController');
+Route::get('/itemTypee/searchname/',[App\Http\Controllers\ItemTypeController::class, 'searhItemTypeName']);*/ //gak dipakek
 
 Route::resource('itemTransaction', 'App\Http\Controllers\ItemTransactionController');
 Route::get('/itemTransactione/searchname/',[App\Http\Controllers\ItemTransactionController::class, 'searchItemTransactionName']); //udah
 
-Route::resource('itemType', 'App\Http\Controllers\ItemTypeController');
-Route::get('/itemTypee/searchname/',[App\Http\Controllers\ItemTypeController::class, 'searhItemTypeName']); //udah
+
 
 Route::resource('itemTagValues', 'App\Http\Controllers\ItemTagValuesController');
 Route::get('/itemTagValuese/searchname/',[App\Http\Controllers\ItemTagValuesController::class, 'searchItemName']); //udah
@@ -133,9 +136,10 @@ Route::get('/msuppliere/searchketerangan/',[App\Http\Controllers\MSupplierContro
 Route::resource('infoSupplier', 'App\Http\Controllers\InfoSupplierController');//selese
 Route::get('/infoSuppliere/searchname/',[App\Http\Controllers\InfoSupplierController::class, 'searchName']);//cobak gini ta
 //mGudang
+/*
 Route::resource('mCurrency', 'App\Http\Controllers\MCurrencyController');
-Route::get('/mCurrencye/searchname/',[App\Http\Controllers\MCurrencyController::class, 'searhMCurrencyName']);//cobak gini ta
-
+Route::get('/mCurrencye/searchname/',[App\Http\Controllers\MCurrencyController::class, 'searhMCurrencyName']);//gak dipakek
+*/
 Route::resource('prosesTransaksi', 'App\Http\Controllers\ProsesTransaksiController');
 
 //mSupplier
@@ -161,7 +165,7 @@ Route::get('approvedPurchaseOrdere/searchname/',[App\Http\Controllers\ApprovedPO
 Route::get('approvedPurchaseOrdere/searchdate/',[App\Http\Controllers\ApprovedPOController::class, 'searchDatePO']);
 //Purchase Order 
 Route::resource('purchaseOrder', 'App\Http\Controllers\PurchaseOrderController');
-Route::get('PurchaseOrdere/print/{purchaseOrder}',[App\Http \Controllers\PurchaseOrderController::class, 'print']);
+Route::get('PurchaseOrdere/print/{purchaseOrder}',[App\Http\Controllers\PurchaseOrderController::class, 'print']);
 Route::get('purchaseOrdere/searchname/',[App\Http\Controllers\PurchaseOrderController::class, 'searchNamePO']);
 Route::get('purchaseOrdere/searchdate/',[App\Http\Controllers\PurchaseOrderController::class, 'searchDatePO']);
 
@@ -213,3 +217,8 @@ Route::resource('checkPurchaseRequest', 'App\Http\Controllers\CheckPRController'
 Route::get('checkPurchaseRequeste/searchname/',[App\Http\Controllers\CheckPRController::class, 'searchNamePR']);
 Route::get('checkPurchaseRequeste/searchdate/',[App\Http\Controllers\CheckPRController::class, 'searchDatePR']);
 Route::get('checkPurchaseRequeste/searchnamedate/',[App\Http\Controllers\CheckPRController::class, 'searchNameDatePR']);
+
+
+//user
+Route::resource('users', 'App\Http\Controllers\UserController');
+//end user

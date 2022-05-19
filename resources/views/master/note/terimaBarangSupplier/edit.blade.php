@@ -115,9 +115,23 @@ Edit Terima Barang Supplier
                                     <div class="form-group">
                                    <label for="lastName">Data Purchase Order</label> 
                                     <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;"name="poID" id="idPurchaseOrder">
+                                    <option value=""> 
+                                          --Pilih Purchase Order--
+                                      </option>
+                                     @foreach($dataPurchaseOrder as $key => $data)
+                                        @if($data->idSupplier == $transactionGudangBarang->SupplierID)
+                                            @if($data->id == $transactionGudangBarang->PurchaseOrderID)
+                                             <option selected name="idPO" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}-({{$data->tanggalDibuat}})</option>
+                                            @else
+                                             <option name="idPO" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}-({{$data->tanggalDibuat}})</option>
+                                            @endif
+                                        @endif
+                                    @endforeach
                                       <!--<option value=""> 
                                           --Pilih Purchase Order--
                                       </option>
+                                      @foreach($dataSupplier as $key => $data)
+                                      @endforeach
                                       @foreach($dataPurchaseOrder as $key => $data)
                                           <option name="idPO" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}-({{$data->tanggalDibuat}})</option>
                                       @endforeach  -->
@@ -274,7 +288,7 @@ Edit Terima Barang Supplier
    
 
     $(document).ready(function(){
-        var id =$("#idSupplierDipilih option:selected").val();
+       /* var id =$("#idSupplierDipilih option:selected").val();
         
         var optionnya = '';
         var dataPurchaseOrder = <?php echo json_encode($dataPurchaseOrder); ?>;
@@ -285,7 +299,8 @@ Edit Terima Barang Supplier
             if(value.idSupplier.toString() == id.toString()){
                 //alert('masuk'); 
                 if(dataTransaksi.PurchaseOrderID == value.id){
-                    optionnya += '<option selected id="idPO" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';        
+                    optionnya += '<option selected id="idPO" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';
+                       
                 }
                 else{
                     optionnya += '<option id="idPO" value="'+value.id+'">'+value.name+'-('+value.tanggalDibuat+')</option>\n';        
@@ -294,9 +309,10 @@ Edit Terima Barang Supplier
         });
                             
         $("#idPurchaseOrder").empty();
-        $("#idPurchaseOrder").append(optionnya);
+        $("#idPurchaseOrder").append(optionnya);*/
+        
 
-        var id = $("#idPurchaseOrder option:selected").val();;
+        var id = $("#idPurchaseOrder option:selected").val();
         var optionnya = '';
 
         var dataPurchaseOrderDetail = <?php echo json_encode($dataPurchaseOrderDetail); ?>;

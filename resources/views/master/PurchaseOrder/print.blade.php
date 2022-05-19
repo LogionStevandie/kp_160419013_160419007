@@ -117,11 +117,11 @@
                                   <th scope="col" colspan="3">
                                       <b>Keterangan:</b>
                                       <br>
-                                      <b>Lokasi:</b>{{$purchaseOrder->keteranganLokasi}} <br>
-                                      <b>Pembayaran:</b> {{$purchaseOrder->keteranganPembayaran}}<br>
-                                      <b>Penagihan:</b> {{$purchaseOrder->keteranganPenagihan}}<br>
+                                      <b>Lokasi:</b><span style="white-space: pre-line">{{$purchaseOrder->keteranganLokasi}}</span> <br>
+                                      <b>Pembayaran:</b><span style="white-space: pre-line">{{$purchaseOrder->keteranganPembayaran}}</span><br>
+                                      <b>Penagihan:</b><span style="white-space: pre-line">{{$purchaseOrder->keteranganPenagihan}}</span><br>
                                   </th>
-                                  <th scope="col" colspan="4">
+                                  <th scope="col" colspan="4" align="right" style="vertical-align: top;">
                                     <b>Jatuh Tempo:</b> {{date("d-m-Y", strtotime($purchaseOrder->tanggal_akhir))}}<br>
                                     
                                     @foreach($dataPerusahaan as $key => $data)
