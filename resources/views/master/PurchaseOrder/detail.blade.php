@@ -657,7 +657,7 @@ Detail Nota Purchase Order
         tambahCombo += '<select require name="barang[]" class="form-control" id="barang'+totalTambah+'">\n';
         tambahCombo += '<option value="">--Pilih barang--</option>\n';
         tambahCombo += '@foreach($dataBarang as $key => $data)\n';
-        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
+        tambahCombo += '<option name="idBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? "selected" :"" }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})  </option>\n';
         tambahCombo += '@endforeach\n';
         tambahCombo += '</select>\n';
         tambahCombo += '<input min=1 require name="jumlah[]" id="jml" type="number" class="form-control" placeholder="Jumlah barang" aria-label="Recipient'+"'"+'s username" aria-describedby="basic-addon2"id="angka" />\n';

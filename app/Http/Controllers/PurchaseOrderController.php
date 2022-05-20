@@ -568,7 +568,10 @@ class PurchaseOrderController extends Controller
         $totalHarga = 0;
         $subtotalHarga = 0;
 
-        for ($i = 0; $i < count($data['itemId']); $i++) {
+        //$itemIDArray= (array) json_decode($data['prdID']);
+        
+        
+        for ($i = 0; $i < count((array)$data['itemId']); $i++) {
             DB::table('purchase_order_detail')->insert(
                 array(
                     'idPurchaseOrder' => $purchaseOrder->id,

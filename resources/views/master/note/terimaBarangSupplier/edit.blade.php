@@ -419,6 +419,11 @@ Edit Terima Barang Supplier
                             "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
                             "value" : "",   
                         }); 
+                        if (maxAngka <= 0) {
+                        $('#jumlahBarang').prop('readonly', true);
+                    } else {
+                        $('#jumlahBarang').prop('readonly', false);
+                    }
                     }
                 });
             });

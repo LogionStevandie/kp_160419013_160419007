@@ -175,6 +175,11 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @php
+                    $totalHarga = 0;
+                    $totalHargaDiskon = 0;
+                    $totalHargaPPN = 0;
+                    @endphp
                     @foreach($dataDetail as $data)
                     <tr>
                       @if($data->idPurchaseOrder==$purchaseOrder->id)
@@ -200,10 +205,17 @@
 
 
                       <td class="text-right">@php echo "Rp " . number_format($data->diskon,2,',','.'); @endphp</td>
-                      <td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah),2,',','.'); @endphp</td>
+                      <!--<td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah),2,',','.'); @endphp</td>-->
+                      <td class="text-right">@php echo "Rp " . number_format((((float)$data->diskon) * $data->jumlah),2,',','.'); @endphp</td>
                       <td class="text-right">{{$data->TaxPercent}} %</td>
                       <td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * ((float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>
                       <td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>
+                      @php
+                      $totalHarga += (float)$data->harga * $data->jumlah;
+                      $totalHargaDiskon += $data->diskon *  $data->jumlah;
+                      $totalHargaPPN += (((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (float)$data->TaxPercent / 100.0;
+                      @endphp
+
                       @endif
                     </tr>
                     @endforeach
@@ -211,7 +223,22 @@
                   <thead class="thead-light justify-content-center">
                     <tr>
                       <th scope="col" colspan="8"></th>
-                      <th scope="col" colspan="1"> Total </th>
+                      <th scope="col" colspan="1"> Total Harga</th>
+                      <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($totalHarga,2,',','.'); @endphp </th>
+                    </tr>
+                    <tr>
+                      <th scope="col" colspan="8"></th>
+                      <th scope="col" colspan="1"> Total Harga Diskon </th>
+                      <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($totalHargaDiskon,2,',','.'); @endphp </th>
+                    </tr>
+                    <tr>
+                      <th scope="col" colspan="8"></th>
+                      <th scope="col" colspan="1"> Total Harga PPN </th>
+                      <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($totalHargaPPN,2,',','.'); @endphp </th>
+                    </tr>
+                    <tr>
+                      <th scope="col" colspan="8"></th>
+                      <th scope="col" colspan="1"> Total Keseluruhan </th>
                       <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp </th>
                     </tr>
                   </thead>

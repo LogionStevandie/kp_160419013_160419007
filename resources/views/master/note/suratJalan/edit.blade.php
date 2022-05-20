@@ -89,7 +89,17 @@ Edit Surat Jalan
                                             <div class="form-group">
                                                 <label for="lastName">Data Purchase Request</label>
                                                 <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="PurchaseRequestID" id="PurchaseRequestID">
+                                                    @foreach($dataPurchaseRequest as $key => $data)
+                                                    @if($data->MGudangID == $suratJalan->MGudangIDTujuan)
+                                                    @if($data->id == $suratJalan->PurchaseRequestID)
+                                                    <option selected value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
 
+                                                    @else
+                                                    <option value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
+
+                                                    @endif
+                                                    @endif
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -252,7 +262,7 @@ Edit Surat Jalan
 
 
     $(document).ready(function() {
-        var id = $("#idGudangTujuan option:selected").val();
+        /*var id = $("#idGudangTujuan option:selected").val();
         var optionnya = '';
         var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
         var suratJalan = <?php echo json_encode($suratJalan); ?>;
@@ -273,7 +283,7 @@ Edit Surat Jalan
 
 
         $("#PurchaseRequestID").empty();
-        $("#PurchaseRequestID").append(optionnya);
+        $("#PurchaseRequestID").append(optionnya);*/
         var id = $("#PurchaseRequestID option:selected").val();
         var optionnya = '';
         var dataPurchaseRequestDetail = <?php echo json_encode($dataPurchaseRequestDetail); ?>;
@@ -388,10 +398,15 @@ Edit Surat Jalan
                     "value": "",
                 });
             }
+            if (maxAngka <= 0) {
+                $('#jumlahBarang').prop('readonly', true);
+            } else {
+                $('#jumlahBarang').prop('readonly', false);
+            }
             //$('#keranjang').empty();
         });
 
-        
+
         $("#idGudang").on("change", function() { //sudah
 
             var id = $("#barang option:selected").attr();
@@ -437,6 +452,11 @@ Edit Surat Jalan
                         "placeholder": "Tidak ada barang di gudang",
                         "value": "",
                     });
+                }
+                if (maxAngka <= 0) {
+                    $('#jumlahBarang').prop('readonly', true);
+                } else {
+                    $('#jumlahBarang').prop('readonly', false);
                 }
             }
             $('#keranjang').empty();
@@ -489,6 +509,12 @@ Edit Surat Jalan
                         "placeholder": "Tidak ada barang di gudang",
                         "value": "",
                     });
+                }
+
+                if (maxAngka <= 0) {
+                    $('#jumlahBarang').prop('readonly', true);
+                } else {
+                    $('#jumlahBarang').prop('readonly', false);
                 }
 
             }

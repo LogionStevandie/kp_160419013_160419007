@@ -90,6 +90,16 @@ Edit Nota Kirim Pesanan
                                                 <label for="lastName">Pilih Surat Jalan</label>
                                                 <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="SuratJalanID" name="SuratJalanID">
 
+                                                  @foreach($suratJalan as $key => $data)
+                                                    @if($data->MGudangIDTujuan == $transactionGudangBarang->MGudangIDTujuan)
+                                                        @if($data->id == $transactionGudangBarang->SuratJalanID)
+                                                            <option selected idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
+                                                        @else
+                                                           <option idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+
                                                 </select>
                                             </div>
                                         </div>
@@ -97,7 +107,18 @@ Edit Nota Kirim Pesanan
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="lastName">Data Purchase Request</label>
-                                                <select readonly class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="PurchaseRequestID" id="PurchaseRequestID">
+                                                <select  class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="PurchaseRequestID" id="PurchaseRequestID">
+
+                                                   @foreach($dataPurchaseRequest as $key => $data)
+                                                        @if($data->MGudangID == $transactionGudangBarang->MGudangIDTujuan)
+                                                            @if($data->id == $transactionGudangBarang->PurchaseRequestID)
+                                                            
+                                                                <option selected value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
+                                                            @else
+                                                                <option value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -112,9 +133,9 @@ Edit Nota Kirim Pesanan
                                                     </option>
                                                     @foreach($dataItemTransaction as $key => $data)
                                                     @if($data->ItemTransactionID == $transactionGudangBarang->ItemTransactionID)
-                                                    <option selected name="idItemTransaction" value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
+                                                    <option selected name="idItemTransaction"   value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
                                                     @else
-                                                    <option name="idItemTransaction" value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
+                                                    <option name="idItemTransaction"   value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
                                                     @endif
                                                     @endforeach
 
@@ -272,7 +293,7 @@ Edit Nota Kirim Pesanan
 
     $(document).ready(function() {
 
-        var id = $("#idGudangTujuan option:selected").val();
+        /*var id = $("#idGudangTujuan option:selected").val();
         var optionnya = '';
         var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
         var transactionGudangBarang = <?php echo json_encode($transactionGudangBarang); ?>;
@@ -289,9 +310,9 @@ Edit Nota Kirim Pesanan
 
 
         $("#PurchaseRequestID").empty();
-        $("#PurchaseRequestID").append(optionnya);
+        $("#PurchaseRequestID").append(optionnya);*/
         //$('.selectpicker').selectpicker('refresh');
-        var optionnya = '';
+        /*var optionnya = '';
 
         var suratJalan = <?php echo json_encode($suratJalan); ?>;
 
@@ -309,7 +330,7 @@ Edit Nota Kirim Pesanan
         });
 
         $("#SuratJalanID").empty();
-        $("#SuratJalanID").append(optionnya);
+        $("#SuratJalanID").append(optionnya);*/
 
         var pr = $("#SuratJalanID option:selected").attr("idPurchaseReq");
         var optionnya = '';
@@ -443,6 +464,11 @@ Edit Nota Kirim Pesanan
                         "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                         "value": "",
                     });
+                    if (maxAngka <= 0) {
+                        $('#jumlahBarang').prop('readonly', true);
+                    } else {
+                        $('#jumlahBarang').prop('readonly', false);
+                    }
                 }
             });
 

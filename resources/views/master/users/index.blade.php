@@ -18,6 +18,67 @@ Satuan
 
 @section('content')
 <div class="container-fluid">
+    <h4 class="text-center display-4">Cari User</h4>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form action="/userse/searchname/" method="get">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama PO">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-lg btn-default">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form action="/userse/searchgudang/" method="get">
+                <div class="input-group">
+                    <select class="form-control selectpicker col-md-8" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="searchgudang">
+                        <option value="">
+                            --Semua Gudang--
+                        </option>
+                        @foreach($dataGudang as $data)
+                        <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}" {{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                        @endforeach
+
+                    </select>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-lg btn-default">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <form action="/userse/searchperusahaan/" method="get">
+                <div class="input-group">
+                    <select class="form-control selectpicker col-md-8" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="searchperusahaan">
+                        <option value="">
+                            --Semua Gudang--
+                        </option>
+                        @foreach($dataPerusahaan as $data)
+                        <option name="idPerusahaan" value="{{$data->MPerusahaanID}}" {{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}}</option>
+                        @endforeach
+
+                    </select>
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-lg btn-default">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -46,47 +107,47 @@ Satuan
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($data as $d)
+                            @foreach($dataaa as $user)
                             <tr>
-                                <th>{{$d->id}}</th>
-                                <td>{{$d->name}}</td>
-                                <td>{{$d->email}}</td>
-                                <td>{{$d->roleName}}</td>
-                                <td>{{$d->gudangName}}</td>
+                                <th>{{$user->id}}</th>
+                                <td>{{$user->name}}</td>
+                                <td>{{$user->email}}</td>
+                                <td>{{$user->roleName}}</td>
+                                <td>{{$user->gudangName}}</td>
                                 <td>
-                                    @if($d->UserIDKepalaDivisi == $d->id)
-                                    {{$d->gudangName}}
+                                    @if($user->UserIDKepalaDivisi == $user->id)
+                                    {{$user->gudangName}}
                                     @else
                                     -
                                     @endif
                                 </td>
                                 <td>
-                                    @if($d->UserIDManager1 == $d->id)
-                                    {{$d->perusahaanName}}
+                                    @if($user->UserIDManager1 == $user->id)
+                                    {{$user->perusahaanName}}
                                     @else
                                     -
                                     @endif
                                 </td>
                                 <td>
-                                    @if($d->UserIDManager2 == $d->id)
-                                    {{$d->perusahaanName}}
+                                    @if($user->UserIDManager2 == $user->id)
+                                    {{$user->perusahaanName}}
                                     @else
                                     -
                                     @endif
                                 </td>
                                 <td>
-                                    <a class="btn btn-default bg-info" href="{{route('users.show',[$d->id])}}">
+                                    <a class="btn btn-default bg-info" href="{{route('users.show',[$user->id])}}">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a class="btn btn-default bg-info" href="{{route('users.edit',[$d->id])}}">
+                                    <a class="btn btn-default bg-info" href="{{route('users.edit',[$user->id])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>
 
-                                    <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$d->id}}">
+                                    <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$user->id}}">
                                         <i class="fas fa-trash"></i>
                                     </button>
 
-                                    <div class="modal fade" id="delete_{{$d->id}}">
+                                    <div class="modal fade" id="delete_{{$user->id}}">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
 
@@ -98,15 +159,15 @@ Satuan
                                                 </div>
 
                                                 <div class="modal-body">
-                                                    Apakah anda yakin mau menghapus "{{$d->name}}"
+                                                    Apakah anda yakin mau menghapus "{{$user->name}}"
                                                 </div>
 
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-                                                    <form action="{{route('users.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
+                                                    <form action="{{route('users.destroy',[$user->id])}}" method="POST" class="btn btn-responsive">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button class="btn btn-default bg-danger" action="{{route('users.destroy',[$d->id])}}">
+                                                        <button class="btn btn-default bg-danger" action="{{route('users.destroy',[$user->id])}}">
                                                             Hapus
                                                         </button>
                                                         @csrf
@@ -146,5 +207,5 @@ Satuan
     </div>
     <!-- /.row -->
 </div>
-{{ $data->links('pagination::bootstrap-4') }}
+{{ $dataaa->links('pagination::bootstrap-4') }}
 @endsection

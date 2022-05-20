@@ -96,6 +96,17 @@ Pembuatan Nota Terima Pesanan
                                                 <label for="lastName">Pilih Surat Jalan</label>
                                                 <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="SuratJalanID" name="SuratJalanID">
 
+                                                
+                                                  @foreach($suratJalan as $key => $data)
+                                                    @if($data->MGudangIDTujuan == $transactionGudangBarang->MGudangIDTujuan)
+                                                        @if($data->id == $transactionGudangBarang->SuratJalanID)
+                                                            <option selected idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
+                                                        @else
+                                                           <option idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
+                                                        @endif
+                                                    @endif
+                                                @endforeach
+
                                                 </select>
                                             </div>
                                         </div>
@@ -104,7 +115,16 @@ Pembuatan Nota Terima Pesanan
                                             <div class="form-group">
                                                 <label for="lastName">Data Purchase Request</label>
                                                 <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="PurchaseRequestID" id="PurchaseRequestID">
-
+                                                    @foreach($dataPurchaseRequest as $key => $data)
+                                                        @if($data->MGudangID == $transactionGudangBarang->MGudangIDTujuan)
+                                                            @if($data->id == $transactionGudangBarang->PurchaseRequestID)
+                                                            
+                                                                <option selected value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
+                                                            @else
+                                                                <option value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
+                                                            @endif
+                                                        @endif
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -278,7 +298,7 @@ Pembuatan Nota Terima Pesanan
 
     $(document).ready(function() {
 
-        var id = $("#idGudangTujuan option:selected").val();
+        /*var id = $("#idGudangTujuan option:selected").val();
         var optionnya = '';
         var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
         var transactionGudangBarang = <?php echo json_encode($transactionGudangBarang); ?>;
@@ -297,9 +317,9 @@ Pembuatan Nota Terima Pesanan
         $("#PurchaseRequestID").empty();
         //$("#PurchaseRequestID option:selected").selectpicker("val", optionnya)
         $("#PurchaseRequestID").append(optionnya);
-        $('.selectpicker').selectpicker('refresh');
+        $('.selectpicker').selectpicker('refresh');*/
 
-        var optionnya = '';
+       /* var optionnya = '';
 
         var suratJalan = <?php echo json_encode($suratJalan); ?>;
 
@@ -317,7 +337,7 @@ Pembuatan Nota Terima Pesanan
         });
 
         $("#SuratJalanID").empty();
-        $("#SuratJalanID").append(optionnya);
+        $("#SuratJalanID").append(optionnya);*/
 
         var pr = $("#SuratJalanID option:selected").attr("idPurchaseReq");
         var optionnya = '';
@@ -452,6 +472,11 @@ Pembuatan Nota Terima Pesanan
                         "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                         "value": "",
                     });
+                    if (maxAngka <= 0) {
+                        $('#jumlahBarang').prop('readonly', true);
+                    } else {
+                        $('#jumlahBarang').prop('readonly', false);
+                    }
                 }
             });
 

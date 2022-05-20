@@ -259,7 +259,7 @@ Pembuatan Nota Kirim Pesanan
 
         $("#idGudangTujuan").on("change", function() { //sudah
             var id = this.value;
-            /*var id = this.value;
+            var id = this.value;
                 var optionnya = '';
             
                 var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
@@ -278,7 +278,7 @@ Pembuatan Nota Kirim Pesanan
                                     
                 $("#PurchaseRequestID").empty();
                 $("#PurchaseRequestID").append(optionnya);
-                //$('.selectpicker').selectpicker('refresh');*/
+                //$('.selectpicker').selectpicker('refresh');
             var optionnya = '';
 
             var suratJalan = <?php echo json_encode($suratJalan); ?>;
@@ -367,6 +367,11 @@ Pembuatan Nota Kirim Pesanan
                         "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                         "value": "",
                     });
+                    if (maxAngka <= 0) {
+                        $('#jumlahBarang').prop('readonly', true);
+                    } else {
+                        $('#jumlahBarang').prop('readonly', false);
+                    }
                 }
             });
 

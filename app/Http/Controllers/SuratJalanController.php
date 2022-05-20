@@ -253,7 +253,13 @@ class SuratJalanController extends Controller
             ->where('suratJalanID', $suratJalan->id)
             ->get();
 
-
+        $dataReportUntukStok = DB::table('ItemInventoryTransactionLine') //dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
+            ->join('MGudang', 'ItemInventoryTransactionLine.MGudangID', '=', 'MGudang.MGudangID')
+            ->join('Item', 'ItemInventoryTransactionLine.ItemID', '=', 'Item.ItemID')
+            ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransaction.Date')
+            ->get();
 
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.show', $user->id, $user->idRole);
@@ -267,6 +273,7 @@ class SuratJalanController extends Controller
                 'dataTag' => $dataTag,
                 'suratJalan' => $suratJalan,
                 'dataTotalDetail' => $dataTotalDetail,
+                'dataReportUntukStok' => $dataReportUntukStok,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Surat Jalan');
@@ -331,7 +338,13 @@ class SuratJalanController extends Controller
             ->where('suratJalanID', $suratJalan->id)
             ->get();
 
-
+        $dataReportUntukStok = DB::table('ItemInventoryTransactionLine') //dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
+            ->join('MGudang', 'ItemInventoryTransactionLine.MGudangID', '=', 'MGudang.MGudangID')
+            ->join('Item', 'ItemInventoryTransactionLine.ItemID', '=', 'Item.ItemID')
+            ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransaction.Date')
+            ->get();
 
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.edit', $user->id, $user->idRole);
@@ -345,6 +358,7 @@ class SuratJalanController extends Controller
                 'dataTag' => $dataTag,
                 'suratJalan' => $suratJalan,
                 'dataTotalDetail' => $dataTotalDetail,
+                'dataReportUntukStok' => $dataReportUntukStok,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Surat Jalan');
@@ -441,6 +455,8 @@ class SuratJalanController extends Controller
             ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
 
+        $dataGudang = DB::table('MGudang')
+            ->get();
 
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.index', $user->id, $user->idRole);
@@ -448,6 +464,7 @@ class SuratJalanController extends Controller
             return view('master.note.suratJalan.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Surat Jalan');
@@ -472,12 +489,16 @@ class SuratJalanController extends Controller
             ->where('surat_jalan.tanggalDibuat', [date($date[0]), date($date[1])])
             ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
+
+        $dataGudang = DB::table('MGudang')
+            ->get();
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.suratJalan.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Surat Jalan');
@@ -505,12 +526,16 @@ class SuratJalanController extends Controller
             ->where('surat_jalan.tanggalDibuat', [date($date[0]), date($date[1])])
             ->orderByDesc('surat_jalan.tanggalDibuat')
             ->paginate(10);
+
+        $dataGudang = DB::table('MGudang')
+            ->get();
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.suratJalan.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Surat Jalan');
@@ -571,7 +596,7 @@ class SuratJalanController extends Controller
             ->where('suratJalanID', $suratJalan->id)
             ->get();
 
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.show', $user->id, $user->idRole);
         if ($check) {

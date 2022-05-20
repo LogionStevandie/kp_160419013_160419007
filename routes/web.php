@@ -219,6 +219,13 @@ Route::get('checkPurchaseRequeste/searchdate/',[App\Http\Controllers\CheckPRCont
 Route::get('checkPurchaseRequeste/searchnamedate/',[App\Http\Controllers\CheckPRController::class, 'searchNameDatePR']);
 
 
+Route::resource('checkPurchaseOrder', 'App\Http\Controllers\CheckPOController');
+Route::get('checkPurchaseOrdere/searchname/',[App\Http\Controllers\CheckPOController::class, 'searchNamePO']);
+Route::get('checkPurchaseOrdere/searchdate/',[App\Http\Controllers\CheckPOController::class, 'searchDatePO']);
+Route::get('checkPurchaseOrdere/searchnamedate/',[App\Http\Controllers\CheckPOController::class, 'searchNameDatePO']);
 //user
 Route::resource('users', 'App\Http\Controllers\UserController');
+Route::get('userse/searchname/',[App\Http\Controllers\UserController::class, 'searchNameUsers']);
+Route::get('userse/searchgudang/',[App\Http\Controllers\UserController::class, 'searchGudangUsers']);
+Route::get('userse/searchperusahaan/',[App\Http\Controllers\UserController::class, 'searchPerusahaanUsers']);
 //end user

@@ -35,7 +35,7 @@ class TerimaBarangSupplierController extends Controller
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat', 'transaction_gudang_barang.id')
             ->paginate(10);
         //dd($data);
         //->get();
@@ -678,31 +678,37 @@ class TerimaBarangSupplierController extends Controller
     public function searchTGBName(Request $request)
     {
         $name = $request->input('searchname');
+
         $user = Auth::user();
         $data = DB::table('transaction_gudang_barang')
             ->select('transaction_gudang_barang.*', 'ItemTransaction.Name as itemTransactionName', 'MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
             ->leftjoin('ItemTransaction', 'transaction_gudang_barang.ItemTransactionID', '=', 'ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier', 'transaction_gudang_barang.SupplierID', '=', 'MSupplier.SupplierID')
-            ->leftjoin('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
-            ->whereNotNull('transaction_gudang_barang.SupplierID')
-            ->where('transaction_gudang_barang.name', 'like', '%' . $name . '%')
+            ->join('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
             ->where('transaction_gudang_barang.hapus', 0)
+            ->whereNotNull('transaction_gudang_barang.SupplierID')
+            ->where('transaction_gudang_barang.isMenerima', 1)
+            ->where('transaction_gudang_barang.name', 'like', '%' . $name . '%')
+            //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->where(function ($query) use ($user) {
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat', 'transaction_gudang_barang.id')
             ->paginate(10);
+        //dd($data);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
-
+        $dataGudang = DB::table('MGudang')
+            ->get();
 
         $check = $this->checkAccess('terimaBarangSupplier.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.terimaBarangSupplier.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Supplier');
@@ -713,29 +719,37 @@ class TerimaBarangSupplierController extends Controller
     {
         $date = $request->input('searchdate');
         $date = explode("-", $date);
+        
         $user = Auth::user();
         $data = DB::table('transaction_gudang_barang')
             ->select('transaction_gudang_barang.*', 'ItemTransaction.Name as itemTransactionName', 'MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
             ->leftjoin('ItemTransaction', 'transaction_gudang_barang.ItemTransactionID', '=', 'ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier', 'transaction_gudang_barang.SupplierID', '=', 'MSupplier.SupplierID')
-            ->leftjoin('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
-            ->whereNotNull('transaction_gudang_barang.SupplierID')
-            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [date($date[0]), date($date[1])])
+            ->join('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
             ->where('transaction_gudang_barang.hapus', 0)
+            ->whereNotNull('transaction_gudang_barang.SupplierID')
+            ->where('transaction_gudang_barang.isMenerima', 1)
+            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [date($date[0]), date($date[1])])
+            //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->where(function ($query) use ($user) {
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat', 'transaction_gudang_barang.id')
             ->paginate(10);
+        //dd($data);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
+        $dataGudang = DB::table('MGudang')
+            ->get();
+
         $check = $this->checkAccess('terimaBarangSupplier.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.terimaBarangSupplier.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Supplier');
@@ -752,25 +766,32 @@ class TerimaBarangSupplierController extends Controller
             ->select('transaction_gudang_barang.*', 'ItemTransaction.Name as itemTransactionName', 'MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
             ->leftjoin('ItemTransaction', 'transaction_gudang_barang.ItemTransactionID', '=', 'ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier', 'transaction_gudang_barang.SupplierID', '=', 'MSupplier.SupplierID')
-            ->leftjoin('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
+            ->join('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
+            ->where('transaction_gudang_barang.hapus', 0)
             ->whereNotNull('transaction_gudang_barang.SupplierID')
+            ->where('transaction_gudang_barang.isMenerima', 1)
             ->where('transaction_gudang_barang.name', 'like', '%' . $name . '%')
             ->whereBetween('transaction_gudang_barang.tanggalDibuat', [date($date[0]), date($date[1])])
-            ->where('transaction_gudang_barang.hapus', 0)
+            //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->where(function ($query) use ($user) {
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
                     ->orWhere('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID);
             })
-            ->orderByDesc('transaction_gudang_barang.tanggalDibuat','transaction_gudang_barang.id')
+            ->orderByDesc('transaction_gudang_barang.tanggalDibuat', 'transaction_gudang_barang.id')
             ->paginate(10);
+        //dd($data);
         //->get();
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
+        $dataGudang = DB::table('MGudang')
+            ->get();
+
         $check = $this->checkAccess('terimaBarangSupplier.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.terimaBarangSupplier.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Supplier');
@@ -849,7 +870,7 @@ class TerimaBarangSupplierController extends Controller
 
 
 
-        
+
 
         $check = $this->checkAccess('terimaBarangSupplier.show', $user->id, $user->idRole);
         if ($check) {

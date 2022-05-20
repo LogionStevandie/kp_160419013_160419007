@@ -19,14 +19,14 @@ class RoleAccessController extends Controller
         //
         $data = DB::table('roles')->paginate(10);;
         $dataAccess = DB::table('role_access')
-            ->join('menu','role_access.idMenu','=','menu.MenuID')
+            ->join('menu', 'role_access.idMenu', '=', 'menu.MenuID')
             ->get();
         //->get();    
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('roleAccess.index', $user->id, $user->idRole);
         if ($check) {
-            return view('master.roleAccess.index',[
+            return view('master.roleAccess.index', [
                 'data' => $data,
                 'dataAccess' => $dataAccess,
             ]);
@@ -90,13 +90,13 @@ class RoleAccessController extends Controller
     public function edit(Role $roleAccess)
     {
         //
-           //
+        //
         $dataMenu = DB::table('menu')
             ->get();
-        
+
         $dataAccess = DB::table('role_access')
             ->rightjoin('menu', 'role_access.idMenu', '=', 'menu.MenuID')
-            ->where('role_access.idRole',$roleAccess->id)
+            ->where('role_access.idRole', $roleAccess->id)
             ->get();
         //dd($dataAccess);
         /*$dataAccess = DB::table('role_access')
@@ -105,11 +105,11 @@ class RoleAccessController extends Controller
             ->where('role_access.idRole',$roleAccess->idRole)
             ->get();  
             dd($dataAccess);*/
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('roleAccess.edit', $user->id, $user->idRole);
         if ($check) {
-            return view('master.roleAccess.edit',[
+            return view('master.roleAccess.edit', [
                 'roleAccess' => $roleAccess,
                 'dataMenu' => $dataMenu,
                 'dataAccess' => $dataAccess,
@@ -129,23 +129,27 @@ class RoleAccessController extends Controller
     public function update(Request $request, Role $roleAccess)
     {
         //
-        $data=$request->collect();
+        $data = $request->collect();
         //dd($data);
         //$dataRoleAccess = DB::table('role_access')->where('idRole', $role->id)->get();
 
         DB::table('role_access')
-            ->where('idRole','=',$roleAccess->id)
+            ->where('idRole', '=', $roleAccess->id)
             ->delete();
 
-        for($i = 0; $i < count($data['menu']); $i++){
-        DB::table('role_access')
-            ->insert(array(
-                'idRole' => $roleAccess->id,
-                'idMenu' => $data['menu'][$i],
-                )
-            ); 
+        if (isset($data['menu'])) {
+            for ($i = 0; $i < count($data['menu']); $i++) {
+                DB::table('role_access')
+                    ->insert(
+                        array(
+                            'idRole' => $roleAccess->id,
+                            'idMenu' => $data['menu'][$i],
+                        )
+                    );
+            }
         }
-        return redirect()->route('roleAccess.index')->with('status','Success!!');
+
+        return redirect()->route('roleAccess.index')->with('status', 'Success!!');
     }
 
     /**
@@ -161,18 +165,18 @@ class RoleAccessController extends Controller
 
     public function searchRoleName(Request $request)
     {
-        $name=$request->input('searchname');
+        $name = $request->input('searchname');
 
-        $data = DB::table('roles')->where('name','like','%'.$name.'%')->paginate(10);
+        $data = DB::table('roles')->where('name', 'like', '%' . $name . '%')->paginate(10);
         $dataAccess = DB::table('role_access')
-            ->join('menu','role_access.idMenu','=','menu.MenuID')
+            ->join('menu', 'role_access.idMenu', '=', 'menu.MenuID')
             ->paginate(10);
         //->get();    
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('roleAccess.index', $user->id, $user->idRole);
         if ($check) {
-            return view('master.roleAccess.index',[
+            return view('master.roleAccess.index', [
                 'data' => $data,
                 'dataAccess' => $dataAccess,
             ]);

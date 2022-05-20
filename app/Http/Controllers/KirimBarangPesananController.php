@@ -611,17 +611,20 @@ class KirimBarangPesananController extends Controller
             ->select('transaction_gudang_barang.*', 'ItemTransaction.Name as itemTransactionName', 'MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
             ->leftjoin('ItemTransaction', 'transaction_gudang_barang.ItemTransactionID', '=', 'ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier', 'transaction_gudang_barang.SupplierID', '=', 'MSupplier.SupplierID')
-            ->leftjoin('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
-            ->whereNotNull('SupplierID')
-            ->where('isMenerima', 0)
+            ->leftjoin('purchase_request', 'transaction_gudang_barang.PurchaseRequestID', '=', 'purchase_request.id')
+            ->where('transaction_gudang_barang.isMenerima', '0')
+            ->whereNotNull('transaction_gudang_barang.SuratJalanID')
+            ->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
             ->where('transaction_gudang_barang.name', 'like', '%' . $name . '%')
-            ->where('MGudangIDAwal', $user->MGudangID)
             ->where('transaction_gudang_barang.hapus', 0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
             ->orderByDesc('transaction_gudang_barang.tanggalDibuat', 'transaction_gudang_barang.id')
             ->paginate(10);
-        //->get();
+        // ->get();
+        //dd($data);
         $dataDetail = DB::table('transaction_gudang_barang_detail')
+            ->get();
+        $dataGudang = DB::table('MGudang')
             ->get();
 
         $user = Auth::user();
@@ -630,6 +633,7 @@ class KirimBarangPesananController extends Controller
             return view('master.note.kirimBarangPesanan.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
@@ -640,29 +644,36 @@ class KirimBarangPesananController extends Controller
     {
         $date = $request->input('searchdate');
         $date = explode("-", $date);
+
         $user = Auth::user();
         $data = DB::table('transaction_gudang_barang')
             ->select('transaction_gudang_barang.*', 'ItemTransaction.Name as itemTransactionName', 'MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
             ->leftjoin('ItemTransaction', 'transaction_gudang_barang.ItemTransactionID', '=', 'ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier', 'transaction_gudang_barang.SupplierID', '=', 'MSupplier.SupplierID')
-            ->leftjoin('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
-            ->whereNotNull('SupplierID')
-            ->where('isMenerima', 0)
+            ->leftjoin('purchase_request', 'transaction_gudang_barang.PurchaseRequestID', '=', 'purchase_request.id')
+            ->where('transaction_gudang_barang.isMenerima', '0')
+            ->whereNotNull('transaction_gudang_barang.SuratJalanID')
+            ->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
             ->whereBetween('transaction_gudang_barang.tanggalDibuat', [$date[0], $date[1]])
-            ->where('MGudangIDAwal', $user->MGudangID)
+
             ->where('transaction_gudang_barang.hapus', 0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
             ->orderByDesc('transaction_gudang_barang.tanggalDibuat', 'transaction_gudang_barang.id')
             ->paginate(10);
-        //->get();
+        // ->get();
+        //dd($data);
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
+        $dataGudang = DB::table('MGudang')
+            ->get();
+
         $user = Auth::user();
         $check = $this->checkAccess('kirimBarangPesanan.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.kirimBarangPesanan.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
@@ -679,25 +690,31 @@ class KirimBarangPesananController extends Controller
             ->select('transaction_gudang_barang.*', 'ItemTransaction.Name as itemTransactionName', 'MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')
             ->leftjoin('ItemTransaction', 'transaction_gudang_barang.ItemTransactionID', '=', 'ItemTransaction.ItemTransactionID')
             ->leftjoin('MSupplier', 'transaction_gudang_barang.SupplierID', '=', 'MSupplier.SupplierID')
-            ->leftjoin('purchase_order', 'transaction_gudang_barang.PurchaseOrderID', '=', 'purchase_order.id')
-            ->whereNotNull('SupplierID')
-            ->where('isMenerima', 0)
+            ->leftjoin('purchase_request', 'transaction_gudang_barang.PurchaseRequestID', '=', 'purchase_request.id')
+            ->where('transaction_gudang_barang.isMenerima', '0')
+            ->whereNotNull('transaction_gudang_barang.SuratJalanID')
+            ->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
             ->where('transaction_gudang_barang.name', 'like', '%' . $name . '%')
             ->whereBetween('transaction_gudang_barang.tanggalDibuat', [$date[0], $date[1]])
-            ->where('MGudangIDAwal', $user->MGudangID)
+
             ->where('transaction_gudang_barang.hapus', 0)
             //->orWhere('MGudangIDTujuan',$user->MGudangID)
             ->orderByDesc('transaction_gudang_barang.tanggalDibuat', 'transaction_gudang_barang.id')
             ->paginate(10);
-        //->get();
+        // ->get();
+        //dd($data);
         $dataDetail = DB::table('transaction_gudang_barang_detail')
             ->get();
+        $dataGudang = DB::table('MGudang')
+            ->get();
+
         $user = Auth::user();
         $check = $this->checkAccess('kirimBarangPesanan.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.kirimBarangPesanan.index', [
                 'data' => $data,
                 'dataDetail' => $dataDetail,
+                'dataGudang' => $dataGudang,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');

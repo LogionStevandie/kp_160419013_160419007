@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\ErrorHandler\Debug;
 
 class UserController extends Controller
 {
@@ -36,17 +38,22 @@ class UserController extends Controller
             ->leftjoin('roles', 'users.idRole', '=', 'roles.id')
             ->leftjoin('MGudang', 'users.MGudangID', '=', 'MGudang.MGudangID')
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            //->get();
             ->paginate(10);
         //dd($data);
         //->get();
-        
+        $dataGudang = DB::table('MGudang')->get();
+        $dataPerusahaan = DB::table('MPerusahaan')->get();
 
         $check = $this->checkAccess('users.index', $user->id, $user->idRole);
+
         if ($check) {
+            //dd($data);
             return view('master.users.index', [
-                'data' => $data,
+                'dataaa' => $data,
+                'dataGudang' => $dataGudang,
+                'dataPerusahaan' => $dataPerusahaan,
             ]);
+            //return view('master.users.index',compact('data', 'dataGudang','dataPerusahaan'));
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
         }
@@ -68,7 +75,7 @@ class UserController extends Controller
         $dataRole = DB::table('roles')
             ->get();
 
-        
+
         $check = $this->checkAccess('users.create', $user->id, $user->idRole);
         if ($check) {
             return view('master.users.tambah', [
@@ -156,11 +163,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $users)
+    public function show(User $user)
     {
         //
-        $user = Auth::user();
-        $data = DB::table('users')
+         $usero = Auth::user();
+        $userdata = DB::table('users')
             ->select(
                 'users.*',
                 'roles.name as roleName',
@@ -173,18 +180,27 @@ class UserController extends Controller
             ->leftjoin('roles', 'users.idRole', '=', 'roles.id')
             ->leftjoin('MGudang', 'users.MGudangID', '=', 'MGudang.MGudangID')
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->where('users.id', $users['id'])
+            ->where('users.id', $user['id'])
             ->get();
-        //->paginate(10);
-        //dd($data);
-        //->get();
         
+        $dataGudang = DB::table('MGudang')
+            ->select('MGudang.*', 'MPerusahaan.cname as perusahaanName')
+            ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
+            ->get();
+        $dataRole = DB::table('roles')
+            ->get();
 
-        $check = $this->checkAccess('users.show', $user->id, $user->idRole);
+
+
+        $check = $this->checkAccess('users.show', $usero->id, $usero->idRole);
         if ($check) {
+            //dd($data);
+            //dd($user);
             return view('master.users.detail', [
-                'data' => $data,
-                'users' => $users,
+                'dataGudang' => $dataGudang,
+                'dataRole' => $dataRole,
+                'userdata' => $userdata,
+                'userss' => $user,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
@@ -197,11 +213,11 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $users)
+    public function edit(User $user)
     {
         //
-        $user = Auth::user();
-        $data = DB::table('users')
+        $usero = Auth::user();
+        $userdata = DB::table('users')
             ->select(
                 'users.*',
                 'roles.name as roleName',
@@ -214,8 +230,9 @@ class UserController extends Controller
             ->leftjoin('roles', 'users.idRole', '=', 'roles.id')
             ->leftjoin('MGudang', 'users.MGudangID', '=', 'MGudang.MGudangID')
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
-            ->where('users.id', $users['id'])
+            ->where('users.id', $user['id'])
             ->get();
+        
         $dataGudang = DB::table('MGudang')
             ->select('MGudang.*', 'MPerusahaan.cname as perusahaanName')
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
@@ -223,15 +240,17 @@ class UserController extends Controller
         $dataRole = DB::table('roles')
             ->get();
 
-        
 
-        $check = $this->checkAccess('users.edit', $user->id, $user->idRole);
+
+        $check = $this->checkAccess('users.edit', $usero->id, $usero->idRole);
         if ($check) {
+            //dd($data);
+            //dd($user);
             return view('master.users.edit', [
                 'dataGudang' => $dataGudang,
                 'dataRole' => $dataRole,
-                'data' => $data,
-                'users' => $users,
+                'userdata' => $userdata,
+                'userss' => $user,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
@@ -249,21 +268,37 @@ class UserController extends Controller
     {
         //
         $data = $request->collect();
-        $user = Auth::user();
+        $usero = Auth::user();
 
-        DB::table('users')
-            ->where('id', $users['id'])
-            ->update(
-                array(
-                    'Name' => $data['name'],
-                    'email' => $data['email'],
-                    'password' => Hash::make($data['password']),
-                    'idRole' => $data['role'],
-                    'MGudangID' => $data['MGudangID'],
-                    'UpdatedBy' => $user->id,
-                    'UpdatedOn' => date("Y-m-d h:i:sa"),
-                )
-            );
+        if ($data['password'] == "" || $data['password'] == null) {
+            DB::table('users')
+                ->where('id', $users['id'])
+                ->update(
+                    array(
+                        'Name' => $data['name'],
+                        'email' => $data['email'],
+                        'idRole' => $data['role'],
+                        'MGudangID' => $data['MGudangID'],
+                        'UpdatedBy' => $usero->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    )
+                );
+        } else {
+            DB::table('users')
+                ->where('id', $users['id'])
+                ->update(
+                    array(
+                        'Name' => $data['name'],
+                        'email' => $data['email'],
+                        'password' => Hash::make($data['password']),
+                        'idRole' => $data['role'],
+                        'MGudangID' => $data['MGudangID'],
+                        'UpdatedBy' => $usero->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    )
+                );
+        }
+
 
         $dataPerusahaan = DB::table('MPerusahaan')
             ->select('MPerusahaan.*')
@@ -317,7 +352,7 @@ class UserController extends Controller
     public function destroy(User $users)
     {
         //
-        $user = Auth::user();
+        $usero = Auth::user();
 
         DB::table('MGudang')
             ->where('MGudangID', $users['MGudangID'])
@@ -342,7 +377,7 @@ class UserController extends Controller
             );
 
         DB::table('users')
-            ->where('id', $user['id'])
+            ->where('id', $users['id'])
             ->delete();
 
         return redirect()->route('users.index')->with('status', 'Success!!');
@@ -371,10 +406,14 @@ class UserController extends Controller
             ->paginate(10);
         //dd($data);
         //->get();
+        $dataGudang = DB::table('MGudang')->get();
+        $dataPerusahaan = DB::table('MPerusahaan')->get();
         $check = $this->checkAccess('users.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.users.index', [
-                'data' => $data,
+                'dataaa' => $data,
+                'dataGudang' => $dataGudang,
+                'dataPerusahaan' => $dataPerusahaan,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
@@ -404,10 +443,14 @@ class UserController extends Controller
             ->paginate(10);
         //dd($data);
         //->get();
+        $dataGudang = DB::table('MGudang')->get();
+        $dataPerusahaan = DB::table('MPerusahaan')->get();
         $check = $this->checkAccess('users.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.users.index', [
-                'data' => $data,
+                'dataaa' => $data,
+                'dataGudang' => $dataGudang,
+                'dataPerusahaan' => $dataPerusahaan,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
@@ -437,10 +480,14 @@ class UserController extends Controller
             ->paginate(10);
         //dd($data);
         //->get();
+        $dataGudang = DB::table('MGudang')->get();
+        $dataPerusahaan = DB::table('MPerusahaan')->get();
         $check = $this->checkAccess('users.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.users.index', [
-                'data' => $data,
+                'dataaa' => $data,
+                'dataGudang' => $dataGudang,
+                'dataPerusahaan' => $dataPerusahaan,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');

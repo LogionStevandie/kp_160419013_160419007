@@ -22,18 +22,18 @@ Tambah Users
     <!-- Page Heading -->
     <div class="card card-primary">
         <!-- form start -->
-        <form action="{{route('users.store', [$users->id])}}" method="POST">
+        <form action="{{route('users.update', [$userss->id])}}" method="POST">
             @csrf
             @method("PUT")
             <div class="card-body">
 
                 <div class="form-group">
                     <label for="title">Nama</label>
-                    <input required type="text" name="name" maxlength="255" class="form-control" value="{{old('name',$users->name)}}">
+                    <input required type="text" name="name" maxlength="255" class="form-control" value="{{old('name',$userss->name)}}">
                 </div>
                 <div class="form-group">
                     <label for="title">NIK</label>
-                    <input required type="text" name="email" maxlength="12" class="form-control" value="{{old('email',$users->email)}}">
+                    <input required type="text" name="email" maxlength="12" class="form-control" value="{{old('email',$userss->email)}}">
                 </div>
                 <div class="form-group">
                     <label for="title">Password</label>
@@ -47,7 +47,7 @@ Tambah Users
                             --Pilih Role--
                         </option>
                         @foreach($dataRole as $key => $data)
-                        @if($data->id == $users->idRole)
+                        @if($data->id == $userss->idRole)
                         <option selected name="idRole" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
                         @else
                         <option name="idRole" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
@@ -64,7 +64,7 @@ Tambah Users
                             --Pilih Gudang--
                         </option>
                         @foreach($dataGudang as $key => $data)
-                        @if($data->MGudangID == $users->MGudangID)
+                        @if($data->MGudangID == $userss->MGudangID)
                         <option selected name="idGudang" value="{{$data->MGudangID}}" {{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
                         @else
                         <option name="idGudang" value="{{$data->MGudangID}}" {{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
@@ -73,48 +73,86 @@ Tambah Users
 
                     </select>
                 </div>
-
+             @foreach($userdata as $user)
                 <div class="form-group ">
                     <label for="active">Kepala Divisi Gudang</label><br>
+                    @if($user->UserIDKepalaDivisi == $user->id)
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="UserIDKepalaDivisi" value="1" {{'1' == old('UserIDKepalaDivisi',$users->UserIDKepalaDivisi)? 'checked' :'' }}>
+                        <input checked class="form-check-input" type="radio" name="UserIDKepalaDivisi" value="1" {{'1' == old('UserIDKepalaDivisi',$userss->UserIDKepalaDivisi)? 'checked' :'' }}>
                         <label class="form-check-label" for="inlineRadio1">Ya</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input checked class="form-check-input" type="radio" name="UserIDKepalaDivisi" value="0" {{'0'== old('UserIDKepalaDivisi',$users->UserIDKepalaDivisi)? 'checked' :'' }}>
+                        <input class="form-check-input" type="radio" name="UserIDKepalaDivisi" value="0" {{'0'== old('UserIDKepalaDivisi',$userss->UserIDKepalaDivisi)? 'checked' :'' }}>
                         <label class="form-check-label" for="inlineRadio2">Tidak</label>
-                    </div><br>
+                    </div>
+                    @else
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="UserIDKepalaDivisi" value="1" {{'1' == old('UserIDKepalaDivisi',$userss->UserIDKepalaDivisi)? 'checked' :'' }}>
+                        <label class="form-check-label" for="inlineRadio1">Ya</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input checked class="form-check-input" type="radio" name="UserIDKepalaDivisi" value="0" {{'0'== old('UserIDKepalaDivisi',$userss->UserIDKepalaDivisi)? 'checked' :'' }}>
+                        <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                    </div>
+                    @endif
+                    <br>
                 </div>
+            @endforeach
 
                 <div class="form-group">
                     <label for="title">Perusahaan</label>
                     <input readonly type="text" id="perusahaan" maxlength="255" class="form-control" value="{{old('name','')}}">
                 </div>
+  @foreach($userdata as $user)
 
                 <div class="form-group ">
                     <label for="active">Manager Perusahaan 1</label><br>
+                    @if($user->UserIDManager1 == $user->id)
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="UserIDManager1" value="1" {{'1' == old('UserIDManager1',$users->UserIDManager1)? 'checked' :'' }}>
+                        <input checked class="form-check-input" type="radio" name="UserIDManager1" value="1" {{'1' == old('UserIDManager1',$userss->UserIDManager1)? 'checked' :'' }}>
                         <label class="form-check-label" for="inlineRadio1">Ya</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input checked class="form-check-input" type="radio" name="UserIDManager1" value="0" {{'0'== old('UserIDManager1',$users->UserIDManager1)? 'checked' :'' }}>
+                        <input class="form-check-input" type="radio" name="UserIDManager1" value="0" {{'0'== old('UserIDManager1',$userss->UserIDManager1)? 'checked' :'' }}>
                         <label class="form-check-label" for="inlineRadio2">Tidak</label>
-                    </div><br>
+                    </div>
+                    @else
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="UserIDManager1" value="1" {{'1' == old('UserIDManager1',$userss->UserIDManager1)? 'checked' :'' }}>
+                        <label class="form-check-label" for="inlineRadio1">Ya</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input checked class="form-check-input" type="radio" name="UserIDManager1" value="0" {{'0'== old('UserIDManager1',$userss->UserIDManager1)? 'checked' :'' }}>
+                        <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                    </div>
+                    @endif
+                    <br>
                 </div>
-
+                
                 <div class="form-group ">
                     <label for="active">Manager Perusahaan 2</label><br>
+                    @if($user->UserIDManager2 == $user->id)
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="UserIDManager2" value="1" {{'1' == old('UserIDManager2',$users->UserIDManager2)? 'checked' :'' }}>
+                        <input checked class="form-check-input" type="radio" name="UserIDManager2" value="1" {{'1' == old('UserIDManager2',$userss->UserIDManager2)? 'checked' :'' }}>
                         <label class="form-check-label" for="inlineRadio1">Ya</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input checked class="form-check-input" type="radio" name="UserIDManager2" value="0" {{'0'== old('UserIDManager2',$users->UserIDManager2)? 'checked' :'' }}>
+                        <input class="form-check-input" type="radio" name="UserIDManager2" value="0" {{'0'== old('UserIDManager2',$userss->UserIDManager2)? 'checked' :'' }}>
                         <label class="form-check-label" for="inlineRadio2">Tidak</label>
-                    </div><br>
+                    </div>
+                    @else
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="UserIDManager2" value="1" {{'1' == old('UserIDManager2',$userss->UserIDManager2)? 'checked' :'' }}>
+                        <label class="form-check-label" for="inlineRadio1">Ya</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input checked class="form-check-input" type="radio" name="UserIDManager2" value="0" {{'0'== old('UserIDManager2',$userss->UserIDManager2)? 'checked' :'' }}>
+                        <label class="form-check-label" for="inlineRadio2">Tidak</label>
+                    </div>
+                    @endif
+                    <br>
                 </div>
-
+   @endforeach
             </div>
             <!-- /.card-body -->
             <div class="card-footer">

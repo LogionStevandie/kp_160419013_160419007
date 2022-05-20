@@ -328,6 +328,11 @@ Pembuatan Surat Jalan
                     "value": "",
                 });
             }
+            if (maxAngka <= 0) {
+                $('#jumlahBarang').prop('readonly', true);
+            } else {
+                $('#jumlahBarang').prop('readonly', false);
+            }
             //$('#keranjang').empty();
         });
         $("#idGudang").on("change", function() { //sudah
@@ -369,6 +374,11 @@ Pembuatan Surat Jalan
                         "value": "",
                     });
                 }
+                if (maxAngka <= 0) {
+                        $('#jumlahBarang').prop('readonly', true);
+                    } else {
+                        $('#jumlahBarang').prop('readonly', false);
+                    }
             }
             $('#keranjang').empty();
 
@@ -414,6 +424,11 @@ Pembuatan Surat Jalan
                         "value": "",
                     });
                 }
+                if (maxAngka <= 0) {
+                        $('#jumlahBarang').prop('readonly', true);
+                    } else {
+                        $('#jumlahBarang').prop('readonly', false);
+                    }
 
             }
 

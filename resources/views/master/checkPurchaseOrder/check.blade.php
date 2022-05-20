@@ -7,14 +7,14 @@
 @endif
 
 @section('judul')
-Persetujuan Order
+Cek Selesai Nota
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Persetujuan Order</li>
-<li class="breadcrumb-item"><a href="{{route('approvedPurchaseOrder.index')}}">Purchase Order</a></li>
-<li class="breadcrumb-item active">Approve</li>
+<li class="breadcrumb-item">Cek Selesai Nota</li>
+<li class="breadcrumb-item"><a href="{{route('checkPurchaseOrder.index')}}">Permintaan Pembelian</a></li>
+<li class="breadcrumb-item active">Setujui</li>
 @endsection
 
 @section('content')
@@ -24,7 +24,7 @@ Persetujuan Order
     <!-- Page Heading -->
     <div class="card card-primary">
         <!-- form start -->
-        <form method="POST" action="{{route('approvedPurchaseOrder.update',[$purchaseOrder->id])}}">
+        <form method="POST" action="{{route('checkPurchaseOrder.update',[$purchaseOrder->id])}}">
             @csrf
             @method('PUT')
             <div class="row">
@@ -185,17 +185,17 @@ Persetujuan Order
 
                     </table>
 
-
                 </div>
+
                 <div class="form-group">
                     <label for="title">Pembelian / Penjualan</label><br>
                     <div class="icheck-primary d-inline">
-                        <input id="setuju" type="radio" name="approve" value="1" {{'1' == old('approved','')? 'checked' :'' }}>
-                        <label class="form-check-label" for="setuju">Setuju</label>
+                        <input id="setuju" type="radio" name="proses" value="1" {{'1' == old('proses','')? 'checked' :'' }}>
+                        <label class="form-check-label" for="setuju">Belum Selesai</label>
                     </div>
                     <div class="icheck-primary d-inline">
-                        <input id="tdkSetuju" type="radio" name="approve" value="2" {{'2'== old('approved','')? 'checked' :'' }}>
-                        <label class="form-check-label" for="tdkSetuju">Tidak Setuju</label><br>
+                        <input id="tdkSetuju" type="radio" name="proses" value="2" {{'2'== old('proses','')? 'checked' :'' }}>
+                        <label class="form-check-label" for="tdkSetuju">Selesai</label><br>
                     </div><br><br>
                     <div id="ket">
                         <label class="form-check-label">Keterangan :</label><br>
@@ -210,17 +210,35 @@ Persetujuan Order
             </div>
         </form>
     </div>
+</div>
 
+<script type="text/javascript">
+    $('body').on("click", "#setuju", function() {
 
-    <script type="text/javascript">
-        $('body').on("click", "#setuju", function() {
+        $("#ket").hide();
+        document.getElementById("txt").value = "-";
+    });
+    $('body').on("click", "#tdkSetuju", function() {
 
-            $("#ket").hide();
-            document.getElementById("txt").value = "-";
-        });
-        $('body').on("click", "#tdkSetuju", function() {
+        $("#ket").show();
+    });
 
-            $("#ket").show();
-        });
-    </script>
-    @endsection
+    $('#hargaTotal').html("Rp." + formatRupiah($('#hargaTotal').attr('hargaT')));
+    /* Fungsi */
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
+</script>
+@endsection

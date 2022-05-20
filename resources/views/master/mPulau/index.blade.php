@@ -17,6 +17,8 @@ Pulau
 @endsection
 
 @section('content')
+
+
 <div class="container-fluid">
         <h2 class="text-center display-4">Search</h2>
         <div class="row">
