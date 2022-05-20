@@ -40,6 +40,17 @@ Kartu Stok
                         <option value="">
                             --Semua Barang--
                         </option>
+                        @foreach($dataReportItem as $data)
+                        @isset($gudang)
+                        @isset($item)
+                        @if($item == $data->ItemID && $data->MGudangID == $gudang)
+                        <option selected id="itemid" value="{{$data->ItemID}}">{{$data->ItemName}}</option>
+                        @elseif($data->MGudangID == $gudang)
+                        <option id="itemid" value="{{$data->ItemID}}">{{$data->ItemName}}</option>
+                        @endif
+                        @endisset
+                        @endisset
+                        @endforeach
 
                     </select>
                     <div class="input-group-prepend">
@@ -193,10 +204,10 @@ Kartu Stok
 
 <script>
     $(document).ready(function() {
-        var id = $("#idGudangTujuan option:selected").val();
+        /*var id = $("#idGudangTujuan option:selected").val();
         var optionnya = '';
-        var dataReportItem = <?php echo json_encode($dataReportItem); ?>;
-        var item = <?php echo json_encode($item); ?>;
+        var dataReportItem = <?php //echo json_encode($dataReportItem); ?>;
+        var item = <?php //echo json_encode($item); ?>;
         if (item) {
             //alert(item);
 
@@ -217,7 +228,7 @@ Kartu Stok
             $("#idItemSearch").empty();
             $("#idItemSearch").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
-        }
+        }*/
 
 
         $("#idGudangTujuan").on("change", function() { //sudah
