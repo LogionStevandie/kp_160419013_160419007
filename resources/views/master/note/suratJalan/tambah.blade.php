@@ -543,7 +543,9 @@ Pembuatan Surat Jalan
 
         }
 
-
+        $("#barang").val("").change(); //
+        $("#jumlahBarang").val(0); //
+        $("#keteranganBarang").val();
     });
 
     /* Tanpa Rupiah */

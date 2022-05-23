@@ -109,10 +109,6 @@ class MSupplierController extends Controller
             ->insert(
                 array(
                     'InfoSupplierID' => $data['infoSupplierID'], //combobox
-                    'PaymentTermsID' => $data['PaymentTermsID'], //combobox
-                    'MCurrencyID' => $data['mCurrencyID'], //combobox
-                    'TaxID' => $data['taxID'], //combobox
-                    'COAID' => $data['COAID'], //combobox
                     'Name' => $data['name'],
                     'Alamat' => $data['alamat'],
                     'Kota' => $data['kota'],
@@ -124,7 +120,7 @@ class MSupplierController extends Controller
                     'ContactPerson' => $data['contactPerson'],
                     'Email' => $data['email'],
                     'NPWP' => $data['NPWP'],
-                    'RekeningBank' => $data['rekeningBank'],
+                    'bank' => $data['bank'],
                     'NoRekening' => $data['noRekening'],
                     'Note' => $data['note'],
                     'AtasNama' => $data['atasNama'],
@@ -132,14 +128,8 @@ class MSupplierController extends Controller
                     'Kode' => $data['kode'],
                     'Hapus' => 0, //
                     'Keterangan' => $data['keterangan'],
-                    'SaldoDP' => $data['saldoDP'],
                     'NamaNPWP' => $data['namaNPWP'],
-                    'SKT' => $data['SKT'],
-                    'SPPKP' => $data['SPPKP'],
                     'KTP' => $data['KTP'],
-                    'MKotaID' => $data['mKotaID'], //combobox
-                    'Petani' => $data['Petani'],
-                    'Khusus' => $data['Khusus'],
                     'CreatedBy' => $user->id, //
                     'CreatedOn' => date("Y-m-d h:i:sa"), //
                     'UpdatedBy' => $user->id, //
@@ -252,10 +242,7 @@ class MSupplierController extends Controller
             ->where('SupplierID', $msupplier['SupplierID'])
             ->update(
                 array(
-                    'InfoSupplierID' => $data['infoSupplierID'],
-                    'MCurrencyID' => $data['mCurrencyID'],
-                    'TaxID' => $data['taxID'],
-                    'COAID' => $data['COAID'],
+                    'InfoSupplierID' => $data['infoSupplierID'], //combobox
                     'Name' => $data['name'],
                     'Alamat' => $data['alamat'],
                     'Kota' => $data['kota'],
@@ -263,11 +250,11 @@ class MSupplierController extends Controller
                     'Phone1' => $data['phone1'],
                     'Phone2' => $data['phone2'],
                     'Fax1' => $data['fax1'],
-                    'Fax2' => $data['fax2'],
+                    'Fax2' => $data['fax2'], //
                     'ContactPerson' => $data['contactPerson'],
                     'Email' => $data['email'],
                     'NPWP' => $data['NPWP'],
-                    'RekeningBank' => $data['rekeningBank'],
+                    'bank' => $data['bank'],
                     'NoRekening' => $data['noRekening'],
                     'Note' => $data['note'],
                     'AtasNama' => $data['atasNama'],
@@ -275,14 +262,8 @@ class MSupplierController extends Controller
                     'Kode' => $data['kode'],
                     'Hapus' => 0, //
                     'Keterangan' => $data['keterangan'],
-                    'SaldoDP' => $data['saldoDP'],
                     'NamaNPWP' => $data['namaNPWP'],
-                    'SKT' => $data['SKT'],
-                    'SPPKP' => $data['SPPKP'],
                     'KTP' => $data['KTP'],
-                    'MKotaID' => $data['mKotaID'],
-                    'Petani' => $data['Petani'],
-                    'Khusus' => $data['Khusus'],
                     'UpdatedBy' => $user->id, //
                     'UpdatedOn' => date("Y-m-d h:i:sa"), //
                 )

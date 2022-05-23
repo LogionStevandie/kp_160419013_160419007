@@ -7,7 +7,7 @@
 @endif
 
 @section('judul')
-Terima Barang Supplier
+Penyesuaian Stok Barang
 @endsection
 
 @section('pathjudul')

@@ -13,7 +13,7 @@ Kirim pesanan
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Nota</li>
-<li class="breadcrumb-item active">Kirim pesanan</li>
+<li class="breadcrumb-item active">Kirim Barang Pesanan</li>
 @endsection
 
 @section('content')

@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Detail Nota Terima Pesanan
+Detail Nota Terima Barang Pesanan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('terimaBarangPesanan.index')}}">Terima Pesanan</a></li>
+<li class="breadcrumb-item"><a href="{{route('terimaBarangPesanan.index')}}">Terima Barang Pesanan</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 

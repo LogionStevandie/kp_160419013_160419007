@@ -213,7 +213,7 @@
                 <p>Gudang</p>
               </a>
             </li>
-            <li class="nav-item">
+           <!-- <li class="nav-item">
               <a href="{{route('mGudangAreaSimpan.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Gudang Area Simpan</p>
@@ -224,7 +224,7 @@
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tag Values Gudang</p>
               </a>
-            </li>
+            </li>-->
           </ul>
         </li>
 

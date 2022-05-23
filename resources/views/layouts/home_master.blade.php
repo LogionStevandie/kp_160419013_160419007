@@ -65,6 +65,13 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
+
+  @if(session("message"))
+  <div class="alert alert-warning">
+    {{session('message')}}
+  </div>
+  @endif
+
   <div class="wrapper">
 
     <!-- Preloader -->
@@ -90,7 +97,7 @@
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right">
-                
+
                 @yield('pathjudul')
                 <!--<li class="breadcrumb-item"><a href="#">Home</a></~li>
               <li class="breadcrumb-item active">Dashboard v1</li>-->
@@ -104,11 +111,11 @@
       <!-- Main content -->
       <section class="content">
         @yield('content')
-         @if(session("status"))
-      <div class="alert alert-success">
+        @if(session("status"))
+        <div class="alert alert-success">
           {{session('status')}}
-      </div>
-    @endif
+        </div>
+        @endif
       </section>
       <!-- /.content -->
     </div>
@@ -124,9 +131,9 @@
   <!-- ./wrapper -->
 
   <!-- jQuery -->
-  <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script> 
+  <script src="{{asset('assets/plugins/jquery/jquery.min.js')}}"></script>
   <!--jQuery UI 1.11 .4-->
-    <script src = "{{asset('assets/plugins/jquery-ui/jquery-ui.min.js')}}" >
+  <script src="{{asset('assets/plugins/jquery-ui/jquery-ui.min.js')}}">
   </script>
   <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
   <script>
@@ -267,7 +274,12 @@
       });
 
       //Date range picker
-      $('#reservation').daterangepicker()
+      $('#reservation').daterangepicker({
+        locale: {
+          format: 'DD/MM/YYYY'
+        }
+
+      })
       //Date range picker with time picker
       $('#reservationtime').daterangepicker({
         timePicker: true,

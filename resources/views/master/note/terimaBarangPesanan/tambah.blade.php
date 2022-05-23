@@ -6,13 +6,13 @@
 </style>
 
 @section('judul')
-Pembuatan Nota Terima Pesanan
+Pembuatan Nota Terima Barang Pesanan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('terimaBarangPesanan.index')}}">Terima Pesanan</a></li>
+<li class="breadcrumb-item"><a href="{{route('terimaBarangPesanan.index')}}">Terima Barang Pesanan</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -376,7 +376,7 @@ Pembuatan Nota Terima Pesanan
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
 
             $.each(suratJalanDetail, function(key, value) {
-                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.idItem.toString() == id.toString()) {
+                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
                     maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
                     $.each($('.cekPrd'), function(idx, val) {
                         if (val.value == value.PurchaseRequestDetailID) {
@@ -507,7 +507,9 @@ Pembuatan Nota Terima Pesanan
             $('#totalBarangnya').html(totalTambah);
 
         }
-
+        $("#barang").val("").change(); //
+        $("#jumlahBarang").val(0); //
+        $("#keteranganBarang").val();
 
     });
 

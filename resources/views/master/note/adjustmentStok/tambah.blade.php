@@ -12,7 +12,7 @@ Pembuatan Penyesuaian Stok Barang
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('adjustmentStock.index')}}">Stok Awal Barang</a></li>
+<li class="breadcrumb-item"><a href="{{route('adjustmentStock.index')}}">Penyesuaian Stok Barang</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -62,12 +62,12 @@ Pembuatan Penyesuaian Stok Barang
 
                 <div class="form-group">
                     <label for="title">Jumlah Stok Barang Awal</label>
-                    <input readonly type="number" step=".01" min="1" id="stokAwalBarang" name="QuantityAwal" class="form-control" value="{{old('QuantityAwal','')}}">
+                    <input readonly type="number" step=".01" min="0" id="stokAwalBarang" name="QuantityAwal" class="form-control" value="{{old('QuantityAwal','')}}">
                 </div>
 
                 <div class="form-group">
                     <label for="title">Jumlah Stok Barang Baru</label>
-                    <input required type="number" step=".01" min="1" name="QuantityBaru" class="form-control" value="{{old('QuantityBaru','')}}">
+                    <input required type="number" step=".01" min="0" name="QuantityBaru" class="form-control" value="{{old('QuantityBaru','')}}">
                 </div>
 
 

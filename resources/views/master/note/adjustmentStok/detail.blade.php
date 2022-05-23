@@ -12,7 +12,7 @@ Perubahan Penyesuaian Stok Barang
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('adjustmentStock.index')}}">Stok Awal Barang</a></li>
+<li class="breadcrumb-item"><a href="{{route('adjustmentStock.index')}}">Penyesuaian Stok Barang</a></li>
 <li class="breadcrumb-item active">Detail</li>
 @endsection
 

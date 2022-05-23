@@ -6,13 +6,13 @@
 </style>
 
 @section('judul')
-Edit Nota Kirim Pesanan
+Edit Nota Kirim Barang Pesanan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('kirimBarangPesanan.index')}}">Kirim Pesanan</a></li>
+<li class="breadcrumb-item"><a href="{{route('kirimBarangPesanan.index')}}">Kirim Barang Pesanan</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 
@@ -442,7 +442,7 @@ Edit Nota Kirim Pesanan
 
 
             $.each(suratJalanDetail, function(key, value) {
-                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString()) {
+                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString())) {
                     maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
 
                     $.each(dataDetail, function(k, v) {
@@ -583,7 +583,9 @@ Edit Nota Kirim Pesanan
 
         }
 
-
+        $("#barang").val("").change(); //
+        $("#jumlahBarang").val(0); //
+        $("#keteranganBarang").val();
     });
 
     /* Tanpa Rupiah */

@@ -42,37 +42,7 @@ Edit Supplier
                             </select>
                         </div>
 
-                        
-
-                        <div class="form-group">
-                             <label for="title">Mcurrency</label>
-                            <select name="mCurrencyID" class="form-control select2">
-                                    <option value="">--Pilih MCurrency--</option>
-                                    @foreach($MCurrency as $key => $data)
-                                    @if($data->MCurrencyID== $msupplier->MCurrencyID)
-                                    <option selected value="{{$data->MCurrencyID}}"{{$data->name == $data->MCurrencyID? 'selected' :'' }}>{{$data->name}}</option>
-                                    @else
-                                    <option  value="{{$data->MCurrencyID}}"{{$data->name == $data->MCurrencyID? 'selected' :'' }}>{{$data->name}}</option>
-                                    @endif
-                                    @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="title">Payment Terms</label>
-                            <select name="PaymentTermsID"class="form-control select2">
-                                    <option value="">--Pilih Payment Terms--</option>
-                                    @foreach($PaymentTerms as $key => $data)
-                                    @if($data->PaymentTermsID==$msupplier->PaymentTermsID)
-                                    <option selected value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}}</option>
-                                    @else
-                                    <option value="{{$data->PaymentTermsID}}"{{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}}</option>
-                                    @endif
-
-                                    @endforeach
-                            </select>
-
-                        </div>
+                    
 
                         <div class="form-group">
                             <label for="title">Nama Supplier</label>
@@ -93,7 +63,6 @@ Edit Supplier
                         </div>
                      
                         
-
                         <div class="form-group">
                             <label for="title">Kode Pos</label>
                             <input require type="text" name="kodePos" class="form-control" 
@@ -143,30 +112,17 @@ Edit Supplier
                             <input require type="text" name="NPWP" class="form-control" 
                            value="{{old('NPWP',$msupplier->NPWP)}}" >
                         </div>
-
+                        <div class="form-group">
+                            <label for="title">Bank</label>
+                            <input require type="text" name="bank" class="form-control" 
+                           value="{{old('bank',$msupplier->bank)}}" >
+                        </div>
                          <div class="form-group">
                             <label for="title">Rekening Bank</label>
                             <input require type="text" name="rekeningBank" class="form-control" 
                            value="{{old('RekeningBank',$msupplier->RekeningBank)}}" >
                         </div>
-
-                        <div class="form-group">
-                            <label for="title">Bank</label>
-                             <select class="form-control select2" style="width: 100%;" name="COAID">
-                                    <option value="">--Pilih Bank--</option>
-                                    @foreach($bank as $key => $data)
-                                    @if($data->id==$msupplier->BankID)
-                                    <option selected value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
-                                    @else
-                                    <option value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}</option>
-                                    @endif
-                                    @endforeach
-                            </select>
-
-                        </div>
-
                         
-
                          <div class="form-group">
                             <label for="title">No Rekening</label>
                             <input require type="text" name="noRekening" class="form-control" 
@@ -218,43 +174,7 @@ Edit Supplier
                            value="{{old('KTP',$msupplier->KTP)}}" >
                         </div>
 
-                        <div class="form-group">
-                            <label for="title">Mkota</label>
-                            <select class="form-control select2" style="width: 100%;" name="mKotaID">
-                                    <option value="">--Pilih kota--</option>
-                                    @foreach($MKota as $key => $data)
-                                    @if($data->MKotaID==$msupplier->MKotaID)
-                                    <option value="{{$data->MKotaID}}"{{$data->cname == $data->MKotaID? 'selected' :'' }}>{{$data->cname}}</option>
-                                    @else
-                                    <option selected value="{{$data->MKotaID}}"{{$data->cname == $data->MKotaID? 'selected' :'' }}>{{$data->cname}}</option>
-                                    @endif
-                                    @endforeach
-                            </select>
-                        </div>
-                             <div class="form-group">
-                             <label for="title">Petani</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Petani" value="1"{{'1' == old('Petani',$msupplier->Petani)? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio1">Ya</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Petani" value="0"{{'0'== old('Petani',$msupplier->Petani)? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
-                            </div><br>
-                        </div>
                        
-        
-                        <div class="form-group">
-                            <label for="title">Khusus</label><br>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Khusus" value="1"{{'1' == old('Khusus',$msupplier->Khusus)? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio1">Ya</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="Khusus" value="0"{{'0'== old('Khusus',$msupplier->Khusus)? 'checked' :'' }}>
-                                <label class="form-check-label" for="inlineRadio2">Tidak</label>
-                            </div><br>
-                        </div>
         <!-- /.card-body -->
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Submit</button>

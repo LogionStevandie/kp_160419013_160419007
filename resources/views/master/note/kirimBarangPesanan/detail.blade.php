@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Edit Nota Kirim Pesanan
+Edit Nota Kirim Barang Pesanan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('kirimBarangPesanan.index')}}">Kirim Pesanan</a></li>
+<li class="breadcrumb-item"><a href="{{route('kirimBarangPesanan.index')}}">Kirim Barang Pesanan</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 

@@ -6,13 +6,13 @@
 </style>
 
 @section('judul')
-Pembuatan Nota Kirim Pesanan
+Pembuatan Nota Kirim Barang Pesanan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('kirimBarangPesanan.index')}}">Kirim Pesanan</a></li>
+<li class="breadcrumb-item"><a href="{{route('kirimBarangPesanan.index')}}">Kirim Barang Pesanan</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -347,12 +347,13 @@ Pembuatan Nota Kirim Pesanan
 
             var id = this.value;
             var idPrdId = $("#barang option:selected").attr('idPrdId');
+            var suratJalan = $("#SuratJalanID option:selected").val();
             var optionnya = '';
             var maxAngka = 0;
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
 
             $.each(suratJalanDetail, function(key, value) {
-                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.idItem.toString() == id.toString()) {
+                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
                     maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
                     $.each($('.cekPrd'), function(idx, val) {
                         if (val.value == value.PurchaseRequestDetailID) {
@@ -484,7 +485,9 @@ Pembuatan Nota Kirim Pesanan
             $('#totalBarangnya').html(totalTambah);
 
         }
-
+        $("#barang").val("").change(); //
+        $("#jumlahBarang").val(0); //
+        $("#keteranganBarang").val();
 
     });
 

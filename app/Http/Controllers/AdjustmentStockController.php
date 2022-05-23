@@ -83,13 +83,13 @@ class AdjustmentStockController extends Controller
             ->get();
 
         $dataReportUntukStok = DB::table('ItemInventoryTransactionLine') //dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
-            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
+            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', DB::raw('SUM(ItemInventoryTransactionLine.Quantity) as Quantity'), 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
             ->join('MGudang', 'ItemInventoryTransactionLine.MGudangID', '=', 'MGudang.MGudangID')
             ->join('Item', 'ItemInventoryTransactionLine.ItemID', '=', 'Item.ItemID')
             ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransaction.Date')
             ->get();
-        //dd($dataReport);
+        //dd($dataReportUntukStok);
 
 
 
@@ -259,7 +259,7 @@ class AdjustmentStockController extends Controller
         //dd($adjustmentStockDetail);
 
         $dataReportUntukStok = DB::table('ItemInventoryTransactionLine') //dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
-            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
+            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', DB::raw('SUM(ItemInventoryTransactionLine.Quantity) as Quantity'), 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
             ->join('MGudang', 'ItemInventoryTransactionLine.MGudangID', '=', 'MGudang.MGudangID')
             ->join('Item', 'ItemInventoryTransactionLine.ItemID', '=', 'Item.ItemID')
             ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')

@@ -95,6 +95,7 @@ class TerimaBarangPesananController extends Controller
             ->join('Item', 'surat_jalan_detail.ItemID', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
             ->where('surat_jalan.hapus', 0)
+            ->where('surat_jalan_detail.jumlahProsesTerima', '<', DB::raw('surat_jalan_detail.jumlah')) //errorr disini
             ->get();
 
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
@@ -106,7 +107,7 @@ class TerimaBarangPesananController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            //->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         //dd($dataPurchaseRequestDetail);
 
@@ -265,6 +266,18 @@ class TerimaBarangPesananController extends Controller
                         'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],
                     )
                 );
+
+            DB::table('surat_jalan_detail')
+                ->where('suratJalanID', $data['SuratJalanID'])
+                ->where('ItemID', $data['itemId'][$i])
+                ->where('PurchaseRequestDetailID', $data['itemPRDID'][$i])
+                ->update(
+                    array(
+                        'jumlahProsesTerima' => $data['itemJumlah'][$i],
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    )
+                );
         }
         return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
     }
@@ -327,7 +340,7 @@ class TerimaBarangPesananController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            //->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         //dd($dataPurchaseRequestDetail);
 
@@ -420,6 +433,7 @@ class TerimaBarangPesananController extends Controller
             ->join('Item', 'surat_jalan_detail.ItemID', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
             ->where('surat_jalan.hapus', 0)
+            ->where('surat_jalan_detail.jumlahProsesTerima', '<', DB::raw('jumlahProsesTerima.jumlah')) //errorr disini
             ->get();
 
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
@@ -431,7 +445,7 @@ class TerimaBarangPesananController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            //->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         //dd($dataPurchaseRequestDetail);
 
@@ -603,6 +617,18 @@ class TerimaBarangPesananController extends Controller
                         'UnitPrice' => $dataPOD[0]->harga,
                         'Quantity' => $data['itemJumlah'][$i],
                         'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],
+                    )
+                );
+
+            DB::table('surat_jalan_detail')
+                ->where('suratJalanID', $data['SuratJalanID'])
+                ->where('ItemID', $data['itemId'][$i])
+                ->where('PurchaseRequestDetailID', $data['itemPRDID'][$i])
+                ->update(
+                    array(
+                        'jumlahProsesTerima' => $data['itemJumlah'][$i],
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
                     )
                 );
         }

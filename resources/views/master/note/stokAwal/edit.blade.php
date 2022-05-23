@@ -6,7 +6,7 @@
  </style>
 
 @section('judul')
-Pembuatan Terima Barang Supplier
+Edit Stok Awal Barang
 @endsection
 
 @section('pathjudul')

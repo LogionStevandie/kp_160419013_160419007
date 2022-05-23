@@ -155,7 +155,7 @@ Pembuatan Terima Barang Supplier
                                                         <label for="title">Barang</label>
                                                         <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="barang" id="barang">
 
-                                                            <option value="pilih">--Pilih barang--</option>
+                                                            <option value="">--Pilih barang--</option>
                                                             <!--@foreach($dataBarang as $key => $data)
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                         @endforeach-->
@@ -291,7 +291,7 @@ Pembuatan Terima Barang Supplier
             var dataPurchaseOrderDetail = <?php echo json_encode($dataPurchaseOrderDetail); ?>;
 
             //alert('masuk sini');
-            optionnya += '<option value="pilih" selected>--Pilih Barang--</option>\n';
+            optionnya += '<option value="" selected>--Pilih Barang--</option>\n';
             $.each(dataPurchaseOrderDetail, function(key, value) {
 
                 if (value.idPurchaseOrder.toString() == id.toString()) {
@@ -446,6 +446,10 @@ Pembuatan Terima Barang Supplier
             $('#totalBarangnya').html(totalTambah);
 
         }
+
+        $("#barang").val("").change(); //
+        $("#jumlahBarang").val(0); //
+        $("#keteranganBarang").val(); //
 
 
     });

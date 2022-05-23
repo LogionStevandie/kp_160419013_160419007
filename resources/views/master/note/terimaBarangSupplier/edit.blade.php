@@ -537,7 +537,9 @@ Edit Terima Barang Supplier
             $('#totalBarangnya').html(totalSekarang);
 
         }
-        
+        $("#barang").val("").change(); //
+        $("#jumlahBarang").val(0); //
+        $("#keteranganBarang").val();
 
     });
 

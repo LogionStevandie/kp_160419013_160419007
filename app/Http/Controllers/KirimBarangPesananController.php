@@ -95,6 +95,7 @@ class KirimBarangPesananController extends Controller
             ->join('Item', 'surat_jalan_detail.ItemID', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
             ->where('surat_jalan.hapus', 0)
+            ->where('surat_jalan_detail.jumlahProsesKirim', '<', DB::raw('surat_jalan_detail.jumlah')) //errorr disini
             ->get();
         //dd($suratJalanDetail);
 
@@ -107,7 +108,7 @@ class KirimBarangPesananController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            //->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         //dd($dataPurchaseRequestDetail);
 
@@ -224,6 +225,9 @@ class KirimBarangPesananController extends Controller
                 'UpdatedOn' => date("Y-m-d h:i:sa"),
             )
         );
+
+
+
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
         for ($i = 0; $i < count($data['itemId']); $i++) {
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(
@@ -260,6 +264,18 @@ class KirimBarangPesananController extends Controller
                         'UnitPrice' => $dataPOD[0]->harga,
                         'Quantity' => $data['itemJumlah'][$i] * -1.0,
                         'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],
+                    )
+                );
+
+            DB::table('surat_jalan_detail')
+                ->where('suratJalanID', $data['SuratJalanID'])
+                ->where('ItemID', $data['itemId'][$i])
+                ->where('PurchaseRequestDetailID', $data['itemPRDID'][$i])
+                ->update(
+                    array(
+                        'jumlahProsesKirim' => $data['itemJumlah'][$i],
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
                     )
                 );
         }
@@ -321,7 +337,7 @@ class KirimBarangPesananController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            //->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         //dd($dataPurchaseRequestDetail);
 
@@ -415,6 +431,7 @@ class KirimBarangPesananController extends Controller
             ->join('Item', 'surat_jalan_detail.ItemID', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
             ->where('surat_jalan.hapus', 0)
+            ->where('surat_jalan_detail.jumlahProsesKirim', '<', DB::raw('surat_jalan_detail.jumlah')) //errorr disini
             ->get();
 
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
@@ -426,7 +443,7 @@ class KirimBarangPesananController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            //->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         //dd($dataPurchaseRequestDetail);
 
@@ -575,6 +592,18 @@ class KirimBarangPesananController extends Controller
                         'UnitPrice' => $dataPOD[0]->harga,
                         'Quantity' => $data['itemJumlah'][$i] * -1.0,
                         'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],
+                    )
+                );
+
+            DB::table('surat_jalan_detail')
+                ->where('suratJalanID', $data['SuratJalanID'])
+                ->where('ItemID', $data['itemId'][$i])
+                ->where('PurchaseRequestDetailID', $data['itemPRDID'][$i])
+                ->update(
+                    array(
+                        'jumlahProsesKirim' => $data['itemJumlah'][$i],
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
                     )
                 );
         }
@@ -770,7 +799,7 @@ class KirimBarangPesananController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            //->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         //dd($dataPurchaseRequestDetail);
 

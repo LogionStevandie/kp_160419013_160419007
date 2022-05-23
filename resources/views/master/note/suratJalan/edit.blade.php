@@ -629,7 +629,9 @@ Edit Surat Jalan
             $('#totalBarangnya').html(totalTambah);
 
         }
-
+        $("#barang").val("").change(); //
+        $("#jumlahBarang").val(0); //
+        $("#keteranganBarang").val();
 
     });
 
