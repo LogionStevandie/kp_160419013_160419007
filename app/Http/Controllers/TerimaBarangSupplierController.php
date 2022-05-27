@@ -248,6 +248,24 @@ class TerimaBarangSupplierController extends Controller
                     )
                 );
         }
+
+        //otomatis proses selesai. $data['poID']
+        $dataPODAuto = DB::table('purchase_order_detail')
+            ->where('idPurchaseOrder', $data['poID'])
+            ->get();
+
+        foreach ($dataPODAuto as $pod) {
+            if ($pod->jumlah > $pod->jumlahProses) {
+                return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
+            }
+        }
+        //PO SELESAI
+        DB::table('purchase_order')
+            ->where('id', $data['poID'])
+            ->update(array(
+                'proses' => 2,
+            ));
+
         return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
     }
 
@@ -626,6 +644,28 @@ class TerimaBarangSupplierController extends Controller
             );*/
         }
 
+        //otomatis proses selesai. $data['poID']
+        $dataPODAuto = DB::table('purchase_order_detail')
+            ->where('idPurchaseOrder', $data['poID'])
+            ->get();
+
+        foreach ($dataPODAuto as $pod) {
+            if ($pod->jumlah > $pod->jumlahProses) {
+                DB::table('purchase_order')
+                    ->where('id', $data['poID'])
+                    ->update(array(
+                        'proses' => 1,
+                    ));
+                return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
+            }
+        }
+        //PO SELESAI
+        DB::table('purchase_order')
+            ->where('id', $data['poID'])
+            ->update(array(
+                'proses' => 2,
+            ));
+
         return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
     }
 
@@ -719,7 +759,7 @@ class TerimaBarangSupplierController extends Controller
     {
         $date = $request->input('searchdate');
         $date = explode("-", $date);
-        
+
         $user = Auth::user();
         $data = DB::table('transaction_gudang_barang')
             ->select('transaction_gudang_barang.*', 'ItemTransaction.Name as itemTransactionName', 'MSupplier.Name as supplierName', 'MSupplier.AtasNama as supplierAtasNama')

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Needed | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -263,7 +263,10 @@
 
       //Date picker
       $('#reservationdate').datetimepicker({
-        format: 'L'
+        format: 'L',
+        locale: {
+          format: 'DD/MM/YYYY'
+        },
       });
 
       //Date and time picker
@@ -275,9 +278,7 @@
 
       //Date range picker
       $('#reservation').daterangepicker({
-        locale: {
-          format: 'DD/MM/YYYY'
-        }
+        
 
       })
       //Date range picker with time picker
@@ -299,11 +300,12 @@
             'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
           },
           startDate: moment().subtract(29, 'days'),
-          endDate: moment()
+          endDate: moment(),
         },
         function(start, end) {
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
         }
+
       )
 
       //Timepicker

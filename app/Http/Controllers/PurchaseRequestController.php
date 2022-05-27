@@ -403,7 +403,7 @@ class PurchaseRequestController extends Controller
             ->where('idPurchaseRequest', $purchaseRequest->id)
             ->get();
         $totalHarga = 0;
-        if (count($dataDetailTotal) > count($data['itemId'])) {
+        //if (count($dataDetailTotal) > count($data['itemId'])) {
             DB::table('purchase_request_detail')
                 ->where('idPurchaseRequest', $purchaseRequest->id)
                 ->delete();
@@ -420,7 +420,7 @@ class PurchaseRequestController extends Controller
                 );
                 $totalHarga += $data['itemHarga'][$i] * $data['itemTotal'][$i];
             }
-        } else {
+        /*} else {
             for ($i = 0; $i < count($data['itemId']); $i++) {
                 if ($i < count($dataDetailTotal)) {
                     DB::table('purchase_request_detail')
@@ -447,7 +447,7 @@ class PurchaseRequestController extends Controller
                     $totalHarga += $data['itemHarga'][$i] * $data['itemTotal'][$i];
                 }
             }
-        }
+        }*/
         DB::table('purchase_request')
             ->where('id', $purchaseRequest->id)
             ->update([

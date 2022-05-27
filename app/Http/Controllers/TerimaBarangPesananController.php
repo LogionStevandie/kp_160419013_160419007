@@ -279,6 +279,24 @@ class TerimaBarangPesananController extends Controller
                     )
                 );
         }
+
+        //otomatis proses selesai. $data['PurchaseRequestID']
+        $dataPRDAuto = DB::table('purchase_request_detail')
+            ->where('idPurchaseRequest', $data['PurchaseRequestID'])
+            ->get();
+
+        foreach ($dataPRDAuto as $prd) {
+            if ($prd->jumlah > $prd->jumlahDiterima) {
+                return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+            }
+        }
+        //PR SELESAI
+        DB::table('purchase_request')
+            ->where('id', $data['PurchaseRequestID'])
+            ->update(array(
+                'proses' => 2,
+            ));
+
         return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
     }
 
@@ -632,6 +650,28 @@ class TerimaBarangPesananController extends Controller
                     )
                 );
         }
+
+        //otomatis proses selesai. $data['PurchaseRequestID']
+        $dataPRDAuto = DB::table('purchase_request_detail')
+            ->where('idPurchaseRequest', $data['PurchaseRequestID'])
+            ->get();
+
+        foreach ($dataPRDAuto as $prd) {
+            if ($prd->jumlah > $prd->jumlahDiterima) {
+                DB::table('purchase_request')
+                    ->where('id', $data['PurchaseRequestID'])
+                    ->update(array(
+                        'proses' => 1,
+                    ));
+                return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+            }
+        }
+        //PR SELESAI
+        DB::table('purchase_request')
+            ->where('id', $data['PurchaseRequestID'])
+            ->update(array(
+                'proses' => 2,
+            ));
 
         return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
     }

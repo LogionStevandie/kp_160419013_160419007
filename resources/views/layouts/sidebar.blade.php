@@ -141,6 +141,7 @@
         </li>
         <!-- END Permintaan-->
 
+        <!--
         <li class="nav-header">CEK SELESAI NOTA</li>
         <li class="nav-item">
           <a href="{{route('checkPurchaseRequest.index')}}" class="nav-link">
@@ -159,6 +160,7 @@
             </p>
           </a>
         </li>
+        -->
 
         <!--Permintaan-->
         <li class="nav-header">PENYESUAIAN STOK BARANG</li>
@@ -213,7 +215,7 @@
                 <p>Gudang</p>
               </a>
             </li>
-           <!-- <li class="nav-item">
+            <!-- <li class="nav-item">
               <a href="{{route('mGudangAreaSimpan.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Gudang Area Simpan</p>

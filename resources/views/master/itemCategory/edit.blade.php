@@ -41,7 +41,7 @@ Edit Kategori item
                            value="{{old('Remarks',$itemCategory->Remarks)}}" maxlength="10">
                         </div>
 
-                        <div class="form-group">
+                        <!--<div class="form-group">
                            <label for="title">NTB Debet COA</label>
                            <input require type="number" name="NTBDebetCOA" class="form-control" 
                            value="{{old('NTBDebetCOA',$itemCategory->NTBDebetCOA)}}" >
@@ -69,7 +69,7 @@ Edit Kategori item
                            <label for="title">Penjualan COA</label>
                            <input require type="number" name="PenjualanCOA" class="form-control" 
                            value="{{old('PenjualanCOA',$itemCategory->PenjualanCOA)}}" >
-                        </div>
+                        </div>-->
 
 
         </div>
