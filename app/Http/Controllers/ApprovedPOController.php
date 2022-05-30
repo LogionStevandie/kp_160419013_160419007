@@ -217,6 +217,7 @@ class ApprovedPOController extends Controller
                     ->where('id', $approvedPurchaseOrder['id'])
                     ->update(array(
                         'proses' => 1,
+                        'keterangan' => $data['keterangan'],
                     ));
             } else {
                 DB::table('purchase_order')

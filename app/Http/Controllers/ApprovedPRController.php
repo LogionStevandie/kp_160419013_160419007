@@ -200,6 +200,7 @@ class ApprovedPRController extends Controller
                 ->where('id', $approvedPurchaseRequest['id'])
                 ->update(array(
                     'proses' => 1,
+                    'keterangan' => $data['keterangan'],
                 ));
             }
             else{
@@ -225,6 +226,7 @@ class ApprovedPRController extends Controller
                 ->where('id', $approvedPurchaseRequest['id'])
                 ->update(array(
                     'proses' => 1,
+                    'keterangan' => $data['keterangan'],
                 ));
             }
             else{

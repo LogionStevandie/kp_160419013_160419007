@@ -71,6 +71,7 @@ class PurchaseOrderController extends Controller
         $dataPayment = DB::table('PaymentTerms')
             ->select('PaymentTerms.*', 'Payment.Name as PaymentName', 'Payment.Deskripsi as PaymentDeskripsi')
             ->leftjoin('Payment', 'PaymentTerms.PaymentID', '=', 'Payment.PaymentID')
+            ->where('PaymentTerms.IsPembelian',1)
             ->get();
 
         $dataBarang = DB::table('Item')

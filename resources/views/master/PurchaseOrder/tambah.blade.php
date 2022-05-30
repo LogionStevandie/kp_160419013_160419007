@@ -531,6 +531,7 @@ Pembuatan Nota Purchase Order
             htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang + ',--</small><br>\n';
             htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
+            htmlKeranjang += '<small class="text-muted keteranganVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang  +'</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
             htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + ',-</strong>\n';

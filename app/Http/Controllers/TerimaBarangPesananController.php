@@ -295,6 +295,7 @@ class TerimaBarangPesananController extends Controller
             ->where('id', $data['PurchaseRequestID'])
             ->update(array(
                 'proses' => 2,
+                'tanggalDiterima' => date("Y-m-d h:i:sa"),
             ));
 
         return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
@@ -662,6 +663,7 @@ class TerimaBarangPesananController extends Controller
                     ->where('id', $data['PurchaseRequestID'])
                     ->update(array(
                         'proses' => 1,
+                        'tanggalDiterima' => null,
                     ));
                 return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
             }
@@ -671,6 +673,7 @@ class TerimaBarangPesananController extends Controller
             ->where('id', $data['PurchaseRequestID'])
             ->update(array(
                 'proses' => 2,
+                'tanggalDiterima' => date("Y-m-d h:i:sa"),
             ));
 
         return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');

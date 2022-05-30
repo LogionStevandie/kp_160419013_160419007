@@ -140,7 +140,6 @@
                                             <th scope="col">#</th>
                                             <th scope="col">Nama Barang</th>
                                             <th scope="col">Jumlah</th>
-                                            <th scope="col">Harga</th>
                                             <th scope="col">Keterangan</th>
                                         </tr>
                                     </thead>
@@ -150,7 +149,6 @@
                                                 <td>{{ $loop->index + 1 }}</td>
                                                 <td>{{$data->itemName}}</td>
                                                 <td>{{$data->jumlah}}</td>
-                                                <td class="text-right">@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>
                                                 <td><span style="white-space: pre-line">{{$data->keterangan}}</span></td>
                                             </tr>
                                         @endforeach  

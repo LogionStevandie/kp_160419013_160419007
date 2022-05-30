@@ -250,6 +250,7 @@ Detail Nota Purchase Order
                                                     @endforeach
                                                     <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="'+jumlahBarang+'">{{(float)$data->jumlah}}</small> </h6>
                                                     <small class="text-muted keteranganVal" value="'+keteranganBarang+'">{{$data->keterangan}}</small><br>
+                                                    <small class="text-muted hargaVal" value="'+hargaBarang+'">Harga/Item: Rp. {{(float)$data->harga}},--</small><br>        
                                                     <small class="text-muted diskonVal" value="'+diskonBarang+'">Diskon/Item: Rp. {{(float)$data->diskon}},--</small><br>                                       
                                                     <small class="text-muted taxVal" value="'+taxPercent+'">Pajak: {{$data->TaxPercent}}%</small><br>
                                                                                                 

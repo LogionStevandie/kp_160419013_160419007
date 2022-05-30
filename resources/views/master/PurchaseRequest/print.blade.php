@@ -99,6 +99,24 @@
                     </th>
                   </tr>
                 </thead>
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col" colspan="6">
+                        <b>Status:
+                          @if($purchaseRequest->approved==0)
+                          <span style="white-space: pre-line">Belum diproses</span><br>
+                           @elseif($purchaseRequest->approved==1)
+                            <span style="white-space: pre-line">Disetujui</span><br>
+                            @elseif($purchaseRequest->approved==2)
+                            <span style="white-space: pre-line">Ditolak</span><br>
+                            @endif
+                        </b>
+                        <br>
+                        <b>Keterangan status:</b><span style="white-space: pre-line">{{$purchaseRequest->keterangan}}</span> <br>
+                      </th>
+                    
+                    </tr>
+                  </thead>
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">#</th>

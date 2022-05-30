@@ -150,6 +150,24 @@
                       </th>
                     </tr>
                   </thead>
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col" colspan="7">
+                        <b>Status:
+                          @if($purchaseOrder->approved==0)
+                          <span style="white-space: pre-line">Belum diproses</span><br>
+                           @elseif($purchaseOrder->approved==1)
+                            <span style="white-space: pre-line">Disetujui</span><br>
+                            @elseif($purchaseOrder->approved==2)
+                            <span style="white-space: pre-line">Ditolak</span><br>
+                            @endif
+                        </b>
+                        <br>
+                        <b>Keterangan status:</b><span style="white-space: pre-line">{{$purchaseOrder->keterangan}}</span> <br>
+                      </th>
+                    
+                    </tr>
+                  </thead>
 
                 </table>
               </div>

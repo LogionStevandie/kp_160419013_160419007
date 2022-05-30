@@ -78,6 +78,7 @@ Purchase Order
                               <th scope="col">Total Harga</th>
                                <th scope="col">Proses</th>
                               <th scope="col">Status Approved</th>
+                              <th scope="col">Keterangan persetujuan</th>
                               <th scope="col">Handle</th>
                             </tr>
                           </thead>
@@ -95,6 +96,7 @@ Purchase Order
                               @elseif($purchaseOrder->approved==2)
                               <td>Not Approved</td>
                               @endif
+                              <td>{{$purchaseOrder->keterangan}}</td>
                             
                             <td>
                                 <a class="btn btn-primary btn-sm" href="{{route('purchaseOrder.show',[$purchaseOrder->id])}}">
@@ -157,6 +159,7 @@ Purchase Order
                               <th scope="col">Total Harga</th>
                                <th scope="col">Proses</th>
                               <th scope="col">Status Approved</th>
+                              <th scope="col">Keterangan persetujuan</th>
                               <th scope="col">Handle</th>
                             </tr>
                         </tfoot>
