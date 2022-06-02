@@ -226,6 +226,14 @@ class KirimBarangPesananController extends Controller
             )
         );
 
+        DB::table('surat_jalan')
+            ->where('id', $data['SuratJalanID'])
+            ->update(
+                array(
+                    'proses' => 2,
+                )
+            );
+
 
 
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
@@ -495,9 +503,6 @@ class KirimBarangPesananController extends Controller
      */
     public function update(Request $request, TransactionGudangBarang $kirimBarangPesanan)
     {
-
-
-        //
         $user = Auth::user();
         $data = $request->collect();
 
@@ -621,6 +626,18 @@ class KirimBarangPesananController extends Controller
     {
         //
         $user = Auth::user();
+
+        $dataTransactionID = DB::table('ItemInventoryTransaction')
+            ->where('NTBID', $kirimBarangPesanan->id)
+            ->get();
+        DB::table('ItemInventoryTransactionLine')
+            ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+            ->delete();
+
+        DB::table('transaction_gudang_barang_detail')
+            ->where('transactionID', '=', $kirimBarangPesanan->id)
+            ->delete();
+
 
         DB::table('transaction_gudang_barang')
             ->where('id', $kirimBarangPesanan['id'])

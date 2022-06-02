@@ -201,6 +201,14 @@ class TerimaBarangPesananController extends Controller
             )
         );
 
+        DB::table('surat_jalan')
+            ->where('id', $data['SuratJalanID'])
+            ->update(
+                array(
+                    'proses' => 2,
+                )
+            );
+
         $idItemInventoryTransaction = DB::table('ItemInventoryTransaction')->insertGetId(
             array(
                 'Name' => $dataItemTransaction[0]->Code . '/' . $dataLokasi[0]->perusahaanCode . '/' . $dataLokasi[0]->ckode . '/' . $year . '/' . $month . "/" . $totalIndex,
@@ -520,7 +528,6 @@ class TerimaBarangPesananController extends Controller
     public function update(Request $request, TransactionGudangBarang $terimaBarangPesanan)
     {
 
-        //
         $user = Auth::user();
         $data = $request->collect();
 
@@ -689,6 +696,18 @@ class TerimaBarangPesananController extends Controller
     {
         //
         $user = Auth::user();
+
+        $dataTransactionID = DB::table('ItemInventoryTransaction')
+            ->where('NTBID', $terimaBarangPesanan->id)
+            ->get();
+        DB::table('ItemInventoryTransactionLine')
+            ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+            ->delete();
+
+        DB::table('transaction_gudang_barang_detail')
+            ->where('transactionID', '=', $terimaBarangPesanan->id)
+            ->delete();
+
         DB::table('transaction_gudang_barang')
             ->where('id', $terimaBarangPesanan['id'])
             ->update(array(

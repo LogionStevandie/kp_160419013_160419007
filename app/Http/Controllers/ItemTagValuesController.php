@@ -53,7 +53,7 @@ class ItemTagValuesController extends Controller
         */
 
         $user = Auth::user();
-        $check = $this->checkAccess('itemtagvalues.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('itemTagValues.index', $user->id, $user->idRole);
         
         if($check){
             return view('master.tag.item.index',[
@@ -129,7 +129,7 @@ class ItemTagValuesController extends Controller
         //dd($dataTag);
         
         $user = Auth::user();
-        $check = $this->checkAccess('itemtagvalues.edit', $user->id, $user->idRole);
+        $check = $this->checkAccess('itemTagValues.edit', $user->id, $user->idRole);
         if ($check) {
             return view('master.tag.item.edit',[
                 'data' =>$data,
@@ -222,7 +222,7 @@ class ItemTagValuesController extends Controller
             ->orWhere('user_access.idUsers',$user->id)
             ->get();
         */
-        $check = $this->checkAccess('itemtagvalues.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('itemTagValues.index', $user->id, $user->idRole);
         
         if($check){
             return view('master.tag.item.index',[

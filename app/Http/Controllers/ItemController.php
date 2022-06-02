@@ -153,16 +153,6 @@ class ItemController extends Controller
             )
         );
 
-        //dd($data);
-
-        /*for($i = 0; $i < count($data['itemTagTotal']); $i++){
-            DB::table('ItemTagValues')->insert(array(
-                'ItemID' => $idItem,
-                'ItemTagID' => $data['itemTagID'][$i],
-                )
-           );
-        }*/
-
         return redirect()->route('item.index')->with('status', 'Success!!');
     }
 
@@ -291,45 +281,6 @@ class ItemController extends Controller
                 'Hapus' => 0, //
                 //'HaveExpiredDate' => $data['expiredDate'],
             ));
-
-        /*$dataTagValues = DB::table('ItemTagValues')
-            ->where('ItemID', $item->ItemID)
-            ->get();
-
-        if(count($dataTagValues) > count($data['itemTagTotal'])){
-            DB::table('ItemTagValues')
-                ->where('ItemID','=',$item->ItemID)
-                ->delete();
-
-            for($i = 0; $i < count($data['itemTagTotal']); $i++){
-            DB::table('ItemTagValues')
-                ->insert(array(
-                    'ItemID' => $item->ItemID,
-                    'ItemTagID' => $data['itemTagID'][$i],
-                    )
-                ); 
-            }
-        }
-        else{
-            for($i = 0; $i < count($data['itemTagTotal']); $i++){
-                if($i < count($dataTagValues)){
-                    DB::table('ItemTagValues')
-                        ->where('idItem', $item->ItemID)
-                        ->update(array(
-                            'ItemTagID' => $data['itemTagID'][$i],
-                        )
-                    );
-                }
-                else{
-                    DB::table('ItemTagValues')
-                        ->insert(array(
-                            'ItemID' => $item->ItemID,
-                            'ItemTagID' => $data['itemTagID'][$i],
-                        )
-                    ); 
-                }
-            }
-        }*/
 
         return redirect()->route('item.index')->with('status', 'Success!!');
     }

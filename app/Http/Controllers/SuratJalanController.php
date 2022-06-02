@@ -177,6 +177,7 @@ class SuratJalanController extends Controller
                 'CreatedOn' => date("Y-m-d h:i:sa"),
                 'UpdatedBy' => $user->id,
                 'UpdatedOn' => date("Y-m-d h:i:sa"),
+                'proses' => 1,
             )
         );
 
@@ -425,16 +426,20 @@ class SuratJalanController extends Controller
     {
 
         $user = Auth::user();
-        DB::table('surat_jalan')
-            ->where('id', $suratJalan->id)
-            ->update(
-                array(
-                    'hapus' => '1',
-                    'UpdatedBy' => $user->id,
-                    'UpdatedOn' => date("Y-m-d h:i:sa"),
-                )
-            );
-        return redirect()->route('suratJalan.index')->with('status', 'Success!!');
+        if ($suratJalan->proses != 2) {
+            DB::table('surat_jalan')
+                ->where('id', $suratJalan->id)
+                ->update(
+                    array(
+                        'hapus' => '1',
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    )
+                );
+            return redirect()->route('suratJalan.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('suratJalan.index')->with('message', 'Gagal menghapus');
+        }
     }
 
     public function searchSuratJalanName(Request $request)

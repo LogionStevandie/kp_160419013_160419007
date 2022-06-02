@@ -1,9 +1,9 @@
 @extends('layouts.home_master')
 
 @if(session()->has('message'))
-    <div class="alert alert-success">
-        {{ session()->get('message') }}
-    </div>
+<div class="alert alert-success">
+    {{ session()->get('message') }}
+</div>
 @endif
 
 @section('judul')
@@ -18,25 +18,25 @@ Surat Jalan
 
 @section('content')
 <div class="container-fluid">
-        <h2 class="text-center display-4">Cari Surat Jalan</h2>
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
+    <h2 class="text-center display-4">Cari Surat Jalan</h2>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
             <form action="/suratJalane/searchname/" method="get">
-                    <div class="input-group">
-                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Surat Jalan">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-lg btn-default">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </div>
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Surat Jalan">
+                    <div class="input-group-append">
+                        <button type="submit" class="btn btn-lg btn-default">
+                            <i class="fa fa-search"></i>
+                        </button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
+    </div>
 </div>
 <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
             <form action="/suratJalane/searchdate/" method="get">
                 <label>Tanggal Pembuatan Awal - Akhir:</label>
                 <div class="input-group">
@@ -45,11 +45,11 @@ Surat Jalan
                             <i class="far fa-calendar-alt"></i>
                         </span>
                     </div>
-                    <input type="text" name="searchdate" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan','')}}" >
+                    <input type="text" name="searchdate" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan','')}}">
                     <button type="submit" class="btn btn-lg btn-default">
-                    <i class="fa fa-search"></i>
+                        <i class="fa fa-search"></i>
                     </button>
-                </div>                           
+                </div>
             </form>
         </div>
     </div>
@@ -61,12 +61,12 @@ Surat Jalan
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">List-Transaksi Gudang Barang</h3>
-                    
+
                     <a href="{{route('suratJalan.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Surat Jalan
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
-                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
                         </svg>
-                    </a> 
+                    </a>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -81,38 +81,38 @@ Surat Jalan
                                 <th scope="col">keteranganPenerima</th>
                                 <th scope="col">Handle</th>
                             </tr>
-                          </thead>
-                         <tbody>
+                        </thead>
+                        <tbody>
                             @foreach($data as $d)
-                            <tr >
-                            <th scope="row" name='id'>{{$d->id}}</th>
-                            <td>{{$d->name}}</td>
-                            <td>{{$d->tanggalDibuat}}</td>
-                            @foreach($dataGudang as $gudang)
+                            <tr>
+                                <th scope="row" name='id'>{{$d->id}}</th>
+                                <td>{{$d->name}}</td>
+                                <td>{{$d->tanggalDibuat}}</td>
+                                @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $d->MGudangIDAwal)
-                                    <td>{{$gudang->cname}}</td>
+                                <td>{{$gudang->cname}}</td>
                                 @endif
-                            @endforeach     
-                            @foreach($dataGudang as $gudang)
+                                @endforeach
+                                @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $d->MGudangIDTujuan)
-                                    <td>{{$gudang->cname}}</td>
+                                <td>{{$gudang->cname}}</td>
                                 @endif
-                            @endforeach 
-                            <td>{{$d->keteranganPenerima}}</td>                 
-                            <td>  
-                                <a class="btn btn-default bg-info" href="{{route('suratJalan.show',[$d->id])}}">
-                                    <i class="fas fa-eye"></i>
-                                </a>
-                                <a class="btn btn-default bg-info" href="{{route('suratJalan.edit',[$d->id])}}">
-                                    <i class="fas fa-edit"></i>
-                                </a>
-                                  <a href="/suratJalane/print/{{$d->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-
+                                @endforeach
+                                <td>{{$d->keteranganPenerima}}</td>
+                                <td>
+                                    <a class="btn btn-default bg-info" href="{{route('suratJalan.show',[$d->id])}}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a class="btn btn-default bg-info" href="{{route('suratJalan.edit',[$d->id])}}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="/suratJalane/print/{{$d->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
+                                    @if($d->proses != 2){
                                     <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$d->id}}">
-                                     <i class="fas fa-trash"></i> 
+                                        <i class="fas fa-trash"></i>
                                     </button>
 
-                                     <div class="modal fade" id="delete_{{$d->id}}">
+                                    <div class="modal fade" id="delete_{{$d->id}}">
                                         <div class="modal-dialog">
                                             <div class="modal-content">
 
@@ -120,39 +120,40 @@ Surat Jalan
                                                     <h4 class="modal-title">Konfirmasi</h4>
                                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
-                                                    </button> 
-                                                </div>
-                                               
-                                                <div class="modal-body">
-                                                     Apakah anda yakin mau menghapus "{{$d->name}}"
+                                                    </button>
                                                 </div>
 
-                                                  <div class="modal-footer justify-content-between">
-                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
-                                                          <form action="{{route('suratJalan.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button class="btn btn-default bg-danger" action="{{route('suratJalan.destroy',[$d->id])}}">
-                                                        Hapus
-                                                    </button>
-                                                </form> 
+                                                <div class="modal-body">
+                                                    Apakah anda yakin mau menghapus "{{$d->name}}"
                                                 </div>
-                                            
-                                              
-                                                
+
+                                                <div class="modal-footer justify-content-between">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Tidak</button>
+                                                    <form action="{{route('suratJalan.destroy',[$d->id])}}" method="POST" class="btn btn-responsive">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-default bg-danger" action="{{route('suratJalan.destroy',[$d->id])}}">
+                                                            Hapus
+                                                        </button>
+                                                    </form>
+                                                </div>
+
+
+
                                             </div>
-                                        <!-- /.modal-content -->
+                                            <!-- /.modal-content -->
                                         </div>
                                         <!-- /.modal-dialog -->
-                                     </div>
+                                    </div>
+                                    }
+                                    @endif
 
-                                 
-                            </td>
-                              
+                                </td>
+
                             </tr>
                             @endforeach
-                           
-                          </tbody>
+
+                        </tbody>
                         <tfoot>
                             <tr>
                                 <th scope="col">#</th>

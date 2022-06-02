@@ -520,9 +520,6 @@ class TerimaBarangSupplierController extends Controller
      */
     public function update(Request $request, TransactionGudangBarang $terimaBarangSupplier)
     {
-        //
-
-        //
         $user = Auth::user();
         $data = $request->collect();
 
@@ -683,6 +680,14 @@ class TerimaBarangSupplierController extends Controller
         $user = Auth::user();
         //dd($terimaBarangSupplier->id);
 
+        $dataTransactionID = DB::table('ItemInventoryTransaction')
+            ->where('NTBID', $terimaBarangSupplier->id)
+            ->get();
+        DB::table('ItemInventoryTransactionLine')
+            ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+            ->delete();
+
+            
         $data = DB::table('transaction_gudang_barang_detail')
             ->where('transactionID', '=', $terimaBarangSupplier->id)
             ->get();
@@ -692,13 +697,6 @@ class TerimaBarangSupplierController extends Controller
                 ->where('id', $d->purchaseOrderDetailID)
                 ->decrement('jumlahProses', $d->jumlah);
         }
-        /*DB::table('purchase_order_detail')
-            ->where('id','=', $terimaBarangSupplier->id)
-            ->update(array(
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-                'hapus' => 1,
-        ));*/
 
         DB::table('transaction_gudang_barang_detail')
             ->where('transactionID', '=', $terimaBarangSupplier->id)
@@ -711,6 +709,8 @@ class TerimaBarangSupplierController extends Controller
                 'UpdatedOn' => date("Y-m-d h:i:sa"),
                 'hapus' => 1,
             ));
+
+
 
         return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
     }
