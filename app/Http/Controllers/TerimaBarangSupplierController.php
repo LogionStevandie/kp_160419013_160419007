@@ -111,6 +111,7 @@ class TerimaBarangSupplierController extends Controller
 
         $dataGudang = DB::table("MGudang")->get();
         $dataItemTransaction = DB::table("ItemTransaction")->get();
+        $date = date("Y-m-d");
 
 
 
@@ -126,6 +127,7 @@ class TerimaBarangSupplierController extends Controller
                 'dataTag' => $dataTag,
                 'dataPurchaseOrderDetail' => $dataPurchaseOrderDetail,
                 'dataPurchaseOrder' => $dataPurchaseOrder,
+                'date'=>$date
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Supplier');

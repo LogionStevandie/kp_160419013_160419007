@@ -47,7 +47,7 @@ Edit Nota Permintaan Pembelian
                     </div>
                     <div class="col-md-6 mb-3">
                       <label for="lastName">Tanggal Pembuatan</label>
-                      <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{old('created_on',$purchaseRequest->tanggalDibuat)}}" required="" name="tanggalDibuat">
+                      <input readonly type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{old('created_on',$purchaseRequest->tanggalDibuat)}}" required="" name="tanggalDibuat">
                       <div class="invalid-feedback"> Valid last name is required. </div>
                     </div>
 
@@ -198,9 +198,10 @@ Edit Nota Permintaan Pembelian
                                 <input type="hidden" class="cekHarga" name="itemHarga[]" value="{{$data->harga}}">
                                 <h6 class="my-0">{{$item->ItemName}}<small class="jumlahVal">({{$data->jumlah}})</small> </h6>
                                 <small class="text-muted keteranganVal">{{$data->keterangan_jasa}}</small><br>
+                                <small class="text-muted hargaSatuanVal" value="{{$data->harga}}">Harga Satuan : Rp. {{number_format($data->harga)}},-</small><br>
                               </div>
                               <div>
-                                <strong class="hargaVal">Rp.{{$data->harga*$data->jumlah}},-</strong>
+                                <strong class="hargaVal">Rp. {{number_format($data->harga*$data->jumlah)}},-</strong>
                                 <button class="btn btn-primary copyKe" type="button" id="copyKe">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                     <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
@@ -219,7 +220,7 @@ Edit Nota Permintaan Pembelian
                           </ul>
                           <li class="list-group-item d-flex justify-content-between">
                             <span>Total (Rupiah)</span>
-                            <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga={{$purchaseRequest->totalHarga}}>Rp. {{$purchaseRequest->totalHarga}},-</strong>
+                            <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga={{$purchaseRequest->totalHarga}}>Rp. {{number_format($purchaseRequest->totalHarga)}},-</strong>
                           </li>
                           <!-- /.form group -->
                         </div>
@@ -374,9 +375,10 @@ Edit Nota Permintaan Pembelian
       htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="' + hargaBarang + '">\n';
       htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
       htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
+      htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga Satuan : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  +'</small><br>\n';
       htmlKeranjang += '</div>\n';
       htmlKeranjang += '<div>\n';
-      htmlKeranjang += '<strong class="hargaVal" value="' + hargaBarang * jumlahBarang + '">Rp. ' + hargaBarang * jumlahBarang + ',-</strong>\n';
+      htmlKeranjang += '<strong class="hargaVal" value="' + hargaBarang * jumlahBarang + '">Rp. ' + (hargaBarang * jumlahBarang).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';
       htmlKeranjang += '<button class="btn btn-primary" type="button" id="copyKe">\n';
       htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
       htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';

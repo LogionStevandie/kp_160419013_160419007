@@ -106,7 +106,7 @@
 
                         @if($data->MPerusahaanID == $purchaseOrder->MPerusahaanID)
                         @if($data->Gambar !="" || $data->Gambar !=null)
-                        <img src='{{asset($data->Gambar)}}' alt='' width='50' height='50'>
+                        <img src='{{asset($data->Gambar)}}' alt='' width='100' height='100'>
                         @endif
                         @endif
 
@@ -177,7 +177,7 @@
             <!-- Table row -->
             <div class="row">
               <div class="col-12 table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped table-bordered">
                   <thead>
                     <tr>
                       <th>#</th>

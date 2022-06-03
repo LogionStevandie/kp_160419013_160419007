@@ -72,7 +72,10 @@
   </div>
   @endif
 
+  
+
   <div class="wrapper">
+  
 
     <!-- Preloader -->
     <div class="preloader flex-column justify-content-center align-items-center">
@@ -110,12 +113,13 @@
 
       <!-- Main content -->
       <section class="content">
-        @yield('content')
         @if(session("status"))
         <div class="alert alert-success">
           {{session('status')}}
         </div>
         @endif
+        @yield('content')
+        
       </section>
       <!-- /.content -->
     </div>
@@ -255,8 +259,8 @@
         'placeholder': 'dd/mm/yyyy'
       })
       //Datemask2 mm/dd/yyyy
-      $('#datemask2').inputmask('mm/dd/yyyy', {
-        'placeholder': 'mm/dd/yyyy'
+      $('#datemask2').inputmask('dd/mm/yyyy', {
+        'placeholder': 'dd/mm/yyyy'
       })
       //Money Euro
       $('[data-mask]').inputmask()
@@ -278,7 +282,9 @@
 
       //Date range picker
       $('#reservation').daterangepicker({
-        
+        locale: {
+          format: 'DD/MM/YYYY'
+        },
 
       })
       //Date range picker with time picker

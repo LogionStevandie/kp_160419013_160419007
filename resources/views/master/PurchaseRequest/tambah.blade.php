@@ -53,7 +53,7 @@ Pembuatan Nota Permintaan Pembelian
                         </div>
                         <div class="col-md-6 mb-3">
                           <label for="lastName">Tanggal Pembuatan</label>
-                          <input type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{$date}}" required="" name="tanggalDibuat">
+                          <input readonly type="date" class="form-control" id="tanggalDibuat" placeholder="" value="{{$date}}" required="" name="tanggalDibuat">
                           <div class="invalid-feedback"> Valid last name is required. </div>
                         </div>
 
@@ -370,10 +370,10 @@ Pembuatan Nota Permintaan Pembelian
       htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="' + hargaBarang + '">\n';
       htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
       htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
-      htmlKeranjang += '<small class="text-muted keteranganVal" value="' + hargaBarang + '">Harga Satuan : Rp. ' + hargaBarang  +'</small><br>\n';
+      htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga Satuan : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  +'</small><br>\n'; ak nganu seng iki cug
       htmlKeranjang += '</div>\n';
       htmlKeranjang += '<div>\n';
-      htmlKeranjang += '<strong class="hargaVal" value="' + totalHarga + '">Rp. ' + totalHarga + ',-</strong>\n';
+      htmlKeranjang += '<strong class="hargaVal" value="' + hargaBarang * jumlahBarang + '">Rp. ' + (hargaBarang * jumlahBarang).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';
       htmlKeranjang += '<button class="btn btn-primary" type="button" id="copyKe">\n';
       htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
       htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';

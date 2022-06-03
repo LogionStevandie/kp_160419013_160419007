@@ -123,7 +123,7 @@ class TerimaBarangPesananController extends Controller
         $dataItemTransaction = DB::table("ItemTransaction")
             ->get();
 
-
+        $date = date("Y-m-d");
 
 
         $check = $this->checkAccess('terimaBarangPesanan.create', $user->id, $user->idRole);
@@ -139,6 +139,7 @@ class TerimaBarangPesananController extends Controller
                 'dataGudang' => $dataGudang,
                 'dataItemTransaction' => $dataItemTransaction,
                 'user' => $user,
+                'date'=>$date
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Pesanan');
@@ -460,7 +461,7 @@ class TerimaBarangPesananController extends Controller
             ->join('Item', 'surat_jalan_detail.ItemID', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
             ->where('surat_jalan.hapus', 0)
-            ->where('surat_jalan_detail.jumlahProsesTerima', '<', DB::raw('jumlahProsesTerima.jumlah')) //errorr disini
+            ->where('surat_jalan_detail.jumlahProsesTerima', '<', DB::raw('surat_jalan_detail.jumlah')) //errorr disini
             ->get();
 
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')

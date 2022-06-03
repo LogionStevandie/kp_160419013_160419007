@@ -25,6 +25,7 @@ class SuratJalanController extends Controller
             ->where('hapus', 0)
             ->orderByDesc('surat_jalan.tanggalDibuat', 'surat_jalan.id')
             ->paginate(10);
+            //dd($data);
 
         $dataDetail = DB::table('surat_jalan_detail')
             ->select('surat_jalan_detail.*')

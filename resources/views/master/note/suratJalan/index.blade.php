@@ -88,17 +88,20 @@ Surat Jalan
                                 <th scope="row" name='id'>{{$d->id}}</th>
                                 <td>{{$d->name}}</td>
                                 <td>{{$d->tanggalDibuat}}</td>
+
                                 @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $d->MGudangIDAwal)
                                 <td>{{$gudang->cname}}</td>
                                 @endif
                                 @endforeach
+
                                 @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $d->MGudangIDTujuan)
                                 <td>{{$gudang->cname}}</td>
                                 @endif
                                 @endforeach
                                 <td>{{$d->keteranganPenerima}}</td>
+                                @if($d->proses != 2)
                                 <td>
                                     <a class="btn btn-default bg-info" href="{{route('suratJalan.show',[$d->id])}}">
                                         <i class="fas fa-eye"></i>
@@ -107,7 +110,7 @@ Surat Jalan
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="/suratJalane/print/{{$d->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
-                                    @if($d->proses != 2){
+                                    
                                     <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$d->id}}">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -145,11 +148,19 @@ Surat Jalan
                                         </div>
                                         <!-- /.modal-dialog -->
                                     </div>
-                                    }
-                                    @endif
+                                    
+                                    
 
                                 </td>
+                                @else
+                                <td>
+                                    <a class="btn btn-default bg-info" href="{{route('suratJalan.show',[$d->id])}}">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="/suratJalane/print/{{$d->id}}" method="get" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a>
 
+                                </td>
+                                @endif
                             </tr>
                             @endforeach
 

@@ -47,7 +47,7 @@ Edit Nota Purchase Order
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Pembuatan</label>
-                                            <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{old('created_on',$purchaseOrder->tanggalDibuat)}}" required="">
+                                            <input readonly name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{old('created_on',$purchaseOrder->tanggalDibuat)}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 
@@ -250,12 +250,13 @@ Edit Nota Purchase Order
                                                                 @endforeach
                                                                 <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="'+jumlahBarang+'">{{(float)$data->jumlah}}</small> </h6>
                                                                 <small class="text-muted keteranganVal" value="'+keteranganBarang+'">{{$data->keterangan}}</small><br>
-                                                                <small class="text-muted diskonVal" value="'+diskonBarang+'">Diskon/Item: Rp. {{(float)$data->diskon}},--</small><br>
+                                                                <small class="text-muted diskonVal" value="'+diskonBarang+'">Diskon/Item: Rp. {{number_format((float)$data->diskon)}},-</small><br>
                                                                 <small class="text-muted taxVal" value="'+taxPercent+'">Pajak: {{$data->TaxPercent}}%</small><br>
+                                                                 <small class="text-muted diskonVal" value="'+diskonBarang+'">Harga/Item: Rp. {{number_format((float)$data->harga)}},-</small><br>
 
                                                             </div>
                                                             <div>
-                                                                <strong class="hargaVal" value="{{(((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0}}">Rp. {{(((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0}},-</strong>
+                                                                <strong class="hargaVal" value="{{(((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0}}">Rp. {{number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0)}},-</strong>
                                                                 <button class="btn btn-primary copyKe" type="button" id="copyKe">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">
                                                                         <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
@@ -273,7 +274,7 @@ Edit Nota Purchase Order
                                                     </ul>
                                                     <li class="list-group-item d-flex justify-content-between">
                                                         <span>Total (Rupiah)</span>
-                                                        <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga={{$purchaseOrder->totalHarga}}>Rp. {{$purchaseOrder->totalHarga}},-</strong>
+                                                        <strong name="TotalHargaKeranjang" id="TotalHargaKeranjang" value=0 jumlahHarga={{$purchaseOrder->totalHarga}}>Rp. {{number_format($purchaseOrder->totalHarga)}},-</strong>
                                                     </li>
                                                     <!-- /.form group -->
                                                 </div>
@@ -599,9 +600,10 @@ Edit Nota Purchase Order
             htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang + ',--</small><br>\n';
             htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
+       htmlKeranjang += '<small class="text-muted keteranganVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")   +'</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + ',-</strong>\n';
+            htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  + ',-</strong>\n';
             htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
             htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
             htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';

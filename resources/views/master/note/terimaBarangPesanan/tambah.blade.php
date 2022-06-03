@@ -41,13 +41,13 @@ Pembuatan Nota Terima Barang Pesanan
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Pembuatan</label>
-                                            <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{old('tanggalDibuat','')}}" required="">
+                                            <input readonly name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Datang</label>
-                                            <input name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="{{old('tanggalDatang','')}}" required="">
+                                            <input  name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="{{old('tanggalDatang','')}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 

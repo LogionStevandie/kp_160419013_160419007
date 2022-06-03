@@ -41,7 +41,7 @@ Pembuatan Nota Purchase Order
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Pembuatan</label>
-                                            <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" required="">
+                                            <input readonly name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
                                         <div class="col-md-6">
@@ -62,7 +62,7 @@ Pembuatan Nota Purchase Order
 
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Batas Akhir</label>
-                                            <input type="date" name="tanggal_akhir" class="form-control" id="lastName" placeholder="" value="{{old('tanggalAkhir','')}}" required="">
+                                            <input type="date" name="tanggal_akhir" class="form-control" id="lastName" placeholder="" value="{{old('tanggalAkhir',$date)}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
                                         <div class="col-md-6">
@@ -531,10 +531,10 @@ Pembuatan Nota Purchase Order
             htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang + ',--</small><br>\n';
             htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
-            htmlKeranjang += '<small class="text-muted keteranganVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang  +'</small><br>\n';
+            htmlKeranjang += '<small class="text-muted keteranganVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")   +'</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + ',-</strong>\n';
+            htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  + ',-</strong>\n';
             htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
             htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
             htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';

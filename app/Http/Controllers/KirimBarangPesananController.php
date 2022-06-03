@@ -127,7 +127,7 @@ class KirimBarangPesananController extends Controller
 
         $dataItemTransaction = DB::table("ItemTransaction")
             ->get();
-
+        $date = date("Y-m-d");
 
 
 
@@ -145,6 +145,7 @@ class KirimBarangPesananController extends Controller
                 'dataGudang' => $dataGudang,
                 'dataItemTransaction' => $dataItemTransaction,
                 'user' => $user,
+                'date'=>$date
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');

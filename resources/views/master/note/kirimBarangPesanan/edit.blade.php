@@ -42,7 +42,7 @@ Edit Nota Kirim Barang Pesanan
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Pembuatan</label>
-                                            <input name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$transactionGudangBarang->tanggalDibuat}}" required="">
+                                            <input readonly name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$transactionGudangBarang->tanggalDibuat}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 
