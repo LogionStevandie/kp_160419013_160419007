@@ -92,7 +92,12 @@ class TerimaBarangSupplierController extends Controller
 
         //data Purchase Request yang disetujui
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
-            ->select('purchase_order_detail.*', 'purchase_order.name', 'Item.ItemName as ItemName', 'Unit.Name as UnitName') //
+            ->select(
+                'purchase_order_detail.*',
+                'purchase_order.name',
+                'Item.ItemName as ItemName',
+                'Unit.Name as UnitName'
+            ) //
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=', 'purchase_order.id')
             ->join('Item', 'purchase_order_detail.idItem', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
@@ -101,7 +106,39 @@ class TerimaBarangSupplierController extends Controller
             ->where('purchase_order.proses', 1)
             ->where('purchase_order_detail.jumlahProses', '<', DB::raw('purchase_order_detail.jumlah')) //errorr disini
             ->get();
-        //dd($dataPurchaseOrderDetail);      
+
+        $dataPurchaseOrderDetailCombine = DB::table('purchase_order_detail')
+            ->select(
+                'purchase_order_detail.idPurchaseOrder',
+                'purchase_order.name',
+                'purchase_order_detail.idItem',
+                'purchase_order_detail.harga',
+                'purchase_order_detail.idTax',
+                'purchase_order_detail.diskon',
+                'Item.ItemName as ItemName',
+                'Unit.Name as UnitName',
+                DB::raw('SUM(purchase_order_detail.jumlah) as jumlah'),
+                DB::raw('SUM(purchase_order_detail.jumlahProses) as jumlahProses'),
+            ) //
+            ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=', 'purchase_order.id')
+            ->join('Item', 'purchase_order_detail.idItem', '=', 'Item.ItemID')
+            ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->where('purchase_order.approved', 1)
+            ->where('purchase_order.hapus', 0)
+            ->where('purchase_order.proses', 1)
+            ->where(DB::raw('jumlahProses'), '<', DB::raw('jumlah'))
+            ->groupBy(
+                'purchase_order_detail.idPurchaseOrder',
+                'purchase_order.name',
+                'purchase_order_detail.idItem',
+                'purchase_order_detail.harga',
+                'purchase_order_detail.idTax',
+                'purchase_order_detail.diskon',
+                'Item.ItemName',    
+                'Unit.Name',
+            )
+            ->get();
+        //dd($dataPurchaseOrderDetailCombine);      
         $dataPurchaseOrder = DB::table('purchase_order')
             ->select('purchase_order.*')
             ->where('purchase_order.approved', 1)
@@ -126,8 +163,9 @@ class TerimaBarangSupplierController extends Controller
                 'dataBarang' => $dataBarang,
                 'dataTag' => $dataTag,
                 'dataPurchaseOrderDetail' => $dataPurchaseOrderDetail,
+                'dataPurchaseOrderDetailCombine' => $dataPurchaseOrderDetailCombine,
                 'dataPurchaseOrder' => $dataPurchaseOrder,
-                'date'=>$date
+                'date' => $date
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Supplier');
@@ -217,6 +255,42 @@ class TerimaBarangSupplierController extends Controller
             );
 
             $totalNow = DB::table('purchase_order_detail')->select('jumlah', 'jumlahProses')->where('id', $data['podID'][$i])->get();
+            DB::table('purchase_order_detail')
+                ->where('id', $data['podID'][$i])
+                ->update([
+                    'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemJumlah'][$i],
+                ]);
+
+
+            //LOGIC EVERYTHING BECOME 1
+            /*
+            $totalNow = DB::table('purchase_order_detail')
+                ->select('id', 'jumlah', 'jumlahProses')
+                ->where('id', $data['poID'][$i])
+                ->where('ItemID', $data['itemId'][$i])
+                ->get();
+            $checkInputJumlahNya = $data['itemJumlah'][$i];
+            foreach ($totalNow as $pod) {
+                //permainan angka disini HERE!!!!
+                $checkJumlah = $pod->jumlah;
+                $checkJumlahProses = $pod->jumlahProses;
+                $checkInputSisa = $checkJumlah - $checkJumlahProses;
+                if ($checkInputSisa <= $checkInputJumlahNya) {
+                    $checkInputJumlahNya -= $checkInputSisa;
+                    DB::table('purchase_order_detail')
+                        ->where('id',  $pod->id)
+                        ->update([
+                            'jumlahProses' => $pod->jumlahProses + $checkInputSisa,
+                        ]);
+                } else if ($checkInputSisa > $checkInputJumlahNya && $checkInputJumlahNya != 0) {
+                    DB::table('purchase_order_detail')
+                        ->where('id',  $pod->id)
+                        ->update([
+                            'jumlahProses' => $pod->jumlahProses + $checkInputJumlahNya,
+                        ]);
+                }
+            }
+*/
             DB::table('purchase_order_detail')
                 ->where('id', $data['podID'][$i])
                 ->update([
@@ -317,7 +391,14 @@ class TerimaBarangSupplierController extends Controller
 
         //data Purchase Request yang disetujui
         $dataPurchaseOrderDetail = DB::table('purchase_order_detail')
-            ->select('purchase_order_detail.*', 'purchase_order.name', 'Item.ItemName as ItemName', 'Unit.Name as UnitName', 'transaction_gudang_barang_detail.transactionID', 'purchase_order.id as poid') //
+            ->select(
+                'purchase_order_detail.*',
+                'purchase_order.name',
+                'Item.ItemName as ItemName',
+                'Unit.Name as UnitName',
+                'transaction_gudang_barang_detail.transactionID',
+                'purchase_order.id as poid'
+            ) //
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=', 'purchase_order.id')
             ->join('Item', 'purchase_order_detail.idItem', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
@@ -460,7 +541,43 @@ class TerimaBarangSupplierController extends Controller
             })*/
             //->where(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
             ->get();
-
+        $dataPurchaseOrderDetailCombine = DB::table('purchase_order_detail')
+            ->select(
+                'purchase_order_detail.idPurchaseOrder',
+                'purchase_order.name',
+                'purchase_order_detail.idItem',
+                'purchase_order_detail.harga',
+                'purchase_order_detail.idTax',
+                'purchase_order_detail.diskon',
+                'Item.ItemName as ItemName',
+                'Unit.Name as UnitName',
+                DB::raw('SUM(purchase_order_detail.jumlah) as jumlah'),
+                DB::raw('SUM(purchase_order_detail.jumlahProses) as jumlahProses'),
+            ) //
+            ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=', 'purchase_order.id')
+            ->join('Item', 'purchase_order_detail.idItem', '=', 'Item.ItemID')
+            ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->where('purchase_order.approved', 1)
+            ->where('purchase_order.hapus', 0)
+            ->where('purchase_order.proses', 1)
+            ->where(function ($query) use ($terimaBarangSupplier) {
+                $query->when(request('transaction_gudang_barang_detail.transactionID', $terimaBarangSupplier->id), function ($q, $data) {
+                    return $q->where(DB::raw('jumlahProses'), '<', DB::raw('jumlah'))
+                        ->orWhere(DB::raw('jumlahProses - transaction_gudang_barang_detail.jumlah'), '<', DB::raw('jumlah'));
+                });
+            })
+            //->where(DB::raw('jumlahProses'), '<', DB::raw('jumlah'))
+            ->groupBy(
+                'purchase_order_detail.idPurchaseOrder',
+                'purchase_order.name',
+                'purchase_order_detail.idItem',
+                'purchase_order_detail.harga',
+                'purchase_order_detail.idTax',
+                'purchase_order_detail.diskon',
+                'Item.ItemName',
+                'Unit.Name',
+            )
+            ->get();
 
         /*$getIDPO = $dataPurchaseOrderDetail
             ->where("transactionID",'=',$terimaBarangSupplier->id);
@@ -689,7 +806,7 @@ class TerimaBarangSupplierController extends Controller
             ->where('TransactionID', $dataTransactionID[0]->TransactionID)
             ->delete();
 
-            
+
         $data = DB::table('transaction_gudang_barang_detail')
             ->where('transactionID', '=', $terimaBarangSupplier->id)
             ->get();

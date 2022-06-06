@@ -374,7 +374,7 @@ class StokAwalController extends Controller
             ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
             ->leftjoin('MGudang', 'StokAwal.MGudangID', '=', 'MGudang.MGudangID')
             ->where('StokAwal.hapus', 0)
-            ->whereBetween('StokAwal.tanggalDibuat', [$date[0], $date[1]])
+            ->whereBetween('StokAwal.tanggalDibuat', [date($date[0]), date($date[1])])
             ->orderByDesc('StokAwal.tanggalDibuat')
             ->paginate(10);
 
@@ -402,7 +402,7 @@ class StokAwalController extends Controller
             ->leftjoin('MGudang', 'StokAwal.MGudangID', '=', 'MGudang.MGudangID')
             ->where('StokAwal.hapus', 0)
             ->where('StokAwal.name', 'like', '%' . $name . '%')
-            ->whereBetween('StokAwal.tanggalDibuat', [$date[0], $date[1]])
+            ->whereBetween('StokAwal.tanggalDibuat', [date($date[0]), date($date[1])])
             ->orderByDesc('StokAwal.tanggalDibuat')
             ->paginate(10);
 

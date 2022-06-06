@@ -73,7 +73,7 @@ Pembuatan Nota Purchase Order
                                                         --Pilih Cara Pembayaran--
                                                     </option>
                                                     @foreach($dataPayment as $key => $data)
-                                                    <option name="idPaymentTerms" value="{{$data->PaymentTermsID}}" {{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}} ({{$data->PaymentName}})</option>
+                                                    <option name="idPaymentTerms" value="{{$data->PaymentTermsID}}" {{$data->Name == $data->PaymentTermsID? 'selected' :'' }}>{{$data->Name}} ({{$data->Deskripsi}})-({{$data->PaymentName}})</option>
                                                     @endforeach
 
                                                 </select>
@@ -315,7 +315,7 @@ Pembuatan Nota Purchase Order
                 //alert(value.ItemName);
                 if (value.idPurchaseRequest.toString() == id.toString()) {
                     //alert('masuk');
-                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
+                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '" namaItem="'+value.ItemName+'">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
                 }
             });
             //alert(optionnya);
@@ -406,11 +406,6 @@ Pembuatan Nota Purchase Order
             "placeholder": "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",
             "value": "",
         });
-        if (maxAngka <= 0) {
-            $('#jumlahBarang').prop('readonly', true);
-        } else {
-            $('#jumlahBarang').prop('readonly', false);
-        }
 
 
         var i = $(this).index('#hapusKeranjang');
@@ -426,7 +421,7 @@ Pembuatan Nota Purchase Order
         var totalSekarang = parseFloat($("#TotalHargaKeranjang").attr('jumlahHarga')) - parseFloat((parseFloat(jumlahBarang) * (parseFloat(hargaBarang) - parseFloat(diskonBarang))) * (100.0 + parseFloat(taxBarang)) / 100.0);
         //alert(totalSekarang);
         $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalSekarang));
-        $('#TotalHargaKeranjang').html("Rp. " + totalSekarang);
+        $('#TotalHargaKeranjang').html("Rp. " + totalSekarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
         $('#totalBarangnya').val(totalTambah);
         $('#totalBarangnya').html(totalTambah);
@@ -434,8 +429,9 @@ Pembuatan Nota Purchase Order
 
     $('body').on('click', '#tambahKeranjang', function() {
         var idPurchase = $("#pReq").val(); //tambahan NOTE
+        var namaNPPCheck = $("#pReq").html(); //tambahan NOTE
         var idPurchaseDetail = $("#barang").val(); //
-        var namaBarang = $("#barang option:selected").html(); //
+        var namaBarang = $("#barang option:selected").attr("namaItem").toString(); //
         var jumlahBarang = parseFloat($("#jumlahBarang").val()); //
         //alert(jumlahBarang);
         var hargaBarang = parseFloat($("#hargaBarang").val()); //
@@ -501,7 +497,7 @@ Pembuatan Nota Purchase Order
 
             totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0;
             $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp." + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+            $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
 
             $("#pReq").val("").change();
@@ -529,9 +525,9 @@ Pembuatan Nota Purchase Order
             htmlKeranjang += '<input type="hidden" class="cekPr" name="prID[]" value="' + idPurchase + '">\n';
             htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
             htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
-            htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang + ',--</small><br>\n';
+            htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',--</small><br>\n';
             htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
-            htmlKeranjang += '<small class="text-muted keteranganVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")   +'</small><br>\n';
+            htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")   +'</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
             htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  + ',-</strong>\n';
@@ -579,7 +575,7 @@ Pembuatan Nota Purchase Order
 
             totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0;
             $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp." + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+            $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
 
             $("#pReq").val("").change();

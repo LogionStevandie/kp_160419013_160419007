@@ -248,12 +248,12 @@ Edit Nota Purchase Order
                                                                 <input type="hidden" class="cekPr" name="prID[]" value="{{$dataPrd->idPurchaseRequest}}">
                                                                 @endif
                                                                 @endforeach
-                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="'+jumlahBarang+'">{{(float)$data->jumlah}}</small> </h6>
-                                                                <small class="text-muted keteranganVal" value="'+keteranganBarang+'">{{$data->keterangan}}</small><br>
-                                                                <small class="text-muted diskonVal" value="'+diskonBarang+'">Diskon/Item: Rp. {{number_format((float)$data->diskon)}},-</small><br>
-                                                                <small class="text-muted taxVal" value="'+taxPercent+'">Pajak: {{$data->TaxPercent}}%</small><br>
-                                                                 <small class="text-muted diskonVal" value="'+diskonBarang+'">Harga/Item: Rp. {{number_format((float)$data->harga)}},-</small><br>
-
+                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="{{(float)$data->jumlah}}"> ({{(float)$data->jumlah}})</small> </h6>
+                                                                <small class="text-muted keteranganVal" value="{{$data->keterangan}}">{{$data->keterangan}}</small><br>
+                                                                <small class="text-muted diskonVal" value="{{(float)$data->diskon}}">Diskon/Item: Rp. {{number_format((float)$data->diskon)}},-</small><br>
+                                                                <small class="text-muted taxVal" value="{{$data->TaxPercent}}">Pajak: {{$data->TaxPercent}}%</small><br>
+                                                                <small class="text-muted hargaSatuanVal" value="{{(float)$data->harga}}">Harga/Item: Rp. {{number_format((float)$data->harga)}},-</small><br>
+                                                                <small class="text-muted namaNPPVal" value="{{$data->namaNPPCheck}}">NPP: {{$data->namaNPPCheck}}</small><br>
                                                             </div>
                                                             <div>
                                                                 <strong class="hargaVal" value="{{(((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0}}">Rp. {{number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0)}},-</strong>
@@ -373,7 +373,7 @@ Edit Nota Purchase Order
                 //alert(value.ItemName);
                 if (value.idPurchaseRequest.toString() == id.toString()) {
                     //alert('masuk');
-                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
+                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '" namaItem="'+value.ItemName+'">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
                 }
             });
             //alert(optionnya);
@@ -497,7 +497,7 @@ Edit Nota Purchase Order
         var totalSekarang = parseFloat($("#TotalHargaKeranjang").attr('jumlahHarga')) - parseFloat((parseFloat(jumlahBarang) * (parseFloat(hargaBarang) - parseFloat(diskonBarang))) * (100.0 + parseFloat(taxBarang)) / 100.0);
         //alert(totalSekarang);
         $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalSekarang));
-        $('#TotalHargaKeranjang').html("Rp. " + totalSekarang);
+        $('#TotalHargaKeranjang').html("Rp. " + totalSekarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
         $('#totalBarangnya').val(totalTambah);
         $('#totalBarangnya').html(totalTambah);
@@ -505,8 +505,9 @@ Edit Nota Purchase Order
 
     $('body').on('click', '#tambahKeranjang', function() {
         var idPurchase = $("#pReq").val(); //tambahan NOTE
+        var namaNPPCheck = $("#pReq").html(); //tambahan NOTE
         var idPurchaseDetail = $("#barang").val(); //
-        var namaBarang = $("#barang option:selected").html(); //
+        var namaBarang = $("#barang option:selected").attr("namaItem").toString(); //
         var jumlahBarang = parseFloat($("#jumlahBarang").val()); //
         //alert(jumlahBarang);
         var hargaBarang = parseFloat($("#hargaBarang").val()); //
@@ -571,7 +572,7 @@ Edit Nota Purchase Order
 
             totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * ((100.0 + taxPercent) / 100.0);
             $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp." + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+            $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
             $("#pReq").val("").change();
             $("#barang").val("").change();
@@ -598,12 +599,13 @@ Edit Nota Purchase Order
             htmlKeranjang += '<input type="hidden" class="cekPr" name="prID[]" value="' + idPurchase + '">\n';
             htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
             htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
-            htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang + ',--</small><br>\n';
+            htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
-       htmlKeranjang += '<small class="text-muted keteranganVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")   +'</small><br>\n';
+            htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
+            htmlKeranjang += '<small class="text-muted namaNPPVal" value="' + namaNPPCheck + '">NPP: ' + namaNPPCheck.toString() + '</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  + ',-</strong>\n';
+            htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';
             htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
             htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
             htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
@@ -647,7 +649,7 @@ Edit Nota Purchase Order
 
             totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0;
             $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp." + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+            $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
 
             $("#pReq").val("").change();

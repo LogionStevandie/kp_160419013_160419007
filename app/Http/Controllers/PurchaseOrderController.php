@@ -72,6 +72,7 @@ class PurchaseOrderController extends Controller
             ->select('PaymentTerms.*', 'Payment.Name as PaymentName', 'Payment.Deskripsi as PaymentDeskripsi')
             ->leftjoin('Payment', 'PaymentTerms.PaymentID', '=', 'Payment.PaymentID')
             ->where('PaymentTerms.IsPembelian', 1)
+            ->where('PaymentTerms.IsPenjualan', 0)
             ->get();
 
         $dataBarang = DB::table('Item')
@@ -389,8 +390,9 @@ class PurchaseOrderController extends Controller
             ->get();
         //dd($dataPurchaseRequestDetail);
         $dataDetail = DB::table('purchase_order_detail')
-            ->select('purchase_order_detail.*', 'Item.ItemName as itemName', 'Tax.TaxPercent')
-            //->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
+            ->select('purchase_order_detail.*', 'Item.ItemName as itemName', 'Tax.TaxPercent', 'purchase_request.name as namaNPPCheck')
+            ->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
+            ->leftjoin('purchase_request', 'purchase_request_detail.idPurchaseRequest','=','purchase_request.id')
             ->leftjoin('Tax', 'purchase_order_detail.idTax', '=', 'Tax.TaxID')
             ->leftjoin('Item', 'purchase_order_detail.idItem', '=', 'Item.ItemID')
             ->where('purchase_order_detail.idPurchaseOrder', '=', $purchaseOrder->id)

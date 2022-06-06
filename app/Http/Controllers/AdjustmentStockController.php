@@ -348,7 +348,7 @@ class AdjustmentStockController extends Controller
             ->get();
 
         //dd($dataReportDetailStokAwal);
-        //dd($adjustmentStock);
+        //dd($dataReport);
         $adjustmentStockDetail = DB::table('ItemAdjustmentDetail')
             ->where('ItemAdjustmentID', $adjustmentStock['ItemAdjustmentID'])
             ->get();

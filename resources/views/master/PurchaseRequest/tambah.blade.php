@@ -286,7 +286,7 @@ Pembuatan Nota Permintaan Pembelian
     //alert(parseFloat($("#TotalHargaKeranjang").attr('jumlahHarga')) - parseFloat(jumlahBarang * hargaBarang));
     var totalSekarang = parseFloat($("#TotalHargaKeranjang").attr('jumlahHarga')) - parseFloat(jumlahBarang * hargaBarang);
     $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalSekarang));
-    $('#TotalHargaKeranjang').html("Rp. " + totalSekarang);
+    $('#TotalHargaKeranjang').html("Rp. " + totalSekarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
 
     $('#totalBarangnya').val(totalTambah);
@@ -309,9 +309,9 @@ Pembuatan Nota Permintaan Pembelian
     var indexSama = null;
     for (let i = 0; i < $('.cekId').length; i++) {
       if ($('.cekId:eq(' + i + ')').val() == idBarang) {
-        if ($('.cekHarga:eq(' + i + ')').val() == hargaBarang) {
+        //if ($('.cekHarga:eq(' + i + ')').val() == hargaBarang) {
           indexSama = i;
-        }
+        //}
       }
     }
 
@@ -343,7 +343,7 @@ Pembuatan Nota Permintaan Pembelian
 
       totalHarga = hargaBarang * jumlahBarang;
       $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-      $('#TotalHargaKeranjang').html("Rp. " + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+      $('#TotalHargaKeranjang').html("Rp. " + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
       $("#barang").val("").change();
       $("#jumlahBarang").val(1);
@@ -407,7 +407,7 @@ Pembuatan Nota Permintaan Pembelian
       }*/
       totalHarga = hargaBarang * jumlahBarang;
       $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-      $('#TotalHargaKeranjang').html("Rp." + formatRupiah($('#TotalHargaKeranjang').attr('jumlahHarga')));
+      $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
       //alert(totalHargaKeranjang);
 
       $("#barang").val("").change();

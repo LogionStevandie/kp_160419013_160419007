@@ -56,7 +56,6 @@ Role
                                 <th>ID</th>
                                 <th>Nama Role</th>
                                 <th>Deskripsi</th>
-                                <th>Access</th>
                                 <th>Action</th>     
                              </tr>
                         </thead>
@@ -66,13 +65,6 @@ Role
                                 <th>{{$d->id}}</th>
                                 <td>{{$d->name}}</td>
                                 <td>{{$d->deskripsi}}</td>
-                                <td>
-                                    @foreach($dataAccess as $acc)
-                                        @if($acc->idRole == $d->id)
-                                            <span class="badge bg-primary">{{$acc->Name}}</span>
-                                        @endif
-                                    @endforeach
-                                </td>
                                 <td>  
                                 
                                     <a class="btn btn-default bg-info" href="{{route('role.edit',[$d->id])}}">
@@ -150,7 +142,6 @@ Role
                                 <th>ID</th>
                                 <th>Nama Role</th>
                                 <th>Deskripsi</th>
-                                <th>Access</th>
                                 <th>Action</th> 
                              </tr>
                         </tfoot>

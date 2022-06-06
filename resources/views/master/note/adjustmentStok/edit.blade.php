@@ -62,7 +62,13 @@ Perubahan Penyesuaian Stok Barang
                     <label for="lastName">Pilih Barang</label>
                     <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="ItemID" name="ItemID">
                         <option value="pilih">
-                            --Pilih Barang--
+                        @foreach($dataReport as $key => $data)
+                        @if($data->MGudangID == $adjustmentStockDetail[0]->MGudangID && $data->ItemID == $adjustmentStockDetail[0]->ItemID)
+                        <option selected value="{{$data->ItemID}}" {{ $data->ItemName == $data->ItemID ? "selected" :"" }} >{{$data->ItemName}} </option>
+                        @else
+                        <option value="{{$data->ItemID}}" {{ $data->ItemName == $data->ItemID ? "selected" :"" }} >{{$data->ItemName}} </option>
+                        @endif
+                        @endforeach
                         </option>
                     </select>
                 </div>
@@ -95,7 +101,7 @@ Perubahan Penyesuaian Stok Barang
     <script>
         $(document).ready(function() {
 
-            var id = $("#idGudang option:selected").val();
+            /*var id = $("#idGudang option:selected").val();
             var optionnya = '';
             var dataReport = <?php echo json_encode($dataReport); ?>;
             //var adjustmentStock = <?php echo json_encode($adjustmentStock); ?>;
@@ -120,7 +126,7 @@ Perubahan Penyesuaian Stok Barang
             //Barang.innerHTML = optionnya;
             $("#ItemID").append(optionnya);
             //alert(optionnya);
-            $('.selectpicker').selectpicker('refresh');
+            $('.selectpicker').selectpicker('refresh');*/
 
 
             var idItem = $("#ItemID option:selected").val();

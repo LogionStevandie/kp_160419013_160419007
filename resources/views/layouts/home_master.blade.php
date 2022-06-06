@@ -278,7 +278,6 @@
 
       //Date range picker
       $('#reservation').daterangepicker({
-        
       })
       //Date range picker with time picker
       $('#reservationtime').daterangepicker({
@@ -380,7 +379,7 @@
     }
     // DropzoneJS Demo Code End
 
-    $('#reservation').daterangepicker()
+    //$('#reservation').daterangepicker()
   </script>
 </body>
 
