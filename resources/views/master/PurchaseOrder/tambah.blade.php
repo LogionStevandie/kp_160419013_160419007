@@ -428,8 +428,8 @@ Pembuatan Nota Purchase Order
     });
 
     $('body').on('click', '#tambahKeranjang', function() {
-        var idPurchase = $("#pReq").val(); //tambahan NOTE
-        var namaNPPCheck = $("#pReq").html(); //tambahan NOTE
+        var idPurchase = $("#pReq option:selected").val(); //tambahan NOTE
+        var namaNPPCheck = $("#pReq option:selected").html(); //tambahan NOTE
         var idPurchaseDetail = $("#barang").val(); //
         var namaBarang = $("#barang option:selected").attr("namaItem").toString(); //
         var jumlahBarang = parseFloat($("#jumlahBarang").val()); //
@@ -502,8 +502,8 @@ Pembuatan Nota Purchase Order
 
             $("#pReq").val("").change();
             $("#barang").val("").change();
-            $("#jumlahBarang").val(1);
-            $("#hargaBarang").val(0);
+            $("#jumlahBarang").val("");
+            $("#hargaBarang").val("");
             $("#tanpa-rupiah").val(0);
             $("#diskonBarang").val(0);
             $("#tanpa-rupiah-diskon").val(0);
@@ -524,6 +524,7 @@ Pembuatan Nota Purchase Order
             htmlKeranjang += '<input type="hidden" class="cekPrd" name="prdID[]" value="' + idPurchaseDetail + '">\n';
             htmlKeranjang += '<input type="hidden" class="cekPr" name="prID[]" value="' + idPurchase + '">\n';
             htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
+            htmlKeranjang += '<small class="text-muted namaNppVal" value="' + namaNPPCheck + '">NPP: ' + namaNPPCheck + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',--</small><br>\n';
             htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
@@ -580,8 +581,8 @@ Pembuatan Nota Purchase Order
 
             $("#pReq").val("").change();
             $("#barang").val("").change();
-            $("#jumlahBarang").val(1);
-            $("#hargaBarang").val(0);
+            $("#jumlahBarang").val("");
+            $("#hargaBarang").val("");
             $("#tanpa-rupiah").val(0);
             $("#diskonBarang").val(0);
             $("#tanpa-rupiah-diskon").val(0);

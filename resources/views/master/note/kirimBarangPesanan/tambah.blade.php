@@ -486,8 +486,8 @@ Pembuatan Nota Kirim Barang Pesanan
 
         }
         $("#barang").val("").change(); //
-        $("#jumlahBarang").val(0); //
-        $("#keteranganBarang").val();
+        $("#jumlahBarang").val(""); //
+        $("#keteranganBarang").val(""); //
 
     });
 

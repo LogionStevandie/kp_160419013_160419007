@@ -249,11 +249,11 @@ Edit Nota Purchase Order
                                                                 @endif
                                                                 @endforeach
                                                                 <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="{{(float)$data->jumlah}}"> ({{(float)$data->jumlah}})</small> </h6>
+                                                                <small class="text-muted namaNppVal" value="{{$data->namaNPPCheck}}">NPP: {{$data->namaNPPCheck}}</small><br>
                                                                 <small class="text-muted keteranganVal" value="{{$data->keterangan}}">{{$data->keterangan}}</small><br>
                                                                 <small class="text-muted diskonVal" value="{{(float)$data->diskon}}">Diskon/Item: Rp. {{number_format((float)$data->diskon)}},-</small><br>
                                                                 <small class="text-muted taxVal" value="{{$data->TaxPercent}}">Pajak: {{$data->TaxPercent}}%</small><br>
                                                                 <small class="text-muted hargaSatuanVal" value="{{(float)$data->harga}}">Harga/Item: Rp. {{number_format((float)$data->harga)}},-</small><br>
-                                                                <small class="text-muted namaNPPVal" value="{{$data->namaNPPCheck}}">NPP: {{$data->namaNPPCheck}}</small><br>
                                                             </div>
                                                             <div>
                                                                 <strong class="hargaVal" value="{{(((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0}}">Rp. {{number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0)}},-</strong>
@@ -504,8 +504,8 @@ Edit Nota Purchase Order
     });
 
     $('body').on('click', '#tambahKeranjang', function() {
-        var idPurchase = $("#pReq").val(); //tambahan NOTE
-        var namaNPPCheck = $("#pReq").html(); //tambahan NOTE
+        var idPurchase = $("#pReq option:selected").val(); //tambahan NOTE
+        var namaNPPCheck = $("#pReq option:selected").html(); //tambahan NOTE
         var idPurchaseDetail = $("#barang").val(); //
         var namaBarang = $("#barang option:selected").attr("namaItem").toString(); //
         var jumlahBarang = parseFloat($("#jumlahBarang").val()); //
@@ -576,8 +576,8 @@ Edit Nota Purchase Order
 
             $("#pReq").val("").change();
             $("#barang").val("").change();
-            $("#jumlahBarang").val(1);
-            $("#hargaBarang").val(0);
+            $("#jumlahBarang").val("");
+            $("#hargaBarang").val("");
             $("#tanpa-rupiah").val(0);
             $("#diskonBarang").val(0);
             $("#tanpa-rupiah-diskon").val(0);
@@ -598,11 +598,11 @@ Edit Nota Purchase Order
             htmlKeranjang += '<input type="hidden" class="cekPrd" name="prdID[]" value="' + idPurchaseDetail + '">\n';
             htmlKeranjang += '<input type="hidden" class="cekPr" name="prID[]" value="' + idPurchase + '">\n';
             htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
+            htmlKeranjang += '<small class="text-muted namaNppVal" value="' + namaNPPCheck + '">NPP: ' + namaNPPCheck + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
             htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
             htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
-            htmlKeranjang += '<small class="text-muted namaNPPVal" value="' + namaNPPCheck + '">NPP: ' + namaNPPCheck.toString() + '</small><br>\n';
             htmlKeranjang += '</div>\n';
             htmlKeranjang += '<div>\n';
             htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';
@@ -654,8 +654,8 @@ Edit Nota Purchase Order
 
             $("#pReq").val("").change();
             $("#barang").val("").change();
-            $("#jumlahBarang").val(1);
-            $("#hargaBarang").val(0);
+            $("#jumlahBarang").val("");
+            $("#hargaBarang").val("");
             $("#tanpa-rupiah").val(0);
             $("#diskonBarang").val(0);
             $("#tanpa-rupiah-diskon").val(0);

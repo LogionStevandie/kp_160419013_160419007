@@ -278,7 +278,10 @@
 
       //Date range picker
       $('#reservation').daterangepicker({
-      })
+        locale: {
+          format: 'DD/MMMM/YYYY'
+        }
+      });
       //Date range picker with time picker
       $('#reservationtime').daterangepicker({
         timePicker: true,
@@ -286,7 +289,7 @@
         locale: {
           format: 'MM/DD/YYYY hh:mm A'
         }
-      })
+      });
       //Date range as a button
       $('#daterange-btn').daterangepicker({
           ranges: {
@@ -304,12 +307,12 @@
           $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'))
         }
 
-      )
+      );
 
       //Timepicker
       $('#timepicker').datetimepicker({
         format: 'LT'
-      })
+      });
 
       //Bootstrap Duallistbox
       $('.duallistbox').bootstrapDualListbox()

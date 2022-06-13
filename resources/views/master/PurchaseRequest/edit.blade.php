@@ -351,10 +351,9 @@ Edit Nota Permintaan Pembelian
       $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
 
       $("#barang").val("").change();
-      $("#jumlahBarang").val(1);
-      $("#hargaBarang").val(1);
+      $("#jumlahBarang").val("");
+      $("#hargaBarang").val("");
       $("#keteranganBarang").val("");
-      $('#hargaBarang').val(0);
       $('#tanpa-rupiah').val(0);
       $('#tanpa-rupiah').html(0);
       $('.selectpicker').selectpicker('refresh');
@@ -416,10 +415,9 @@ Edit Nota Permintaan Pembelian
       //alert(totalHargaKeranjang);
 
       $("#barang").val("").change();
-      $("#jumlahBarang").val(1);
-      $("#hargaBarang").val(1);
+      $("#jumlahBarang").val("");
+      $("#hargaBarang").val("");
       $("#keteranganBarang").val("");
-      $('#hargaBarang').val(0);
       $('#tanpa-rupiah').val(0);
       $('#tanpa-rupiah').html(0);
       $('.selectpicker').selectpicker('refresh');

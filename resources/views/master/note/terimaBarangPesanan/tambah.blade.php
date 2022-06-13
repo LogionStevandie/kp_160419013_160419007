@@ -508,8 +508,8 @@ Pembuatan Nota Terima Barang Pesanan
 
         }
         $("#barang").val("").change(); //
-        $("#jumlahBarang").val(0); //
-        $("#keteranganBarang").val();
+        $("#jumlahBarang").val(""); //
+        $("#keteranganBarang").val(""); //
 
     });
 

@@ -448,8 +448,8 @@ Pembuatan Terima Barang Supplier
         }
 
         $("#barang").val("").change(); //
-        $("#jumlahBarang").val(0); //
-        $("#keteranganBarang").val(); //
+        $("#jumlahBarang").val(""); //
+        $("#keteranganBarang").val(""); //
 
 
     });
