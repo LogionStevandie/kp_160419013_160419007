@@ -324,7 +324,7 @@ class ApprovedPOController extends Controller
                 ->where('purchase_order.approved', 0)
                 ->where('purchase_order.hapus', 0)
                 ->whereIn('purchase_order.MPerusahaanID', $arrPerusahaan)
-                ->whereBetween('purchase_order.tanggalDibuat', [date($date[0]), date($date[1])])
+                ->whereBetween('purchase_order.tanggalDibuat', [$date[0], $date[1]])
                 ->orderByDesc('purchase_order.tanggalDibuat', 'purchase_order.id')
                 ->paginate(10);
         }
@@ -377,7 +377,7 @@ class ApprovedPOController extends Controller
                 ->where('purchase_order.hapus', 0)
                 ->whereIn('MPerusahaanID', $arrPerusahaan)
                 ->where('purchase_order.name', 'like', '%' . $name . '%')
-                ->whereBetween('purchase_order.tanggalDibuat', [date($date[0]), date($date[1])])
+                ->whereBetween('purchase_order.tanggalDibuat', [$date[0], $date[1]])
                 ->orderByDesc('purchase_order.tanggalDibuat', 'purchase_order.id')
                 ->paginate(10);
         }

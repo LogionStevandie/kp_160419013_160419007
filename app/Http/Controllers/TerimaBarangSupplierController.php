@@ -888,7 +888,7 @@ class TerimaBarangSupplierController extends Controller
             ->where('transaction_gudang_barang.hapus', 0)
             ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->where('transaction_gudang_barang.isMenerima', 1)
-            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [date($date[0]), date($date[1])])
+            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [$date[0], $date[1]])
             //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->where(function ($query) use ($user) {
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)
@@ -930,7 +930,7 @@ class TerimaBarangSupplierController extends Controller
             ->whereNotNull('transaction_gudang_barang.SupplierID')
             ->where('transaction_gudang_barang.isMenerima', 1)
             ->where('transaction_gudang_barang.name', 'like', '%' . $name . '%')
-            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [date($date[0]), date($date[1])])
+            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [$date[0], $date[1]])
             //->where('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID)
             ->where(function ($query) use ($user) {
                 $query->where('transaction_gudang_barang.MGudangIDAwal', $user->MGudangID)

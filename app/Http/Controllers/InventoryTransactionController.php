@@ -496,7 +496,7 @@ class InventoryTransactionController extends Controller
             ->leftjoin('ItemTransaction', 'ItemInventoryTransaction.ItemTransactionID', '=', 'ItemTransaction.ItemTransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $gudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
-            ->whereBetween('ItemInventoryTransaction.Date', [date($date[0]), date($date[1])])
+            ->whereBetween('ItemInventoryTransaction.Date', [$date[0], $date[1]])
             ->get();
         //dd($dataReport);
         $dataReportSingle = DB::table('ItemInventoryTransactionLine')
@@ -516,7 +516,7 @@ class InventoryTransactionController extends Controller
             ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $gudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
-            ->whereDate('ItemInventoryTransaction.Date', '<=', date($date[1]))
+            ->whereDate('ItemInventoryTransaction.Date', '<=', $date[1])
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'MPerusahaan.cname', 'Unit.Name')
             ->get();
 
@@ -537,7 +537,7 @@ class InventoryTransactionController extends Controller
             ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
             ->where('ItemInventoryTransactionLine.MGudangID', $gudang)
             ->where('ItemInventoryTransactionLine.ItemID', $item)
-            ->whereDate('ItemInventoryTransaction.Date', '<', date($date[0]))
+            ->whereDate('ItemInventoryTransaction.Date', '<', $date[0])
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'MPerusahaan.cname', 'Unit.Name')
             ->get();
         //dd($dataReportSingle);

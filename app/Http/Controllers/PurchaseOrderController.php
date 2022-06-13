@@ -712,7 +712,7 @@ class PurchaseOrderController extends Controller
             ->join('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus', '=', 0)
-            ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
+            ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
             ->orderByDesc('purchase_order.tanggalDibuat', 'purchase_order.id')
             ->paginate(10);
         //->get();
@@ -749,7 +749,7 @@ class PurchaseOrderController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
             ->where('purchase_order.hapus', '=', 0)
             ->where('purchase_order.name', 'like', '%' . $name . '%')
-            ->whereBetween('tanggalDibuat', [date($date[0]), date($date[1])])
+            ->whereBetween('tanggalDibuat', [$date[0], $date[1]])
             ->orderByDesc('purchase_order.tanggalDibuat', 'purchase_order.id')
             ->paginate(10);
         //->get();

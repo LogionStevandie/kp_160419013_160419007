@@ -568,7 +568,7 @@ class PurchaseRequestController extends Controller
             ->where('MKota.cidkota', '=', $getLokasi[0]->cidkota)
             ->where('MPerusahaan.MPerusahaanID', '=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus', '=', 0)
-            ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
+            ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
             ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
             ->paginate(10);
         //->get();
@@ -605,7 +605,7 @@ class PurchaseRequestController extends Controller
             ->where('MPerusahaan.MPerusahaanID', '=', $getLokasi[0]->cidp)
             ->where('purchase_request.hapus', '=', 0)
             ->where('purchase_request.name', 'like', '%' . $name . '%')
-            ->whereBetween('purchase_request.tanggalDibuat', [date($date[0]), date($date[1])])
+            ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
             ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
             ->paginate(10);
         //->get();

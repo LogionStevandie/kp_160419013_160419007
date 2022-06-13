@@ -812,7 +812,7 @@ class TerimaBarangPesananController extends Controller
             ->where('transaction_gudang_barang.isMenerima', 1)
             ->where('transaction_gudang_barang.hapus', 0)
             ->where('transaction_gudang_barang.MGudangIDTujuan', $user->MGudangID) //asli
-            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [date($date[0]), date($date[1])])
+            ->whereBetween('transaction_gudang_barang.tanggalDibuat', [$date[0], $date[1]])
             ->where('transaction_gudang_barang.name', 'like', '%' . $name . '%')
             //->where('transaction_gudang_barang.MGudangIDTujuan',1) //debug
             //->orWhere('transaction_gudang_barang.MGudangIDTujuan',$user->MGudangID) ya

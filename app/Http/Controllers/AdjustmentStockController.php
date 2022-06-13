@@ -540,7 +540,7 @@ class AdjustmentStockController extends Controller
             ->leftjoin('MGudang', 'ItemAdjustmentDetail.MGudangID', '=', 'MGudang.MGudangID')
             ->where('ItemAdjustment.Deleted', 0)
             ->where('ItemAdjustment.Deleted', 0)
-            ->whereBetween('ItemAdjustment.Tanggal', [date($date[0]), date($date[1])])
+            ->whereBetween('ItemAdjustment.Tanggal', [$date[0], $date[1]])
             ->orderByDesc('ItemAdjustment.Tanggal', 'ItemAdjustment.ItemAdjustmentID')
             ->paginate(10);
 
@@ -576,7 +576,7 @@ class AdjustmentStockController extends Controller
             ->where('ItemAdjustment.Deleted', 0)
             ->where('ItemAdjustment.Deleted', 0)
             ->where('ItemAdjustment.Name', 'like', '%' . $name . '%')
-            ->whereBetween('ItemAdjustment.Tanggal', [date($date[0]), date($date[1])])
+            ->whereBetween('ItemAdjustment.Tanggal', [$date[0], $date[1]])
             ->orderByDesc('ItemAdjustment.Tanggal', 'ItemAdjustment.ItemAdjustmentID')
             ->paginate(10);
 

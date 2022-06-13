@@ -280,7 +280,7 @@
       $('#reservation').daterangepicker({
         locale: {
           format: 'DD/MMMM/YYYY'
-        }
+        },
       });
       //Date range picker with time picker
       $('#reservationtime').daterangepicker({
