@@ -134,7 +134,7 @@ class TerimaBarangSupplierController extends Controller
                 'purchase_order_detail.harga',
                 'purchase_order_detail.idTax',
                 'purchase_order_detail.diskon',
-                'Item.ItemName',    
+                'Item.ItemName',
                 'Unit.Name',
             )
             ->get();
@@ -704,33 +704,33 @@ class TerimaBarangSupplierController extends Controller
             ->where('TransactionID', $dataTransactionID[0]->TransactionID)
             ->delete();
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
-        for ($i = 0; $i < count($data['itemId']); $i++) {
+        for ($i = 0; $i < count(request()->get('itemId')); $i++) {
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(
                 array(
                     'transactionID' => $terimaBarangSupplier->id,
-                    'purchaseOrderDetailID' => $data['podID'][$i],
-                    'ItemID' => $data['itemId'][$i],
-                    'jumlah' => $data['itemJumlah'][$i],
-                    'keterangan' => $data['itemKeterangan'][$i],
-                    'harga' => $data['itemHarga'][$i], //didapat dri hidden ketika milih barang di PO
+                    'purchaseOrderDetailID' => request()->get('podID')[$i],
+                    'ItemID' => request()->get('itemId')[$i],
+                    'jumlah' => request()->get('itemJumlah')[$i],
+                    'keterangan' => request()->get('itemKeterangan')[$i],
+                    'harga' => request()->get('itemHarga')[$i], //didapat dri hidden ketika milih barang di PO
                 )
             );
 
-            $totalNow = DB::table('purchase_order_detail')->select('jumlah', 'jumlahProses')->where('id', $data['podID'][$i])->get();
+            $totalNow = DB::table('purchase_order_detail')->select('jumlah', 'jumlahProses')->where('id', request()->get('podID')[$i])->get();
             DB::table('purchase_order_detail')
-                ->where('id', $data['podID'][$i])
+                ->where('id',request()->get('podID')[$i])
                 ->update([
-                    'jumlahProses' => $totalNow[0]->jumlahProses + $data['itemJumlah'][$i],
+                    'jumlahProses' => $totalNow[0]->jumlahProses + request()->get('itemJumlah')[$i],
                 ]);
 
             $dataItem = DB::table('Item')
                 ->select('Unit.UnitID as unit')
                 ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
-                ->where('Item.ItemID', $data['itemId'][$i])
+                ->where('Item.ItemID', request()->get('itemId')[$i])
                 ->get();
             $dataPOD = DB::table('purchase_order_detail')
                 ->select('harga')
-                ->where('idItem', $data['itemId'][$i])
+                ->where('idItem', request()->get('itemId')[$i])
                 ->orderBy('idItem', 'desc')
                 ->limit(1)
                 ->get();
@@ -739,12 +739,12 @@ class TerimaBarangSupplierController extends Controller
                 ->insert(
                     array(
                         'TransactionID' => $dataTransactionID[0]->TransactionID,
-                        'ItemID' => $data['itemId'][$i],
+                        'ItemID' => request()->get('itemId')[$i],
                         'MGudangID' => $data['MGudangIDTujuan'],
                         'UnitID' => $dataItem[0]->unit,
                         'UnitPrice' => $dataPOD[0]->harga,
-                        'Quantity' => $data['itemJumlah'][$i],
-                        'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],
+                        'Quantity' => request()->get('itemJumlah')[$i],
+                        'TotalUnitPrice' => $dataPOD[0]->harga * request()->get('itemJumlah')[$i],
                     )
                 );
             /* DB::table('ItemInventoryTransactionLine')

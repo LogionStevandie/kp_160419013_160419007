@@ -402,15 +402,15 @@ class SuratJalanController extends Controller
         DB::table('surat_jalan_detail')
             ->where('suratJalanID', $suratJalan->id)
             ->delete();
-        for ($i = 0; $i < count($data['itemId']); $i++) {
+        for ($i = 0; $i < count(request()->get('itemId')); $i++) {
             $idSuratJalanDetail = DB::table('surat_jalan_detail')->insertGetId(
                 array(
                     'suratJalanID' => $suratJalan->id,
-                    'ItemID' => $data['itemId'][$i],
-                    'jumlah' => $data['itemJumlah'][$i],
-                    'keterangan' => $data['itemKeterangan'][$i],
+                    'ItemID' => request()->get('itemId')[$i],
+                    'jumlah' => request()->get('itemJumlah')[$i],
+                    'keterangan' => request()->get('itemKeterangan')[$i],
                     //'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
-                    'PurchaseRequestDetailID' => $data['itemPRDID'][$i], //didapat dri hidden ketika milih barang di PO
+                    'PurchaseRequestDetailID' => request()->get('itemPRDID')[$i], //didapat dri hidden ketika milih barang di PO
                 )
             );
         }

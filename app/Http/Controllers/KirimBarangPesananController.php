@@ -562,14 +562,14 @@ class KirimBarangPesananController extends Controller
             ->where('TransactionID', $dataTransactionID[0]->TransactionID)
             ->delete();
         //keluarkan kabeh item, baru bukak pemilihan PO ne sg mana, PO gk ush dipilih misalkan transfer atau kirim barang
-        for ($i = 0; $i < count($data['itemId']); $i++) {
+        for ($i = 0; $i < count(request()->get('itemId')); $i++) {
             $idtransaksigudangdetail = DB::table('transaction_gudang_barang_detail')->insertGetId(
                 array(
                     'transactionID' => $kirimBarangPesanan->id,
-                    'purchaseRequestDetailID' => $data['itemPRDID'][$i],
-                    'ItemID' => $data['itemId'][$i],
-                    'jumlah' => $data['itemJumlah'][$i],
-                    'keterangan' => $data['itemKeterangan'][$i],
+                    'purchaseRequestDetailID' => request()->get('itemPRDID')[$i],
+                    'ItemID' => request()->get('itemId')[$i],
+                    'jumlah' => request()->get('itemJumlah')[$i],
+                    'keterangan' => request()->get('itemKeterangan')[$i],
                     //'harga' => $data['itemHarga'][$i],//didapat dri hidden ketika milih barang di PO
                 )
             );
@@ -578,11 +578,11 @@ class KirimBarangPesananController extends Controller
             $dataItem = DB::table('Item')
                 ->select('Unit.UnitID as unit')
                 ->leftjoin('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
-                ->where('Item.ItemID', $data['itemId'][$i])
+                ->where('Item.ItemID', request()->get('itemId')[$i])
                 ->get();
             $dataPOD = DB::table('purchase_order_detail')
                 ->select('harga')
-                ->where('idItem', $data['itemId'][$i])
+                ->where('idItem', request()->get('itemId')[$i])
                 ->orderBy('idItem', 'desc')
                 ->limit(1)
                 ->get();
@@ -592,22 +592,22 @@ class KirimBarangPesananController extends Controller
                     array(
                         'TransactionID' => $dataTransactionID[0]->TransactionID,
                         //'transactionDetailID' => $idtransaksigudangdetail,  
-                        'ItemID' => $data['itemId'][$i],
+                        'ItemID' => request()->get('itemId')[$i],
                         'MGudangID' => $data['MGudangIDAwal'],
                         'UnitID' => $dataItem[0]->unit,
                         'UnitPrice' => $dataPOD[0]->harga,
-                        'Quantity' => $data['itemJumlah'][$i] * -1.0,
-                        'TotalUnitPrice' => $dataPOD[0]->harga * $data['itemJumlah'][$i],
+                        'Quantity' => request()->get('itemJumlah')[$i] * -1.0,
+                        'TotalUnitPrice' => $dataPOD[0]->harga * request()->get('itemJumlah')[$i],
                     )
                 );
 
             DB::table('surat_jalan_detail')
                 ->where('suratJalanID', $data['SuratJalanID'])
-                ->where('ItemID', $data['itemId'][$i])
-                ->where('PurchaseRequestDetailID', $data['itemPRDID'][$i])
+                ->where('ItemID', request()->get('itemId')[$i])
+                ->where('PurchaseRequestDetailID', request()->get('itemPRDID')[$i])
                 ->update(
                     array(
-                        'jumlahProsesKirim' => $data['itemJumlah'][$i],
+                        'jumlahProsesKirim' => request()->get('itemJumlah')[$i],
                         'UpdatedBy' => $user->id,
                         'UpdatedOn' => date("Y-m-d h:i:sa"),
                     )
