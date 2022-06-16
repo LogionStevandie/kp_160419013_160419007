@@ -65,20 +65,20 @@ Edit Supplier
                         
                         <div class="form-group">
                             <label for="title">Kode Pos</label>
-                            <input require type="text" name="kodePos" class="form-control" 
+                            <input require type="number" name="kodePos" class="form-control" 
                            value="{{old('KodePos',$msupplier->KodePos)}}" >
                         </div>
 
 
                         <div class="form-group">
                             <label for="title">Phone 1</label>
-                            <input require type="text" name="phone1" class="form-control" 
+                            <input require type="number" name="phone1" class="form-control" 
                            value="{{old('Phone1',$msupplier->Phone1)}}" >
                         </div>
 
                         <div class="form-group">
                             <label for="title">Phone 2</label>
-                            <input require type="text" name="phone2" class="form-control" 
+                            <input require type="number" name="phone2" class="form-control" 
                            value="{{old('Phone2',$msupplier->Phone2)}}" >
                         </div>
 
@@ -109,7 +109,7 @@ Edit Supplier
 
                          <div class="form-group">
                             <label for="title">NPWP</label>
-                            <input require type="text" name="NPWP" class="form-control" 
+                            <input require type="number" name="NPWP" class="form-control" 
                            value="{{old('NPWP',$msupplier->NPWP)}}" >
                         </div>
                         <div class="form-group">
@@ -125,7 +125,7 @@ Edit Supplier
                         
                          <div class="form-group">
                             <label for="title">No Rekening</label>
-                            <input require type="text" name="noRekening" class="form-control" 
+                            <input require type="number" name="noRekening" class="form-control" 
                            value="{{old('NoRekening',$msupplier->NoRekening)}}" >
                         </div>
 

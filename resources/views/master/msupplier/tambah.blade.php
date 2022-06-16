@@ -58,18 +58,18 @@ Tambah Supplier
 
                     <div class="form-group">
                         <label for="title">Kode Pos</label>
-                        <input require type="text" name="kodePos" class="form-control" value="{{old('KodePos','')}}">
+                        <input require type="number" name="kodePos" class="form-control" value="{{old('KodePos','')}}">
                     </div>
 
 
                     <div class="form-group">
                         <label for="title">Phone 1</label>
-                        <input require type="text" name="phone1" class="form-control" value="{{old('Phone1','')}}">
+                        <input require type="number" name="phone1" class="form-control" value="{{old('Phone1','')}}">
                     </div>
 
                     <div class="form-group">
                         <label for="title">Phone 2</label>
-                        <input require type="text" name="phone2" class="form-control" value="{{old('Phone2','')}}">
+                        <input require type="number" name="phone2" class="form-control" value="{{old('Phone2','')}}">
                     </div>
 
 
@@ -111,7 +111,7 @@ Tambah Supplier
 
                     <div class="form-group">
                         <label for="title">No Rekening</label>
-                        <input require type="text" name="noRekening" class="form-control" value="{{old('NoRekening','')}}">
+                        <input require type="number" name="noRekening" class="form-control" value="{{old('NoRekening','')}}">
                     </div>
 
                     <div class="form-group">

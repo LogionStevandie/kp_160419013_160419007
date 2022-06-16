@@ -88,7 +88,14 @@ Purchase Order
                               <th scope="row" name='id'>{{$purchaseOrder->id}}</th>
                               <td>{{$purchaseOrder->name}}</td>
                               <td>@php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp</td>
-                              <td>{{$purchaseOrder->proses}}</td>
+                              <td>
+                               @if($purchaseOrder->proses == 0)
+                                        Belum Diproses
+                                    @elseif($purchaseOrder->proses == 1)
+                                        Sedang Diproses
+                                    @elseif($purchaseOrder->proses == 2)
+                                        Selesai
+                                    @endif</td>
                               @if($purchaseOrder->approved==0)
                               <td>Pending</td>
                               @elseif($purchaseOrder->approved==1)
