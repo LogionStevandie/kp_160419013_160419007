@@ -369,7 +369,7 @@ Pembuatan Nota Permintaan Pembelian
       htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="' + hargaBarang + '">\n';
       htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
       htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
-      htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga Satuan : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  +'</small><br>\n'; ak nganu seng iki cug
+      htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga Satuan : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  +'</small><br>\n'; 
       htmlKeranjang += '</div>\n';
       htmlKeranjang += '<div>\n';
       htmlKeranjang += '<strong class="hargaVal" value="' + hargaBarang * jumlahBarang + '">Rp. ' + (hargaBarang * jumlahBarang).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';

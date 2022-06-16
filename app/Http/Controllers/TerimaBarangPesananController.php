@@ -157,6 +157,11 @@ class TerimaBarangPesananController extends Controller
 
         //
         $user = Auth::user();
+
+        if(request()->get('itemId') == null || request()->get('itemId') == ""){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
+
         $data = $request->collect();
         $year = date("Y");
         $month = date("m");
@@ -530,6 +535,9 @@ class TerimaBarangPesananController extends Controller
     {
 
         $user = Auth::user();
+        if(request()->get('itemId') == null || request()->get('itemId') == ""){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
         $data = $request->collect();
 
         DB::table('transaction_gudang_barang')

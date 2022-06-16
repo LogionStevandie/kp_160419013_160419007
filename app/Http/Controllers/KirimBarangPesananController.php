@@ -167,6 +167,10 @@ class KirimBarangPesananController extends Controller
         $year = date("Y");
         $month = date("m");
 
+        if(request()->get('itemId') == null || request()->get('itemId') == ""){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
+
         $dataLokasi = DB::table('MGudang')
             ->select('MKota.*', 'MPerusahaan.cnames as perusahaanCode')
             ->join('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
@@ -506,6 +510,10 @@ class KirimBarangPesananController extends Controller
     {
         $user = Auth::user();
         $data = $request->collect();
+
+        if(request()->get('itemId') == null || request()->get('itemId') == ""){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
 
         DB::table('transaction_gudang_barang')
             ->where('id', $kirimBarangPesanan->id)

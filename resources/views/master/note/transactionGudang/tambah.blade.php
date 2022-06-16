@@ -503,6 +503,11 @@ Pembuatan Transaksi Gudang Barang
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
         }
+          else if (jumlahBarang > $("#jumlahBarang").attr("max"))
+        {
+                $('#jumlahBarang').val("");
+                alert("harap masukkan jumlah barang yang sesuai");
+        }
         //alert(jumlahBarang + hargaBarang+ keteranganBarang);
         else if(indexSama != null){
             var jumlah = $('.cekJumlah:eq('+indexSama+')').val();

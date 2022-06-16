@@ -110,12 +110,20 @@
 
       <!-- Main content -->
       <section class="content">
-        @yield('content')
         @if(session("status"))
+        @if(session('status') == "Isikan data keranjang")
+        <div class="alert alert-warning">
+          {{session('status')}}
+        </div>
+        @else
         <div class="alert alert-success">
           {{session('status')}}
         </div>
         @endif
+        
+        @endif
+        @yield('content')
+
       </section>
       <!-- /.content -->
     </div>

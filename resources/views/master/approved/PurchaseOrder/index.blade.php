@@ -19,11 +19,6 @@ Persetujuan Order
 
 @section('content')
 
- @if(session("status"))
-      <div class="alert alert-success">
-          {{session('status')}}
-      </div>
-    @endif
 <div class="container-fluid">
     <h2 class="text-center display-4">Cari PO</h2>
     <div class="row">

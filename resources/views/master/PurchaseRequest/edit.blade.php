@@ -62,7 +62,7 @@ Edit Nota Permintaan Pembelian
                             <i class="far fa-calendar-alt"></i>
                           </span>
                         </div>
-                        <input type="text" name="tanggalDibutuhkan" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan','')}}">
+                        <input type="text" name="tanggalDibutuhkan" class="form-control float-right" id="reservation" value="{{old('tanggalDibutuhkan',$purchaseRequest->tanggalDibutuhkan + '-' + $purchaseRequest->tanggalAkhirDibutuhkan)}}">
                       </div>
                     </div>
 

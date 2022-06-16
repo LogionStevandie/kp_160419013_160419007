@@ -139,6 +139,11 @@ class SuratJalanController extends Controller
     {
         //
         $user = Auth::user();
+
+        if(!isset($data['itemId'])){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
+
         $data = $request->collect();
         $year = date("Y");
         $month = date("m");
@@ -379,6 +384,10 @@ class SuratJalanController extends Controller
         //
         $user = Auth::user();
         $data = $request->collect();
+
+        if(request()->get('itemId') == null || request()->get('itemId') == ""){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
 
         DB::table('surat_jalan')
             ->where('id', $suratJalan->id)

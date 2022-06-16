@@ -334,7 +334,9 @@ Pembuatan Terima Barang Supplier
                     });
                     if (maxAngka <= 0) {
                         $('#jumlahBarang').prop('readonly', true);
-                    } else {
+                    } 
+                    
+                    else {
                         $('#jumlahBarang').prop('readonly', false);
                     }
                 }
@@ -389,6 +391,7 @@ Pembuatan Terima Barang Supplier
         var hargaBarang = $("#barang option:selected").attr("harga");
         var jumlahBarang = parseFloat($("#jumlahBarang").val()); //
         var keteranganBarang = $("#keteranganBarang").val(); //
+        
 
         var indexSama = null;
         for (let i = 0; i < $('.cekId').length; i++) {
@@ -402,7 +405,13 @@ Pembuatan Terima Barang Supplier
         if (idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == "") {
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
-        } else if (indexSama != null) {
+        } 
+        else if (jumlahBarang > $("#jumlahBarang").attr("max"))
+        {
+                $('#jumlahBarang').val("");
+                alert("harap masukkan jumlah barang yang sesuai");
+        }
+        else if (indexSama != null) {
             //alert("masuk indexSama");
             var jumlah = $('.cekJumlah:eq(' + indexSama + ')').val();
             $('.cekJumlah:eq(' + indexSama + ')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));

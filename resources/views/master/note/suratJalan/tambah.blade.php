@@ -498,7 +498,13 @@ Pembuatan Surat Jalan
         if (idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == "") {
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
-        } else if (indexSama != null) {
+        }
+          else if (jumlahBarang > $("#jumlahBarang").attr("max"))
+        {
+                $('#jumlahBarang').val("");
+                alert("harap masukkan jumlah barang yang sesuai");
+        }
+         else if (indexSama != null) {
             //alert("masuk indexSama");
             var jumlah = $('.cekJumlah:eq(' + indexSama + ')').val();
             $('.cekJumlah:eq(' + indexSama + ')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));

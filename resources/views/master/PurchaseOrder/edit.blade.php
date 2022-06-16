@@ -520,149 +520,160 @@ Edit Nota Purchase Order
         var taxId = $("#tax option:selected").val();
         var idBarang = $("#barang option:selected").attr("idPr");
         var totalHarga = 0;
+
+
         //alert(taxPercent);
 
-        var indexSama = null;
-        for (let i = 0; i < $('.cekId').length; i++) {
-            if ($('.cekId:eq(' + i + ')').val() == idBarang) {
-                if ($('.cekHarga:eq(' + i + ')').val() == hargaBarang) {
-                    if ($('.cekTax:eq(' + i + ')').val() == taxId) {
-                        if ($('.cekDiskon:eq(' + i + ')').val() == diskonBarang) {
-                            if ($('.cekPrd:eq(' + i + ')').val() == idPurchaseDetail) {
-                                indexSama = i;
+        var jumlahMax = $("#jumlahBarang").prop("max");
+        if(jumlahBarang > jumlahMax){
+            alert("Jumlah barang melebihi batas maksimum"); 
+            $('#jumlahBarang').val("");
+        }
+        else{
+            var indexSama = null;
+            for (let i = 0; i < $('.cekId').length; i++) {
+                if ($('.cekId:eq(' + i + ')').val() == idBarang) {
+                    if ($('.cekHarga:eq(' + i + ')').val() == hargaBarang) {
+                        if ($('.cekTax:eq(' + i + ')').val() == taxId) {
+                            if ($('.cekDiskon:eq(' + i + ')').val() == diskonBarang) {
+                                if ($('.cekPrd:eq(' + i + ')').val() == idPurchaseDetail) {
+                                    indexSama = i;
+                                }
                             }
                         }
                     }
                 }
             }
-        }
-        if (idBarang == "" || namaBarang == "--Pilih barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || hargaBarang == 0 || hargaBarang == "" || keteranganBarang == "" || parseFloat(jumlahBarang) > parseFloat($("#jumlahBarang").attr("max")) || taxId == "") {
-            alert('Harap lengkapi atau isi data Barang dengan benar');
-            die;
-        }
-        //alert(jumlahBarang + hargaBarang+ keteranganBarang);
-        else if (indexSama != null) {
-            var jumlah = $('.cekJumlah:eq(' + indexSama + ')').val();
-            $('.cekJumlah:eq(' + indexSama + ')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));
-            var keterangan = $('.cekKeterangan:eq(' + indexSama + ')').val();
-            //$('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang);
-            $('.cekKeterangan:eq(' + indexSama + ')').val(keteranganBarang);
-
-            $('.keteranganVal:eq(' + indexSama + ')').html($('.cekKeterangan:eq(' + indexSama + ')').val());
-            $('.jumlahVal:eq(' + indexSama + ')').html(($('.cekJumlah:eq(' + indexSama + ')').val()));
-            //$('.cekPrd:eq('+indexSama+')').attr("sekarang",1);
-
-            $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ((parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * (parseFloat(hargaBarang) - parseFloat(diskonBarang))) * (100.0 + taxPercent) / 100.0) + ',-');
-
-            var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
-            //alert(maxAngka);
-            $("#jumlahBarang").attr({
-                "max": maxAngka,
-                "min": 0,
-                "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
-                "value": "",
-            });
-            if (maxAngka <= 0) {
-                $('#jumlahBarang').prop('readonly', true);
-            } else {
-                $('#jumlahBarang').prop('readonly', false);
+            if (idBarang == "" || namaBarang == "--Pilih barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || hargaBarang == 0 || hargaBarang == "" || keteranganBarang == "" || parseFloat(jumlahBarang) > parseFloat($("#jumlahBarang").attr("max")) || taxId == "") {
+                alert('Harap lengkapi atau isi data Barang dengan benar');
+                die;
             }
+            //alert(jumlahBarang + hargaBarang+ keteranganBarang);
+            else if (indexSama != null) {
+                var jumlah = $('.cekJumlah:eq(' + indexSama + ')').val();
+                $('.cekJumlah:eq(' + indexSama + ')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));
+                var keterangan = $('.cekKeterangan:eq(' + indexSama + ')').val();
+                //$('.cekKeterangan:eq('+indexSama+')').val(keterangan + ".\n" +keteranganBarang);
+                $('.cekKeterangan:eq(' + indexSama + ')').val(keteranganBarang);
 
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
+                $('.keteranganVal:eq(' + indexSama + ')').html($('.cekKeterangan:eq(' + indexSama + ')').val());
+                $('.jumlahVal:eq(' + indexSama + ')').html(($('.cekJumlah:eq(' + indexSama + ')').val()));
+                //$('.cekPrd:eq('+indexSama+')').attr("sekarang",1);
 
-            totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * ((100.0 + taxPercent) / 100.0);
-            $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+                $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ((parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * (parseFloat(hargaBarang) - parseFloat(diskonBarang))) * (100.0 + taxPercent) / 100.0) + ',-');
 
-            $("#pReq").val("").change();
-            $("#barang").val("").change();
-            $("#jumlahBarang").val("");
-            $("#hargaBarang").val("");
-            $("#tanpa-rupiah").val(0);
-            $("#diskonBarang").val(0);
-            $("#tanpa-rupiah-diskon").val(0);
-            $("#keteranganBarang").val("");
-            $("#tax").val("").change();
-            $('.selectpicker').selectpicker('refresh');
-        } else {
-            var htmlKeranjang = "";
-            htmlKeranjang += '<li class="list-group-item d-flex justify-content-between lh-condensed">\n';
-            htmlKeranjang += '<div id="hiddenDiv">\n';
-            htmlKeranjang += '<input type="hidden" class="cekId" name="itemId[]" value="' + idBarang + '">\n';
-            htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemTotal[]" value="' + jumlahBarang + '">\n';
-            htmlKeranjang += '<input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="' + keteranganBarang + '">\n';
-            htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="' + hargaBarang + '">\n';
-            htmlKeranjang += '<input type="hidden" class="cekDiskon" name="itemDiskon[]" value="' + diskonBarang + '">\n';
-            htmlKeranjang += '<input type="hidden" class="cekTax" name="itemTax[]" value="' + taxId + '">\n';
-            htmlKeranjang += '<input type="hidden" class="cekTaxValue" name="itemTaxValue[]" value="' + taxPercent + '">\n';
-            htmlKeranjang += '<input type="hidden" class="cekPrd" name="prdID[]" value="' + idPurchaseDetail + '">\n';
-            htmlKeranjang += '<input type="hidden" class="cekPr" name="prID[]" value="' + idPurchase + '">\n';
-            htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
-            htmlKeranjang += '<small class="text-muted namaNppVal" value="' + namaNPPCheck + '">NPP: ' + namaNPPCheck + '</small><br>\n';
-            htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
-            htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
-            htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
-            htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
-            htmlKeranjang += '</div>\n';
-            htmlKeranjang += '<div>\n';
-            htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';
-            htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
-            htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
-            htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
-            htmlKeranjang += '</svg>\n';
-            htmlKeranjang += '</button>\n';
-            htmlKeranjang += '<button class="btn btn-danger" type="button" id="hapusKeranjang">\n';
-            htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">\n';
-            htmlKeranjang += '<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>\n';
-            htmlKeranjang += '</svg>\n';
-            htmlKeranjang += '</button>\n';
-            htmlKeranjang += '</div>\n';
-            htmlKeranjang += '</li>\n';
+                var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
+                //alert(maxAngka);
+                $("#jumlahBarang").attr({
+                    "max": maxAngka,
+                    "min": 0,
+                    "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
+                    "value": "",
+                });
+                if (maxAngka <= 0) {
+                    $('#jumlahBarang').prop('readonly', true);
+                } else {
+                    $('#jumlahBarang').prop('readonly', false);
+                }
 
-            $('#keranjang').append(htmlKeranjang);
-            totalTambah += 1
-            $('#totalBarangnya').val(totalTambah);
-            $('#totalBarangnya').html(totalTambah);
+                var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
 
-            var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
-            //alert(maxAngka);
-            $("#jumlahBarang").attr({
-                "max": maxAngka,
-                "min": 0,
-                "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
-                "value": "",
-            });
-            if (maxAngka <= 0) {
-                $('#jumlahBarang').prop('readonly', true);
+                totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * ((100.0 + taxPercent) / 100.0);
+                $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
+                $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+
+                $("#pReq").val("").change();
+                $("#barang").val("").change();
+                $("#jumlahBarang").val("");
+                $("#hargaBarang").val("");
+                $("#tanpa-rupiah").val(0);
+                $("#diskonBarang").val(0);
+                $("#tanpa-rupiah-diskon").val(0);
+                $("#keteranganBarang").val("");
+                $("#tax").val("").change();
+                $('.selectpicker').selectpicker('refresh');
             } else {
-                $('#jumlahBarang').prop('readonly', false);
+                var htmlKeranjang = "";
+                htmlKeranjang += '<li class="list-group-item d-flex justify-content-between lh-condensed">\n';
+                htmlKeranjang += '<div id="hiddenDiv">\n';
+                htmlKeranjang += '<input type="hidden" class="cekId" name="itemId[]" value="' + idBarang + '">\n';
+                htmlKeranjang += '<input type="hidden" id="cekJumlah" class="cekJumlah" name="itemTotal[]" value="' + jumlahBarang + '">\n';
+                htmlKeranjang += '<input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="' + keteranganBarang + '">\n';
+                htmlKeranjang += '<input type="hidden" class="cekHarga" name="itemHarga[]" value="' + hargaBarang + '">\n';
+                htmlKeranjang += '<input type="hidden" class="cekDiskon" name="itemDiskon[]" value="' + diskonBarang + '">\n';
+                htmlKeranjang += '<input type="hidden" class="cekTax" name="itemTax[]" value="' + taxId + '">\n';
+                htmlKeranjang += '<input type="hidden" class="cekTaxValue" name="itemTaxValue[]" value="' + taxPercent + '">\n';
+                htmlKeranjang += '<input type="hidden" class="cekPrd" name="prdID[]" value="' + idPurchaseDetail + '">\n';
+                htmlKeranjang += '<input type="hidden" class="cekPr" name="prID[]" value="' + idPurchase + '">\n';
+                htmlKeranjang += '<h6 class="my-0">' + namaBarang + '<small class="jumlahVal" value="' + jumlahBarang + '">(' + jumlahBarang + ')</small> </h6>\n';
+                htmlKeranjang += '<small class="text-muted namaNppVal" value="' + namaNPPCheck + '">NPP: ' + namaNPPCheck + '</small><br>\n';
+                htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
+                htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
+                htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
+                htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
+                htmlKeranjang += '</div>\n';
+                htmlKeranjang += '<div>\n';
+                htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';
+                htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
+                htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
+                htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';
+                htmlKeranjang += '</svg>\n';
+                htmlKeranjang += '</button>\n';
+                htmlKeranjang += '<button class="btn btn-danger" type="button" id="hapusKeranjang">\n';
+                htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">\n';
+                htmlKeranjang += '<path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z"/>\n';
+                htmlKeranjang += '</svg>\n';
+                htmlKeranjang += '</button>\n';
+                htmlKeranjang += '</div>\n';
+                htmlKeranjang += '</li>\n';
+
+                $('#keranjang').append(htmlKeranjang);
+                totalTambah += 1
+                $('#totalBarangnya').val(totalTambah);
+                $('#totalBarangnya').html(totalTambah);
+
+                var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
+                //alert(maxAngka);
+                $("#jumlahBarang").attr({
+                    "max": maxAngka,
+                    "min": 0,
+                    "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
+                    "value": "",
+                });
+                if (maxAngka <= 0) {
+                    $('#jumlahBarang').prop('readonly', true);
+                } else {
+                    $('#jumlahBarang').prop('readonly', false);
+                }
+
+                /*var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').val());
+                alert(totalHargaKeranjang);
+                totalHargaKeranjang += ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
+                alert(totalHargaKeranjang);
+                $('#TotalHargaKeranjang').html(totalHargaKeranjang);
+                $('#TotalHargaKeranjang').val(totalHargaKeranjang);*/
+
+                var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
+
+                totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0;
+                $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
+                $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+
+
+                $("#pReq").val("").change();
+                $("#barang").val("").change();
+                $("#jumlahBarang").val("");
+                $("#hargaBarang").val("");
+                $("#tanpa-rupiah").val(0);
+                $("#diskonBarang").val(0);
+                $("#tanpa-rupiah-diskon").val(0);
+                $("#keteranganBarang").val("");
+                $("#tax").val("").change();
+                $('.selectpicker').selectpicker('refresh');
             }
-
-            /*var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').val());
-            alert(totalHargaKeranjang);
-            totalHargaKeranjang += ((hargaBarang-diskonBarang) * jumlahBarang) * (100.0+taxPercent) / 100.0;
-            alert(totalHargaKeranjang);
-            $('#TotalHargaKeranjang').html(totalHargaKeranjang);
-            $('#TotalHargaKeranjang').val(totalHargaKeranjang);*/
-
-            var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
-
-            totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0;
-            $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
-            $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
-
-
-            $("#pReq").val("").change();
-            $("#barang").val("").change();
-            $("#jumlahBarang").val("");
-            $("#hargaBarang").val("");
-            $("#tanpa-rupiah").val(0);
-            $("#diskonBarang").val(0);
-            $("#tanpa-rupiah-diskon").val(0);
-            $("#keteranganBarang").val("");
-            $("#tax").val("").change();
-            $('.selectpicker').selectpicker('refresh');
         }
+
+        
 
 
     });

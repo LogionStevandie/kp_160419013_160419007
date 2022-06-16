@@ -491,6 +491,11 @@ Edit Terima Barang Supplier
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
         }
+         else if (jumlahBarang > $("#jumlahBarang").attr("max"))
+        {
+                $('#jumlahBarang').val(0);
+                alert("harap masukkan jumlah barang yang sesuai");
+        }
         else if(indexSama != null){
             //alert("masuk indexSama");
             var jumlah = $('.cekJumlah:eq('+indexSama+')').val();

@@ -170,6 +170,12 @@ class PurchaseRequestController extends Controller
         //dd($data);
         //echo $data['barang'][0];
         //echo count($data['jumlah']);
+
+        //pengecekan jika data keranjang kosong
+        if(!isset($data['itemId'])){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
+
         $user = Auth::user();
         $year = date("Y");
         $month = date("m");
@@ -214,6 +220,8 @@ class PurchaseRequestController extends Controller
         );
 
         $totalHarga = 0;
+
+        
 
         for ($i = 0; $i < count($data['itemId']); $i++) {
             DB::table('purchase_request_detail')->insert(
@@ -383,6 +391,13 @@ class PurchaseRequestController extends Controller
     {
         //belommm
         $data = $request->collect();
+
+        //pengecekan jika data keranjang kosong
+        if(!isset($data['itemId'])){
+            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        }
+
+
         $user = Auth::user();
         $year = date("Y");
         $month = date("m");
