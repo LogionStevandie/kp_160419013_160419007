@@ -42,7 +42,7 @@ Edit Surat Jalan
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Pembuatan</label>
-                                            <input readonly name="tanggalDibuat" type="date" class="form-control" id="lastName" placeholder="" value="{{$suratJalan->tanggalDibuat}}" required="">
+                                            <input readonly name="tanggalDibuat" type="date" class="form-control" id="datePembuatan" placeholder="" value="{{$suratJalan->tanggalDibuat}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 
@@ -201,8 +201,8 @@ Edit Surat Jalan
                                                                 <input type="hidden" id="cekJumlah" class="cekJumlah" name="itemJumlah[]" value="{{$data->jumlah}}">
                                                                 <input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="{{$data->keterangan}}">
                                                                 <input type="hidden" class="cekPrd" name="itemPRDID[]" value="{{$data->idPRD}}">
-                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="'+jumlahBarang+'">({{$data->jumlah}})</small> </h6>
-                                                                <small class="text-muted keteranganVal" value="'+keteranganBarang+'">{{$data->keterangan}}</small><br>
+                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="{{$data->jumlah}}">({{$data->jumlah}})</small> </h6>
+                                                                <small class="text-muted keteranganVal" value="{{$data->keterangan}}">{{$data->keterangan}}</small><br>
                                                             </div>
                                                             <div>
                                                                 <button class="btn btn-primary copyKe" type="button" id="copyKe">
@@ -368,21 +368,27 @@ Edit Surat Jalan
             var maxAngka = 0;
 
             var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
-
             $.each(dataReportUntukStok, function(key, value) {
-                if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
-                    //$("#stokAwalBarang").val(value.totalQuantity);     
+                if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {  
                     maxAngka = maxAngka + parseFloat(value.Quantity);
+                }
+
+            });
+
+            $.each($('.cekId'), function(idx, val) {
+                if (val.value == id) {
+                    var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
+                    maxAngka = maxAngka - jumlahBarang;
                 }
             });
 
-            var dataTotalDetail = <?php echo json_encode($dataTotalDetail); ?>;
+            /*var dataTotalDetail = <?php echo json_encode($dataTotalDetail); ?>;
             $.each(dataTotalDetail, function(k, v) {
                 if (v.idPRD.toString() == idPrdID.toString() && v.ItemID.toString() == id.toString()) {
                     //alert("masuk minus");
                     maxAngka -= parseFloat(v.jumlah);
                 }
-            });
+            });*/
             if (maxAngka > 0) {
                 $("#jumlahBarang").attr({
                     "max": maxAngka,
@@ -431,13 +437,19 @@ Edit Surat Jalan
                         maxAngka = maxAngka + parseFloat(value.Quantity);
                     }
                 });
-                var dataTotalDetail = <?php echo json_encode($dataTotalDetail); ?>;
+                $.each($('.cekId'), function(idx, val) {
+                if (val.value == id) {
+                    var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
+                    maxAngka = maxAngka - jumlahBarang;
+                    }
+                });
+                /*var dataTotalDetail = <?php echo json_encode($dataTotalDetail); ?>;
                 $.each(dataTotalDetail, function(k, v) {
                     if (v.idPRD.toString() == idPrdID.toString() && v.ItemID.toString() == id.toString()) {
                         //alert("masuk minus");
                         maxAngka -= parseFloat(v.jumlah);
                     }
-                });
+                });*/
                 if (maxAngka > 0) {
                     $("#jumlahBarang").attr({
                         "max": maxAngka,
@@ -487,14 +499,22 @@ Edit Surat Jalan
                         //$("#stokAwalBarang").val(value.totalQuantity);     
                         maxAngka = maxAngka + parseFloat(value.Quantity);
                     }
+
                 });
-                var dataTotalDetail = <?php echo json_encode($dataTotalDetail); ?>;
+                $.each($('.cekId'), function(idx, val) {
+                if (val.value == id) {
+                    var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
+                    maxAngka = maxAngka - jumlahBarang;
+                    }
+                });
+
+                /*var dataTotalDetail = <?php echo json_encode($dataTotalDetail); ?>;
                 $.each(dataTotalDetail, function(k, v) {
                     if (v.idPRD.toString() == idPrdID.toString() && v.ItemID.toString() == id.toString()) {
                         //alert("masuk minus");
                         maxAngka -= parseFloat(v.jumlah);
                     }
-                });
+                });*/
                 if (maxAngka > 0) {
                     $("#jumlahBarang").attr({
                         "max": maxAngka,

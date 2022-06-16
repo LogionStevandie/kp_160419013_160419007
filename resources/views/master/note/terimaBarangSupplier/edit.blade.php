@@ -493,8 +493,9 @@ Edit Terima Barang Supplier
         }
          else if (jumlahBarang > $("#jumlahBarang").attr("max"))
         {
-                $('#jumlahBarang').val(0);
+                $('#jumlahBarang').val("");
                 alert("harap masukkan jumlah barang yang sesuai");
+                die;
         }
         else if(indexSama != null){
             //alert("masuk indexSama");

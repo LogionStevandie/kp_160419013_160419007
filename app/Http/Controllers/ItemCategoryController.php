@@ -23,21 +23,19 @@ class ItemCategoryController extends Controller
         //
         $dataCategory = DB::table('ItemCategory')
             ->paginate(10);
-            //->get();
+        //->get();
         $dataCOA = DB::table('COA')
             ->get();
-        
 
-         $user = Auth::user();
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('itemCategory.index', $user->id, $user->idRole);
-        if ($check) {  
-          return view('master.itemCategory.index',[
-            'dataCategory' => $dataCategory,
-            'dataCOA' => $dataCOA,
-        ]);
-
-
+        if ($check) {
+            return view('master.itemCategory.index', [
+                'dataCategory' => $dataCategory,
+                'dataCOA' => $dataCOA,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
         }
@@ -53,15 +51,13 @@ class ItemCategoryController extends Controller
         //
         $dataCOA = DB::table('COA')
             ->get();
-       
-            $user = Auth::user();
-         $check = $this->checkAccess('itemCategory.index', $user->id, $user->idRole);
-        if ($check) {  
-          return view('master.itemCategory.tambah',[
-            'dataCOA' => $dataCOA,
-        ]);
 
-
+        $user = Auth::user();
+        $check = $this->checkAccess('itemCategory.index', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemCategory.tambah', [
+                'dataCOA' => $dataCOA,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
         }
@@ -78,23 +74,24 @@ class ItemCategoryController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('ItemCategory')
-            ->insert(array(
-                'Name' => $data['Name'],
-                'Remarks' => $data['remarks'],
-                //'NTBDebetCOA' => $data['NTBDebetCOA'],
-                //'NTBKreditCOA' => $data['NTBKreditCOA'],
-                //'BillVDebetCOA' => $data['BillVDebetCOA'],
-                //'BillVKreditCOA' => $data['BillVKreditCOA'],
-                //'PenjualanCOA' => $data['PenjualanCOA'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        ); 
-         return redirect()->route('itemCategory.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'Name' => $data['Name'],
+                    'Remarks' => $data['remarks'],
+                    //'NTBDebetCOA' => $data['NTBDebetCOA'],
+                    //'NTBKreditCOA' => $data['NTBKreditCOA'],
+                    //'BillVDebetCOA' => $data['BillVDebetCOA'],
+                    //'BillVKreditCOA' => $data['BillVKreditCOA'],
+                    //'PenjualanCOA' => $data['PenjualanCOA'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('itemCategory.index')->with('status', 'Success!!');
     }
 
     /**
@@ -110,18 +107,16 @@ class ItemCategoryController extends Controller
             ->get();
         $dataCOA = DB::table('COA')
             ->get();
-      
-
-         $user = Auth::user();
-         $check = $this->checkAccess('itemCategory.show', $user->id, $user->idRole);
-        if ($check) {  
-           return view('master.itemCategory.detail',[
-            'itemCategory' => $itemCategory,
-            'dataCategory' => $dataCategory,
-            'dataCOA' => $dataCOA,
-        ]);
 
 
+        $user = Auth::user();
+        $check = $this->checkAccess('itemCategory.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemCategory.detail', [
+                'itemCategory' => $itemCategory,
+                'dataCategory' => $dataCategory,
+                'dataCOA' => $dataCOA,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
         }
@@ -138,17 +133,15 @@ class ItemCategoryController extends Controller
         //
         $dataCOA = DB::table('COA')
             ->get();
-        
-
-         $user = Auth::user();
-         $check = $this->checkAccess('itemCategory.edit', $user->id, $user->idRole);
-        if ($check) {  
-          return view('master.itemCategory.edit',[
-            'itemCategory' => $itemCategory,
-            'dataCOA' => $dataCOA,
-        ]);
 
 
+        $user = Auth::user();
+        $check = $this->checkAccess('itemCategory.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemCategory.edit', [
+                'itemCategory' => $itemCategory,
+                'dataCOA' => $dataCOA,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
         }
@@ -168,19 +161,20 @@ class ItemCategoryController extends Controller
         $user = Auth::user();
         DB::table('ItemCategory')
             ->where('ItemCategoryID', $itemCategory['ItemCategoryID'])
-            ->update(array(
-                'Name' => $data['Name'],
-                'Remarks' => $data['remarks'],
-                //'NTBDebetCOA' => $data['NTBDebetCOA'],
-                //'NTBKreditCOA' => $data['NTBKreditCOA'],
-                //'BillVDebetCOA' => $data['BillVDebetCOA'],
-                //'BillVKreditCOA' => $data['BillVKreditCOA'],
-                //'PenjualanCOA' => $data['PenjualanCOA'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-        return redirect()->route('itemCategory.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'Name' => $data['Name'],
+                    'Remarks' => $data['remarks'],
+                    //'NTBDebetCOA' => $data['NTBDebetCOA'],
+                    //'NTBKreditCOA' => $data['NTBKreditCOA'],
+                    //'BillVDebetCOA' => $data['BillVDebetCOA'],
+                    //'BillVKreditCOA' => $data['BillVKreditCOA'],
+                    //'PenjualanCOA' => $data['PenjualanCOA'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('itemCategory.index')->with('status', 'Success!!');
     }
 
     /**
@@ -192,33 +186,38 @@ class ItemCategoryController extends Controller
     public function destroy(ItemCategory $itemCategory)
     {
         //$itemCategory->delete();
-        DB::table('ItemCategory')->where('ItemCategoryID', $itemCategory['ItemCategoryID'])->delete();
-        return redirect()->route('itemCategory.index')->with('status','Success!!');
+
+        $user = Auth::user();
+        $check = $this->checkAccess('itemCategory.edit', $user->id, $user->idRole);
+        if ($check) {
+            DB::table('ItemCategory')->where('ItemCategoryID', $itemCategory['ItemCategoryID'])->delete();
+            return redirect()->route('itemCategory.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+        }
     }
 
     public function selectItemCategoryName(Request $request)
     {
         //
-        $name=$request->input('searchname');
+        $name = $request->input('searchname');
         $user = Auth::user();
 
         $dataCategory = DB::table('ItemCategory')
-            ->where('Name','like','%'.$name.'%')
+            ->where('Name', 'like', '%' . $name . '%')
             ->paginate(10);
-            //->get();
+        //->get();
         $dataCOA = DB::table('COA')
             ->get();
-        
+
 
         $user = Auth::user();
-         $check = $this->checkAccess('itemCategory.show', $user->id, $user->idRole);
-        if ($check) {  
-         return view('master.itemCategory.index',[
-            'dataCategory' => $dataCategory,
-            'dataCOA' => $dataCOA,
-        ]);
-
-
+        $check = $this->checkAccess('itemCategory.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemCategory.index', [
+                'dataCategory' => $dataCategory,
+                'dataCOA' => $dataCOA,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
         }

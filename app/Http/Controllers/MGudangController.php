@@ -274,12 +274,19 @@ class MGudangController extends Controller
     public function destroy(MGudang $mGudang)
     {
         //
-        $mGudang->delete();
-        /*DB::table('MGudangValues')
-            ->where('MGudangID','=',$mGudang->MGudangID)
-            ->delete();
-        */
-        return redirect()->route('mGudang.index')->with('status', 'Success!!');
+
+        $user = Auth::user();
+        $check = $this->checkAccess('mGudang.edit', $user->id, $user->idRole);
+        if ($check) {
+            $mGudang->delete();
+            /*DB::table('MGudangValues')
+                ->where('MGudangID','=',$mGudang->MGudangID)
+                ->delete();
+            */
+            return redirect()->route('mGudang.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+        }
     }
 
     public function searchGudangName(Request $request)

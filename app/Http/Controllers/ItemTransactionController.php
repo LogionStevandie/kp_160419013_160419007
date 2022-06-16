@@ -160,9 +160,16 @@ class ItemTransactionController extends Controller
     public function destroy(ItemTransaction $itemTransaction)
     {
         //
-        $itemTransaction->delete();
-        DB::table('ItemTransaction')->where('ItemTransactionID', $itemTransaction['ItemTransactionID'])->delete();
-        return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
+
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTransaction.edit', $user->id, $user->idRole);
+        if ($check) {
+            $itemTransaction->delete();
+            DB::table('ItemTransaction')->where('ItemTransactionID', $itemTransaction['ItemTransactionID'])->delete();
+            return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+        }
     }
 
     public function searchItemTransactionName(Request $request)
@@ -174,7 +181,7 @@ class ItemTransactionController extends Controller
             ->where('Name', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('itemTransaction.index', $user->id, $user->idRole);
         if ($check) {

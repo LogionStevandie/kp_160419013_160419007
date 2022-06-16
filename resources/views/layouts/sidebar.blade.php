@@ -13,7 +13,8 @@
         <img src="{{asset('assets/dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
       </div>
       <div class="info">
-        <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+        <a class="d-block text-white">{{ Auth::user()->name }}</a>
+        <a class="d-block text-white">{{ Auth::user()->role->name }}</a>
       </div>
     </div>
 
@@ -32,9 +33,14 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+
+
         <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
         <li class="nav-header">KARTU STOK</li>
+        @foreach(Auth::user()->role->roleAccess as $key)
+        @if($key->Url == "inventoryTransaction")
         <li class="nav-item">
           <a href="{{route('inventoryTransaction.index')}}" class="nav-link">
             <i class="nav-icon fas fa-columns"></i>
@@ -43,6 +49,11 @@
             </p>
           </a>
         </li>
+        @endif
+        @endforeach
+
+        @foreach(Auth::user()->role->roleAccess as $key)
+        @if($key->Url == "stokAwal.index")
         <li class="nav-item">
           <a href="{{route('stokAwal.index')}}" class="nav-link">
             <i class="nav-icon fas fa-columns"></i>
@@ -51,7 +62,8 @@
             </p>
           </a>
         </li>
-
+        @endif
+        @endforeach
         <li class="nav-header">PEMBUATAN NOTA</li>
         <li class="nav-item">
           <a href="#" class="nav-link">
@@ -61,6 +73,8 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "purchaseRequest.index")
             <li class="nav-item">
               <a href="{{route('purchaseRequest.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
@@ -69,7 +83,11 @@
                 </p>
               </a>
             </li>
+            @endif
+            @endforeach
 
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "purchaseOrder.index")
             <li class="nav-item">
               <a href="{{route('purchaseOrder.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
@@ -78,6 +96,11 @@
                 </p>
               </a>
             </li>
+            @endif
+            @endforeach
+
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "terimaBarangSupplier.index")
             <li class="nav-item">
               <a href="{{route('terimaBarangSupplier.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
@@ -86,6 +109,11 @@
                 </p>
               </a>
             </li>
+            @endif
+            @endforeach
+
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "suratJalan.index")
             <li class="nav-item">
               <a href="{{route('suratJalan.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
@@ -94,6 +122,11 @@
                 </p>
               </a>
             </li>
+            @endif
+            @endforeach
+
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "kirimBarangPesanan.index")
             <li class="nav-item">
               <a href="{{route('kirimBarangPesanan.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
@@ -102,7 +135,11 @@
                 </p>
               </a>
             </li>
+            @endif
+            @endforeach
 
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "terimaBarangPesanan.index")
             <li class="nav-item">
               <a href="{{route('terimaBarangPesanan.index')}}" class="nav-link">
                 <i class="nav-icon fas fa-columns"></i>
@@ -111,6 +148,8 @@
                 </p>
               </a>
             </li>
+            @endif
+            @endforeach
 
           </ul>
         </li>
@@ -123,6 +162,8 @@
 
         <!--Permintaan-->
         <li class="nav-header">PERSETUJUAN</li>
+        @foreach(Auth::user()->role->roleAccess as $key)
+        @if($key->Url == "approvedPurchaseRequest.index")
         <li class="nav-item">
           <a href="{{route('approvedPurchaseRequest.index')}}" class="nav-link">
             <i class="nav-icon fas fa-columns"></i>
@@ -131,6 +172,10 @@
             </p>
           </a>
         </li>
+        @endif
+        @endforeach
+        @foreach(Auth::user()->role->roleAccess as $key)
+        @if($key->Url == "approvedPurchaseOrder.index")
         <li class="nav-item">
           <a href="{{route('approvedPurchaseOrder.index')}}" class="nav-link">
             <i class="nav-icon fas fa-columns"></i>
@@ -139,6 +184,8 @@
             </p>
           </a>
         </li>
+        @endif
+        @endforeach
         <!-- END Permintaan-->
 
         <!--
@@ -164,6 +211,8 @@
 
         <!--Permintaan-->
         <li class="nav-header">PENYESUAIAN STOK BARANG</li>
+        @foreach(Auth::user()->role->roleAccess as $key)
+        @if($key->Url == "adjustmentStock.index")
         <li class="nav-item">
           <a href="{{route('adjustmentStock.index')}}" class="nav-link">
             <i class="nav-icon fas fa-columns"></i>
@@ -172,6 +221,8 @@
             </p>
           </a>
         </li>
+        @endif
+        @endforeach
 
         <!-- END Permintaan-->
 
@@ -185,36 +236,56 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "mPulau.index")
             <li class="nav-item">
               <a href="{{route('mPulau.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Pulau</p>
               </a>
             </li>
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "mProvinsi.index")
             <li class="nav-item">
               <a href="{{route('mProvinsi.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Provinsi</p>
               </a>
             </li>
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "mKota.index")
             <li class="nav-item">
               <a href="{{route('mKota.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Kota</p>
               </a>
             </li>
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "mPerusahaan.index")
             <li class="nav-item">
               <a href="{{route('mPerusahaan.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Perusahaan</p>
               </a>
             </li>
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "mGudang.index")
             <li class="nav-item">
               <a href="{{route('mGudang.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Gudang</p>
               </a>
             </li>
+            @endif
+            @endforeach
             <!-- <li class="nav-item">
               <a href="{{route('mGudangAreaSimpan.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
@@ -239,48 +310,72 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "item.index")
             <li class="nav-item">
               <a href="{{route('item.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>item</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "itemCategory.index")
             <li class="nav-item">
               <a href="{{route('itemCategory.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Kategori item</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "itemTag.index")
             <li class="nav-item">
               <a href="{{route('itemTag.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tag item</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "itemTransaction.index")
             <li class="nav-item">
               <a href="{{route('itemTransaction.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Transaction item</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
 
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "unit.index")
             <li class="nav-item">
               <a href="{{route('unit.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Satuan item</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "itemTagValues.index")
             <li class="nav-item">
               <a href="{{route('itemTagValues.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Tag Values Item</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
 
           </ul>
@@ -290,17 +385,21 @@
           <a href="#" class="nav-link">
             <i class="nav-icon fas fa-search"></i>
             <p>
-              Tax
+              Pajak
               <i class="fas fa-angle-left right"></i>
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "tax.index")
             <li class="nav-item">
               <a href="{{route('tax.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>tax</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
           </ul>
         </li>
@@ -316,18 +415,26 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "msupplier.index")
             <li class="nav-item">
               <a href="{{route('msupplier.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>list Supplier</p>
               </a>
             </li>
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "infoSupplier.index")
             <li class="nav-item">
               <a href="{{route('infoSupplier.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Info Supplier</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
           </ul>
         </li>
@@ -342,19 +449,26 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "payment.index")
             <li class="nav-item">
               <a href="{{route('payment.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Jenis Pembayaran</p>
               </a>
             </li>
-
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "paymentTerms.index")
             <li class="nav-item">
               <a href="{{route('paymentTerms.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Ketentuan Pembayaran</p>
               </a>
             </li>
+            @endif
+            @endforeach
 
           </ul>
         </li>
@@ -373,33 +487,46 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "menu.index")
             <li class="nav-item">
               <a href="{{route('menu.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Menu</p>
               </a>
             </li>
-
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "users.index")
             <li class="nav-item">
               <a href="{{route('users.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Users</p>
               </a>
             </li>
-
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "role.index")
             <li class="nav-item">
               <a href="{{route('role.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Role</p>
               </a>
             </li>
-
+            @endif
+            @endforeach
+            @foreach(Auth::user()->role->roleAccess as $key)
+            @if($key->Url == "roleAccess.index")
             <li class="nav-item">
               <a href="{{route('roleAccess.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Akses Role</p>
               </a>
             </li>
+            @endif
+            @endforeach
           </ul>
 
           <!--RoleAccess place-->

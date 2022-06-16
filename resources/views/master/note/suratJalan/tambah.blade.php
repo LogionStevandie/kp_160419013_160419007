@@ -309,10 +309,18 @@ Pembuatan Surat Jalan
             var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
             $.each(dataReportUntukStok, function(key, value) {
                 if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
-                    //$("#stokAwalBarang").val(value.totalQuantity);     
+                    //$("#stokAwalBarang").val(value.totalQuantity);   
                     maxAngka = maxAngka + parseFloat(value.Quantity);
                 }
+                
             });
+            $.each($('.cekId'), function(idx, val) {
+            if (val.value == id) {
+                var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
+                maxAngka = maxAngka - jumlahBarang;
+                }
+            });
+
             if (maxAngka > 0) {
                 $("#jumlahBarang").attr({
                     "max": maxAngka,
@@ -357,6 +365,12 @@ Pembuatan Surat Jalan
                     if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
                         //$("#stokAwalBarang").val(value.totalQuantity);     
                         maxAngka = maxAngka + parseFloat(value.Quantity);
+                    }
+                });
+                $.each($('.cekId'), function(idx, val) {
+                if (val.value == id) {
+                    var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
+                    maxAngka = maxAngka - jumlahBarang;
                     }
                 });
                 if (maxAngka > 0) {
@@ -407,6 +421,14 @@ Pembuatan Surat Jalan
                     if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
                         //$("#stokAwalBarang").val(value.totalQuantity);     
                         maxAngka = maxAngka + parseFloat(value.Quantity);
+                       
+                    }
+                });
+
+                $.each($('.cekId'), function(idx, val) {
+                if (val.value == id) {
+                    var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
+                    maxAngka = maxAngka - jumlahBarang;
                     }
                 });
                 if (maxAngka > 0) {
@@ -489,7 +511,7 @@ Pembuatan Surat Jalan
         var indexSama = null;
         for (let i = 0; i < $('.cekId').length; i++) {
             if ($('.cekId:eq(' + i + ')').val() == idBarang) {
-                if ($('.cekPrd:eq(' + i + ')').val() == idPrdId) {
+                if ($('.cekPrd:eq(' + i + ')').val() == idprdID) {
                     indexSama = i;
                 }
             }
@@ -499,12 +521,13 @@ Pembuatan Surat Jalan
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
         }
-          else if (jumlahBarang > $("#jumlahBarang").attr("max"))
+        else if (jumlahBarang > $("#jumlahBarang").attr("max"))
         {
                 $('#jumlahBarang').val("");
                 alert("harap masukkan jumlah barang yang sesuai");
+                die;
         }
-         else if (indexSama != null) {
+        else if (indexSama != null) {
             //alert("masuk indexSama");
             var jumlah = $('.cekJumlah:eq(' + indexSama + ')').val();
             $('.cekJumlah:eq(' + indexSama + ')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));

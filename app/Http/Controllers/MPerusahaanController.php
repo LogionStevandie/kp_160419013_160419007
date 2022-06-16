@@ -125,7 +125,7 @@ class MPerusahaanController extends Controller
             ->get();
         $dataUser = DB::table('users')
             ->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mPerusahaan.show', $user->id, $user->idRole);
         if ($check) {
@@ -149,7 +149,7 @@ class MPerusahaanController extends Controller
         //
         $users = DB::table('users')
             ->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mPerusahaan.edit', $user->id, $user->idRole);
         if ($check) {
@@ -214,8 +214,14 @@ class MPerusahaanController extends Controller
     public function destroy(MPerusahaan $mPerusahaan)
     {
         //
-        $mPerusahaan->delete();
-        return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('mPerusahaan.edit', $user->id, $user->idRole);
+        if ($check) {
+            $mPerusahaan->delete();
+            return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+        }
     }
 
     public function searchPerusahaanName(Request $request)
@@ -228,7 +234,7 @@ class MPerusahaanController extends Controller
         //->get();
         $dataUser = DB::table('users')
             ->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mPerusahaan.index', $user->id, $user->idRole);
         if ($check) {

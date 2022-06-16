@@ -24,16 +24,16 @@ class BankController extends Controller
         //
         $datas = DB::table('bank')
             ->paginate(10);
-            //->get();
-       
+        //->get();
+
 
         $user = Auth::user();
 
         $check = $this->checkAccess('bank.index', $user->id, $user->idRole);
-        if ($check) {  
-            return view('master.Bank.index',[
-            'datas' => $datas,
-        ]);
+        if ($check) {
+            return view('master.Bank.index', [
+                'datas' => $datas,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Bank');
         }
@@ -47,7 +47,7 @@ class BankController extends Controller
     public function create()
     {
         //
-         return view('master.Bank.tambah');
+        return view('master.Bank.tambah');
     }
 
     /**
@@ -61,17 +61,18 @@ class BankController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
-        DB::table('bank')->insert(array(
-            'name' => $data['name'],
-            'alias' => $data['alias'],
-            'CreatedBy'=> $user->id,
-            'CreatedOn'=> date("Y-m-d h:i:sa"),
-            'UpdatedBy'=> $user->id,
-            'UpdatedOn'=> date("Y-m-d h:i:sa"),
+
+        DB::table('bank')->insert(
+            array(
+                'name' => $data['name'],
+                'alias' => $data['alias'],
+                'CreatedBy' => $user->id,
+                'CreatedOn' => date("Y-m-d h:i:sa"),
+                'UpdatedBy' => $user->id,
+                'UpdatedOn' => date("Y-m-d h:i:sa"),
             )
-        ); 
-        return redirect()->route('bank.index')->with('status','Success!!');
+        );
+        return redirect()->route('bank.index')->with('status', 'Success!!');
     }
 
     /**
@@ -94,15 +95,15 @@ class BankController extends Controller
     public function edit(Bank $bank)
     {
         //
-         
 
-         $user = Auth::user();
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('bank.edit', $user->id, $user->idRole);
-        if ($check) {  
-            return view('master.Bank.edit',[
-             'bank'=>$bank
-         ]);
+        if ($check) {
+            return view('master.Bank.edit', [
+                'bank' => $bank
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Bank');
         }
@@ -126,11 +127,11 @@ class BankController extends Controller
             ->update(array(
                 'name' => $data['name'],
                 'alias' => $data['alias'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
+                'UpdatedBy' => $user->id,
+                'UpdatedOn' => date("Y-m-d h:i:sa"),
             ));
 
-        return redirect()->route('bank.index')->with('status','Success!!');       
+        return redirect()->route('bank.index')->with('status', 'Success!!');
     }
 
     /**
@@ -142,27 +143,33 @@ class BankController extends Controller
     public function destroy(Bank $bank)
     {
         //
-         $bank->delete();
-        return redirect()->route('bank.index')->with('status','Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('bank.edit', $user->id, $user->idRole);
+        if ($check) {
+            $bank->delete();
+            return redirect()->route('bank.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Bank');
+        }
     }
 
     public function searchName(Request $request)
     {
-        $name=$request->input('searchname');
+        $name = $request->input('searchname');
         $datas = DB::table('bank')
-            ->where('name','like','%'.$name.'%')
+            ->where('name', 'like', '%' . $name . '%')
             ->paginate(10);
-            //->get();
-       
+        //->get();
 
-        
-         $user = Auth::user();
+
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('bank.index', $user->id, $user->idRole);
-        if ($check) {  
-             return view('master.Bank.index',[
-            'datas' => $datas,
-        ]);
+        if ($check) {
+            return view('master.Bank.index', [
+                'datas' => $datas,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Bank');
         }

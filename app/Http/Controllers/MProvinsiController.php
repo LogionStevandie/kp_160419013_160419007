@@ -156,8 +156,14 @@ class MProvinsiController extends Controller
     public function destroy(MProvinsi $mProvinsi)
     {
         //
-        $mProvinsi->delete();
-        return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('mProvinsi.edit', $user->id, $user->idRole);
+        if ($check) {
+            $mProvinsi->delete();
+            return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+        }
     }
 
     public function searchProvinsiName(Request $request)
@@ -169,7 +175,7 @@ class MProvinsiController extends Controller
             ->where('cname', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mProvinsi.index', $user->id, $user->idRole);
         if ($check) {

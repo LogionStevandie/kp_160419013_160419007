@@ -145,7 +145,7 @@ class KirimBarangPesananController extends Controller
                 'dataGudang' => $dataGudang,
                 'dataItemTransaction' => $dataItemTransaction,
                 'user' => $user,
-                'date'=>$date
+                'date' => $date
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
@@ -167,8 +167,8 @@ class KirimBarangPesananController extends Controller
         $year = date("Y");
         $month = date("m");
 
-        if(request()->get('itemId') == null || request()->get('itemId') == ""){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
         $dataLokasi = DB::table('MGudang')
@@ -287,8 +287,6 @@ class KirimBarangPesananController extends Controller
                 ->update(
                     array(
                         'jumlahProsesKirim' => $data['itemJumlah'][$i],
-                        'UpdatedBy' => $user->id,
-                        'UpdatedOn' => date("Y-m-d h:i:sa"),
                     )
                 );
         }
@@ -511,8 +509,8 @@ class KirimBarangPesananController extends Controller
         $user = Auth::user();
         $data = $request->collect();
 
-        if(request()->get('itemId') == null || request()->get('itemId') == ""){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
         DB::table('transaction_gudang_barang')
@@ -616,8 +614,6 @@ class KirimBarangPesananController extends Controller
                 ->update(
                     array(
                         'jumlahProsesKirim' => request()->get('itemJumlah')[$i],
-                        'UpdatedBy' => $user->id,
-                        'UpdatedOn' => date("Y-m-d h:i:sa"),
                     )
                 );
         }
@@ -635,28 +631,32 @@ class KirimBarangPesananController extends Controller
     {
         //
         $user = Auth::user();
+        $check = $this->checkAccess('kirimBarangPesanan.edit', $user->id, $user->idRole);
+        if ($check) {
+            $dataTransactionID = DB::table('ItemInventoryTransaction')
+                ->where('NTBID', $kirimBarangPesanan->id)
+                ->get();
+            DB::table('ItemInventoryTransactionLine')
+                ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+                ->delete();
 
-        $dataTransactionID = DB::table('ItemInventoryTransaction')
-            ->where('NTBID', $kirimBarangPesanan->id)
-            ->get();
-        DB::table('ItemInventoryTransactionLine')
-            ->where('TransactionID', $dataTransactionID[0]->TransactionID)
-            ->delete();
-
-        DB::table('transaction_gudang_barang_detail')
-            ->where('transactionID', '=', $kirimBarangPesanan->id)
-            ->delete();
+            DB::table('transaction_gudang_barang_detail')
+                ->where('transactionID', '=', $kirimBarangPesanan->id)
+                ->delete();
 
 
-        DB::table('transaction_gudang_barang')
-            ->where('id', $kirimBarangPesanan['id'])
-            ->update(array(
-                'UpdatedBy' => $user->id,
-                'UpdatedOn' => date("Y-m-d h:i:sa"),
-                'hapus' => 1,
-            ));
+            DB::table('transaction_gudang_barang')
+                ->where('id', $kirimBarangPesanan['id'])
+                ->update(array(
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    'hapus' => 1,
+                ));
 
-        return redirect()->route('kirimBarangPesanan.index')->with('status', 'Success!!');
+            return redirect()->route('kirimBarangPesanan.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+        }
     }
     public function searchTGBName(Request $request)
     {

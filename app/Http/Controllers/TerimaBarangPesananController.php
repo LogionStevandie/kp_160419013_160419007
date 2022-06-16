@@ -139,7 +139,7 @@ class TerimaBarangPesananController extends Controller
                 'dataGudang' => $dataGudang,
                 'dataItemTransaction' => $dataItemTransaction,
                 'user' => $user,
-                'date'=>$date
+                'date' => $date
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Pesanan');
@@ -158,8 +158,8 @@ class TerimaBarangPesananController extends Controller
         //
         $user = Auth::user();
 
-        if(request()->get('itemId') == null || request()->get('itemId') == ""){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
         $data = $request->collect();
@@ -288,8 +288,7 @@ class TerimaBarangPesananController extends Controller
                 ->update(
                     array(
                         'jumlahProsesTerima' => $data['itemJumlah'][$i],
-                        'UpdatedBy' => $user->id,
-                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+
                     )
                 );
         }
@@ -535,8 +534,8 @@ class TerimaBarangPesananController extends Controller
     {
 
         $user = Auth::user();
-        if(request()->get('itemId') == null || request()->get('itemId') == ""){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
         $data = $request->collect();
 
@@ -647,7 +646,7 @@ class TerimaBarangPesananController extends Controller
                     array(
                         'TransactionID' => $dataTransactionID[0]->TransactionID,
                         'ItemID' => request()->get('itemId')[$i],
-                        'MGudangID' => $data['MGudangIDTujuan'],
+                        'MGudangID' => request()->get('MGudangIDTujuan'),
                         'UnitID' => $dataItem[0]->unit,
                         'UnitPrice' => $dataPOD[0]->harga,
                         'Quantity' => request()->get('itemJumlah')[$i],
@@ -656,27 +655,25 @@ class TerimaBarangPesananController extends Controller
                 );
 
             DB::table('surat_jalan_detail')
-                ->where('suratJalanID', $data['SuratJalanID'])
-                ->where('ItemID', $data['itemId'][$i])
+                ->where('suratJalanID', request()->get('SuratJalanID'))
+                ->where('ItemID', request()->get('itemId')[$i])
                 ->where('PurchaseRequestDetailID', request()->get('itemPRDID')[$i])
                 ->update(
                     array(
-                        'jumlahProsesTerima' => request()->get('itemJumlah')[$i],
-                        'UpdatedBy' => $user->id,
-                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                        'jumlahProsesTerima' => (float)request()->get('itemJumlah')[$i],
                     )
                 );
         }
 
         //otomatis proses selesai. $data['PurchaseRequestID']
         $dataPRDAuto = DB::table('purchase_request_detail')
-            ->where('idPurchaseRequest', $data['PurchaseRequestID'])
+            ->where('idPurchaseRequest', request()->get('PurchaseRequestID'))
             ->get();
 
         foreach ($dataPRDAuto as $prd) {
             if ($prd->jumlah > $prd->jumlahDiterima) {
                 DB::table('purchase_request')
-                    ->where('id', $data['PurchaseRequestID'])
+                    ->where('id', request()->get('PurchaseRequestID'))
                     ->update(array(
                         'proses' => 1,
                         'tanggalDiterima' => null,
@@ -686,7 +683,7 @@ class TerimaBarangPesananController extends Controller
         }
         //PR SELESAI
         DB::table('purchase_request')
-            ->where('id', $data['PurchaseRequestID'])
+            ->where('id', request()->get('PurchaseRequestID'))
             ->update(array(
                 'proses' => 2,
                 'tanggalDiterima' => date("Y-m-d h:i:sa"),
@@ -705,27 +702,31 @@ class TerimaBarangPesananController extends Controller
     {
         //
         $user = Auth::user();
+        $check = $this->checkAccess('terimaBarangPesanan.edit', $user->id, $user->idRole);
+        if ($check) {
+            $dataTransactionID = DB::table('ItemInventoryTransaction')
+                ->where('NTBID', $terimaBarangPesanan->id)
+                ->get();
+            DB::table('ItemInventoryTransactionLine')
+                ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+                ->delete();
 
-        $dataTransactionID = DB::table('ItemInventoryTransaction')
-            ->where('NTBID', $terimaBarangPesanan->id)
-            ->get();
-        DB::table('ItemInventoryTransactionLine')
-            ->where('TransactionID', $dataTransactionID[0]->TransactionID)
-            ->delete();
+            DB::table('transaction_gudang_barang_detail')
+                ->where('transactionID', '=', $terimaBarangPesanan->id)
+                ->delete();
 
-        DB::table('transaction_gudang_barang_detail')
-            ->where('transactionID', '=', $terimaBarangPesanan->id)
-            ->delete();
+            DB::table('transaction_gudang_barang')
+                ->where('id', $terimaBarangPesanan['id'])
+                ->update(array(
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    'hapus' => 1,
+                ));
 
-        DB::table('transaction_gudang_barang')
-            ->where('id', $terimaBarangPesanan['id'])
-            ->update(array(
-                'UpdatedBy' => $user->id,
-                'UpdatedOn' => date("Y-m-d h:i:sa"),
-                'hapus' => 1,
-            ));
-
-        return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+            return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Pesanan');
+        }
     }
 
     public function searchTGBName(Request $request)

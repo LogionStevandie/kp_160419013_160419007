@@ -66,11 +66,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
 
-  @if(session("message"))
-  <div class="alert alert-warning">
-    {{session('message')}}
-  </div>
-  @endif
+
 
   <div class="wrapper">
 
@@ -110,6 +106,13 @@
 
       <!-- Main content -->
       <section class="content">
+
+        @if(session("message"))
+        <div class="alert alert-warning">
+          {{session('message')}}
+        </div>
+        @endif
+
         @if(session("status"))
         @if(session('status') == "Isikan data keranjang")
         <div class="alert alert-warning">
@@ -120,7 +123,7 @@
           {{session('status')}}
         </div>
         @endif
-        
+
         @endif
         @yield('content')
 

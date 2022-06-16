@@ -282,17 +282,23 @@ class MSupplierController extends Controller
         //
         //$data = $request->collect();
         $user = Auth::user();
+        $check = $this->checkAccess('msupplier.edit', $user->id, $user->idRole);
+        if ($check) {
+            DB::table('MSupplier')
+                ->where('SupplierID', $msupplier['SupplierID'])
+                ->update(
+                    array(
+                        'Hapus' => 1,
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    )
+                );
+            return redirect()->route('msupplier.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
+        }
         //dd($msupplier);
-        DB::table('MSupplier')
-            ->where('SupplierID', $msupplier['SupplierID'])
-            ->update(
-                array(
-                    'Hapus' => 1,
-                    'UpdatedBy' => $user->id,
-                    'UpdatedOn' => date("Y-m-d h:i:sa"),
-                )
-            );
-        return redirect()->route('msupplier.index')->with('status', 'Success!!');
+
     }
 
     public function searchSupplierName(Request $request)

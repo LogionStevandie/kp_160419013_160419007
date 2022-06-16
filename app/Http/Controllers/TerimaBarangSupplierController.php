@@ -186,8 +186,8 @@ class TerimaBarangSupplierController extends Controller
         $user = Auth::user();
         $data = $request->collect();
 
-        if(request()->get('itemId') == null || request()->get('itemId') == ""){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
         $year = date("Y");
         $month = date("m");
@@ -646,8 +646,8 @@ class TerimaBarangSupplierController extends Controller
         $user = Auth::user();
         $data = $request->collect();
 
-        if(request()->get('itemId') == null || request()->get('itemId') == ""){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
         DB::table('transaction_gudang_barang')
@@ -726,7 +726,7 @@ class TerimaBarangSupplierController extends Controller
 
             $totalNow = DB::table('purchase_order_detail')->select('jumlah', 'jumlahProses')->where('id', request()->get('podID')[$i])->get();
             DB::table('purchase_order_detail')
-                ->where('id',request()->get('podID')[$i])
+                ->where('id', request()->get('podID')[$i])
                 ->update([
                     'jumlahProses' => $totalNow[0]->jumlahProses + request()->get('itemJumlah')[$i],
                 ]);
@@ -805,41 +805,45 @@ class TerimaBarangSupplierController extends Controller
 
         //
         $user = Auth::user();
-        //dd($terimaBarangSupplier->id);
+        $check = $this->checkAccess('terimaBarangSupplier.edit', $user->id, $user->idRole);
+        if ($check) {
+            $dataTransactionID = DB::table('ItemInventoryTransaction')
+                ->where('NTBID', $terimaBarangSupplier->id)
+                ->get();
+            DB::table('ItemInventoryTransactionLine')
+                ->where('TransactionID', $dataTransactionID[0]->TransactionID)
+                ->delete();
 
-        $dataTransactionID = DB::table('ItemInventoryTransaction')
-            ->where('NTBID', $terimaBarangSupplier->id)
-            ->get();
-        DB::table('ItemInventoryTransactionLine')
-            ->where('TransactionID', $dataTransactionID[0]->TransactionID)
-            ->delete();
+
+            $data = DB::table('transaction_gudang_barang_detail')
+                ->where('transactionID', '=', $terimaBarangSupplier->id)
+                ->get();
+
+            foreach ($data as $d) {
+                DB::table('purchase_order_detail')
+                    ->where('id', $d->purchaseOrderDetailID)
+                    ->decrement('jumlahProses', $d->jumlah);
+            }
+
+            DB::table('transaction_gudang_barang_detail')
+                ->where('transactionID', '=', $terimaBarangSupplier->id)
+                ->delete();
+
+            DB::table('transaction_gudang_barang')
+                ->where('id', '=', $terimaBarangSupplier->id)
+                ->update(array(
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    'hapus' => 1,
+                ));
 
 
-        $data = DB::table('transaction_gudang_barang_detail')
-            ->where('transactionID', '=', $terimaBarangSupplier->id)
-            ->get();
 
-        foreach ($data as $d) {
-            DB::table('purchase_order_detail')
-                ->where('id', $d->purchaseOrderDetailID)
-                ->decrement('jumlahProses', $d->jumlah);
+            return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Supplier');
+            //dd($terimaBarangSupplier->id);
         }
-
-        DB::table('transaction_gudang_barang_detail')
-            ->where('transactionID', '=', $terimaBarangSupplier->id)
-            ->delete();
-
-        DB::table('transaction_gudang_barang')
-            ->where('id', '=', $terimaBarangSupplier->id)
-            ->update(array(
-                'UpdatedBy' => $user->id,
-                'UpdatedOn' => date("Y-m-d h:i:sa"),
-                'hapus' => 1,
-            ));
-
-
-
-        return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
     }
 
     public function searchTGBName(Request $request)

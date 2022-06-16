@@ -186,14 +186,19 @@ class PaymentTermsController extends Controller
         //
         //dd($paymentTerm);
         $user = Auth::user();
-        DB::table('PaymentTerms')
-            ->where('PaymentTermsID', $paymentTerm['PaymentTermsID'])
-            ->update(
-                array(
-                    'Hapus' => 1,
-                )
-            );
-        return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
+        $check = $this->checkAccess('paymentTerms.edit', $user->id, $user->idRole);
+        if ($check) {
+            DB::table('PaymentTerms')
+                ->where('PaymentTermsID', $paymentTerm['PaymentTermsID'])
+                ->update(
+                    array(
+                        'Hapus' => 1,
+                    )
+                );
+            return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
+        }
     }
 
     public function searchPaymentTermsName(Request $request)

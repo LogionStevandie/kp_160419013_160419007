@@ -90,15 +90,15 @@ Edit Nota Kirim Barang Pesanan
                                                 <label for="lastName">Pilih Surat Jalan</label>
                                                 <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="SuratJalanID" name="SuratJalanID">
 
-                                                  @foreach($suratJalan as $key => $data)
+                                                    @foreach($suratJalan as $key => $data)
                                                     @if($data->MGudangIDTujuan == $transactionGudangBarang->MGudangIDTujuan)
-                                                        @if($data->id == $transactionGudangBarang->SuratJalanID)
-                                                            <option selected idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
-                                                        @else
-                                                           <option idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
-                                                        @endif
+                                                    @if($data->id == $transactionGudangBarang->SuratJalanID)
+                                                    <option selected idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
+                                                    @else
+                                                    <option idPurchaseReq="{{$data->PurchaseRequestID}}" value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
                                                     @endif
-                                                @endforeach
+                                                    @endif
+                                                    @endforeach
 
                                                 </select>
                                             </div>
@@ -107,17 +107,17 @@ Edit Nota Kirim Barang Pesanan
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="lastName">Data Purchase Request</label>
-                                                <select  class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="PurchaseRequestID" id="PurchaseRequestID">
+                                                <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="PurchaseRequestID" id="PurchaseRequestID">
 
-                                                   @foreach($dataPurchaseRequest as $key => $data)
-                                                        @if($data->MGudangID == $transactionGudangBarang->MGudangIDTujuan)
-                                                            @if($data->id == $transactionGudangBarang->PurchaseRequestID)
-                                                            
-                                                                <option selected value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
-                                                            @else
-                                                                <option value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>  
-                                                            @endif
-                                                        @endif
+                                                    @foreach($dataPurchaseRequest as $key => $data)
+                                                    @if($data->MGudangID == $transactionGudangBarang->MGudangIDTujuan)
+                                                    @if($data->id == $transactionGudangBarang->PurchaseRequestID)
+
+                                                    <option selected value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
+                                                    @else
+                                                    <option value="{{$data->id}}" {{$data->name == $data->id? 'selected' :'' }}>{{$data->name}} -{{date("d-m-Y", strtotime($data->tanggalDibuat))}}</option>
+                                                    @endif
+                                                    @endif
                                                     @endforeach
 
                                                 </select>
@@ -133,9 +133,9 @@ Edit Nota Kirim Barang Pesanan
                                                     </option>
                                                     @foreach($dataItemTransaction as $key => $data)
                                                     @if($data->ItemTransactionID == $transactionGudangBarang->ItemTransactionID)
-                                                    <option selected name="idItemTransaction"   value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
+                                                    <option selected name="idItemTransaction" value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
                                                     @else
-                                                    <option name="idItemTransaction"   value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
+                                                    <option name="idItemTransaction" value="{{$data->ItemTransactionID}}" {{$data->Name == $data->ItemTransactionID? 'selected' :'' }}>{{$data->Name}}</option>
                                                     @endif
                                                     @endforeach
 
@@ -231,8 +231,8 @@ Edit Nota Kirim Barang Pesanan
                                                                 <input type="hidden" id="cekJumlah" class="cekJumlah" name="itemJumlah[]" value="{{$data->jumlah}}">
                                                                 <input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="{{$data->keterangan}}">
                                                                 <input type="hidden" class="cekPrd" name="itemPRDID[]" value="{{$data->idPRD}}">
-                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="'+jumlahBarang+'">({{$data->jumlah}})</small> </h6>
-                                                                <small class="text-muted keteranganVal" value="'+keteranganBarang+'">{{$data->keterangan}}</small><br>
+                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="{{$data->jumlah}}">({{$data->jumlah}})</small> </h6>
+                                                                <small class="text-muted keteranganVal" value="{{$data->keterangan}}">{{$data->keterangan}}</small><br>
                                                             </div>
                                                             <div>
                                                                 <button class="btn btn-primary copyKe" type="button" id="copyKe">
@@ -292,45 +292,6 @@ Edit Nota Kirim Barang Pesanan
 
 
     $(document).ready(function() {
-
-        /*var id = $("#idGudangTujuan option:selected").val();
-        var optionnya = '';
-        var dataPurchaseRequest = <?php echo json_encode($dataPurchaseRequest); ?>;
-        var transactionGudangBarang = <?php echo json_encode($transactionGudangBarang); ?>;
-        optionnya += '<option value="pilih" selected>--Pilih Purchase Request--</option>\n';
-        $.each(dataPurchaseRequest, function(key, value) {
-            if (value.MGudangID.toString() == id.toString()) {
-                if (value.id == transactionGudangBarang.PurchaseRequestID) {
-                    optionnya += '<option selected id="idPr" value="' + value.id + '">' + value.name + '-(' + value.tanggalDibuat + ')</option>\n';
-                } else {
-                    optionnya += '<option id="idPr" value="' + value.id + '">' + value.name + '-(' + value.tanggalDibuat + ')</option>\n';
-                }
-            }
-        });
-
-
-        $("#PurchaseRequestID").empty();
-        $("#PurchaseRequestID").append(optionnya);*/
-        //$('.selectpicker').selectpicker('refresh');
-        /*var optionnya = '';
-
-        var suratJalan = <?php echo json_encode($suratJalan); ?>;
-
-        //alert('masuk sini');
-        optionnya += '<option value="pilih" selected>--Pilih Surat Jalan--</option>\n';
-        $.each(suratJalan, function(key, value) {
-
-            if (value.MGudangIDTujuan.toString() == id.toString()) {
-                if (value.id == transactionGudangBarang.SuratJalanID) {
-                    optionnya += '<option selected id="idSj" idPurchaseReq="' + value.PurchaseRequestID + '" value="' + value.id + '">' + value.name + '-(' + value.tanggalDibuat + ')</option>\n';
-                } else {
-                    optionnya += '<option id="idSj" idPurchaseReq="' + value.PurchaseRequestID + '" value="' + value.id + '">' + value.name + '-(' + value.tanggalDibuat + ')</option>\n';
-                }
-            }
-        });
-
-        $("#SuratJalanID").empty();
-        $("#SuratJalanID").append(optionnya);*/
 
         var pr = $("#SuratJalanID option:selected").attr("idPurchaseReq");
         var optionnya = '';
@@ -435,28 +396,23 @@ Edit Nota Kirim Barang Pesanan
 
             var id = this.value;
             var idPrdId = $("#barang option:selected").attr('idPrdId');
+            var suratJalan = $("#SuratJalanID option:selected").val();
             var optionnya = '';
-            var maxAngka = 0;
+            var maxAngka = 0.0;
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
-            var dataDetail = <?php echo json_encode($dataTotalDetail); ?>;
-
 
             $.each(suratJalanDetail, function(key, value) {
-                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString())) {
-                    maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
-
-                    $.each(dataDetail, function(k, v) {
-                        if (v.idPRD.toString() == value.PurchaseRequestDetailID.toString() && value.ItemID.toString() == v.ItemID.toString()) {
-                            maxAngka -= parseFloat(v.jumlah);
-                        }
-                    });
-
+                if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
+                    maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProsesKirim); //ini error
+                    alert(maxAngka);
                     $.each($('.cekPrd'), function(idx, val) {
                         if (val.value == value.PurchaseRequestDetailID) {
                             var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
-                            maxAngka = maxAngka - jumlahBarang;
+                            maxAngka = maxAngka - parseFloat(jumlahBarang);
+
                         }
                     });
+
                     //alert(maxAngka);
                     $("#jumlahBarang").attr({
                         "max": maxAngka,
@@ -473,7 +429,6 @@ Edit Nota Kirim Barang Pesanan
             });
 
         });
-
     });
 
     $('body').on('click', '#copyKe', function() { //belum
@@ -485,7 +440,6 @@ Edit Nota Kirim Barang Pesanan
 
         var hargaBarang = $('.cekHarga:eq(' + i + ')').val();
         var keteranganBarang = $('.cekKeterangan:eq(' + i + ')').val();
-        var diskonBarang = $('.cekDiskon:eq(' + i + ')').val();
 
         $("#barang").val(idBarang);
         $("#jumlahBarang").val(jumlahBarang);
@@ -503,7 +457,7 @@ Edit Nota Kirim Barang Pesanan
         var jumlah = $(this).parent().parent().children("#hiddenDiv").children(".cekJumlah").val();
         //alert(jumlah);
         $("#jumlahBarang").attr({
-            "max": parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah),
+            "max": (parseFloat($("#jumlahBarang").prop("max")) + parseFloat(jumlah)),
             "min": 1,
             "placeholder": "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",
             "value": "",
@@ -536,6 +490,10 @@ Edit Nota Kirim Barang Pesanan
 
         if (idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == "") {
             alert('Harap lengkapi atau isi data Barang dengan benar');
+            die;
+        } else if (jumlahBarang > $("#jumlahBarang").attr("max")) {
+            $('#jumlahBarang').val("");
+            alert("harap masukkan jumlah barang yang sesuai");
             die;
         } else if (indexSama != null) {
             //alert("masuk indexSama");

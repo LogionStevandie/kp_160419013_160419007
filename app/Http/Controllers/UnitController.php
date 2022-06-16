@@ -97,7 +97,6 @@ class UnitController extends Controller
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Unit Master');
         }
-        
     }
 
     /**
@@ -109,7 +108,7 @@ class UnitController extends Controller
     public function edit(Unit $unit)
     {
         //
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('unit.edit', $user->id, $user->idRole);
         if ($check) {
@@ -155,8 +154,14 @@ class UnitController extends Controller
     public function destroy(Unit $unit)
     {
         //
-        $unit->delete();
-        return redirect()->route('unit.index')->with('status', 'Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('unit.edit', $user->id, $user->idRole);
+        if ($check) {
+            $unit->delete();
+            return redirect()->route('unit.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Unit Master');
+        }
     }
 
     public function searchUnitName(Request $request)

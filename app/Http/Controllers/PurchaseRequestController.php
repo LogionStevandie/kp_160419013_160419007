@@ -172,8 +172,8 @@ class PurchaseRequestController extends Controller
         //echo count($data['jumlah']);
 
         //pengecekan jika data keranjang kosong
-        if(!isset($data['itemId'])){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (!isset($data['itemId'])) {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
         $user = Auth::user();
@@ -221,7 +221,7 @@ class PurchaseRequestController extends Controller
 
         $totalHarga = 0;
 
-        
+
 
         for ($i = 0; $i < count($data['itemId']); $i++) {
             DB::table('purchase_request_detail')->insert(
@@ -393,8 +393,8 @@ class PurchaseRequestController extends Controller
         $data = $request->collect();
 
         //pengecekan jika data keranjang kosong
-        if(!isset($data['itemId'])){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (!isset($data['itemId'])) {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
 
@@ -419,22 +419,22 @@ class PurchaseRequestController extends Controller
             ->get();
         $totalHarga = 0;
         //if (count($dataDetailTotal) > count($data['itemId'])) {
-            DB::table('purchase_request_detail')
-                ->where('idPurchaseRequest', $purchaseRequest->id)
-                ->delete();
+        DB::table('purchase_request_detail')
+            ->where('idPurchaseRequest', $purchaseRequest->id)
+            ->delete();
 
-            for ($i = 0; $i < count($data['itemId']); $i++) {
-                DB::table('purchase_request_detail')->insert(
-                    array(
-                        'idPurchaseRequest' => $purchaseRequest->id,
-                        'jumlah' => $data['itemTotal'][$i],
-                        'ItemID' => $data['itemId'][$i],
-                        'harga' => $data['itemHarga'][$i],
-                        'keterangan_jasa' => $data['itemKeterangan'][$i],
-                    )
-                );
-                $totalHarga += $data['itemHarga'][$i] * $data['itemTotal'][$i];
-            }
+        for ($i = 0; $i < count($data['itemId']); $i++) {
+            DB::table('purchase_request_detail')->insert(
+                array(
+                    'idPurchaseRequest' => $purchaseRequest->id,
+                    'jumlah' => $data['itemTotal'][$i],
+                    'ItemID' => $data['itemId'][$i],
+                    'harga' => $data['itemHarga'][$i],
+                    'keterangan_jasa' => $data['itemKeterangan'][$i],
+                )
+            );
+            $totalHarga += $data['itemHarga'][$i] * $data['itemTotal'][$i];
+        }
         /*} else {
             for ($i = 0; $i < count($data['itemId']); $i++) {
                 if ($i < count($dataDetailTotal)) {
@@ -481,18 +481,26 @@ class PurchaseRequestController extends Controller
     public function destroy(PurchaseRequest $purchaseRequest)
     {
         //
-        // echo $purchaseRequest->id;
-        //dd($purchaseRequest->id);
-        if ($purchaseRequest->approved == 1 || $purchaseRequest->approved == 2) {
-            return redirect()->route('purchaseRequest.index')->with('status', 'Tidak dapat mengubah data');
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseRequest.edit', $user->id, $user->idRole);
+        if ($check) {
+            if ($purchaseRequest->approved == 1 || $purchaseRequest->approved == 2) {
+                return redirect()->route('purchaseRequest.index')->with('status', 'Tidak dapat mengubah data');
+            } else {
+                DB::table('purchase_request')
+                    ->where('id', $purchaseRequest->id)
+                    ->update([
+                        'hapus' => 1,
+                    ]);
+                return redirect()->route('purchaseRequest.index')->with('status', 'Success!!');
+            }
         } else {
-            DB::table('purchase_request')
-                ->where('id', $purchaseRequest->id)
-                ->update([
-                    'hapus' => 1,
-                ]);
-            return redirect()->route('purchaseRequest.index')->with('status', 'Success!!');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');
         }
+
+        // echo $purchaseRequest->id; 
+        //dd($purchaseRequest->id);
+
     }
 
     public function print(PurchaseRequest $purchaseRequest)

@@ -312,27 +312,33 @@ class StokAwalController extends Controller
     public function destroy(StokAwal $stokAwal)
     {
         //
+
         $user = Auth::user();
-        DB::table('StokAwal')
-            ->where('id', $stokAwal['id'])
-            ->update(
-                array(
-                    'hapus' => 1,
-                    'UpdatedBy' => $user->id,
-                    'UpdatedOn' => date("Y-m-d h:i:sa"),
-                )
-            );
+        $check = $this->checkAccess('stokAwal.edit', $user->id, $user->idRole);
+        if ($check) {
+            DB::table('StokAwal')
+                ->where('id', $stokAwal['id'])
+                ->update(
+                    array(
+                        'hapus' => 1,
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    )
+                );
 
-        $idIIT = DB::table('ItemInventoryTransaction')->select('TransactionID')->where('StokAwalID', $stokAwal['id'])->get();
-        DB::table('ItemInventoryTransaction')
-            ->where('StokAwalID', $stokAwal['id'])
-            ->delete();
+            $idIIT = DB::table('ItemInventoryTransaction')->select('TransactionID')->where('StokAwalID', $stokAwal['id'])->get();
+            DB::table('ItemInventoryTransaction')
+                ->where('StokAwalID', $stokAwal['id'])
+                ->delete();
 
-        DB::table('ItemInventoryTransactionLine')
-            ->where('TransactionID', $idIIT[0]->TransactionID)
-            ->delete();
+            DB::table('ItemInventoryTransactionLine')
+                ->where('TransactionID', $idIIT[0]->TransactionID)
+                ->delete();
 
-        return redirect()->route('stokAwal.index')->with('status', 'Success!!');
+            return redirect()->route('stokAwal.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Stok Awal Gudang');
+        }
     }
 
     public function searchStokAwalName(Request $request)
@@ -442,7 +448,7 @@ class StokAwalController extends Controller
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
             ->get();
 
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('stokAwal.show', $user->id, $user->idRole);
         if ($check) {

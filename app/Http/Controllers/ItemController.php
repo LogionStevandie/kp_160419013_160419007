@@ -295,15 +295,21 @@ class ItemController extends Controller
     {
         //
         $user = Auth::user();
-        DB::table('Item')
-            ->where('ItemID', $item->ItemID)
-            ->update(array(
-                'UpdatedBy' => $user->id,
-                'UpdatedOn' => date("Y-m-d h:i:sa"),
-                'Hapus' => 1,
-            ));
 
-        return redirect()->route('item.index')->with('status', 'Success!!');
+        $check = $this->checkAccess('item.edit', $user->id, $user->idRole);
+        if ($check) {
+            DB::table('Item')
+                ->where('ItemID', $item->ItemID)
+                ->update(array(
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    'Hapus' => 1,
+                ));
+
+            return redirect()->route('item.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+        }
     }
 
     public function searchItemName(Request $request)

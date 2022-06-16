@@ -30,7 +30,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.adjustmentStok.index', [
                 'data' => $data,
@@ -95,7 +95,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.create', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.create', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.adjustmentStok.tambah', [
                 'dataBarang' => $dataBarang,
@@ -269,7 +269,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.show', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.show', $user->id, $user->idRole);
         if ($check) {
 
             return view('master.note.adjustmentStok.detail', [
@@ -368,7 +368,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.edit', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.edit', $user->id, $user->idRole);
         if ($check) {
 
             return view('master.note.adjustmentStok.edit', [
@@ -468,30 +468,37 @@ class AdjustmentStockController extends Controller
     {
         //
         $user = Auth::user();
-        DB::table('ItemAdjustment')
-            ->where('ItemAdjustmentID', $adjustmentStock['ItemAdjustmentID'])
-            ->update(
-                array(
-                    'Deleted' => 1,
-                    'UpdatedBy' => $user->id,
-                    'UpdatedOn' => date("Y-m-d h:i:sa"),
-                )
-            );
 
-        $dataIIT = DB::table('ItemInventoryTransaction')
-            ->select('ItemInventoryTransaction.TransactionID')
-            ->where('AdjustmentID', $adjustmentStock['ItemAdjustmentID'])
-            ->get();
+        $check = $this->checkAccess('adjustmentStock.edit', $user->id, $user->idRole);
+        if ($check) {
 
-        DB::table('ItemInventoryTransaction')
-            ->where('AdjustmentID', $adjustmentStock['id'])
-            ->delete();
+            DB::table('ItemAdjustment')
+                ->where('ItemAdjustmentID', $adjustmentStock['ItemAdjustmentID'])
+                ->update(
+                    array(
+                        'Deleted' => 1,
+                        'UpdatedBy' => $user->id,
+                        'UpdatedOn' => date("Y-m-d h:i:sa"),
+                    )
+                );
 
-        DB::table('ItemInventoryTransactionLine')
-            ->where('TransactionID', $dataIIT[0]->TransactionID)
-            ->delete();
+            $dataIIT = DB::table('ItemInventoryTransaction')
+                ->select('ItemInventoryTransaction.TransactionID')
+                ->where('AdjustmentID', $adjustmentStock['ItemAdjustmentID'])
+                ->get();
 
-        return redirect()->route('adjustmentStock.index')->with('status', 'Success!!');
+            DB::table('ItemInventoryTransaction')
+                ->where('AdjustmentID', $adjustmentStock['id'])
+                ->delete();
+
+            DB::table('ItemInventoryTransactionLine')
+                ->where('TransactionID', $dataIIT[0]->TransactionID)
+                ->delete();
+
+            return redirect()->route('adjustmentStock.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+        }
     }
 
     public function searchNameAS(Request $request)
@@ -515,7 +522,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.adjustmentStok.index', [
                 'data' => $data,
@@ -548,7 +555,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.adjustmentStok.index', [
                 'data' => $data,
@@ -583,7 +590,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.index', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.adjustmentStok.index', [
                 'data' => $data,
@@ -668,7 +675,7 @@ class AdjustmentStockController extends Controller
 
         $user = Auth::user();
 
-        $check = $this->checkAccess('adjustmentStok.show', $user->id, $user->idRole);
+        $check = $this->checkAccess('adjustmentStock.show', $user->id, $user->idRole);
         if ($check) {
             return view('master.note.adjustmentStok.detail', [
                 'dataBarang' => $dataBarang,

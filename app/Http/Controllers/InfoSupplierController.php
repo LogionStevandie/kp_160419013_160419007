@@ -27,17 +27,16 @@ class InfoSupplierController extends Controller
         $data = DB::table('infoSupplier')
             //->paginate(10);
             ->get();
-        
 
-        
-          $user = Auth::user();
+
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('infoSupplier.index', $user->id, $user->idRole);
-        if ($check) {  
-             return view('master.infoSupplier.index',[
-            'data' => $data,
-        ]);
-
+        if ($check) {
+            return view('master.infoSupplier.index', [
+                'data' => $data,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
         }
@@ -51,18 +50,15 @@ class InfoSupplierController extends Controller
     public function create()
     {
         //
-      
-         $user = Auth::user();
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('infoSupplier.create', $user->id, $user->idRole);
-        if ($check) {  
-              return view('master.infoSupplier.tambah');
-
+        if ($check) {
+            return view('master.infoSupplier.tambah');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
         }
-
-        
     }
 
     /**
@@ -75,13 +71,14 @@ class InfoSupplierController extends Controller
     {
         //
         $data = $request->collect();
-        
-        DB::table('infoSupplier')->insert(array(
-             'name' => $data['name'],
-             'keterangan' => $data['keterangan'],
-             )
-        ); 
-        return redirect()->route('infoSupplier.index')->with('status','Success!!');
+
+        DB::table('infoSupplier')->insert(
+            array(
+                'name' => $data['name'],
+                'keterangan' => $data['keterangan'],
+            )
+        );
+        return redirect()->route('infoSupplier.index')->with('status', 'Success!!');
     }
 
     /**
@@ -104,16 +101,15 @@ class InfoSupplierController extends Controller
     public function edit(InfoSupplier $infoSupplier)
     {
         //
-      
 
-         $user = Auth::user();
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('infoSupplier.edit', $user->id, $user->idRole);
-        if ($check) {  
-               return view('master.infoSupplier.edit',[
-            'infoSupplier'=>$infoSupplier
-        ]);
-
+        if ($check) {
+            return view('master.infoSupplier.edit', [
+                'infoSupplier' => $infoSupplier
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
         }
@@ -130,7 +126,7 @@ class InfoSupplierController extends Controller
     {
         //
         $data = $request->collect(); //la teros iki
-        
+
         DB::table('infoSupplier')
             ->where('InfoSupplierID', $infoSupplier['InfoSupplierID'])
             ->update(array(
@@ -138,7 +134,7 @@ class InfoSupplierController extends Controller
                 'keterangan' => $data['keterangan'],
             ));
 
-        return redirect()->route('infoSupplier.index')->with('status','Success!!');   
+        return redirect()->route('infoSupplier.index')->with('status', 'Success!!');
     }
 
     /**
@@ -150,8 +146,15 @@ class InfoSupplierController extends Controller
     public function destroy(InfoSupplier $infoSupplier)
     {
         //
-        $infoSupplier->delete();
-        return redirect()->route('infoSupplier.index')->with('status','Success!!');
+        $user = Auth::user();
+
+        $check = $this->checkAccess('infoSupplier.edit', $user->id, $user->idRole);
+        if ($check) {
+            $infoSupplier->delete();
+            return redirect()->route('infoSupplier.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
+        }
     }
 
     public function searchName(Request $request)
@@ -159,19 +162,18 @@ class InfoSupplierController extends Controller
         $name = $request->input('searchname');
 
         $data = DB::table('infoSupplier')
-            ->where('name','like','%'.$name.'%')
+            ->where('name', 'like', '%' . $name . '%')
             ->paginate(10);
-            //->get();
-        
+        //->get();
 
-          $user = Auth::user();
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('infoSupplier.index', $user->id, $user->idRole);
-        if ($check) {  
-              return view('master.infoSupplier.index',[
-            'data' => $data,
-        ]);
-
+        if ($check) {
+            return view('master.infoSupplier.index', [
+                'data' => $data,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
         }
@@ -182,19 +184,18 @@ class InfoSupplierController extends Controller
         $ket = $request->input('searchketerangan');
 
         $data = DB::table('infoSupplier')
-            ->where('keterangan','like','%'.$ket.'%')
+            ->where('keterangan', 'like', '%' . $ket . '%')
             ->paginate(10);
-            //->get();
-        
+        //->get();
 
-          $user = Auth::user();
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('infoSupplier.index', $user->id, $user->idRole);
-        if ($check) {  
-              return view('master.infoSupplier.index',[
-            'data' => $data,
-        ]);
-
+        if ($check) {
+            return view('master.infoSupplier.index', [
+                'data' => $data,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
         }

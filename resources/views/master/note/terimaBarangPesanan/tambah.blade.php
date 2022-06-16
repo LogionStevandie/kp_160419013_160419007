@@ -47,7 +47,7 @@ Pembuatan Nota Terima Barang Pesanan
 
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Datang</label>
-                                            <input  name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="{{old('tanggalDatang','')}}" required="">
+                                            <input name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="{{old('tanggalDatang','')}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 
@@ -354,7 +354,7 @@ Pembuatan Nota Terima Barang Pesanan
                     //alert('masuk'); 
                     //alert("masuk cek");
                     optionnya += '<option id="namaBarang" namaBarang=' + value.itemName + ' idPrdId=' + value.PurchaseRequestDetailID + ' value="' + value.ItemID + '">' + value.itemName + '<nbsp>(' + value.unitName + ')</option>\n';
-                   // alert(optionnya);
+                    // alert(optionnya);
                 }
             });
 
@@ -363,7 +363,7 @@ Pembuatan Nota Terima Barang Pesanan
             $("#barang").append(optionnya);
             $('.selectpicker').selectpicker('refresh');
 
-            
+
             $('#keranjang').empty();
         });
 
@@ -371,13 +371,14 @@ Pembuatan Nota Terima Barang Pesanan
 
             var id = this.value;
             var idPrdId = $("#barang option:selected").attr('idPrdId');
+            var suratJalan = $("#SuratJalanID option:selected").val();
             var optionnya = '';
             var maxAngka = 0;
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
 
             $.each(suratJalanDetail, function(key, value) {
                 if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
-                    maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProsesTerima);
                     $.each($('.cekPrd'), function(idx, val) {
                         if (val.value == value.PurchaseRequestDetailID) {
                             var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
@@ -463,14 +464,11 @@ Pembuatan Nota Terima Barang Pesanan
         if (idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == "") {
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
-        }
-          else if (jumlahBarang > $("#jumlahBarang").attr("max"))
-        {
-                $('#jumlahBarang').val("");
-                alert("harap masukkan jumlah barang yang sesuai");
-        }
-        
-        else if (indexSama != null) {
+        } else if (jumlahBarang > $("#jumlahBarang").attr("max")) {
+            $('#jumlahBarang').val("");
+            alert("harap masukkan jumlah barang yang sesuai");
+            die;
+        } else if (indexSama != null) {
             //alert("masuk indexSama");
             var jumlah = $('.cekJumlah:eq(' + indexSama + ')').val();
             $('.cekJumlah:eq(' + indexSama + ')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));

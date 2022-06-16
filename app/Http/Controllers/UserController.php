@@ -166,7 +166,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //
-         $usero = Auth::user();
+        $usero = Auth::user();
         $userdata = DB::table('users')
             ->select(
                 'users.*',
@@ -182,7 +182,7 @@ class UserController extends Controller
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
             ->where('users.id', $user['id'])
             ->get();
-        
+
         $dataGudang = DB::table('MGudang')
             ->select('MGudang.*', 'MPerusahaan.cname as perusahaanName')
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
@@ -232,7 +232,7 @@ class UserController extends Controller
             ->leftjoin('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
             ->where('users.id', $user['id'])
             ->get();
-        
+
         $dataGudang = DB::table('MGudang')
             ->select('MGudang.*', 'MPerusahaan.cname as perusahaanName')
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
@@ -352,35 +352,40 @@ class UserController extends Controller
     public function destroy(User $users)
     {
         //
+
         $usero = Auth::user();
+        $check = $this->checkAccess('users.edit', $usero->id, $usero->idRole);
+        if ($check) {
+            DB::table('MGudang')
+                ->where('MGudangID', $users['MGudangID'])
+                ->update(
+                    array(
+                        'UserIDKepalaDivisi' => null,
+                    )
+                );
+            $dataPerusahaan = DB::table('MPerusahaan')
+                ->select('MPerusahaan.*')
+                ->join('MGudang', 'MPerusahaan.MPerusahaanID', '=', 'MGudang.cidp')
+                ->where('MGudangID', $users['MGudangID'])
+                ->get();
 
-        DB::table('MGudang')
-            ->where('MGudangID', $users['MGudangID'])
-            ->update(
-                array(
-                    'UserIDKepalaDivisi' => null,
-                )
-            );
-        $dataPerusahaan = DB::table('MPerusahaan')
-            ->select('MPerusahaan.*')
-            ->join('MGudang', 'MPerusahaan.MPerusahaanID', '=', 'MGudang.cidp')
-            ->where('MGudangID', $users['MGudangID'])
-            ->get();
+            DB::table('MPerusahaan')
+                ->where('MPerusahaanID', $dataPerusahaan[0]->MPerusahaanID)
+                ->update(
+                    array(
+                        'UserIDManager1' => null,
+                        'UserIDManager2' => null,
+                    )
+                );
 
-        DB::table('MPerusahaan')
-            ->where('MPerusahaanID', $dataPerusahaan[0]->MPerusahaanID)
-            ->update(
-                array(
-                    'UserIDManager1' => null,
-                    'UserIDManager2' => null,
-                )
-            );
+            DB::table('users')
+                ->where('id', $users['id'])
+                ->delete();
 
-        DB::table('users')
-            ->where('id', $users['id'])
-            ->delete();
-
-        return redirect()->route('users.index')->with('status', 'Success!!');
+            return redirect()->route('users.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
+        }
     }
 
     public function searchNameUsers(Request $request)

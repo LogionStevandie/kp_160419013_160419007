@@ -349,18 +349,21 @@ Pembuatan Nota Kirim Barang Pesanan
             var idPrdId = $("#barang option:selected").attr('idPrdId');
             var suratJalan = $("#SuratJalanID option:selected").val();
             var optionnya = '';
-            var maxAngka = 0;
+            var maxAngka = 0.0;
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
 
             $.each(suratJalanDetail, function(key, value) {
                 if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
-                    maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
+                    maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProsesKirim);//ini error
+                    alert(maxAngka);
                     $.each($('.cekPrd'), function(idx, val) {
                         if (val.value == value.PurchaseRequestDetailID) {
                             var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();
-                            maxAngka = maxAngka - jumlahBarang;
+                            maxAngka = maxAngka - parseFloat(jumlahBarang);
+                            
                         }
                     });
+
                     //alert(maxAngka);
                     $("#jumlahBarang").attr({
                         "max": maxAngka,
@@ -390,7 +393,6 @@ Pembuatan Nota Kirim Barang Pesanan
 
         var hargaBarang = $('.cekHarga:eq(' + i + ')').val();
         var keteranganBarang = $('.cekKeterangan:eq(' + i + ')').val();
-        var diskonBarang = $('.cekDiskon:eq(' + i + ')').val();
 
         $("#barang").val(idBarang);
         $("#jumlahBarang").val(jumlahBarang);
@@ -441,7 +443,13 @@ Pembuatan Nota Kirim Barang Pesanan
         if (idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == "") {
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
-        } else if (indexSama != null) {
+        }         
+        else if (jumlahBarang > $("#jumlahBarang").attr("max")){
+                $('#jumlahBarang').val("");
+                alert("harap masukkan jumlah barang yang sesuai");
+                die;
+        }
+        else if (indexSama != null) {
             //alert("masuk indexSama");
             var jumlah = $('.cekJumlah:eq(' + indexSama + ')').val();
             $('.cekJumlah:eq(' + indexSama + ')').val(parseFloat(jumlah) + parseFloat(jumlahBarang));

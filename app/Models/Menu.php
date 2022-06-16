@@ -9,10 +9,15 @@ class Menu extends Model
 {
     use HasFactory;
     protected $table = 'menu';
-     protected $primaryKey='MenuID';
-     protected $fillable=[
+    protected $primaryKey = 'MenuID';
+    protected $fillable = [
         'Name',
         'Url',
         'Deskripsi'
     ];
+
+    public function menuAccess()
+    {
+        return $this->belongsToMany('App\Models\Role', 'role_access', 'idMenu', 'idRole');
+    }
 }

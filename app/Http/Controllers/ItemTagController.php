@@ -25,17 +25,15 @@ class ItemTagController extends Controller
         //
         $data = DB::table('ItemTag')
             ->paginate(10);
-            //->get();
-       
-
-         $user = Auth::user();
-         $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
-        if ($check) {  
-          return view('master.itemTag.index',[
-            'data' => $data,
-        ]);
+        //->get();
 
 
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTag.index', [
+                'data' => $data,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
         }
@@ -49,21 +47,15 @@ class ItemTagController extends Controller
     public function create()
     {
         //
-      
 
-         $user = Auth::user();
-         $check = $this->checkAccess('itemTag.create', $user->id, $user->idRole);
-        if ($check) {  
+
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTag.create', $user->id, $user->idRole);
+        if ($check) {
             return view('master.itemTag.tambah');
-
-
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
         }
-
-
-
-       
     }
 
     /**
@@ -77,18 +69,19 @@ class ItemTagController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('ItemTag')
-            ->insert(array(
-                'Name' => $data['Name'],
-                'Desc' => $data['Desc'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        ); 
-        return redirect()->route('itemTag.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'Name' => $data['Name'],
+                    'Desc' => $data['Desc'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('itemTag.index')->with('status', 'Success!!');
     }
 
     /**
@@ -100,22 +93,17 @@ class ItemTagController extends Controller
     public function show(ItemTag $itemTag)
     {
         //
-        
-
-          $user = Auth::user();
-         $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
-        if ($check) {  
-           return view('master.itemTag.detail',[
-            'ItemTag'=>$itemTag
-        ]);
 
 
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTag.detail', [
+                'ItemTag' => $itemTag
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
         }
-
-
-
     }
 
     /**
@@ -127,16 +115,14 @@ class ItemTagController extends Controller
     public function edit(ItemTag $itemTag)
     {
         //
-    
-
-         $user = Auth::user();
-         $check = $this->checkAccess('itemTag.edit', $user->id, $user->idRole);
-        if ($check) {  
-               return view('master.itemTag.edit',[
-            'ItemTag'=>$itemTag
-        ]);
 
 
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTag.edit', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTag.edit', [
+                'ItemTag' => $itemTag
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
         }
@@ -156,15 +142,16 @@ class ItemTagController extends Controller
         $user = Auth::user();
         DB::table('ItemTag')
             ->where('ItemTagID', $itemTag['ItemTagID'])
-            ->update(array(
-                'Name' => $data['Name'],
-                'Desc' => $data['Desc'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
+            ->update(
+                array(
+                    'Name' => $data['Name'],
+                    'Desc' => $data['Desc'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
 
-       return redirect()->route('itemTag.index')->with('status','Success!!');           
+        return redirect()->route('itemTag.index')->with('status', 'Success!!');
     }
 
     /**
@@ -177,8 +164,15 @@ class ItemTagController extends Controller
     {
         //
         //$itemTag->delete();
-        DB::table('ItemTag')->where('ItemTagID', $itemTag['ItemTagID'])->delete();
-       return redirect()->route('itemTag.index')->with('status','Success!!');
+
+        $user = Auth::user();
+        $check = $this->checkAccess('itemTag.edit', $user->id, $user->idRole);
+        if ($check) {
+            DB::table('ItemTag')->where('ItemTagID', $itemTag['ItemTagID'])->delete();
+            return redirect()->route('itemTag.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+        }
     }
 
     public function searchItemTagName(Request $request)
@@ -186,19 +180,17 @@ class ItemTagController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('ItemTag')
-            ->where('Name','like','%'.$name.'%')
+            ->where('Name', 'like', '%' . $name . '%')
             ->paginate(10);
-            //->get();
-        
+        //->get();
+
 
         $user = Auth::user();
-         $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
-        if ($check) {  
-               return view('master.itemTag.index',[
-            'data' => $data,
-        ]);
-
-
+        $check = $this->checkAccess('itemTag.show', $user->id, $user->idRole);
+        if ($check) {
+            return view('master.itemTag.index', [
+                'data' => $data,
+            ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
         }

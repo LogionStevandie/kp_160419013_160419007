@@ -391,8 +391,8 @@ class PurchaseOrderController extends Controller
         //dd($dataPurchaseRequestDetail);
         $dataDetail = DB::table('purchase_order_detail')
             ->select('purchase_order_detail.*', 'Item.ItemName as itemName', 'Tax.TaxPercent', 'purchase_request.name as namaNPPCheck')
-            ->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail','=','purchase_request_detail.id')
-            ->leftjoin('purchase_request', 'purchase_request_detail.idPurchaseRequest','=','purchase_request.id')
+            ->leftjoin('purchase_request_detail', 'purchase_order_detail.idPurchaseRequestDetail', '=', 'purchase_request_detail.id')
+            ->leftjoin('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=', 'purchase_request.id')
             ->leftjoin('Tax', 'purchase_order_detail.idTax', '=', 'Tax.TaxID')
             ->leftjoin('Item', 'purchase_order_detail.idItem', '=', 'Item.ItemID')
             ->where('purchase_order_detail.idPurchaseOrder', '=', $purchaseOrder->id)
@@ -568,23 +568,30 @@ class PurchaseOrderController extends Controller
     public function destroy(PurchaseOrder $purchaseOrder)
     {
         //
-        if ($purchaseOrder->approved == 1 || $purchaseOrder->approved == 2) {
-            return redirect()->route('purchaseOrder.index')->with('status', 'Tidak dapat mengubah data');
-        } else {
-            DB::table('purchase_order')
-                ->where('id', $purchaseOrder->id)
-                ->update([
-                    'hapus' =>  1,
-                ]);
 
-            $podet = DB::table('purchase_order_detail')->where('idPurchaseOrder', $purchaseOrder['id'])->get();
-            foreach ($podet as $data) {
-                DB::table('purchase_request_detail')
-                    ->where('id', $data->idPurchaseRequestDetail)
-                    ->decrement('jumlahProses', $data->jumlah);
+        $user = Auth::user();
+        $check = $this->checkAccess('purchaseOrder.edit', $user->id, $user->idRole);
+        if ($check) {
+            if ($purchaseOrder->approved == 1 || $purchaseOrder->approved == 2) {
+                return redirect()->route('purchaseOrder.index')->with('status', 'Tidak dapat mengubah data');
+            } else {
+                DB::table('purchase_order')
+                    ->where('id', $purchaseOrder->id)
+                    ->update([
+                        'hapus' =>  1,
+                    ]);
+
+                $podet = DB::table('purchase_order_detail')->where('idPurchaseOrder', $purchaseOrder['id'])->get();
+                foreach ($podet as $data) {
+                    DB::table('purchase_request_detail')
+                        ->where('id', $data->idPurchaseRequestDetail)
+                        ->decrement('jumlahProses', $data->jumlah);
+                }
+
+                return redirect()->route('purchaseOrder.index')->with('status', 'Success!!');
             }
-
-            return redirect()->route('purchaseOrder.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Purchase Order');
         }
     }
 

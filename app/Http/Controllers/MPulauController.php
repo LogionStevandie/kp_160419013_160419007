@@ -24,11 +24,11 @@ class MPulauController extends Controller
         $data = DB::table('MPulau')
             ->paginate(10);
         //->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mPulau.index', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mPulau.index',[
+            return view('master.mPulau.index', [
                 'data' => $data,
             ]);
         } else {
@@ -51,7 +51,6 @@ class MPulauController extends Controller
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
         }
-        
     }
 
     /**
@@ -65,18 +64,19 @@ class MPulauController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('MPulau')
-            ->insert(array(
-                'cidpulau' => $data['cid'],
-                'cname' => $data['name'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-         return redirect()->route('mPulau.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'cidpulau' => $data['cid'],
+                    'cname' => $data['name'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('mPulau.index')->with('status', 'Success!!');
     }
 
     /**
@@ -89,11 +89,11 @@ class MPulauController extends Controller
     {
         //
         //$data = DB::table('MPulau')->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mPulau.show', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mPulau.detail',[
+            return view('master.mPulau.detail', [
                 'mPulau' => $mPulau,
             ]);
         } else {
@@ -110,12 +110,12 @@ class MPulauController extends Controller
     public function edit(MPulau $mPulau)
     {
         //
-        
+
 
         $user = Auth::user();
         $check = $this->checkAccess('mPulau.edit', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mPulau.edit',[
+            return view('master.mPulau.edit', [
                 'mPulau' => $mPulau,
             ]);
         } else {
@@ -137,14 +137,15 @@ class MPulauController extends Controller
         $user = Auth::user();
         DB::table('MPulau')
             ->where('MPulauID', $mPulau['MPulauID'])
-            ->update(array(
-                'cidpulau' => $data['cid'],
-                'cname' => $data['name'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-        return redirect()->route('mPulau.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'cidpulau' => $data['cid'],
+                    'cname' => $data['name'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('mPulau.index')->with('status', 'Success!!');
     }
 
     /**
@@ -156,8 +157,14 @@ class MPulauController extends Controller
     public function destroy(MPulau $mPulau)
     {
         //
-        $mPulau->delete();
-        return redirect()->route('mPulau.index')->with('status','Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('mPulau.edit', $user->id, $user->idRole);
+        if ($check) {
+            $mPulau->delete();
+            return redirect()->route('mPulau.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+        }
     }
 
     public function searchPulauName(Request $request)
@@ -165,14 +172,14 @@ class MPulauController extends Controller
         //
         $name = $request->input('searchname');
         $data = DB::table('MPulau')
-            ->where('cname','like','%'.$name.'%')
+            ->where('cname', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mPulau.index', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mPulau.index',[
+            return view('master.mPulau.index', [
                 'data' => $data,
             ]);
         } else {

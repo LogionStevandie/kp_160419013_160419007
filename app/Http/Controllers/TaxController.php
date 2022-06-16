@@ -159,8 +159,14 @@ class TaxController extends Controller
     public function destroy(Tax $tax)
     {
         //
-        $tax->delete();
-        return redirect()->route('tax.index')->with('status', 'Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('tax.edit', $user->id, $user->idRole);
+        if ($check) {
+            $tax->delete();
+            return redirect()->route('tax.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
+        }
     }
 
     public function searchTaxName(Request $request)

@@ -158,8 +158,14 @@ class MenuController extends Controller
     public function destroy(Menu $menu)
     {
         //
-        $menu->delete();
-        return redirect()->route('menu.index')->with('status', 'Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('menu.edit', $user->id, $user->idRole);
+        if ($check) {
+            $menu->delete();
+            return redirect()->route('menu.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+        }
     }
 
     public function searchMenuName(Request $request)

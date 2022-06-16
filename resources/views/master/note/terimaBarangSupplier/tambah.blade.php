@@ -410,6 +410,7 @@ Pembuatan Terima Barang Supplier
         {
                 $('#jumlahBarang').val("");
                 alert("harap masukkan jumlah barang yang sesuai");
+                die;
         }
         else if (indexSama != null) {
             //alert("masuk indexSama");

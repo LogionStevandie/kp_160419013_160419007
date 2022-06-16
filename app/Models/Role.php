@@ -8,8 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Role extends Model
 {
     use HasFactory;
+    public function users()
+    {
+        return $this->hasMany('App\User', 'idRole', 'id');
+    }
 
-    protected $fillable=[
+    protected $fillable = [
         'name',
     ];
+
+    public function roleAccess()
+    {
+        return $this->belongsToMany('App\Models\Menu', 'role_access', 'idRole', 'idMenu');
+    }
 }

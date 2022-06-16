@@ -25,7 +25,7 @@ class SuratJalanController extends Controller
             ->where('hapus', 0)
             ->orderByDesc('surat_jalan.tanggalDibuat', 'surat_jalan.id')
             ->paginate(10);
-            //dd($data);
+        //dd($data);
 
         $dataDetail = DB::table('surat_jalan_detail')
             ->select('surat_jalan_detail.*')
@@ -140,8 +140,8 @@ class SuratJalanController extends Controller
         //
         $user = Auth::user();
 
-        if(!isset($data['itemId'])){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
         $data = $request->collect();
@@ -352,7 +352,7 @@ class SuratJalanController extends Controller
             ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransaction.Date')
             ->get();
-
+        //dd($dataReportUntukStok);
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.edit', $user->id, $user->idRole);
         if ($check) {
@@ -385,8 +385,8 @@ class SuratJalanController extends Controller
         $user = Auth::user();
         $data = $request->collect();
 
-        if(request()->get('itemId') == null || request()->get('itemId') == ""){
-            return redirect()->back()->with('status', 'Isikan data keranjang');   
+        if (request()->get('itemId') == null || request()->get('itemId') == "") {
+            return redirect()->back()->with('status', 'Isikan data keranjang');
         }
 
         DB::table('surat_jalan')
@@ -436,19 +436,24 @@ class SuratJalanController extends Controller
     {
 
         $user = Auth::user();
-        if ($suratJalan->proses != 2) {
-            DB::table('surat_jalan')
-                ->where('id', $suratJalan->id)
-                ->update(
-                    array(
-                        'hapus' => '1',
-                        'UpdatedBy' => $user->id,
-                        'UpdatedOn' => date("Y-m-d h:i:sa"),
-                    )
-                );
-            return redirect()->route('suratJalan.index')->with('status', 'Success!!');
+        $check = $this->checkAccess('suratJalan.edit', $user->id, $user->idRole);
+        if ($check) {
+            if ($suratJalan->proses != 2) {
+                DB::table('surat_jalan')
+                    ->where('id', $suratJalan->id)
+                    ->update(
+                        array(
+                            'hapus' => '1',
+                            'UpdatedBy' => $user->id,
+                            'UpdatedOn' => date("Y-m-d h:i:sa"),
+                        )
+                    );
+                return redirect()->route('suratJalan.index')->with('status', 'Success!!');
+            } else {
+                return redirect()->route('suratJalan.index')->with('message', 'Gagal menghapus');
+            }
         } else {
-            return redirect()->route('suratJalan.index')->with('message', 'Gagal menghapus');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Surat Jalan');
         }
     }
 

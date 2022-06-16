@@ -25,15 +25,15 @@ class MKotaController extends Controller
         //
         $data = DB::table('MKota')
             ->select('MKota.*', 'MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName')
-            ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
-            ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
+            ->leftjoin('MPulau', 'MKota.cidpulau', '=', 'MPulau.cidpulau')
+            ->leftjoin('MProvinsi', 'MKota.cidprov', '=', 'MProvinsi.cidprov')
             ->paginate(10);
         //->get();
-        
+
         $user = Auth::user();
         $check = $this->checkAccess('mKota.index', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mKota.index',[
+            return view('master.mKota.index', [
                 'data' => $data,
             ]);
         } else {
@@ -52,12 +52,12 @@ class MKotaController extends Controller
         $dataMPulau = DB::table('MPulau')
             ->get();
         $dataMProvinsi = DB::table('MProvinsi')
-            ->get();    
-        
+            ->get();
+
         $user = Auth::user();
         $check = $this->checkAccess('mKota.create', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mKota.tambah',[
+            return view('master.mKota.tambah', [
                 'dataMPulau' => $dataMPulau,
                 'dataMProvinsi' => $dataMProvinsi,
             ]);
@@ -77,21 +77,22 @@ class MKotaController extends Controller
         //
         $data = $request->collect();
         $user = Auth::user();
-        
+
         DB::table('MKota')
-            ->insert(array(
-                'cidkota' => $data['cid'],
-                'ckode' => $data['kode'],
-                'cname' => $data['name'],
-                'cidprov' => $data['prov'],
-                'cidpulau' => $data['pulau'],
-                'CreatedBy'=> $user->id,
-                'CreatedOn'=> date("Y-m-d h:i:sa"),
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        ); 
-         return redirect()->route('mKota.index')->with('status','Success!!');
+            ->insert(
+                array(
+                    'cidkota' => $data['cid'],
+                    'ckode' => $data['kode'],
+                    'cname' => $data['name'],
+                    'cidprov' => $data['prov'],
+                    'cidpulau' => $data['pulau'],
+                    'CreatedBy' => $user->id,
+                    'CreatedOn' => date("Y-m-d h:i:sa"),
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('mKota.index')->with('status', 'Success!!');
     }
 
     /**
@@ -111,13 +112,13 @@ class MKotaController extends Controller
         $dataMPulau = DB::table('MPulau')
             ->get();
         $dataMProvinsi = DB::table('MProvinsi')
-            ->get();    
-        
+            ->get();
+
 
         $user = Auth::user();
         $check = $this->checkAccess('mKota.show', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mKota.detail',[
+            return view('master.mKota.detail', [
                 'mKota' => $mKotum,
                 'dataMPulau' => $dataMPulau,
                 'dataMProvinsi' => $dataMProvinsi,
@@ -139,12 +140,12 @@ class MKotaController extends Controller
         $dataMPulau = DB::table('MPulau')
             ->get();
         $dataMProvinsi = DB::table('MProvinsi')
-            ->get();    
-        
+            ->get();
+
         $user = Auth::user();
         $check = $this->checkAccess('mKota.edit', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mKota.edit',[
+            return view('master.mKota.edit', [
                 'mKota' => $mKotum,
                 'dataMPulau' => $dataMPulau,
                 'dataMProvinsi' => $dataMProvinsi,
@@ -168,17 +169,18 @@ class MKotaController extends Controller
         $user = Auth::user();
         DB::table('MKota')
             ->where('MKotaID', $mKotum['MKotaID'])
-            ->update(array(
-                'cidkota' => $data['cid'],
-                'ckode' => $data['kode'],
-                'cname' => $data['name'],
-                'cidprov' => $data['prov'],
-                'cidpulau' => $data['pulau'],
-                'UpdatedBy'=> $user->id,
-                'UpdatedOn'=> date("Y-m-d h:i:sa"),
-            )
-        );
-        return redirect()->route('mKota.index')->with('status','Success!!');
+            ->update(
+                array(
+                    'cidkota' => $data['cid'],
+                    'ckode' => $data['kode'],
+                    'cname' => $data['name'],
+                    'cidprov' => $data['prov'],
+                    'cidpulau' => $data['pulau'],
+                    'UpdatedBy' => $user->id,
+                    'UpdatedOn' => date("Y-m-d h:i:sa"),
+                )
+            );
+        return redirect()->route('mKota.index')->with('status', 'Success!!');
     }
 
     /**
@@ -190,8 +192,14 @@ class MKotaController extends Controller
     public function destroy(MKota $mKotum)
     {
         //
-        $mKotum->delete();
-         return redirect()->route('mKota.index')->with('status','Success!!');
+        $user = Auth::user();
+        $check = $this->checkAccess('mKota.edit', $user->id, $user->idRole);
+        if ($check) {
+            $mKotum->delete();
+            return redirect()->route('mKota.index')->with('status', 'Success!!');
+        } else {
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+        }
     }
 
     public function searchKotaName(Request $request)
@@ -201,17 +209,17 @@ class MKotaController extends Controller
 
         $data = DB::table('MKota')
             ->select('MKota.*', 'MProvinsi.cname as provinsiName', 'MPulau.cname as pulauName')
-            ->leftjoin('MPulau','MKota.cidpulau','=','MPulau.cidpulau')
-            ->leftjoin('MProvinsi','MKota.cidprov','=','MProvinsi.cidprov')
-            ->where('MKota.cname','like','%'.$name.'%')
+            ->leftjoin('MPulau', 'MKota.cidpulau', '=', 'MPulau.cidpulau')
+            ->leftjoin('MProvinsi', 'MKota.cidprov', '=', 'MProvinsi.cidprov')
+            ->where('MKota.cname', 'like', '%' . $name . '%')
             ->paginate(10);
         //->get();
-        
+
 
         $user = Auth::user();
         $check = $this->checkAccess('mKota.index', $user->id, $user->idRole);
         if ($check) {
-            return view('master.mKota.index',[
+            return view('master.mKota.index', [
                 'data' => $data,
             ]);
         } else {
