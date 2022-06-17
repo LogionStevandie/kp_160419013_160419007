@@ -33,7 +33,7 @@
 
 
                             <div class="form-group">
-                                <label for="title">Nama tax</label>
+                                <label for="title">Nama Pajak</label>
                                 <input require type="text" name="name" class="form-control" value="{{old('Name',$tax->Name)}}" disabled>
                             </div>
 
