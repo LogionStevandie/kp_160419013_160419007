@@ -40,7 +40,7 @@
                with font-awesome or any other icon font library -->
         <li class="nav-header">KARTU STOK</li>
         @foreach(Auth::user()->role->roleAccess as $key)
-        @if($key->Url == "inventoryTransaction")
+        @if($key->Url == "inventoryTransaction.index")
         <li class="nav-item">
           <a href="{{route('inventoryTransaction.index')}}" class="nav-link">
             <i class="nav-icon fas fa-columns"></i>

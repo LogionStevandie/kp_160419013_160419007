@@ -519,6 +519,7 @@ class InventoryTransactionController extends Controller
             ->whereDate('ItemInventoryTransaction.Date', '<=', $date[1])
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'MPerusahaan.cname', 'Unit.Name')
             ->get();
+        
 
         $dataReportSingleSebelum = DB::table('ItemInventoryTransactionLine')
             ->select(
@@ -540,7 +541,7 @@ class InventoryTransactionController extends Controller
             ->whereDate('ItemInventoryTransaction.Date', '<', $date[0])
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'MPerusahaan.cname', 'Unit.Name')
             ->get();
-        //dd($dataReportSingle);
+        //dd($dataReportSingleSebelum);
 
 
         $user = Auth::user();
@@ -568,6 +569,7 @@ class InventoryTransactionController extends Controller
                 'gudang' => $gudang,
                 'item' => $item,
                 'dateLengkap' => $dateLengkap,
+                'dateLengkapPisah' => $date[0],
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kartu Stok');

@@ -107,73 +107,92 @@ Kartu Stok
                         </thead>
                         <tbody>
                             @if($dataReport != null )
-                            @php
-                            $awal = 0;
-                            $akhirStok = 0;
-                            @endphp
-                            @foreach($dataReport as $stok)
-                            @if($loop->first)
-                            @foreach($dataReportSingleSebelum as $stoksebelum)
-                            <tr>
-                                <td scope="col">{{ $loop->index + 1 }}</td>
                                 @php
-                                $awal = $awal + 1;
+                                $awal = 0;
+                                $akhirStok = 0;
                                 @endphp
-                                <td scope="col">Data awal</td>
-                                <td scope="col">Sebelum ({{date("d-m-Y", strtotime($stok->Date))}})</td>
-                                <td scope="col">-</td>
-                                <td scope="col">-</td>
+                                @foreach($dataReport as $stok)
+                                    @if($loop->first)
+                                        @foreach($dataReportSingleSebelum as $stoksebelum)
+                                        <tr>
+                                            <td scope="col">{{ $loop->index + 1 }}</td>
+                                            @php
+                                            $awal = $awal + 1;
+                                            @endphp
+                                            <td scope="col">Data awal</td>
+                                            <td scope="col">Sebelum ({{date("d-m-Y", strtotime($stok->Date))}})</td>
+                                            <td scope="col">-</td>
+                                            <td scope="col">-</td>
 
-                                <td>{{$stok->ItemName}}</td>
-                                <td>{{$stoksebelum->totalQuantity}}</td>
-                                <td>0</td>
-                                <td>0</td>
-                                <td>{{$stoksebelum->totalQuantity}}</td>
-                                @php
-                                $akhirStok = $stoksebelum->totalQuantity;
-                                @endphp
+                                            <td>{{$stok->ItemName}}</td>
+                                            <td>{{$stoksebelum->totalQuantity}}</td>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>{{$stoksebelum->totalQuantity}}</td>
+                                            @php
+                                            $akhirStok = $stoksebelum->totalQuantity;
+                                            @endphp
 
-                            </tr>
-                            @endforeach
+                                        </tr>
+                                        @endforeach
+                                    @endif
+
+                                <tr>
+                                    <td scope="col">{{ $loop->index + 1 + $awal }}</td>
+                                    <td scope="col">{{$stok->Name}}</td>
+                                    <td scope="col">{{date("d-m-Y", strtotime($stok->Date))}}</td>
+                                    <td scope="col">
+                                        @if($stok->AdjustmentID != null)
+                                        Penyesuaian Item
+                                        @elseif($stok->SuratJalanID != null)
+                                        Transaksi Menggunakan Surat Jalan
+                                        @elseif($stok->StokAwalID != null)
+                                        Stok Awal Gudang
+                                        @else
+                                        Transaksi
+                                        @endif
+                                    </td>
+                                    <!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
+                                    <td scope="col">{{$stok->tipeTransaksi}}</td>
+
+                                    <td>{{$stok->ItemName}}</td>
+                                    <td>{{$akhirStok}}</td>
+                                    @if($stok->Quantity > 0)
+                                    <td>{{$stok->Quantity}}</td>
+                                    <td>0</td>
+                                    <td>{{$stok->Quantity+($akhirStok)}}</td>
+                                    @else
+                                    <td>0</td>
+                                    <td>{{abs($stok->Quantity)}}</td>
+                                    <td>{{$stok->Quantity+($akhirStok)}}</td>
+
+                                    @endif
+                                    @php
+                                    $akhirStok = $stok->Quantity+($akhirStok);
+                                    @endphp
+
+                                </tr>
+                                @endforeach
+                            
                             @endif
 
-                            <tr>
-                                <td scope="col">{{ $loop->index + 1 + $awal }}</td>
-                                <td scope="col">{{$stok->Name}}</td>
-                                <td scope="col">{{date("d-m-Y", strtotime($stok->Date))}}</td>
-                                <td scope="col">
-                                    @if($stok->AdjustmentID != null)
-                                    Penyesuaian Item
-                                    @elseif($stok->SuratJalanID != null)
-                                    Transaksi Menggunakan Surat Jalan
-                                    @elseif($stok->StokAwalID != null)
-                                    Stok Awal Gudang
-                                    @else
-                                    Transaksi
-                                    @endif
-                                </td>
-                                <!--sg ada id surat jalan ya namanya surat jalan dan seterusnya-->
-                                <td scope="col">{{$stok->tipeTransaksi}}</td>
+                            @if(count($dataReport) <= 0)
+                                @foreach($dataReportSingleSebelum as $stoksebelum)
+                                <tr>
+                                    <td scope="col">{{ $loop->index + 1 }}</td>
+                                    <td scope="col">Data awal</td>
+                                    <td scope="col">Sebelum ({{$dateLengkapPisah}})</td>
+                                    <td scope="col">-</td>
+                                    <td scope="col">-</td>
 
-                                <td>{{$stok->ItemName}}</td>
-                                <td>{{$akhirStok}}</td>
-                                @if($stok->Quantity > 0)
-                                <td>{{$stok->Quantity}}</td>
-                                <td>0</td>
-                                <td>{{$stok->Quantity+($akhirStok)}}</td>
-                                @else
-                                <td>0</td>
-                                <td>{{abs($stok->Quantity)}}</td>
-                                <td>{{$stok->Quantity+($akhirStok)}}</td>
+                                    <td>{{$stoksebelum->namaBarang}}</td>
+                                    <td>{{$stoksebelum->totalQuantity}}</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                    <td>{{$stoksebelum->totalQuantity}}</td>
 
-                                @endif
-                                @php
-                                $akhirStok = $stok->Quantity+($akhirStok);
-                                @endphp
-
-                            </tr>
-                            @endforeach
-
+                                </tr>
+                                @endforeach
                             @endif
                         </tbody>
                         <tfoot>
