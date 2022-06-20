@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Edit Tag Item Values
+Edit Tag Barang Values
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('itemTagValues.index')}}">Tag-Item-Values</a></li>
+<li class="breadcrumb-item"><a href="{{route('itemTagValues.index')}}">Tag-Barang-Values</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 
@@ -28,7 +28,7 @@ Edit Tag Item Values
         <div class="card-body">
 
             <div class="form-group">
-                <label for="title">Nama Item</label>
+                <label for="title">Nama Barang</label>
                 <input disabled type="text" name="cid" maxlength="200" class="form-control" 
                 value="{{old('ItemName',$itemTagValues->ItemName)}}">
             </div>
@@ -44,7 +44,7 @@ Edit Tag Item Values
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 </div>

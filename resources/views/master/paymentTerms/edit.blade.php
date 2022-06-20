@@ -6,14 +6,14 @@
  </style>
 
 @section('judul')
-Edit Ketentuan Pembayaran
+Ubah Ketentuan Pembayaran
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('paymentTerms.index')}}">Ketentuan-Pembayaran</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item"><a href="{{route('paymentTerms.index')}}">Ketentuan Pembayaran</a></li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -80,7 +80,7 @@ Edit Ketentuan Pembayaran
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 </div>

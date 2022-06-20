@@ -18,7 +18,7 @@ Perusahaan
 
 @section('content')
 <div class="container-fluid">
-        <h2 class="text-center display-4">Search</h2>
+        <h2 class="text-center display-4">Cari</h2>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form action="/mPerusahaane/searchname/" method="get">
@@ -60,7 +60,7 @@ Perusahaan
                                 <th>NPWP</th>
                                 <th>Alamat NPWP</th>
                                 <th>Gambar</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </thead>
                         <tbody>
@@ -103,16 +103,18 @@ Perusahaan
                                                     </button> 
                                                 </div>
                                                 <div class="modal-body">
-                                                        <p>Nama perusahaan :{{$d->cname}}</p>
-                                                        <p>Kode:{{$d->cnames}}</p>
-                                                        <p>Manager 1 :
+                                                        <p> <b>Logo : </b>  <img src='{{asset($d->Gambar)}}' alt='' width='100'></p>
+                                                        <p> <b>Nama perusahaan :</b> {{$d->cname}}</p>
+                                                        <p> <b>Kode:</b> {{$d->cnames}}</p>
+                                                        <p> <b>NPWP:</b> {{$d->NomorNPWP}}</p>
+                                                        <p> <b>Manager 1 :</b>
                                                             @foreach($dataUser as $user)
                                                                 @if($user->id == $d->UserIDManager1)
                                                                     <p>{{$user->name}}</p>
                                                                 @endif
                                                             @endforeach
                                                         </p>
-                                                         <p>Manager 2 :
+                                                         <p> <b>Manager 2 :</b>
                                                             @foreach($dataUser as $user)
                                                                 @if($user->id == $d->UserIDManager2)
                                                                     <p>{{$user->name}}</p>
@@ -178,7 +180,7 @@ Perusahaan
                                 <th>NPWP</th>
                                 <th>Alamat NPWP</th>
                                 <th>Gambar</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </tfoot>
                     </table>

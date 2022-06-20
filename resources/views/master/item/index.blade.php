@@ -18,12 +18,12 @@ Item
 
 @section('content')
 <div class="container-fluid">
-        <h2 class="text-center display-4">Search</h2>
+        <h2 class="text-center display-4">Cari Item</h2>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form action="/iteme/searchname/" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Barang">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Item">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-lg btn-default">
                                 <i class="fa fa-search"></i>
@@ -40,7 +40,7 @@ Item
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title"> item </h3>
+                    <h3 class="card-title"> Item </h3>
                     
                     <a href="{{route('item.create')}}" class="btn btn-primary btn-responsive float-right">Tambah item
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">

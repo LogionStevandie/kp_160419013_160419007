@@ -348,7 +348,7 @@
             <li class="nav-item">
               <a href="{{route('itemTransaction.index')}}" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-                <p>Transaction item</p>
+                <p> item Transaksi</p>
               </a>
             </li>
             @endif

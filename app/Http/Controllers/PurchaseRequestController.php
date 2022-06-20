@@ -530,6 +530,8 @@ class PurchaseRequestController extends Controller
             ->where('purchase_request_detail.idPurchaseRequest', '=', $purchaseRequest->id)
             ->get();
 
+        $dataUser = DB::table('users')
+            ->get();
 
         return view('master.PurchaseRequest.print', [
             'purchaseRequest' => $purchaseRequest,

@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Needed | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -74,10 +74,10 @@
                 <thead class="thead-light">
                   <tr>
                     <th scope="col" colspan="3">
-                      <h2> PERMINTAAN PEMBELIAN</h2>
+                      <h2>NOTA PERMINTAAN PEMBELIAN</h2>
                     </th>
                     <th scope="col" colspan="3">
-                      Nama Npp : {{$purchaseRequest->name}}<br>
+                      Nama NPP : {{$purchaseRequest->name}}<br>
                       Tanggal pembuatan : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDibuat))}}
 
                     </th>
@@ -95,28 +95,57 @@
                         @endforeach
                         Jenis permintaan : {{$purchaseRequest->jenisProses}} <br>
                         Tanggal dibutuhkan : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDibutuhkan))}}<br>
-                        Tanggal batas akhir : {{date("d-m-Y", strtotime($purchaseRequest->tanggalAkhirDibutuhkan))}}
+                        Tanggal batas akhir : {{date("d-m-Y", strtotime($purchaseRequest->tanggalAkhirDibutuhkan))}}<br>
+                        Tanggal Diterima : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDiterima))}}
+                      </Status>
                     </th>
                   </tr>
                 </thead>
-                  <thead class="thead-light">
-                    <tr>
-                      <th scope="col" colspan="6">
-                        <b>Status:
-                          @if($purchaseRequest->approved==0)
-                          <span style="white-space: pre-line">Belum diproses</span><br>
-                           @elseif($purchaseRequest->approved==1)
-                            <span style="white-space: pre-line">Disetujui</span><br>
-                            @elseif($purchaseRequest->approved==2)
-                            <span style="white-space: pre-line">Ditolak</span><br>
-                            @endif
-                        </b>
-                        <br>
-                        <b>Keterangan status:</b><span style="white-space: pre-line">{{$purchaseRequest->keterangan}}</span> <br>
-                      </th>
-                    
-                    </tr>
-                  </thead>
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col" colspan="6">
+                      <b>Status Approval 1:
+                        @if($purchaseRequest->approved==0)
+                        <span style="white-space: pre-line">Belum diproses</span><br>
+                        @elseif($purchaseRequest->approved==1)
+                        <span style="white-space: pre-line">Disetujui</span><br>
+                        @elseif($purchaseRequest->approved==2)
+                        <span style="white-space: pre-line">Ditolak</span><br>
+                        @endif
+                      </b>
+                      <br>
+                      <b>Status Approval 2:
+                        @if($purchaseRequest->approvedAkhir==0)
+                        <span style="white-space: pre-line">Belum diproses</span><br>
+                        @elseif($purchaseRequest->approvedAkhir==1)
+                        <span style="white-space: pre-line">Disetujui</span><br>
+                        @elseif($purchaseRequest->approvedAkhir==2)
+                        <span style="white-space: pre-line">Ditolak</span><br>
+                        @endif
+                      </b>
+                      <br>
+                      <b>Keterangan status:</b><span style="white-space: pre-line">{{$purchaseRequest->keterangan}}</span> <br>
+                    </th>
+
+                  </tr>
+                </thead>
+                 <thead class="thead-light">
+                  <tr>
+                    <th scope="col" colspan="6">
+                      <b>Proses:
+                        @if($purchaseRequest->proses==0)
+                        <span style="white-space: pre-line">Belum diproses</span><br>
+                        @elseif($purchaseRequest->proses==1)<!--iki ndek kene-->
+                        <span style="white-space: pre-line">Sedang diproses</span><br>
+                        @elseif($purchaseRequest->proses==2)
+                        <span style="white-space: pre-line">Selesai</span><br>
+                        @endif
+                      </b>
+                      <br>
+                    </th>
+
+                  </tr>
+                </thead>
                 <thead class="thead-light">
                   <tr>
                     <th scope="col">#</th>
@@ -165,9 +194,27 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th colspan="3">Approval 1 :<br><br><br><br><br><br>Tanda tangan</th>
-                    <th colspan="3">Approval 2 :<br><br><br><br><br><br>Tanda tangan</th>
-                    <th colspan="3">Pembuat :<br><br><br><br><br><br>Tanda tangan</th>
+                    <th colspan="3">Approval 1 :<br><br><br><br><br><br><br>
+                      @foreach($dataUser as $user)
+                      @if($user->id == $purchaseRequest->approved_by)
+                      {{$user->name}}
+                      @endif
+                      @endforeach
+                    </th>
+                    <th colspan="3">Approval 2 :<br><br><br><br><br><br>Tanda tangan <br>
+                      @foreach($dataUser as $user)
+                      @if($user->id == $purchaseRequest->approvedAkhir_by)
+                      {{$user->name}}
+                      @endif
+                      @endforeach
+                    </th>
+                    <th colspan="3">Pembuat :<br><br><br><br><br><br>Tanda tangan <br>
+                      @foreach($dataUser as $user)
+                      @if($user->id == $purchaseRequest->created_by)
+                      {{$user->name}}
+                      @endif
+                      @endforeach
+                    </th>
                   </tr>
                 </thead>
               </table>

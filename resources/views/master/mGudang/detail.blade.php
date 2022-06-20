@@ -80,7 +80,7 @@ Detail Gudang
         <!-- /.card-body -->
        <div class="card-footer">
             <a class="btn btn-default bg-info" href="{{route('mGudang.index')}}">
-              Back
+              Kembali
             </a>
         </div>
     </form>

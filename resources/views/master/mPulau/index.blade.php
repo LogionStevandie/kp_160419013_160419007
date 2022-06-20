@@ -20,7 +20,7 @@ Pulau
 
 
 <div class="container-fluid">
-        <h2 class="text-center display-4">Search</h2>
+        <h2 class="text-center display-4">Cari</h2>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form action="/mPulaue/searchname/" method="get">
@@ -57,7 +57,7 @@ Pulau
                              <tr>
                                 <th>ID</th>
                                 <th>Nama Pulau</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </thead>
                         <tbody>
@@ -144,7 +144,7 @@ Pulau
                             <tr>
                                 <th>ID</th>
                                 <th>Nama Pulau</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </tfoot>
                     </table>

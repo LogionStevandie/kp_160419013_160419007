@@ -18,7 +18,7 @@ Provinsi
 
 @section('content')
 <div class="container-fluid">
-        <h2 class="text-center display-4">Search</h2>
+        <h2 class="text-center display-4">Cari</h2>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form action="/mProvinsie/searchname/" method="get">
@@ -56,7 +56,7 @@ Provinsi
                                 <th>ID</th>
                                 <th>CID Provinsi</th>
                                 <th>Nama Provinsi</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </thead>
                         <tbody>
@@ -120,7 +120,7 @@ Provinsi
                                 <th>ID</th>
                                 <th>CID Provinsi</th>
                                 <th>Nama Provinsi</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </tfoot>
                     </table>

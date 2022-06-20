@@ -215,6 +215,7 @@
   <script>
     $('.selectpicker').selectpicker({
       size: 10,
+      noneSelectedText:"Tidak ada yang dipilih",
     });
   </script>
   <script>

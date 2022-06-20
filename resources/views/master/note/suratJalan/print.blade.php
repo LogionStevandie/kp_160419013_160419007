@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Needed | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -111,7 +111,7 @@
                                         <th scope="col"colspan="6"cellspacing="2" >
                                           Keterangan kendaraan:  <span style="white-space: pre-line">{{$suratJalan->keteranganKendaraan}} </span><br>
                                           Keterangan nomor polisi:  <span style="white-space: pre-line">{{$suratJalan->keteranganNomorPolisi}}</span> <br>
-                                          Keterangan pemudi:  <span style="white-space: pre-line">{{$suratJalan->keteranganPemudi}}</span> <br>
+                                          Keterangan pengemudi:  <span style="white-space: pre-line">{{$suratJalan->keteranganPemudi}}</span> <br>
                                           Keterangan transaksi:  <span style="white-space: pre-line">{{$suratJalan->keteranganTransaksi}}</span><br>
                                           Keterangan Gudang Tujuan:  <span style="white-space: pre-line">{{$suratJalan->keteranganGudangTujuan}}</span><br>
                                           Keterangan Penerima:  <span style="white-space: pre-line">{{$suratJalan->keteranganPenerima}}</span>

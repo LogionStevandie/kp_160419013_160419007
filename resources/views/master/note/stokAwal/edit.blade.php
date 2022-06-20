@@ -6,14 +6,14 @@
  </style>
 
 @section('judul')
-Edit Stok Awal Barang
+Ubah Stok Awal Barang
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item">Nota</li>
 <li class="breadcrumb-item"><a href="{{route('stokAwal.index')}}">Stok Awal Barang</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')

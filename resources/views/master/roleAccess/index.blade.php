@@ -7,18 +7,18 @@
 @endif
 
 @section('judul')
-Role Access
+Akses Role
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item active">Role Access</li>
+<li class="breadcrumb-item active">Akses Role</li>
 @endsection
 
 @section('content')
 <div class="container-fluid">
-        <h2 class="text-center display-4">Search</h2>
+        <h2 class="text-center display-4">Cari</h2>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form action="/roleAccesse/searchname/" method="get">
@@ -40,7 +40,7 @@ Role Access
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Role Access</h3>
+                    <h3 class="card-title">Akses Role</h3>
                     
                     <!--<a href="{{route('roleAccess.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Role
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -55,7 +55,7 @@ Role Access
                              <tr>
                                 <th>ID</th>
                                 <th>Nama Role</th>
-                                <th>Access</th>
+                                <th>Akses</th>
                                 <th>Action</th>     
                              </tr>
                         </thead>
@@ -117,7 +117,7 @@ Role Access
                             <tr>
                                 <th>ID</th>
                                 <th>Nama Role</th>
-                                <th>Access</th>
+                                <th>Akses</th>
                                 <th>Action</th> 
                              </tr>
                         </tfoot>

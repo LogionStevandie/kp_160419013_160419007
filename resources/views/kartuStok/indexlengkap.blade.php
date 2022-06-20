@@ -17,7 +17,7 @@ Kartu Stok
 
 @section('content')
 <div class="container-fluid">
-    <h2 class="text-center display-4">Search Gudang</h2>
+    <h2 class="text-center display-4">Cari Gudang</h2>
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <form action="/kartuStok/searchLengkap/" method="get">
@@ -206,8 +206,10 @@ Kartu Stok
     $(document).ready(function() {
         /*var id = $("#idGudangTujuan option:selected").val();
         var optionnya = '';
-        var dataReportItem = <?php //echo json_encode($dataReportItem); ?>;
-        var item = <?php //echo json_encode($item); ?>;
+        var dataReportItem = <?php //echo json_encode($dataReportItem); 
+                                ?>;
+        var item = <?php //echo json_encode($item); 
+                    ?>;
         if (item) {
             //alert(item);
 

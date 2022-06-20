@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Needed | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -92,10 +92,10 @@
                   <thead class="thead-light">
                     <tr>
                       <th scope="col" colspan="3">
-                        <h2> <img src="" alt="">PURCHASE ORDER</h2>
+                        <h2> <img src="" alt="">NOTA PURCHASE ORDER</h2>
                       </th>
                       <th scope="col" colspan="3">
-                        <b>PO : {{$purchaseOrder->name}}</b><br>
+                        <b>Nama Purchase Order : {{$purchaseOrder->name}}</b><br>
                         <b>Tanggal pembuatan :{{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</b>
 
 
@@ -156,16 +156,16 @@
                         <b>Status:
                           @if($purchaseOrder->approved==0)
                           <span style="white-space: pre-line">Belum diproses</span><br>
-                           @elseif($purchaseOrder->approved==1)
-                            <span style="white-space: pre-line">Disetujui</span><br>
-                            @elseif($purchaseOrder->approved==2)
-                            <span style="white-space: pre-line">Ditolak</span><br>
-                            @endif
+                          @elseif($purchaseOrder->approved==1)
+                          <span style="white-space: pre-line">Disetujui</span><br>
+                          @elseif($purchaseOrder->approved==2)
+                          <span style="white-space: pre-line">Ditolak</span><br>
+                          @endif
                         </b>
                         <br>
                         <b>Keterangan status:</b><span style="white-space: pre-line">{{$purchaseOrder->keterangan}}</span> <br>
                       </th>
-                    
+
                     </tr>
                   </thead>
 
@@ -230,7 +230,7 @@
                       <td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>
                       @php
                       $totalHarga += (float)$data->harga * $data->jumlah;
-                      $totalHargaDiskon += $data->diskon *  $data->jumlah;
+                      $totalHargaDiskon += $data->diskon * $data->jumlah;
                       $totalHargaPPN += (((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (float)$data->TaxPercent / 100.0;
                       @endphp
 

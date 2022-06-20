@@ -37,7 +37,7 @@ Detail Provinsi
 
         <div class="card-footer">
             <a class="btn btn-default bg-info" href="{{route('mProvinsi.index')}}">
-              Back
+              Kembali
             </a>
         </div>
         <!-- /.card-body -->

@@ -40,7 +40,7 @@ Pajak
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Tax</h3>
+                    <h3 class="card-title">Pajak</h3>
 
                     <a href="{{route('tax.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Pajak
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
@@ -85,7 +85,7 @@ Pajak
                                                 <div class="modal-body">
                                                     <p>Nama :{{$tax->Name}}</p>
                                                     <p>Deskripsi :{{$tax->Deskripsi}}</p>
-                                                    <p>Tax Percent :{{$tax->TaxPercent}}</p>
+                                                    <p>Persen Pajak :{{$tax->TaxPercent}}</p>
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

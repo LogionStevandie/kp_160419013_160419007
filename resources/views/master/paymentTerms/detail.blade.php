@@ -80,7 +80,7 @@ Detail Ketentuan Pembayaran
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="button" href="{{route('paymentTerms.index')}}" class="btn btn-primary">Back</button>
+            <button type="button" href="{{route('paymentTerms.index')}}" class="btn btn-primary">Kembali</button>
         </div>
     </form>
 </div>

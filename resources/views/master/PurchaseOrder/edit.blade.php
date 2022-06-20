@@ -6,14 +6,14 @@
 </style>
 
 @section('judul')
-Edit Nota Purchase Order
+Ubah Nota Purchase Order
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Nota-Purchase-Order</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item">Nota</li>
+<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Nota Purchase Order</a></li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -41,7 +41,7 @@ Edit Nota Purchase Order
 
                                     <div class="row">
                                         <div class="col-md-12 mb-4">
-                                            <label for="firstName">Nama PO</label>
+                                            <label for="firstName">Nama Purchase Order</label>
                                             <input type="text" class="form-control" id="firstName" placeholder="" value="{{old('name',$purchaseOrder->name)}}" readonly required="">
                                             <div class="invalid-feedback"> Valid first name is required. </div>
                                         </div>

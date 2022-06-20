@@ -6,14 +6,14 @@
  </style>
 
 @section('judul')
-Edit Role
+Ubah Role
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
 <li class="breadcrumb-item"><a href="{{route('role.index')}}">Role</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -41,7 +41,7 @@ Edit Role
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 </div>

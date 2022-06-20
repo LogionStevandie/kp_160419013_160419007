@@ -13,7 +13,7 @@ Persetujuan Order
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Persetujuan Order</li>
+<li class="breadcrumb-item">Persetujuan</li>
 <li class="breadcrumb-item active">Purchase Order</li>
 @endsection
 

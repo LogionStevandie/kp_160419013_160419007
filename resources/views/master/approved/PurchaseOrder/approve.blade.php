@@ -12,7 +12,7 @@ Persetujuan Order
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Persetujuan Order</li>
+<li class="breadcrumb-item">Persetujuan</li>
 <li class="breadcrumb-item"><a href="{{route('approvedPurchaseOrder.index')}}">Purchase Order</a></li>
 <li class="breadcrumb-item active">Approve</li>
 @endsection
@@ -206,7 +206,7 @@ Persetujuan Order
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
             </div>
         </form>
     </div>

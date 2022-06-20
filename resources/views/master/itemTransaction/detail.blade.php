@@ -12,7 +12,7 @@ Detail Transaction item
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('itemTransaction.index')}}">Transaction item</a></li>
+<li class="breadcrumb-item"><a href="{{route('itemTransaction.index')}}">Transaksi item</a></li>
 <li class="breadcrumb-item active">Detail</li>
 @endsection
 @section('content')
@@ -27,19 +27,19 @@ Detail Transaction item
         <div class="card-body">
 
             <div class="form-group">
-                <label for="title">Nama Item Transaction</label>
+                <label for="title">Nama Item Transaksi</label>
                 <input readonly type="text" name="Name" class="form-control" 
                 value="{{old('Name',$itemTransaction->Name)}}" >
             </div>
 
             <div class="form-group">
-                <label for="title">Code</label>
+                <label for="title">Kode</label>
                 <input readonly type="text" name="Code" class="form-control" 
                 value="{{old('Code',$itemTransaction->Code)}}" >
             </div>
 
             <div class="form-group">
-                <label for="title">Description</label>
+                <label for="title">Deskripsi</label>
                 <input readonly type="text" name="Description" class="form-control" 
                 value="{{old('Description',$itemTransaction->Description)}}" >
             </div>
@@ -47,7 +47,7 @@ Detail Transaction item
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="button" href="{{route('itemTransaction.index')}}" class="btn btn-primary">Back</button>
+            <button type="button" href="{{route('itemTransaction.index')}}" class="btn btn-primary">Kembali</button>
         </div>
     </form>
 </div>

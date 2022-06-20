@@ -57,7 +57,7 @@ Menu
                                 <th>Nama</th>
                                 <th>Url</th>
                                 <th>Deskripsi</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </thead>
                         <tbody>
@@ -123,7 +123,7 @@ Menu
                                 <th>Nama</th>
                                 <th>Url</th>
                                 <th>Deskripsi</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </tfoot>
                     </table>

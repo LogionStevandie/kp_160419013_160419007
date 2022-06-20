@@ -78,7 +78,7 @@ Surat Jalan
                                 <th scope="col">Tanggal Dibuat</th>
                                 <th scope="col">Gudang Awal</th>
                                 <th scope="col">Gudang Tujuan</th>
-                                <th scope="col">keteranganPenerima</th>
+                                <th scope="col">Keterangan Penerima</th>
                                 <th scope="col">Handle</th>
                             </tr>
                         </thead>
@@ -172,7 +172,7 @@ Surat Jalan
                                 <th scope="col">Tanggal Dibuat</th>
                                 <th scope="col">Gudang Awal</th>
                                 <th scope="col">Gudang Tujuan</th>
-                                <th scope="col">keteranganPenerima</th>
+                                <th scope="col">Keterangan Penerima</th>
                                 <th scope="col">Handle</th>
                             </tr>
                         </tfoot>

@@ -27,13 +27,13 @@ Edit Tipe item
         <div class="card-body">
             
                 <div class="form-group">
-                    <label for="title">Nama Item type</label>
+                    <label for="title">Nama Tipe Item</label>
                     <input require type="text" name="Name" class="form-control" 
                     value="{{old('Name',$itemType->Name)}}" >
                 </div>
 
                 <div class="form-group">
-                    <label for="title">Notes</label>
+                    <label for="title">Catatan</label>
                     <input require type="text" name="Notes" class="form-control" 
                     value="{{old('Notes',$itemType->Notes)}}" >
                 </div>
@@ -41,7 +41,7 @@ Edit Tipe item
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 </div>

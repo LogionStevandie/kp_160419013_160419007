@@ -258,6 +258,12 @@ Edit Supplier
                                 <label class="form-check-label" for="inlineRadio2">Tidak</label>
                             </div><br>
                         </div>
+
+                           <div class="card-footer">
+                            <a class="btn btn-default bg-info" href="{{route('msupplier.index')}}">
+                            Kembali
+                            </a>
+                        </div>
         <!-- /.card-body -->
         
         </div>

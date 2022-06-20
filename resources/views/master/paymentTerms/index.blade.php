@@ -13,7 +13,7 @@ Ketentuan Pembayaran
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item active">Ketentuan-Pembayaran</li>
+<li class="breadcrumb-item active">Ketentuan Pembayaran</li>
 @endsection
 
 @section('content')

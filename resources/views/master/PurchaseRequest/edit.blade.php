@@ -6,14 +6,14 @@
 </style>
 
 @section('judul')
-Edit Nota Permintaan Pembelian
+Ubah Nota Permintaan Pembelian
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('purchaseRequest.index')}}">Nota-Permintaan-Pembelian</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item">Nota</li>
+<li class="breadcrumb-item"><a href="{{route('purchaseRequest.index')}}">Nota Permintaan Pembelian</a></li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -41,7 +41,7 @@ Edit Nota Permintaan Pembelian
 
                   <div class="row">
                     <div class="col-md-6 mb-4">
-                      <label for="firstName">Nama NPP</label>
+                      <label for="firstName">Nama Nota Permintaan Pembelian</label>
                       <input type="text" class="form-control" id="firstName" placeholder="" value="{{old('name',$purchaseRequest->name)}}" readonly required="" name="name">
                       <div class="invalid-feedback"> Valid first name is required. </div>
                     </div>
@@ -55,7 +55,7 @@ Edit Nota Permintaan Pembelian
 
 
                     <div class="form-group col-md-6">
-                      <label>Tanggal Awal - Akhir:</label>
+                      <label>Tanggal Awal - Akhir Dibutuhkan:</label>
                       <div class="input-group">
                         <div class="input-group-prepend">
                           <span class="input-group-text">
@@ -85,13 +85,7 @@ Edit Nota Permintaan Pembelian
                     <div class="col-md-6 mb-3">
                       <label for="lastName">Jenis Permintaan</label>
                       <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="jenisProses">
-                        @if($purchaseRequest->jenisProses==1)
                         <option value="1" selected>Pembelian Melalui Pusat</option>
-                        <option value="0">Pembelian Melalui Lokal</option>
-                        @else
-                        <option value="1">Pembelian Melalui Pusat</option>
-                        <option value="0" selected>Pembelian Melalui Lokal</option>
-                        @endif
                       </select>
                     </div>
 

@@ -6,12 +6,12 @@
 </style>
 
 @section('judul')
-Perubahan Penyesuaian Stok Barang
+Detail Penyesuaian Stok Barang
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item">Nota</li>
 <li class="breadcrumb-item"><a href="{{route('adjustmentStock.index')}}">Penyesuaian Stok Barang</a></li>
 <li class="breadcrumb-item active">Detail</li>
 @endsection
@@ -22,7 +22,7 @@ Perubahan Penyesuaian Stok Barang
     <!-- Page Heading -->
     <div class="card card-primary">
         <!-- form start -->
-        <form action="{{route('adjustmentStock.show', [$adjustmentStock->ItemAdjustmentID])}}" method="">
+        <form action="{{route('adjustmentStock.index')}}" method="">
             <div class="card-body">
                 <div class="form-group">
                     <label for="lastName">Name</label>
@@ -85,7 +85,7 @@ Perubahan Penyesuaian Stok Barang
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Back</button>
+                <button type="submit" class="btn btn-primary">Kembali</button>
             </div>
         </form>
     </div>

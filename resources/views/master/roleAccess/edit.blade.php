@@ -6,14 +6,14 @@
 </style>
 
 @section('judul')
-Edit Role
+Ubah Akses Role
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('roleAccess.index')}}">Role</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item"><a href="{{route('roleAccess.index')}}">Akses Role</a></li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -32,7 +32,7 @@ Edit Role
 
                 <div class="custom-control custom-checkbox">
                     <h2><input type="checkbox" id="checkSemuaCheckBox">
-                        <label for="title">Check All</label><br>
+                        <label for="title">Pilih Semua</label><br>
                     </h2>
                 </div>
 
@@ -45,7 +45,7 @@ Edit Role
                 </div>
             </div>
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
         </form>
     </div>

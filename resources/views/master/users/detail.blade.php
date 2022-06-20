@@ -74,7 +74,7 @@ Tambah Users
                     </select>
                 </div>
 
-                  @foreach($userdata as $user)
+                @foreach($userdata as $user)
                 <div class="form-group ">
                     <label for="active">Kepala Divisi Gudang</label><br>
                     @if($user->UserIDKepalaDivisi == $user->id)
@@ -98,13 +98,13 @@ Tambah Users
                     @endif
                     <br>
                 </div>
-            @endforeach
+                @endforeach
 
                 <div class="form-group">
                     <label for="title">Perusahaan</label>
                     <input readonly type="text" id="perusahaan" maxlength="255" class="form-control" value="{{old('name','')}}">
                 </div>
-  @foreach($userdata as $user)
+                @foreach($userdata as $user)
 
                 <div class="form-group ">
                     <label for="active">Manager Perusahaan 1</label><br>
@@ -129,7 +129,7 @@ Tambah Users
                     @endif
                     <br>
                 </div>
-                
+
                 <div class="form-group ">
                     <label for="active">Manager Perusahaan 2</label><br>
                     @if($user->UserIDManager2 == $user->id)
@@ -153,7 +153,7 @@ Tambah Users
                     @endif
                     <br>
                 </div>
-   @endforeach
+                @endforeach
             </div>
             <!-- /.card-body -->
             <div class="card-footer">

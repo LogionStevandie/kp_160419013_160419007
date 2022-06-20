@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+  <title>Needed | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -73,7 +73,7 @@
                       <table class="table table-bordered">
                                     <thead class="thead-light">
                                         <tr>
-                                        <th scope="col" colspan="3"><h2>TERIMA PESANAN</h2></th>
+                                        <th scope="col" colspan="3"><h2>NOTA TERIMA BARANG PESANAN</h2></th>
                                         <th scope="col" colspan="2">
                                             Tanggal pembuatan : {{date("d-m-Y", strtotime($transactionGudangBarang->tanggalDibuat))}}<br>
                                             Tanggal datang : {{date("d-m-Y", strtotime($transactionGudangBarang->tanggalDatang))}}<br>
@@ -130,7 +130,7 @@
                                         <th scope="col"colspan="6"cellspacing="2" >
                                           Keterangan kendaraan: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganKendaraan}}</span> <br>
                                           Keterangan nomor polisi: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganNomorPolisi}}</span> <br>
-                                          Keterangan pemudi: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganPemudi}}</span> <br>
+                                          Keterangan pengemudi: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganPemudi}}</span> <br>
                                           Keterangan transaksi: <span style="white-space: pre-line">{{$transactionGudangBarang->keteranganTransaksi}}</span>
                                         </th>
                                         </tr>

@@ -11,8 +11,8 @@ Pembuatan Nota Purchase Order
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Nota-Purchase-Order</a></li>
+<li class="breadcrumb-item">Nota</li>
+<li class="breadcrumb-item"><a href="{{route('purchaseOrder.index')}}">Nota Purchase Order</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
 
@@ -315,7 +315,7 @@ Pembuatan Nota Purchase Order
                 //alert(value.ItemName);
                 if (value.idPurchaseRequest.toString() == id.toString()) {
                     //alert('masuk');
-                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '" namaItem="'+value.ItemName+'">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
+                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '" namaItem="' + value.ItemName + '">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
                 }
             });
             //alert(optionnya);
@@ -447,12 +447,12 @@ Pembuatan Nota Purchase Order
 
         ///pengecekan jika input barang melebihi kapasitas maksimum
         var jumlahMax = $("#jumlahBarang").prop("max");
-        if(jumlahBarang > jumlahMax){
-            alert("Jumlah barang melebihi batas maksimum"); 
+        if (jumlahBarang > jumlahMax) {
+            alert("Jumlah barang melebihi batas maksimum");
             $('#jumlahBarang').val("");
         }
         ///
-        else{
+        else {
             var indexSama = null;
             for (let i = 0; i < $('.cekId').length; i++) {
                 if ($('.cekId:eq(' + i + ')').val() == idBarang) {
@@ -536,10 +536,10 @@ Pembuatan Nota Purchase Order
                 htmlKeranjang += '<small class="text-muted keteranganVal" value="' + keteranganBarang + '">' + keteranganBarang + '</small><br>\n';
                 htmlKeranjang += '<small class="text-muted diskonVal" value="' + diskonBarang + '">Diskon/Item: Rp. ' + diskonBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',--</small><br>\n';
                 htmlKeranjang += '<small class="text-muted taxVal" value="' + taxPercent + '">Pajak: ' + taxPercent + '%</small><br>\n';
-                htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")   +'</small><br>\n';
+                htmlKeranjang += '<small class="text-muted hargaSatuanVal" value="' + hargaBarang + '">Harga/Item : Rp. ' + hargaBarang.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + '</small><br>\n';
                 htmlKeranjang += '</div>\n';
                 htmlKeranjang += '<div>\n';
-                htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")  + ',-</strong>\n';
+                htmlKeranjang += '<strong class="hargaVal" value="' + ((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0 + '">Rp. ' + (((hargaBarang - diskonBarang) * jumlahBarang) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-</strong>\n';
                 htmlKeranjang += '<button class="btn btn-primary copyKe" type="button" id="copyKe">\n';
                 htmlKeranjang += '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-three-dots-vertical" viewBox="0 0 16 16">\n';
                 htmlKeranjang += '<path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>\n';

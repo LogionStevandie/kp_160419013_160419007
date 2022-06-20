@@ -6,14 +6,14 @@
  </style>
 
 @section('judul')
-Edit Terima Barang Supplier
+Ubah Terima Barang Supplier
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
 <li class="breadcrumb-item"><a href="{{route('terimaBarangSupplier.index')}}">Terima Barang Supplier</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -151,7 +151,7 @@ Edit Terima Barang Supplier
                               </div>
 
                               <div class="col-md-6 mb-3">
-                                  <label for="lastName">Keterangan Pemudi</label>
+                                  <label for="lastName">Keterangan Pengemudi</label>
                                   <textarea rows="3"  type="text" name="keteranganPemudi" class="form-control" value="{{old('keteranganPemudi',$transactionGudangBarang->keteranganPemudi)}}" >{{$transactionGudangBarang->keteranganPemudi}}</textarea>
                               </div>
 

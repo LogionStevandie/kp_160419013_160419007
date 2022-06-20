@@ -7,13 +7,13 @@
 @endif
 
 @section('judul')
-Tag Item Values
+Tag Barang Values
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item active">Tag-Item-Values</li>
+<li class="breadcrumb-item active">Tag-Barang-Values</li>
 @endsection
 
 @section('content')
@@ -23,7 +23,7 @@ Tag Item Values
             <div class="col-md-8 offset-md-2">
             <form action="/itemTagValuese/searchname/" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Tag Item">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Tag Barang">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-lg btn-default">
                                 <i class="fa fa-search"></i>
@@ -40,7 +40,7 @@ Tag Item Values
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Tag Item</h3>
+                    <h3 class="card-title">Tag Barang</h3>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
@@ -48,7 +48,7 @@ Tag Item Values
                          <thead>
                             <tr>
                               <th>ID</th>
-                              <th>Nama Item</th>
+                              <th>Nama Barang</th>
                               <th>Tag</th>
                               <th>Handle</th>
                             </tr>
@@ -81,7 +81,7 @@ Tag Item Values
                         <tfoot>
                              <tr>
                               <th>ID</th>
-                              <th>Nama Item</th>
+                              <th>Nama Barang</th>
                               <th>Tag</th>
                               <th>Handle</th>
                             </tr>

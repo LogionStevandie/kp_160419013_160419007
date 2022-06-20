@@ -46,7 +46,7 @@ Detail Menu
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="button" href="{{route('menu.index')}}" class="btn btn-primary">Back</button>
+            <button type="button" href="{{route('menu.index')}}" class="btn btn-primary">Kembali</button>
         </div>
     </form>
 </div>

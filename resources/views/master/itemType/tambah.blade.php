@@ -32,7 +32,7 @@ Tambah Tipe item
                         </div>
 
                         <div class="form-group">
-                            <label for="title">Notes</label>
+                            <label for="title">Catatan</label>
                            <input require type="text" name="Notes" class="form-control" 
                            value="{{old('Notes','')}}" >
                         </div>
@@ -40,7 +40,7 @@ Tambah Tipe item
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Kirim</button>
         </div>
     </form>
 </div>

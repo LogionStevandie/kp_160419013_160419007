@@ -56,7 +56,7 @@ Pembayaran
                                 <th>ID</th>
                                 <th>Nama</th>
                                 <th>Deskripsi</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </thead>
                         <tbody>
@@ -144,7 +144,7 @@ Pembayaran
                                 <th>ID</th>
                                 <th>Nama</th>
                                 <th>Deskripsi</th>
-                                <th>Action</th>
+                                <th>Handle</th>
                              </tr>
                         </tfoot>
                     </table>

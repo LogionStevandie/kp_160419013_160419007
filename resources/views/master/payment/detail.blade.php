@@ -40,7 +40,7 @@ Detail Pembayaran
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" href="{{route('payment.index')}}" class="btn btn-primary">Back</button>
+            <button type="submit" href="{{route('payment.index')}}" class="btn btn-primary">Kembali</button>
         </div>
     </form>
 </div>

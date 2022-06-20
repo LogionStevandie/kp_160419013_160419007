@@ -17,7 +17,7 @@ Kartu Stok
 
 @section('content')
 <div class="container-fluid">
-    <h2 class="text-center display-4">Search Gudang</h2>
+    <h2 class="text-center display-4">Cari Gudang</h2>
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <form action="/kartuStok/searchgudang/" method="get">
@@ -64,7 +64,7 @@ Kartu Stok
                                 <th scope="col">Item</th>
                                 <th scope="col">Satuan</th>
                                 <th scope="col">Jumlah Barang</th>
-                               <!-- <th scope="col">Handle</th>-->
+                                <!-- <th scope="col">Handle</th>-->
                             </tr>
                         </thead>
                         <tbody>

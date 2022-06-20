@@ -6,14 +6,14 @@
  </style>
 
 @section('judul')
-Edit Pembayaran
+Ubah Pembayaran
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
 <li class="breadcrumb-item"><a href="{{route('payment.index')}}">Pembayaran</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -40,7 +40,7 @@ Edit Pembayaran
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 </div>

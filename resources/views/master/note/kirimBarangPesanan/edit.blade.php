@@ -6,14 +6,14 @@
 </style>
 
 @section('judul')
-Edit Nota Kirim Barang Pesanan
+Ubah Nota Kirim Barang Pesanan
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item">Nota</li>
 <li class="breadcrumb-item"><a href="{{route('kirimBarangPesanan.index')}}">Kirim Barang Pesanan</a></li>
-<li class="breadcrumb-item active">Edit</li>
+<li class="breadcrumb-item active">Ubah</li>
 @endsection
 
 @section('content')
@@ -106,7 +106,7 @@ Edit Nota Kirim Barang Pesanan
 
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="lastName">Data Purchase Request</label>
+                                                <label for="lastName">Data Nota Permintaan Pembelian</label>
                                                 <select class="form-control selectpicker" data-live-search="true" data-show-subtext="true" style="width: 100%;" name="PurchaseRequestID" id="PurchaseRequestID">
 
                                                     @foreach($dataPurchaseRequest as $key => $data)
@@ -156,7 +156,7 @@ Edit Nota Kirim Barang Pesanan
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="lastName">Keterangan Pemudi</label>
+                                            <label for="lastName">Keterangan Pengemudi</label>
                                             <textarea rows="3" type="text" name="keteranganPemudi" class="form-control" value="{{old('keteranganPemudi',$transactionGudangBarang->keteranganPemudi)}}">{{$transactionGudangBarang->keteranganPemudi}}</textarea>
                                         </div>
 

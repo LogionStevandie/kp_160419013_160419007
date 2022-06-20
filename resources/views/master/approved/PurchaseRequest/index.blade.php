@@ -13,7 +13,7 @@ Persetujuan Pembelian
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Persetujuan Pembelian</li>
+<li class="breadcrumb-item">Persetujuan </li>
 <li class="breadcrumb-item active">Permintaan Pembelian</li>
 @endsection
 

@@ -13,7 +13,7 @@ Persetujuan Pembelian
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Persetujuan Pembelian</li>
+<li class="breadcrumb-item">Persetujuan </li>
 <li class="breadcrumb-item"><a href="{{route('approvedPurchaseRequest.index')}}">Permintaan Pembelian</a></li>
 <li class="breadcrumb-item active">Approve</li>
 @endsection
@@ -114,7 +114,7 @@ Persetujuan Pembelian
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
             </div>
         </form>
     </div>

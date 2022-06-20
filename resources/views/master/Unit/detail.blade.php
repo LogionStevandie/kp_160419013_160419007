@@ -40,7 +40,7 @@ Detail Satuan
         </div>
         <!-- /.card-body -->
           <div class="card-footer">
-            <button type="button" href="{{route('unit.index')}}" class="btn btn-primary">Back</button>
+            <button type="button" href="{{route('unit.index')}}" class="btn btn-primary">Kembali</button>
         </div>
     </form>
 </div>

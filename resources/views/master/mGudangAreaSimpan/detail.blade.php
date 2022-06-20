@@ -37,7 +37,7 @@ Detail Gudang Area Simpan
         <!-- /.card-body -->
           <div class="card-footer">
             <a class="btn btn-default bg-info" href="{{route('mGudangAreaSimpan.index')}}">
-              Back
+              Kembali
             </a>
         </div>
     </form>

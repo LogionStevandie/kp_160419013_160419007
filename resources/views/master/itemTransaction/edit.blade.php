@@ -6,13 +6,13 @@
  </style>
 
 @section('judul')
-Edit Transaction item
+Edit item Transaksi
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
 <li class="breadcrumb-item">Master</li>
-<li class="breadcrumb-item"><a href="{{route('itemTransaction.index')}}">Transaction item</a></li>
+<li class="breadcrumb-item"><a href="{{route('itemTransaction.index')}}">item Transaksi</a></li>
 <li class="breadcrumb-item active">Edit</li>
 @endsection
 @section('content')
@@ -33,13 +33,13 @@ Edit Transaction item
             </div>
 
             <div class="form-group">
-                <label for="title">Code</label>
+                <label for="title">Kode</label>
                 <input require type="text" name="Code" class="form-control" 
                 value="{{old('Code',$itemTransaction->Code)}}" >
             </div>
 
             <div class="form-group">
-                <label for="title">Description</label>
+                <label for="title">Deskripsi</label>
                 <input require type="text" name="Description" class="form-control" 
                 value="{{old('Description',$itemTransaction->Description)}}" >
             </div>
@@ -49,7 +49,7 @@ Edit Transaction item
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
 </div>

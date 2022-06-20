@@ -60,7 +60,7 @@ Stok Awal Barang
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">List-Stok Barang Awal</h3>
+                    <h3 class="card-title">List Nota Stok Barang Awal</h3>
 
                     <a href="{{route('stokAwal.create')}}" class="btn btn-primary btn-responsive float-right">Tambah Stok Barang Awal
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">

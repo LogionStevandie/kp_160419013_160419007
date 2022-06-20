@@ -6,12 +6,12 @@
 </style>
 
 @section('judul')
-Pembuatan Terima Barang Supplier
+Pembuatan Nota Terima Barang Supplier
 @endsection
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item">Nota</li>
 <li class="breadcrumb-item"><a href="{{route('terimaBarangSupplier.index')}}">Terima Barang Supplier</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
@@ -124,7 +124,7 @@ Pembuatan Terima Barang Supplier
                                         </div>
 
                                         <div class="col-md-6 mb-3">
-                                            <label for="lastName">Keterangan Pemudi</label>
+                                            <label for="lastName">Keterangan Pengemudi</label>
                                             <textarea rows="3" type="text" name="keteranganPemudi" class="form-control" value="{{old('keteranganPenagihan','')}}"></textarea>
                                         </div>
 

@@ -11,7 +11,7 @@ Pembuatan Penyesuaian Stok Barang
 
 @section('pathjudul')
 <li class="breadcrumb-item"><a href="/home">Home</a></li>
-<li class="breadcrumb-item">Master</li>
+<li class="breadcrumb-item">Nota</li>
 <li class="breadcrumb-item"><a href="{{route('adjustmentStock.index')}}">Penyesuaian Stok Barang</a></li>
 <li class="breadcrumb-item active">Tambah</li>
 @endsection
@@ -75,7 +75,7 @@ Pembuatan Penyesuaian Stok Barang
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Kirim</button>
             </div>
         </form>
     </div>

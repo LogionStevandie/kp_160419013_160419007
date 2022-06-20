@@ -18,12 +18,12 @@ Transaction item
 
 @section('content')
 <div class="container-fluid">
-        <h2 class="text-center display-4">Search</h2>
+        <h2 class="text-center display-4">Cari</h2>
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <form action="/itemTransactione/searchname/" method="get">
                     <div class="input-group">
-                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Transaction">
+                        <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama Item Transaksi">
                         <div class="input-group-append">
                             <button type="submit" class="btn btn-lg btn-default">
                                 <i class="fa fa-search"></i>
@@ -42,7 +42,7 @@ Transaction item
                 <div class="card-header">
                     <h3 class="card-title">Tracing item </h3>
                     
-                    <a href="{{route('itemTransaction.create')}}" class="btn btn-primary btn-responsive float-right">Tambah item Transaction
+                    <a href="{{route('itemTransaction.create')}}" class="btn btn-primary btn-responsive float-right">Tambah item Transaksi
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16">
                             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
                         </svg>
@@ -54,7 +54,7 @@ Transaction item
                         <thead>
                              <tr>
                               <th scope="col">#</th>
-                              <th scope="col">Nama item Transaction</th>
+                              <th scope="col">Nama item Transaksi</th>
                               <th scope="col">Handle</th>
                             </tr>
                           </thead>
@@ -140,7 +140,7 @@ Transaction item
                         <tfoot>
                             <tr>
                               <th >#</th>
-                              <th >Nama item Transaction</th>
+                              <th >Nama item Transaksi</th>
                               <th >Handle</th>
                             </tr>
                         </tfoot>
