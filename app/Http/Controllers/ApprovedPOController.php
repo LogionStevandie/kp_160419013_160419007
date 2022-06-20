@@ -65,7 +65,7 @@ class ApprovedPOController extends Controller
                 'pod' => $pod,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Order Pembelian');
         }
     }
 
@@ -184,10 +184,10 @@ class ApprovedPOController extends Controller
 
                 ]);
             } else {
-                return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Order Pembelian');
+                return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Nota Purchase Order');
             }
         } else {
-            return redirect()->route('approvedPurchaseOrder.index')->with('status', 'Failed');
+            return redirect()->route('approvedPurchaseOrder.index')->with('status', 'Nota Purchase Order sudah disetujui');
         }
     }
 
@@ -236,7 +236,7 @@ class ApprovedPOController extends Controller
             }
         }
 
-        return redirect()->route('approvedPurchaseOrder.index')->with('status', 'Success!!');
+        return redirect()->route('approvedPurchaseOrder.index')->with('status', 'Berhasilkan melakukan Approved pada nota Purchase Order');
     }
 
     /**
@@ -297,7 +297,7 @@ class ApprovedPOController extends Controller
                 'pod' => $pod,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Order Pembelian');
         }
     }
 
@@ -348,7 +348,7 @@ class ApprovedPOController extends Controller
                 'pod' => $pod,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Order Pembelian');
         }
     }
 
@@ -399,7 +399,7 @@ class ApprovedPOController extends Controller
                 'pod' => $pod,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Order Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Order Pembelian');
         }
     }
 }

@@ -33,7 +33,7 @@ class ItemTypeController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tipe Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Tipe Barang');
         }
     }
 
