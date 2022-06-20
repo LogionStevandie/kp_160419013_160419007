@@ -94,7 +94,7 @@ class PaymentTermsController extends Controller
                     'Hapus' => 0,
                 )
             );
-        return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
+        return redirect()->route('paymentTerms.index')->with('status', 'Berhasil Menambah Data Ketentuan Pembayaran!!');
     }
 
     /**
@@ -172,7 +172,7 @@ class PaymentTermsController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
+        return redirect()->route('paymentTerms.index')->with('status', 'Berhasil Mengupdate Data Ketentuan Pembayaran!!');
     }
 
     /**
@@ -195,7 +195,7 @@ class PaymentTermsController extends Controller
                         'Hapus' => 1,
                     )
                 );
-            return redirect()->route('paymentTerms.index')->with('status', 'Success!!');
+            return redirect()->route('paymentTerms.index')->with('status', 'Berhasil Menghapus Data Ketentuan Pembayaran!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');
         }

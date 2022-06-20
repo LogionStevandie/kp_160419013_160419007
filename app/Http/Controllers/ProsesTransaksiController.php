@@ -69,7 +69,7 @@ class ProsesTransaksiController extends Controller
              'UpdatedOn'=> date("Y-m-d h:i:sa"),
              )
         ); 
-        return redirect()->route('prosesTransaksi.index')->with('status','Success!!');
+        return redirect()->route('prosesTransaksi.index')->with('status','Berhasil Menambah Data Proses Transaksi!!');
     }
 
     /**
@@ -119,7 +119,7 @@ class ProsesTransaksiController extends Controller
                 'UpdatedOn'=> date("Y-m-d h:i:sa"),
             ));
 
-        return redirect()->route('prosesTransaksi.index')->with('status','Success!!');      
+        return redirect()->route('prosesTransaksi.index')->with('status','Berhasil Mengupdate Data Proses Transaksi!!');      
     }
 
     /**
@@ -132,7 +132,7 @@ class ProsesTransaksiController extends Controller
     {
         //
         $prosesTransaksi->delete();
-        return redirect()->route('prosesTransaksi.index')->with('status','Success!!');
+        return redirect()->route('prosesTransaksi.index')->with('status','Berhasil Menghapus Data Proses Transaksi!!');
     }
 
    /* public function */

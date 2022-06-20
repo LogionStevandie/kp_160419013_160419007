@@ -137,7 +137,7 @@ class MSupplierController extends Controller
 
                 )
             );
-        return redirect()->route('msupplier.index')->with('status', 'Success!!');
+        return redirect()->route('msupplier.index')->with('status', 'Berhasil Menambah Data Supplier!!');
     }
 
     /**
@@ -268,7 +268,7 @@ class MSupplierController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"), //
                 )
             );
-        return redirect()->route('msupplier.index')->with('status', 'Success!!');
+        return redirect()->route('msupplier.index')->with('status', 'Berhasil Mengupdate Data Supplier!!');
     }
 
     /**
@@ -293,7 +293,7 @@ class MSupplierController extends Controller
                         'UpdatedOn' => date("Y-m-d h:i:sa"),
                     )
                 );
-            return redirect()->route('msupplier.index')->with('status', 'Success!!');
+            return redirect()->route('msupplier.index')->with('status', 'Berhasil Menghapus Data Supplier!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Supplier');
         }

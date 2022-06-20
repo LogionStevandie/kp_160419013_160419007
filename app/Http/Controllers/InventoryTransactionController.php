@@ -69,7 +69,7 @@ class InventoryTransactionController extends Controller
                 'dataItem' => $dataItem,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kartu Stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kartu Stok');
         }
     }
 
@@ -184,7 +184,7 @@ class InventoryTransactionController extends Controller
                 'stokAwal' => $stokAwal,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kartu Stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Kartu Stok');
         }
     }
 
@@ -278,7 +278,7 @@ class InventoryTransactionController extends Controller
                 'dataItem' => $dataItem,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kartu Stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kartu Stok');
         }
     }
 
@@ -384,7 +384,7 @@ class InventoryTransactionController extends Controller
                 'dataReportSingle' => $dataReportSingle,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kartu Stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Report Kartu Stok');
         }
     }
 
@@ -572,7 +572,7 @@ class InventoryTransactionController extends Controller
                 'dateLengkapPisah' => $date[0],
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kartu Stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Report Kartu Stok');
         }
     }
     public function print($mGudang, $item)

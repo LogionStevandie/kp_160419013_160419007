@@ -38,7 +38,7 @@ class InfoSupplierController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Info Suppplier');
         }
     }
 
@@ -57,7 +57,7 @@ class InfoSupplierController extends Controller
         if ($check) {
             return view('master.infoSupplier.tambah');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Info Suppplier');
         }
     }
 
@@ -78,7 +78,7 @@ class InfoSupplierController extends Controller
                 'keterangan' => $data['keterangan'],
             )
         );
-        return redirect()->route('infoSupplier.index')->with('status', 'Success!!');
+        return redirect()->route('infoSupplier.index')->with('status', 'Berhasil menambahkan Info Supplier');
     }
 
     /**
@@ -111,7 +111,7 @@ class InfoSupplierController extends Controller
                 'infoSupplier' => $infoSupplier
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Info Suppplier');
         }
     }
 
@@ -134,7 +134,7 @@ class InfoSupplierController extends Controller
                 'keterangan' => $data['keterangan'],
             ));
 
-        return redirect()->route('infoSupplier.index')->with('status', 'Success!!');
+        return redirect()->route('infoSupplier.index')->with('status', 'Berhasil mengubah Info Supplier');
     }
 
     /**
@@ -151,9 +151,9 @@ class InfoSupplierController extends Controller
         $check = $this->checkAccess('infoSupplier.edit', $user->id, $user->idRole);
         if ($check) {
             $infoSupplier->delete();
-            return redirect()->route('infoSupplier.index')->with('status', 'Success!!');
+            return redirect()->route('infoSupplier.index')->with('status', 'Berhasil menghapus Info Supplier');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Info Suppplier');
         }
     }
 
@@ -175,7 +175,7 @@ class InfoSupplierController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Info Suppplier');
         }
     }
 
@@ -197,7 +197,7 @@ class InfoSupplierController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Info Suppplier');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Info Suppplier');
         }
     }
 }

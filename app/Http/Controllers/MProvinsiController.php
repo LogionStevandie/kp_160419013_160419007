@@ -32,7 +32,7 @@ class MProvinsiController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Provinsi');
         }
     }
 
@@ -49,7 +49,7 @@ class MProvinsiController extends Controller
         if ($check) {
             return view('master.mProvinsi.tambah');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Provinsi');
         }
     }
 
@@ -76,7 +76,7 @@ class MProvinsiController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:s"),
                 )
             );
-        return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
+        return redirect()->route('mProvinsi.index')->with('status', 'Berhasil menambahkan provinsi');
     }
 
     /**
@@ -97,7 +97,7 @@ class MProvinsiController extends Controller
                 'mProvinsi' => $mProvinsi,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Provinsi');
         }
     }
 
@@ -118,7 +118,7 @@ class MProvinsiController extends Controller
                 'mProvinsi' => $mProvinsi,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Provinsi');
         }
     }
 
@@ -144,7 +144,7 @@ class MProvinsiController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:s"),
                 )
             );
-        return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
+        return redirect()->route('mProvinsi.index')->with('status', 'Berhasil mengubah provinsi');
     }
 
     /**
@@ -160,9 +160,9 @@ class MProvinsiController extends Controller
         $check = $this->checkAccess('mProvinsi.edit', $user->id, $user->idRole);
         if ($check) {
             $mProvinsi->delete();
-            return redirect()->route('mProvinsi.index')->with('status', 'Success!!');
+            return redirect()->route('mProvinsi.index')->with('status', 'Berhasil menghapus provinsi');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Provinsi');
         }
     }
 
@@ -183,7 +183,7 @@ class MProvinsiController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Provinsi');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Provinsi');
         }
     }
 }

@@ -37,7 +37,7 @@ class MKotaController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kota');
         }
     }
 
@@ -62,7 +62,7 @@ class MKotaController extends Controller
                 'dataMProvinsi' => $dataMProvinsi,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Kota');
         }
     }
 
@@ -92,7 +92,7 @@ class MKotaController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('mKota.index')->with('status', 'Success!!');
+        return redirect()->route('mKota.index')->with('status', 'Berhasil menambahkan kota');
     }
 
     /**
@@ -124,7 +124,7 @@ class MKotaController extends Controller
                 'dataMProvinsi' => $dataMProvinsi,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Kota');
         }
     }
 
@@ -151,7 +151,7 @@ class MKotaController extends Controller
                 'dataMProvinsi' => $dataMProvinsi,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Kota');
         }
     }
 
@@ -180,7 +180,7 @@ class MKotaController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('mKota.index')->with('status', 'Success!!');
+        return redirect()->route('mKota.index')->with('status', 'Berhasil mengubah kota');
     }
 
     /**
@@ -196,9 +196,9 @@ class MKotaController extends Controller
         $check = $this->checkAccess('mKota.edit', $user->id, $user->idRole);
         if ($check) {
             $mKotum->delete();
-            return redirect()->route('mKota.index')->with('status', 'Success!!');
+            return redirect()->route('mKota.index')->with('status', 'Berhasil menghapus kota');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Kota');
         }
     }
 
@@ -223,7 +223,7 @@ class MKotaController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kota');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kota');
         }
     }
 }

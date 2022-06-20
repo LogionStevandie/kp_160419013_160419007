@@ -154,7 +154,7 @@ class UserController extends Controller
                 );
         }
 
-        return redirect()->route('users.index')->with('status', 'Success!!');
+        return redirect()->route('users.index')->with('status', 'Berhasil menambah Data User!!');
     }
 
     /**
@@ -340,7 +340,7 @@ class UserController extends Controller
                 );
         }
 
-        return redirect()->route('users.index')->with('status', 'Success!!');
+        return redirect()->route('users.index')->with('status', 'Berhasil Mengupdate Data User!!');
     }
 
     /**
@@ -382,7 +382,7 @@ class UserController extends Controller
                 ->where('id', $users['id'])
                 ->delete();
 
-            return redirect()->route('users.index')->with('status', 'Success!!');
+            return redirect()->route('users.index')->with('status', 'Berhasil Menghapus User!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
         }

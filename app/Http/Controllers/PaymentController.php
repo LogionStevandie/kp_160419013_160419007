@@ -78,7 +78,7 @@ class PaymentController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('payment.index')->with('status', 'Success!!');
+        return redirect()->route('payment.index')->with('status', 'Berhasil Menambah Data Pembayaran!!');
     }
 
     /**
@@ -146,7 +146,7 @@ class PaymentController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('payment.index')->with('status', 'Success!!');
+        return redirect()->route('payment.index')->with('status', 'Berhasil Mengupdate Data Pembayaran!!');
     }
 
     /**
@@ -162,7 +162,7 @@ class PaymentController extends Controller
         $check = $this->checkAccess('payment.edit', $user->id, $user->idRole);
         if ($check) {
             $payment->delete();
-            return redirect()->route('payment.index')->with('status', 'Success!!');
+            return redirect()->route('payment.index')->with('status', 'Berhasil Menghapus Data Pembayaran!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Jenis Pembayaran');
         }

@@ -32,7 +32,7 @@ class MPulauController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Pulau');
         }
     }
 
@@ -49,7 +49,7 @@ class MPulauController extends Controller
         if ($check) {
             return view('master.mPulau.tambah');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Pulau');
         }
     }
 
@@ -76,7 +76,7 @@ class MPulauController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('mPulau.index')->with('status', 'Success!!');
+        return redirect()->route('mPulau.index')->with('status', 'Berhasil menambahkan pulau');
     }
 
     /**
@@ -97,7 +97,7 @@ class MPulauController extends Controller
                 'mPulau' => $mPulau,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Pulau');
         }
     }
 
@@ -119,7 +119,7 @@ class MPulauController extends Controller
                 'mPulau' => $mPulau,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Pulau');
         }
     }
 
@@ -145,7 +145,7 @@ class MPulauController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('mPulau.index')->with('status', 'Success!!');
+        return redirect()->route('mPulau.index')->with('status', 'Berhasil mengubah pulau');
     }
 
     /**
@@ -161,9 +161,9 @@ class MPulauController extends Controller
         $check = $this->checkAccess('mPulau.edit', $user->id, $user->idRole);
         if ($check) {
             $mPulau->delete();
-            return redirect()->route('mPulau.index')->with('status', 'Success!!');
+            return redirect()->route('mPulau.index')->with('status', 'Berhasil menghapus pulau');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Pulau');
         }
     }
 
@@ -183,7 +183,7 @@ class MPulauController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Pulau');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Pulau');
         }
     }
 }

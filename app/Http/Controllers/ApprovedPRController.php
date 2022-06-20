@@ -26,78 +26,75 @@ class ApprovedPRController extends Controller
         $kepalaGudang = DB::table('MGudang')
             ->where('UserIDKepalaDivisi', $user->id)
             ->get();
-            
+
         $managerPerusahaan1 = DB::table('MPerusahaan')
             ->where('UserIDManager1', $user->id)
             ->get();
         $prKeluar = null;
-        if(count($managerPerusahaan1)>0 && count($kepalaGudang)>0){
+        if (count($managerPerusahaan1) > 0 && count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved', "!=",2)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', "!=", 2)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
-                //dd($prKeluar);
-        }
-        else if(count($kepalaGudang)>0){
+            //dd($prKeluar);
+        } else if (count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
-        }
-        else if(count($managerPerusahaan1)>0){
+        } else if (count($managerPerusahaan1) > 0) {
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',1)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 1)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
                 ->whereIn('MGudang.cidp', $arrmanager)
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
         }
         $prd = DB::table('purchase_request_detail')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item', 'purchase_request_detail.ItemID', '=', 'Item.ItemID')
             ->get();
-        
-        
 
-         $user = Auth::user();
+
+
+        $user = Auth::user();
 
         $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
-        if ($check) {  
-            return view('master.approved.PurchaseRequest.index',[
-            'prKeluar' => $prKeluar,
-            'prd' => $prd,
-        ]);
+        if ($check) {
+            return view('master.approved.PurchaseRequest.index', [
+                'prKeluar' => $prKeluar,
+                'prd' => $prd,
+            ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Nota Permintaan Pembelian');
         }
-
     }
 
     /**
@@ -148,27 +145,26 @@ class ApprovedPRController extends Controller
         $dataGudang = DB::table('MGudang')
             ->get();
         $prd = DB::table('purchase_request_detail')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item', 'purchase_request_detail.ItemID', '=', 'Item.ItemID')
             ->get();
         //dd($approvedPurchaseRequest['id']);
-        if($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0){
-            
+        if ($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0) {
+
 
             $user = Auth::user();
 
-        $check = $this->checkAccess('approvedPurchaseRequest.edit', $user->id, $user->idRole);
-        if ($check) {  
-            return view('master.approved.PurchaseRequest.approve',[
-                'purchaseRequest'=>$approvedPurchaseRequest,
-                'dataGudang'=>$dataGudang,
-                'prd'=>$prd,
-            ]);
+            $check = $this->checkAccess('approvedPurchaseRequest.edit', $user->id, $user->idRole);
+            if ($check) {
+                return view('master.approved.PurchaseRequest.approve', [
+                    'purchaseRequest' => $approvedPurchaseRequest,
+                    'dataGudang' => $dataGudang,
+                    'prd' => $prd,
+                ]);
+            } else {
+                return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Nota Permintaan Pembelian');
+            }
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
-        }
-        }
-        else{
-            return redirect()->route('approvedPurchaseRequest.index')->with('status','Failed');    
+            return redirect()->route('approvedPurchaseRequest.index')->with('status', 'Nota Permintaan Pembelian sudah disetujui');
         }
     }
 
@@ -185,60 +181,56 @@ class ApprovedPRController extends Controller
         $data = $request->collect();
         $user = Auth::user();
         //dd($approvedPurchaseRequest['id']);
-        if($approvedPurchaseRequest['approved'] == 0){
+        if ($approvedPurchaseRequest['approved'] == 0) {
 
             //dd("masu sini");
             DB::table('purchase_request')
-            ->where('id', $approvedPurchaseRequest['id'])
-            ->update(array(
-                'approved' => $data['approve'],
-                'approved_by' => $user->id,
-            ));
-
-            if($data['approve'] == 1){
-                DB::table('purchase_request')
                 ->where('id', $approvedPurchaseRequest['id'])
                 ->update(array(
-                    'proses' => 1,
-                    'keterangan' => $data['keterangan'],
+                    'approved' => $data['approve'],
+                    'approved_by' => $user->id,
                 ));
-            }
-            else{
-                DB::table('purchase_request')
-                ->where('id', $approvedPurchaseRequest['id'])
-                ->update(array(
-                    'proses' => 2,
-                ));
-            }
 
-        }
-        else if($approvedPurchaseRequest['approved'] ==1 && $approvedPurchaseRequest['approvedAkhir'] == 0){
+            if ($data['approve'] == 1) {
+                DB::table('purchase_request')
+                    ->where('id', $approvedPurchaseRequest['id'])
+                    ->update(array(
+                        'proses' => 1,
+                        'keterangan' => $data['keterangan'],
+                    ));
+            } else {
+                DB::table('purchase_request')
+                    ->where('id', $approvedPurchaseRequest['id'])
+                    ->update(array(
+                        'proses' => 2,
+                    ));
+            }
+        } else if ($approvedPurchaseRequest['approved'] == 1 && $approvedPurchaseRequest['approvedAkhir'] == 0) {
             DB::table('purchase_request')
-            ->where('id', $approvedPurchaseRequest['id'])
-            ->update(array(
-                'approvedAkhir' => $data['approve'],
-                'approvedAkhir_by' => $user->id,
-                /*'alias' => $data['keterangan'],*/
-            ));
+                ->where('id', $approvedPurchaseRequest['id'])
+                ->update(array(
+                    'approvedAkhir' => $data['approve'],
+                    'approvedAkhir_by' => $user->id,
+                    /*'alias' => $data['keterangan'],*/
+                ));
 
-            if($data['approve'] == 1){
+            if ($data['approve'] == 1) {
                 DB::table('purchase_request')
-                ->where('id', $approvedPurchaseRequest['id'])
-                ->update(array(
-                    'proses' => 1,
-                    'keterangan' => $data['keterangan'],
-                ));
-            }
-            else{
+                    ->where('id', $approvedPurchaseRequest['id'])
+                    ->update(array(
+                        'proses' => 1,
+                        'keterangan' => $data['keterangan'],
+                    ));
+            } else {
                 DB::table('purchase_request')
-                ->where('id', $approvedPurchaseRequest['id'])
-                ->update(array(
-                    'proses' => 2,
-                ));
+                    ->where('id', $approvedPurchaseRequest['id'])
+                    ->update(array(
+                        'proses' => 2,
+                    ));
             }
         }
 
-        return redirect()->route('approvedPurchaseRequest.index')->with('status','Success!!');      
+        return redirect()->route('approvedPurchaseRequest.index')->with('status', 'Berhasilkan melakukan Approved pada nota Permintaan Pembelian');
     }
 
     /**
@@ -254,261 +246,252 @@ class ApprovedPRController extends Controller
 
     public function searchNamePR(Request $request)
     {
-        $name=$request->input('searchname');
+        $name = $request->input('searchname');
         $user = Auth::user();
 
         $kepalaGudang = DB::table('MGudang')
             ->where('UserIDKepalaDivisi', $user->id)
             ->get();
-            
+
         $managerPerusahaan1 = DB::table('MPerusahaan')
             ->where('UserIDManager1', $user->id)
             ->get();
         $prKeluar = null;
-        if(count($managerPerusahaan1)>0 && count($kepalaGudang)>0){
+        if (count($managerPerusahaan1) > 0 && count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved', "!=",2)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', "!=", 2)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
-                ->where('purchase_request.name','like','%'.$name.'%')
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->where('purchase_request.name', 'like', '%' . $name . '%')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
-                //dd($prKeluar);
-        }
-        else if(count($kepalaGudang)>0){
+            //dd($prKeluar);
+        } else if (count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
-                ->where('purchase_request.name','like','%'.$name.'%')
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
+                ->where('purchase_request.name', 'like', '%' . $name . '%')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
-        }
-        else if(count($managerPerusahaan1)>0){
+        } else if (count($managerPerusahaan1) > 0) {
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',1)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 1)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
                 ->whereIn('MGudang.cidp', $arrmanager)
-                ->where('purchase_request.name','like','%'.$name.'%')
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->where('purchase_request.name', 'like', '%' . $name . '%')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
         }
         $prd = DB::table('purchase_request_detail')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item', 'purchase_request_detail.ItemID', '=', 'Item.ItemID')
             ->get();
-        
-        
+
+
 
         $user = Auth::user();
 
         $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
-        if ($check) {  
-            return view('master.approved.PurchaseRequest.index',[
-            'prKeluar' => $prKeluar,
-            'prd' => $prd,
-        ]);
+        if ($check) {
+            return view('master.approved.PurchaseRequest.index', [
+                'prKeluar' => $prKeluar,
+                'prd' => $prd,
+            ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Nota Permintaan Pembelian');
         }
-
     }
 
     public function searchDatePR(Request $request)
     {
-        $date=$request->input('dateRangeSearch');
+        $date = $request->input('dateRangeSearch');
         $user = Auth::user();
         $date = explode("-", $date);
         $kepalaGudang = DB::table('MGudang')
             ->where('UserIDKepalaDivisi', $user->id)
             ->get();
-            
+
         $managerPerusahaan1 = DB::table('MPerusahaan')
             ->where('UserIDManager1', $user->id)
             ->get();
         $prKeluar = null;
-        if(count($managerPerusahaan1)>0 && count($kepalaGudang)>0){
+        if (count($managerPerusahaan1) > 0 && count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved', "!=",2)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', "!=", 2)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
-                //dd($prKeluar);
-        }
-        else if(count($kepalaGudang)>0){
+            //dd($prKeluar);
+        } else if (count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
                 ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
-        }
-        else if(count($managerPerusahaan1)>0){
+        } else if (count($managerPerusahaan1) > 0) {
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',1)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 1)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
                 ->whereIn('MGudang.cidp', $arrmanager)
                 ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
         }
         $prd = DB::table('purchase_request_detail')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item', 'purchase_request_detail.ItemID', '=', 'Item.ItemID')
             ->get();
-        
-    
+
+
 
         $user = Auth::user();
 
         $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
-        if ($check) {  
-            return view('master.approved.PurchaseRequest.index',[
-            'prKeluar' => $prKeluar,
-            'prd' => $prd,
-        ]);
+        if ($check) {
+            return view('master.approved.PurchaseRequest.index', [
+                'prKeluar' => $prKeluar,
+                'prd' => $prd,
+            ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Nota Permintaan Pembelian');
         }
-
     }
 
     public function searchNameDatePR(Request $request)
     {
-        $name=$request->input('searchname');
-        $date=$request->input('dateRangeSearch');
+        $name = $request->input('searchname');
+        $date = $request->input('dateRangeSearch');
         $user = Auth::user();
         $date = explode("-", $date);
         $kepalaGudang = DB::table('MGudang')
             ->where('UserIDKepalaDivisi', $user->id)
             ->get();
-            
+
         $managerPerusahaan1 = DB::table('MPerusahaan')
             ->where('UserIDManager1', $user->id)
             ->get();
         $prKeluar = null;
-        if(count($managerPerusahaan1)>0 && count($kepalaGudang)>0){
+        if (count($managerPerusahaan1) > 0 && count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved', "!=",2)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', "!=", 2)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
                 ->WhereIn('MGudang.cidp', $arrmanager)
-                ->where('purchase_request.name','like','%'.$name.'%')
+                ->where('purchase_request.name', 'like', '%' . $name . '%')
                 ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
-                //dd($prKeluar);
-        }
-        else if(count($kepalaGudang)>0){
+            //dd($prKeluar);
+        } else if (count($kepalaGudang) > 0) {
             $arrkepala = array();
-            foreach($kepalaGudang as $val){
+            foreach ($kepalaGudang as $val) {
                 array_push($arrkepala, $val->MGudangID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',0)
-                ->where('hapus',0)
-                ->whereIn('purchase_request.MGudangID',$arrkepala)
-                ->where('purchase_request.name','like','%'.$name.'%')
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 0)
+                ->where('hapus', 0)
+                ->whereIn('purchase_request.MGudangID', $arrkepala)
+                ->where('purchase_request.name', 'like', '%' . $name . '%')
                 ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
-        }
-        else if(count($managerPerusahaan1)>0){
+        } else if (count($managerPerusahaan1) > 0) {
             $arrmanager = array();
-            foreach($managerPerusahaan1 as $val){
+            foreach ($managerPerusahaan1 as $val) {
                 array_push($arrmanager, $val->MPerusahaanID);
             }
-            $prKeluar= DB::table('purchase_request')
-                ->join('MGudang', 'purchase_request.MGudangID','=','MGudang.MGudangID')
-                ->where('approved',1)
-                ->where('approvedAkhir',0)
-                ->where('hapus',0)
+            $prKeluar = DB::table('purchase_request')
+                ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                ->where('approved', 1)
+                ->where('approvedAkhir', 0)
+                ->where('hapus', 0)
                 ->whereIn('MGudang.cidp', $arrmanager)
-                ->where('purchase_request.name','like','%'.$name.'%')
+                ->where('purchase_request.name', 'like', '%' . $name . '%')
                 ->whereBetween('purchase_request.tanggalDibuat', [$date[0], $date[1]])
-                ->orderByDesc('purchase_request.tanggalDibuat','purchase_request.id')
+                ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
             //->get();
         }
         $prd = DB::table('purchase_request_detail')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item', 'purchase_request_detail.ItemID', '=', 'Item.ItemID')
             ->get();
-        
-    
+
+
 
         $user = Auth::user();
 
         $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
-        if ($check) {  
-            return view('master.approved.PurchaseRequest.index',[
-            'prKeluar' => $prKeluar,
-            'prd' => $prd,
-        ]);
+        if ($check) {
+            return view('master.approved.PurchaseRequest.index', [
+                'prKeluar' => $prKeluar,
+                'prd' => $prd,
+            ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Persetujuan Nota Permintaan Pembelian');
         }
-
     }
 
 
@@ -520,26 +503,25 @@ class ApprovedPRController extends Controller
         $dataGudang = DB::table('MGudang')
             ->get();
         $prd = DB::table('purchase_request_detail')
-            ->join('Item','purchase_request_detail.ItemID','=','Item.ItemID')
+            ->join('Item', 'purchase_request_detail.ItemID', '=', 'Item.ItemID')
             ->get();
         //dd($approvedPurchaseRequest['id']);
-        if($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0){
+        if ($approvedPurchaseRequest->approved != 2 || $approvedPurchaseRequest->approvedAkhir == 0) {
 
-                $user = Auth::user();
+            $user = Auth::user();
 
-                $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
-                if ($check) {  
-                    return view('master.approved.PurchaseRequest.print',[
-                        'purchaseRequest'=>$approvedPurchaseRequest,
-                        'dataGudang'=>$dataGudang,
-                        'prd'=>$prd,
-                    ]);
-                } else {
-                    return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
-                }
-        }
-        else{
-            return redirect()->route('approvedPurchaseRequest.index')->with('status','Failed');    
+            $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);
+            if ($check) {
+                return view('master.approved.PurchaseRequest.print', [
+                    'purchaseRequest' => $approvedPurchaseRequest,
+                    'dataGudang' => $dataGudang,
+                    'prd' => $prd,
+                ]);
+            } else {
+                return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Persetujuan Permintaan Pembelian');
+            }
+        } else {
+            return redirect()->route('approvedPurchaseRequest.index')->with('status', 'Failed');
         }
     }
 }

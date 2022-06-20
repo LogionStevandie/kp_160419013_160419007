@@ -556,7 +556,7 @@ class PurchaseOrderController extends Controller
                 'subtotalHarga' =>  $subtotalHarga,
             ]);
 
-        return redirect()->route('purchaseOrder.index')->with('status', 'Success!!');
+        return redirect()->route('purchaseOrder.index')->with('status', 'Berhasil Mengupdate Data Purchase Order!!');
     }
 
     /**

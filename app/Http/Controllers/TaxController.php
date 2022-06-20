@@ -78,7 +78,7 @@ class TaxController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('tax.index')->with('status', 'Success!!');
+        return redirect()->route('tax.index')->with('status', 'Berhasil Menambah Data Pajak!!');
     }
 
     /**
@@ -147,7 +147,7 @@ class TaxController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('tax.index')->with('status', 'Success!!');
+        return redirect()->route('tax.index')->with('status', 'Berhasil Mengupdate Data Pajak!!');
     }
 
     /**
@@ -163,7 +163,7 @@ class TaxController extends Controller
         $check = $this->checkAccess('tax.edit', $user->id, $user->idRole);
         if ($check) {
             $tax->delete();
-            return redirect()->route('tax.index')->with('status', 'Success!!');
+            return redirect()->route('tax.index')->with('status', 'Berhasil Menghapus Data Pajak!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Pajak');
         }

@@ -55,7 +55,7 @@ class MGudangController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Gudang');
         }
     }
 
@@ -86,7 +86,7 @@ class MGudangController extends Controller
                 'users' => $users,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Gudang');
         }
     }
 
@@ -125,7 +125,7 @@ class MGudangController extends Controller
             ); 
         }*/
 
-        return redirect()->route('mGudang.index')->with('status', 'Success!!');
+        return redirect()->route('mGudang.index')->with('status', 'Berhasil menambahkan gudang');
     }
 
     /**
@@ -161,7 +161,7 @@ class MGudangController extends Controller
                 'users' => $users,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Gudang');
         }
     }
 
@@ -194,7 +194,7 @@ class MGudangController extends Controller
                 'users' => $users,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Gudang');
         }
     }
 
@@ -262,7 +262,7 @@ class MGudangController extends Controller
                 }
             }
         }*/
-        return redirect()->route('mGudang.index')->with('status', 'Success!!');
+        return redirect()->route('mGudang.index')->with('status', 'Berhasil mengubah gudang');
     }
 
     /**
@@ -283,9 +283,9 @@ class MGudangController extends Controller
                 ->where('MGudangID','=',$mGudang->MGudangID)
                 ->delete();
             */
-            return redirect()->route('mGudang.index')->with('status', 'Success!!');
+            return redirect()->route('mGudang.index')->with('status', 'Berhasil menghapus gudang');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Gudang');
         }
     }
 
@@ -329,7 +329,7 @@ class MGudangController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Gudang');
         }
     }
 
@@ -372,7 +372,7 @@ class MGudangController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Gudang');
         }
     }
 
@@ -414,7 +414,7 @@ class MGudangController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Gudang');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Gudang');
         }
     }
 }

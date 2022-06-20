@@ -36,7 +36,7 @@ class AdjustmentStockController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Penyesuaian stok');
         }
     }
 
@@ -106,7 +106,7 @@ class AdjustmentStockController extends Controller
                 'dataReportUntukStok' => $dataReportUntukStok,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Penyesuaian stok');
         }
     }
 
@@ -188,7 +188,7 @@ class AdjustmentStockController extends Controller
                 )
             );
 
-        return redirect()->route('adjustmentStock.index')->with('status', 'Success!!');
+        return redirect()->route('adjustmentStock.index')->with('status', 'Tambah nota penyesuaian stok berhasil');
     }
 
     /**
@@ -284,7 +284,7 @@ class AdjustmentStockController extends Controller
                 'adjustmentStockDetail' => $adjustmentStockDetail,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Penyesuaian stok');
         }
     }
 
@@ -383,7 +383,7 @@ class AdjustmentStockController extends Controller
                 'adjustmentStockDetail' => $adjustmentStockDetail,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Penyesuaian stok');
         }
     }
 
@@ -455,7 +455,7 @@ class AdjustmentStockController extends Controller
                 )
             );
 
-        return redirect()->route('adjustmentStock.index')->with('status', 'Success!!');
+        return redirect()->route('adjustmentStock.index')->with('status', 'Ubah nota penyesuaian stok berhasil');
     }
 
     /**
@@ -495,9 +495,9 @@ class AdjustmentStockController extends Controller
                 ->where('TransactionID', $dataIIT[0]->TransactionID)
                 ->delete();
 
-            return redirect()->route('adjustmentStock.index')->with('status', 'Success!!');
+            return redirect()->route('adjustmentStock.index')->with('status', 'Hapus nota penyesuaian stok berhasil');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Penyesuaian stok');
         }
     }
 
@@ -528,7 +528,7 @@ class AdjustmentStockController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Penyesuaian stok');
         }
     }
 
@@ -561,7 +561,7 @@ class AdjustmentStockController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Penyesuaian stok');
         }
     }
 
@@ -596,7 +596,7 @@ class AdjustmentStockController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Penyesuaian stok');
         }
     }
 
@@ -689,7 +689,7 @@ class AdjustmentStockController extends Controller
                 'adjustmentStockDetail' => $adjustmentStockDetail,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Penyesuaian stok');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Print Penyesuaian stok');
         }
     }
 }

@@ -73,7 +73,7 @@ class ItemController extends Controller
                 'dataCategory' => $dataCategory,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Barang');
         }
 
         /*$dataSatuan = DB::table('satuan')
@@ -115,7 +115,7 @@ class ItemController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Barang');
         }
     }
 
@@ -153,7 +153,7 @@ class ItemController extends Controller
             )
         );
 
-        return redirect()->route('item.index')->with('status', 'Success!!');
+        return redirect()->route('item.index')->with('status', 'Berhasil menambahkan barang');
     }
 
     /**
@@ -199,7 +199,7 @@ class ItemController extends Controller
                 'dataTracing' => $dataTracing,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Barang');
         }
     }
 
@@ -236,7 +236,7 @@ class ItemController extends Controller
         $dataTag = DB::table('ItemTag')
             ->get();
 
-        $check = $this->checkAccess('item.index', $user->id, $user->idRole);
+        $check = $this->checkAccess('item.edit', $user->id, $user->idRole);
         if ($check) {
             return view('master.item.edit', [
                 'item' => $item,
@@ -247,7 +247,7 @@ class ItemController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Barang');
         }
     }
 
@@ -282,7 +282,7 @@ class ItemController extends Controller
                 //'HaveExpiredDate' => $data['expiredDate'],
             ));
 
-        return redirect()->route('item.index')->with('status', 'Success!!');
+        return redirect()->route('item.index')->with('status', 'Berhasil mengubah barang');
     }
 
     /**
@@ -306,9 +306,9 @@ class ItemController extends Controller
                     'Hapus' => 1,
                 ));
 
-            return redirect()->route('item.index')->with('status', 'Success!!');
+            return redirect()->route('item.index')->with('status', 'Berhasil menghapus barang');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Barang');
         }
     }
 
@@ -363,7 +363,7 @@ class ItemController extends Controller
                 'dataCategory' => $dataCategory,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Barang');
         }
     }
 
@@ -415,7 +415,7 @@ class ItemController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Barang');
         }
     }
 
@@ -457,7 +457,7 @@ class ItemController extends Controller
                 'dataTag' => $dataTag,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Barang');
         }
     }
 

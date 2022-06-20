@@ -32,7 +32,7 @@ class MenuController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Menu');
         }
     }
 
@@ -49,7 +49,7 @@ class MenuController extends Controller
         if ($check) {
             return view('master.menu.tambah');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Menu');
         }
     }
 
@@ -77,7 +77,7 @@ class MenuController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('menu.index')->with('status', 'Success!!');
+        return redirect()->route('menu.index')->with('status', 'Berhasil menambahkan menu');
     }
 
     /**
@@ -98,7 +98,7 @@ class MenuController extends Controller
                 'menu' => $menu,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Menu');
         }
     }
 
@@ -119,7 +119,7 @@ class MenuController extends Controller
                 'menu' => $menu,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Menu');
         }
     }
 
@@ -146,7 +146,7 @@ class MenuController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('menu.index')->with('status', 'Success!!');
+        return redirect()->route('menu.index')->with('status', 'Berhasil mengubah menu');
     }
 
     /**
@@ -162,9 +162,9 @@ class MenuController extends Controller
         $check = $this->checkAccess('menu.edit', $user->id, $user->idRole);
         if ($check) {
             $menu->delete();
-            return redirect()->route('menu.index')->with('status', 'Success!!');
+            return redirect()->route('menu.index')->with('status', 'Berhasil menghapus menu');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Menu');
         }
     }
 
@@ -184,7 +184,7 @@ class MenuController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Menu');
         }
     }
 
@@ -203,7 +203,7 @@ class MenuController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Menu');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Menu');
         }
     }
 }

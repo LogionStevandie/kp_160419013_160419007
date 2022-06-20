@@ -283,7 +283,7 @@ class TransactionGudangBarangController extends Controller
                 );
             }          
         }
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('transactionGudang.index')->with('status','Berhasil Menambah Data!!!!');
     }
 
     /**
@@ -617,7 +617,7 @@ class TransactionGudangBarangController extends Controller
             }          
         }
 
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('transactionGudang.index')->with('status','Berhasil Mengupdate Data!!!!');
     }
 
     /**
@@ -638,7 +638,7 @@ class TransactionGudangBarangController extends Controller
                 'Hapus' => 1,
         ));
 
-        return redirect()->route('transactionGudang.index')->with('status','Success!!');
+        return redirect()->route('transactionGudang.index')->with('status','Berhasil Menghapus Data!!');
     }
 
     public function searchTGBName(Request $request)

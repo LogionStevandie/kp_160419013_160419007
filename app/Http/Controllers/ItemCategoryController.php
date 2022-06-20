@@ -37,7 +37,7 @@ class ItemCategoryController extends Controller
                 'dataCOA' => $dataCOA,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kategori Barang');
         }
     }
 
@@ -59,7 +59,7 @@ class ItemCategoryController extends Controller
                 'dataCOA' => $dataCOA,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Kategori Barang');
         }
     }
 
@@ -91,7 +91,7 @@ class ItemCategoryController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('itemCategory.index')->with('status', 'Success!!');
+        return redirect()->route('itemCategory.index')->with('status', 'Berhasil menambahkan kategori barang');
     }
 
     /**
@@ -118,7 +118,7 @@ class ItemCategoryController extends Controller
                 'dataCOA' => $dataCOA,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Kategori Barang');
         }
     }
 
@@ -143,7 +143,7 @@ class ItemCategoryController extends Controller
                 'dataCOA' => $dataCOA,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Kategori Barang');
         }
     }
 
@@ -174,7 +174,7 @@ class ItemCategoryController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('itemCategory.index')->with('status', 'Success!!');
+        return redirect()->route('itemCategory.index')->with('status', 'Berhasil mengubah kategori barang');
     }
 
     /**
@@ -191,9 +191,9 @@ class ItemCategoryController extends Controller
         $check = $this->checkAccess('itemCategory.edit', $user->id, $user->idRole);
         if ($check) {
             DB::table('ItemCategory')->where('ItemCategoryID', $itemCategory['ItemCategoryID'])->delete();
-            return redirect()->route('itemCategory.index')->with('status', 'Success!!');
+            return redirect()->route('itemCategory.index')->with('status', 'Berhasil menghapus kategori barang');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Kategori Barang');
         }
     }
 
@@ -219,7 +219,7 @@ class ItemCategoryController extends Controller
                 'dataCOA' => $dataCOA,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kategori Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kategori Barang');
         }
     }
 }

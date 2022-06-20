@@ -346,7 +346,7 @@ class TerimaBarangSupplierController extends Controller
                 'proses' => 2,
             ));
 
-        return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
+        return redirect()->route('terimaBarangSupplier.index')->with('status', 'Berhasil Menambah Data Terima barang Supplier!!');
     }
 
     /**
@@ -780,7 +780,7 @@ class TerimaBarangSupplierController extends Controller
                     ->update(array(
                         'proses' => 1,
                     ));
-                return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
+                return redirect()->route('terimaBarangSupplier.index')->with('status', 'Berhasil Mengupdate Data Terima barang Supplier!!');
             }
         }
         //PO SELESAI
@@ -790,7 +790,7 @@ class TerimaBarangSupplierController extends Controller
                 'proses' => 2,
             ));
 
-        return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
+        return redirect()->route('terimaBarangSupplier.index')->with('status', 'Berhasil Mengupdate Data Terima barang Supplier!!');
     }
 
     /**
@@ -839,7 +839,7 @@ class TerimaBarangSupplierController extends Controller
 
 
 
-            return redirect()->route('terimaBarangSupplier.index')->with('status', 'Success!!');
+            return redirect()->route('terimaBarangSupplier.index')->with('status', 'Berhasil Menghapus Data Terima barang Supplier!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Supplier');
             //dd($terimaBarangSupplier->id);

@@ -37,7 +37,7 @@ class MPerusahaanController extends Controller
                 'dataUser' => $dataUser,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Perusahaan');
         }
     }
 
@@ -60,7 +60,7 @@ class MPerusahaanController extends Controller
                 'users' => $users,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Perusahaan');
         }
     }
 
@@ -110,7 +110,7 @@ class MPerusahaanController extends Controller
                     'Gambar' => $path,
                 )
             );
-        return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
+        return redirect()->route('mPerusahaan.index')->with('status', 'Berhasil menambahkan perusahaan');
     }
 
     /**
@@ -134,7 +134,7 @@ class MPerusahaanController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Perusahaan');
         }
     }
 
@@ -158,7 +158,7 @@ class MPerusahaanController extends Controller
                 'users' => $users,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Perusahaan');
         }
     }
 
@@ -202,7 +202,7 @@ class MPerusahaanController extends Controller
                     'Gambar' => $path,
                 )
             );
-        return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
+        return redirect()->route('mPerusahaan.index')->with('status', 'Berhasil mengubah perusahaan');
     }
 
     /**
@@ -218,9 +218,9 @@ class MPerusahaanController extends Controller
         $check = $this->checkAccess('mPerusahaan.edit', $user->id, $user->idRole);
         if ($check) {
             $mPerusahaan->delete();
-            return redirect()->route('mPerusahaan.index')->with('status', 'Success!!');
+            return redirect()->route('mPerusahaan.index')->with('status', 'Berhasil menghapus perusahaan');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Perusahaan');
         }
     }
 
@@ -243,7 +243,7 @@ class MPerusahaanController extends Controller
                 'dataUser' => $dataUser,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Perusahaan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Perusahaan');
         }
     }
 }

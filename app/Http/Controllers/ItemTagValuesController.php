@@ -62,7 +62,7 @@ class ItemTagValuesController extends Controller
             ]);
         }
         else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Item Tag Values Master');
+            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Index Tag Barang Values');
         }
     }
 
@@ -137,7 +137,7 @@ class ItemTagValuesController extends Controller
                 'itemTagValues' => $itemTagValue,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Item Tag Values Master');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Tag Barang Values');
         }
 
     }
@@ -171,7 +171,7 @@ class ItemTagValuesController extends Controller
                 )
             ); 
         }
-        return redirect()->route('itemTagValues.index')->with('status','Success!!');
+        return redirect()->route('itemTagValues.index')->with('status','Berhasil mengubah tag barang values');
     }
 
     /**
@@ -231,7 +231,7 @@ class ItemTagValuesController extends Controller
             ]);
         }
         else{
-            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Tag Values Master');
+            return redirect()->route('home')->with('message','Anda tidak memiliki akses kedalam Index Tag Barang Values');
         }
     }
 }

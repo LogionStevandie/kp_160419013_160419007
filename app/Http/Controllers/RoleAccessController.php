@@ -153,7 +153,7 @@ class RoleAccessController extends Controller
             }
         }
 
-        return redirect()->route('roleAccess.index')->with('status', 'Success!!');
+        return redirect()->route('roleAccess.index')->with('status', 'Berhasil Mengupdate Data Akses Role !!');
     }
 
     /**

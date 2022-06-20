@@ -300,7 +300,7 @@ class TerimaBarangPesananController extends Controller
 
         foreach ($dataPRDAuto as $prd) {
             if ($prd->jumlah > $prd->jumlahDiterima) {
-                return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+                return redirect()->route('terimaBarangPesanan.index')->with('status', 'Berhasil Menambah Data Terima Barang Pesanan!!');
             }
         }
         //PR SELESAI
@@ -311,7 +311,7 @@ class TerimaBarangPesananController extends Controller
                 'tanggalDiterima' => date("Y-m-d h:i:sa"),
             ));
 
-        return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+        return redirect()->route('terimaBarangPesanan.index')->with('status', 'Berhasil Menambah Data Terima barang Pesanan!!');
     }
 
     /**
@@ -678,7 +678,7 @@ class TerimaBarangPesananController extends Controller
                         'proses' => 1,
                         'tanggalDiterima' => null,
                     ));
-                return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+                return redirect()->route('terimaBarangPesanan.index')->with('status', 'Berhasil Mengupdate Data Terima barang Pesanan!!!!');
             }
         }
         //PR SELESAI
@@ -689,7 +689,7 @@ class TerimaBarangPesananController extends Controller
                 'tanggalDiterima' => date("Y-m-d h:i:sa"),
             ));
 
-        return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+        return redirect()->route('terimaBarangPesanan.index')->with('status', 'Berhasil Mengupdate Data Terima barang Pesanan!!!!');
     }
 
     /**
@@ -723,7 +723,7 @@ class TerimaBarangPesananController extends Controller
                     'hapus' => 1,
                 ));
 
-            return redirect()->route('terimaBarangPesanan.index')->with('status', 'Success!!');
+            return redirect()->route('terimaBarangPesanan.index')->with('status', 'Berhasil Menghapus Data Terima barang Pesanan!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Terima Barang Pesanan');
         }

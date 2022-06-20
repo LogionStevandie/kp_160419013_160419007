@@ -199,7 +199,7 @@ class SuratJalanController extends Controller
                 )
             );
         }
-        return redirect()->route('suratJalan.index')->with('status', 'Success!!');
+        return redirect()->route('suratJalan.index')->with('status', 'Berhasil Menambah Data Surat Jalan!!');
     }
 
     /**
@@ -423,7 +423,7 @@ class SuratJalanController extends Controller
                 )
             );
         }
-        return redirect()->route('suratJalan.index')->with('status', 'Success!!');
+        return redirect()->route('suratJalan.index')->with('status', 'Berhasil Mengupdate Data Surat Jalan!!');
     }
 
     /**
@@ -448,7 +448,7 @@ class SuratJalanController extends Controller
                             'UpdatedOn' => date("Y-m-d h:i:sa"),
                         )
                     );
-                return redirect()->route('suratJalan.index')->with('status', 'Success!!');
+                return redirect()->route('suratJalan.index')->with('status', 'Berhasil Menghapus Data Surat Jalan!!');
             } else {
                 return redirect()->route('suratJalan.index')->with('message', 'Gagal menghapus');
             }

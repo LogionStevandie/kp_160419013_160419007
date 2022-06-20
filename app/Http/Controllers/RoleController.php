@@ -98,7 +98,7 @@ class RoleController extends Controller
            ); 
         }*/
 
-        return redirect()->route('role.index')->with('status', 'Success!!');
+        return redirect()->route('role.index')->with('status', 'Berhasil Menambah Data Role!!');
     }
 
     /**
@@ -207,7 +207,7 @@ class RoleController extends Controller
             }
         }*/
 
-        return redirect()->route('role.index')->with('status', 'Success!!');
+        return redirect()->route('role.index')->with('status', 'Berhasil Mengupdate Data  Role!!');
     }
 
     /**
@@ -227,7 +227,7 @@ class RoleController extends Controller
                 ->where('idRole', $role->id)
                 ->delete();*/
 
-            return redirect()->route('role.index')->with('status', 'Success!!');
+            return redirect()->route('role.index')->with('status', 'Berhasil Menghapus Data  Role!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Master Role');
         }

@@ -76,7 +76,7 @@ class UnitController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('unit.index')->with('status', 'Success!!');
+        return redirect()->route('unit.index')->with('status', 'Berhasil Menambah Satuan Item!!!!');
     }
 
     /**
@@ -142,7 +142,7 @@ class UnitController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('unit.index')->with('status', 'Success!!');
+        return redirect()->route('unit.index')->with('status', 'Berhasil Mengupdate Satuan Item!!');
     }
 
     /**
@@ -158,7 +158,7 @@ class UnitController extends Controller
         $check = $this->checkAccess('unit.edit', $user->id, $user->idRole);
         if ($check) {
             $unit->delete();
-            return redirect()->route('unit.index')->with('status', 'Success!!');
+            return redirect()->route('unit.index')->with('status', 'Berhasil Menghapus Satuan Item!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Unit Master');
         }

@@ -50,7 +50,7 @@ class KirimBarangPesananController extends Controller
                 'dataGudang' => $dataGudang,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kirim Barang Pesanan');
         }
     }
 
@@ -148,7 +148,7 @@ class KirimBarangPesananController extends Controller
                 'date' => $date
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Kirim Barang Pesanan');
         }
     }
 
@@ -290,7 +290,7 @@ class KirimBarangPesananController extends Controller
                     )
                 );
         }
-        return redirect()->route('kirimBarangPesanan.index')->with('status', 'Success!!');
+        return redirect()->route('kirimBarangPesanan.index')->with('status', 'Berhasil menambahkan nota Kirim Barang Pesanan');
     }
 
     /**
@@ -389,7 +389,7 @@ class KirimBarangPesananController extends Controller
                 'dataTotalDetail' => $dataTotalDetail,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Kirim Barang Pesanan');
         }
     }
 
@@ -493,7 +493,7 @@ class KirimBarangPesananController extends Controller
                 'dataTotalDetail' => $dataTotalDetail,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Kirim Barang Pesanan');
         }
     }
 
@@ -618,7 +618,7 @@ class KirimBarangPesananController extends Controller
                 );
         }
 
-        return redirect()->route('kirimBarangPesanan.index')->with('status', 'Success!!');
+        return redirect()->route('kirimBarangPesanan.index')->with('status', 'Berhasil mengubah nota Kirim Barang Pesanan');
     }
 
     /**
@@ -653,9 +653,9 @@ class KirimBarangPesananController extends Controller
                     'hapus' => 1,
                 ));
 
-            return redirect()->route('kirimBarangPesanan.index')->with('status', 'Success!!');
+            return redirect()->route('kirimBarangPesanan.index')->with('status', 'Berhasil menghapus nota Kirim Barang Pesanan');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Kirim Barang Pesanan');
         }
     }
     public function searchTGBName(Request $request)
@@ -691,7 +691,7 @@ class KirimBarangPesananController extends Controller
                 'dataGudang' => $dataGudang,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kirim Barang Pesanan');
         }
     }
 
@@ -772,7 +772,7 @@ class KirimBarangPesananController extends Controller
                 'dataGudang' => $dataGudang,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Kirim Barang Pesanan');
         }
     }
 
@@ -866,7 +866,7 @@ class KirimBarangPesananController extends Controller
                 'dataTotalDetail' => $dataTotalDetail,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Kirim Barang Pesanan');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Print Kirim Barang Pesanan');
         }
     }
 }

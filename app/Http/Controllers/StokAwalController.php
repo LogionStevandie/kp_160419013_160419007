@@ -157,7 +157,7 @@ class StokAwalController extends Controller
                 )
             );
 
-        return redirect()->route('stokAwal.index')->with('status', 'Success!!');
+        return redirect()->route('stokAwal.index')->with('status', 'Berhasil Menambah Data Stok Awal!!');
     }
 
     /**
@@ -300,7 +300,7 @@ class StokAwalController extends Controller
                     //'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
                 )
             );
-        return redirect()->route('stokAwal.index')->with('status', 'Success!!');
+        return redirect()->route('stokAwal.index')->with('status', 'Berhasil Mengupdate Data Stok Awal!!');
     }
 
     /**
@@ -335,7 +335,7 @@ class StokAwalController extends Controller
                 ->where('TransactionID', $idIIT[0]->TransactionID)
                 ->delete();
 
-            return redirect()->route('stokAwal.index')->with('status', 'Success!!');
+            return redirect()->route('stokAwal.index')->with('status', 'Berhasil Menghapus Data Stok Awal!!');
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Stok Awal Gudang');
         }

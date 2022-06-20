@@ -262,7 +262,7 @@ class PurchaseRequestController extends Controller
                 'totalHarga' =>  $totalHarga,
             ]);
 
-        return redirect()->route('purchaseRequest.index')->with('status', 'Success!!');
+        return redirect()->route('purchaseRequest.index')->with('status', 'Berhasil Menambah Data Permintaan Pembelian!!');
     }
 
     /**
@@ -469,7 +469,7 @@ class PurchaseRequestController extends Controller
                 'totalHarga' =>  $totalHarga,
             ]);
 
-        return redirect()->route('purchaseRequest.index')->with('status', 'Success!!');
+        return redirect()->route('purchaseRequest.index')->with('status', 'Berhasil Mengupdate Data Permintaan Pembelian!!');
     }
 
     /**
@@ -492,7 +492,7 @@ class PurchaseRequestController extends Controller
                     ->update([
                         'hapus' => 1,
                     ]);
-                return redirect()->route('purchaseRequest.index')->with('status', 'Success!!');
+                return redirect()->route('purchaseRequest.index')->with('status', 'Berhasil Menghapus Data Permintaan Pembelian!!');
             }
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Permintaan Pembelian');

@@ -34,7 +34,7 @@ class ItemTransactionController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Transaksi Barang');
         }
     }
 
@@ -51,7 +51,7 @@ class ItemTransactionController extends Controller
         if ($check) {
             return view('master.itemTransaction.tambah');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tambah Transaksi Barang');
         }
     }
 
@@ -79,7 +79,7 @@ class ItemTransactionController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
+        return redirect()->route('itemTransaction.index')->with('status', 'Berhasil menambahkan transaksi barang');
     }
 
     /**
@@ -100,7 +100,7 @@ class ItemTransactionController extends Controller
                 'itemTransaction' => $itemTransaction
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Transaksi Barang');
         }
     }
 
@@ -121,7 +121,7 @@ class ItemTransactionController extends Controller
                 'itemTransaction' => $itemTransaction
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Transaksi Barang');
         }
     }
 
@@ -148,7 +148,7 @@ class ItemTransactionController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
+        return redirect()->route('itemTransaction.index')->with('status', 'Berhasil mengubah transaksi barang');
     }
 
     /**
@@ -166,9 +166,9 @@ class ItemTransactionController extends Controller
         if ($check) {
             $itemTransaction->delete();
             DB::table('ItemTransaction')->where('ItemTransactionID', $itemTransaction['ItemTransactionID'])->delete();
-            return redirect()->route('itemTransaction.index')->with('status', 'Success!!');
+            return redirect()->route('itemTransaction.index')->with('status', 'Berhasil menghapus transaksi barang');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Transaksi Barang');
         }
     }
 
@@ -189,7 +189,7 @@ class ItemTransactionController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Transaksi Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Transaksi Barang');
         }
     }
 }

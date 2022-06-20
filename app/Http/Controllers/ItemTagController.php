@@ -35,7 +35,7 @@ class ItemTagController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Tag Barang');
         }
     }
 
@@ -54,7 +54,7 @@ class ItemTagController extends Controller
         if ($check) {
             return view('master.itemTag.tambah');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam tambah Tag Barang');
         }
     }
 
@@ -81,7 +81,7 @@ class ItemTagController extends Controller
                     'UpdatedOn' => date("Y-m-d h:i:sa"),
                 )
             );
-        return redirect()->route('itemTag.index')->with('status', 'Success!!');
+        return redirect()->route('itemTag.index')->with('status', 'Berhasil menambahkan tag barang');
     }
 
     /**
@@ -102,7 +102,7 @@ class ItemTagController extends Controller
                 'ItemTag' => $itemTag
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Detail Tag Barang');
         }
     }
 
@@ -124,7 +124,7 @@ class ItemTagController extends Controller
                 'ItemTag' => $itemTag
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ubah Tag Barang');
         }
     }
 
@@ -151,7 +151,7 @@ class ItemTagController extends Controller
                 )
             );
 
-        return redirect()->route('itemTag.index')->with('status', 'Success!!');
+        return redirect()->route('itemTag.index')->with('status', 'Berhasil mengubah tag barang');
     }
 
     /**
@@ -168,10 +168,11 @@ class ItemTagController extends Controller
         $user = Auth::user();
         $check = $this->checkAccess('itemTag.edit', $user->id, $user->idRole);
         if ($check) {
+            DB::table('ItemTagValues')->where('ItemTagID', $itemTag['ItemTagID'])->delete();
             DB::table('ItemTag')->where('ItemTagID', $itemTag['ItemTagID'])->delete();
-            return redirect()->route('itemTag.index')->with('status', 'Success!!');
+            return redirect()->route('itemTag.index')->with('status', 'Berhasil menghapus tag barang');
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Hapus Tag Barang');
         }
     }
 
@@ -192,7 +193,7 @@ class ItemTagController extends Controller
                 'data' => $data,
             ]);
         } else {
-            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Tag Item');
+            return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Index Tag Barang');
         }
     }
 }
