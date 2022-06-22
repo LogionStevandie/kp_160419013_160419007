@@ -176,23 +176,25 @@ Kartu Stok
                             
                             @endif
 
-                            @if(count($dataReport) <= 0)
-                                @foreach($dataReportSingleSebelum as $stoksebelum)
-                                <tr>
-                                    <td scope="col">{{ $loop->index + 1 }}</td>
-                                    <td scope="col">Data awal</td>
-                                    <td scope="col">Sebelum ({{$dateLengkapPisah}})</td>
-                                    <td scope="col">-</td>
-                                    <td scope="col">-</td>
+                            @if($dataReport != null )
+                                @if(count($dataReport) <= 0)
+                                    @foreach($dataReportSingleSebelum as $stoksebelum)
+                                    <tr>
+                                        <td scope="col">{{ $loop->index + 1 }}</td>
+                                        <td scope="col">Data awal</td>
+                                        <td scope="col">Sebelum ({{$dateLengkapPisah}})</td>
+                                        <td scope="col">-</td>
+                                        <td scope="col">-</td>
 
-                                    <td>{{$stoksebelum->namaBarang}}</td>
-                                    <td>{{$stoksebelum->totalQuantity}}</td>
-                                    <td>0</td>
-                                    <td>0</td>
-                                    <td>{{$stoksebelum->totalQuantity}}</td>
+                                        <td>{{$stoksebelum->namaBarang}}</td>
+                                        <td>{{$stoksebelum->totalQuantity}}</td>
+                                        <td>0</td>
+                                        <td>0</td>
+                                        <td>{{$stoksebelum->totalQuantity}}</td>
 
-                                </tr>
-                                @endforeach
+                                    </tr>
+                                    @endforeach
+                                @endif
                             @endif
                         </tbody>
                         <tfoot>
