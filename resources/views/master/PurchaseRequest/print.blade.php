@@ -165,7 +165,7 @@
 
                     <th>{{ $loop->index + 1 }}</th>
                     <th>
-                      {{$data->ItemID}}<br>
+                      {{$data->ItemName}}<br>
                     </th>
                     <td>{{$data->jumlah}}</td>
 

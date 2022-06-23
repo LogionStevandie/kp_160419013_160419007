@@ -527,17 +527,19 @@ class PurchaseRequestController extends Controller
             ->get();
 
         $dataDetail = DB::table('purchase_request_detail')
+            ->select('purchase_request_detail.*','Item.ItemName')
+            ->join('Item','purchase_request_detail.ItemID', '=','Item.ItemID')
             ->where('purchase_request_detail.idPurchaseRequest', '=', $purchaseRequest->id)
             ->get();
 
-        $dataUser = DB::table('users')
-            ->get();
+        $dataUser = DB::table('users')->get();
 
         return view('master.PurchaseRequest.print', [
             'purchaseRequest' => $purchaseRequest,
             'dataDetail' => $dataDetail,
             'dataGudang' => $dataGudang,
             'dataBarang' => $dataBarang,
+            'dataUser' => $dataUser,
         ]);
     }
 
