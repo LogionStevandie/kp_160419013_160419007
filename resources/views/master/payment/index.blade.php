@@ -66,9 +66,7 @@ Pembayaran
                                 <td>{{$d->Name}}</td>
                                 <td>{{$d->Deskripsi}}</td>
                                 <td>  
-                                    <a class="btn btn-default bg-info" href="{{route('payment.show',[$d->PaymentID])}}">
-                                        <i class="fas fa-eye"></i> 
-                                    </a>
+                                   
                                     <a class="btn btn-default bg-info" href="{{route('payment.edit',[$d->PaymentID])}}">
                                         <i class="fas fa-edit"></i>
                                     </a>

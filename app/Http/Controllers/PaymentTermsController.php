@@ -106,12 +106,14 @@ class PaymentTermsController extends Controller
     public function show(PaymentTerms $paymentTerm)
     {
         //
-
+$dataPayment = DB::table('Payment')
+            ->get();
         $user = Auth::user();
         $check = $this->checkAccess('paymentTerms.show', $user->id, $user->idRole);
         if ($check) {
             return view('master.paymentTerms.detail', [
                 'paymentTerms' => $paymentTerm,
+                 'dataPayment' => $dataPayment,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Ketentuan Pembayaran');

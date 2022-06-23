@@ -23,7 +23,7 @@ Satuan
         <div class="col-md-8 offset-md-2">
             <form action="/userse/searchname/" method="get">
                 <div class="input-group">
-                    <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama PO">
+                    <input type="text" class="form-control form-control-lg" name="searchname" placeholder="Nama user">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-lg btn-default">
                             <i class="fa fa-search"></i>

@@ -85,7 +85,7 @@ List Supplier
 
                                      <a href="{{route('msupplier.show',[$supplier->SupplierID])}}" class="btn btn-default bg-info"><i class="fas fa-eye"></i> </a> 
 
-                                       <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$supplier->SupplierID}}">
+                                    <button type="button" class="btn btn-default bg-danger" data-toggle="modal" data-target="#delete_{{$supplier->SupplierID}}">
                                      <i class="fas fa-trash"></i> 
                                     </button>
 

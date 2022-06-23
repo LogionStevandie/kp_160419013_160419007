@@ -250,7 +250,7 @@ class UserController extends Controller
                 'dataGudang' => $dataGudang,
                 'dataRole' => $dataRole,
                 'userdata' => $userdata,
-                'userss' => $user,
+                'users' => $user,
             ]);
         } else {
             return redirect()->route('home')->with('message', 'Anda tidak memiliki akses kedalam Users Master');
@@ -264,15 +264,15 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $users)
+    public function update(Request $request, User $user)
     {
         //
         $data = $request->collect();
         $usero = Auth::user();
-
+        //dd($users);
         if ($data['password'] == "" || $data['password'] == null) {
             DB::table('users')
-                ->where('id', $users['id'])
+                ->where('id', $user['id'])
                 ->update(
                     array(
                         'Name' => $data['name'],
@@ -285,7 +285,7 @@ class UserController extends Controller
                 );
         } else {
             DB::table('users')
-                ->where('id', $users['id'])
+                ->where('id', $user['id'])
                 ->update(
                     array(
                         'Name' => $data['name'],
@@ -313,7 +313,7 @@ class UserController extends Controller
                     array(
                         //'UpdatedBy' => $user->id,
                         //'UpdatedOn' => date("Y-m-d h:i:s"),
-                        'UserIDKepalaDivisi' => $users['id'],
+                        'UserIDKepalaDivisi' => $user['id'],
                     )
                 );
         }
@@ -324,7 +324,7 @@ class UserController extends Controller
                     array(
                         //'UpdatedBy' => $user->id,
                         //'UpdatedOn' => date("Y-m-d h:i:s"),
-                        'UserIDManager1' => $users['id'],
+                        'UserIDManager1' => $user['id'],
                     )
                 );
         }
@@ -335,7 +335,7 @@ class UserController extends Controller
                     array(
                         //'UpdatedBy' => $user->id,
                         //'UpdatedOn' => date("Y-m-d h:i:s"),
-                        'UserIDManager2' => $users['id'],
+                        'UserIDManager2' => $user['id'],
                     )
                 );
         }

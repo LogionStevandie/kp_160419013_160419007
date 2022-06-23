@@ -66,7 +66,7 @@ Detail Ketentuan Pembayaran
 
             <div class="form-group">
                 <label>Pembayaran</label>
-                <select readonly name="paymentID" class="form-control select2bs4" style="width: 100%;">
+                <select disabled name="paymentID" class="form-control select2bs4" style="width: 100%;">
                     <option value="0">--Pilih Pembayaran--</option>
                     @foreach($dataPayment as $data)
                         @if($data->PaymentID == $paymentTerms->PaymentID)

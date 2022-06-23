@@ -84,11 +84,7 @@ Kategori Item
                                                 <div class="modal-body">
                                                         <p>Nama :{{$tag->Name}}</p>
                                                         <p>Remarks :{{$tag->Remarks}}</p>
-                                                        <p>NTBDebetCOA :{{$tag->NTBDebetCOA}}</p>
-                                                        <p>NTBKreditCOA :{{$tag->NTBKreditCOA}}</p>
-                                                        <p>BillVDebetCOA :{{$tag->BillVDebetCOA}}</p>
-                                                        <p>BillVKreditCOA :{{$tag->BillVKreditCOA}}</p>
-                                                        <p>PenjualanCOA :{{$tag->PenjualanCOA}}</p>
+                                                    
                                                 </div>
                                                 <div class="modal-footer justify-content-between">
                                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
