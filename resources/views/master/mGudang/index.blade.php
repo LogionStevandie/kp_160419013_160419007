@@ -71,7 +71,7 @@ Gudang
                                 <th>Nama Gudang</th>
                                 <th>Nama Kota</th>
                                 <th>User Kepala Gudang</th>
-                                <th>Tag</th>
+                                <!--<th>Tag</th>-->
                                 <th>Handle</th>
                              </tr>
                         </thead>
@@ -83,13 +83,13 @@ Gudang
                                 <td>{{$d->cname}}</td>
                                 <td>{{$d->kotaName}}</td>
                                 <td>{{$d->manager}}</td>
-                                <td>
+                                <!--<td>
                                     @foreach($dataTag as $tag)
                                         @if($tag->MGudangID == $d->MGudangID)
                                             <span class="badge bg-primary">{{$tag->cname}}</span>
                                         @endif
                                     @endforeach
-                                </td>
+                                </td>-->
                                 <td>  
                                     <a class="btn btn-default bg-info" href="{{route('mGudang.show',[$d->MGudangID])}}">
                                         <i class="fas fa-eye"></i> 
@@ -146,7 +146,7 @@ Gudang
                                 <th>Nama Gudang</th>
                                 <th>Nama Kota</th>
                                 <th>User Kepala Gudang</th>
-                                <th>Tag</th>
+                                <!--<th>Tag</th>-->
                                 <th>Handle</th>
                              </tr>
                         </tfoot>

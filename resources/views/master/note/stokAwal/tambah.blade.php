@@ -27,7 +27,7 @@ Pembuatan Stok Awal Barang
         <div class="card-body">
             <div class="form-group"> 
                 <label for="lastName">Tanggal Pembuatan</label>
-                <input required name="tanggalDibuat" type="date" class="form-control" id="tanggalDibuat" placeholder="" required="" value="{{date('Y-m-d')}}">
+                <input readonly name="tanggalDibuat" type="date" class="form-control" id="tanggalDibuat" placeholder="" required="" value="{{date('Y-m-d')}}">
                 <!--<div class="invalid-feedback"> Valid last name is required. </div>-->
             </div>
 

@@ -34,7 +34,7 @@ Ubah Stok Awal Barang
 
             <div class="form-group"> 
                 <label for="lastName">Tanggal Pembuatan</label>
-                <input required name="tanggalDibuat" type="date" class="form-control" id="tanggalDibuat" placeholder="" required="" value="{{$stokAwal->tanggalDibuat}}">
+                <input readonly name="tanggalDibuat" type="date" class="form-control" id="tanggalDibuat" placeholder="" required="" value="{{$stokAwal->tanggalDibuat}}">
                 <!--<div class="invalid-feedback"> Valid last name is required. </div>-->
             </div>
 

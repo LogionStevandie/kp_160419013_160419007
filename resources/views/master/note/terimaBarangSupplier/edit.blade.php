@@ -401,7 +401,7 @@ Ubah Terima Barang Supplier
                         maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProses);
 
                         $.each(dataDetail, function( k, v ){
-                            if(v.purchaseOrderDetailID.toString() == value.id.toString() && value.ItemID.toString() == v.ItemID.toString()){
+                            if(v.purchaseOrderDetailID.toString() == value.id.toString() && value.idItem.toString() == v.ItemID.toString()){
                                 //alert("masuk minus");
                                 maxAngka -= parseFloat(v.jumlah);
                             }
@@ -409,7 +409,7 @@ Ubah Terima Barang Supplier
                         $.each($('.cekPod'), function(idx, val) {
                             if(val.value == value.id){
                                 var jumlahBarang = $('.cekJumlah:eq('+idx+')').val();
-                                maxAngka = maxAngka - jumlahBarang;
+                                maxAngka = parseFloat(maxAngka) + parseFloat(jumlahBarang);
                             }
                         });
                         //alert(maxAngka);

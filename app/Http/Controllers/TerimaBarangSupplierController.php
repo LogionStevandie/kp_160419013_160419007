@@ -545,6 +545,7 @@ class TerimaBarangSupplierController extends Controller
             })*/
             //->where(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'),'<', DB::raw('purchase_order_detail.jumlah'))//errorr disini
             ->get();
+
         $dataPurchaseOrderDetailCombine = DB::table('purchase_order_detail')
             ->select(
                 'purchase_order_detail.idPurchaseOrder',
@@ -561,13 +562,14 @@ class TerimaBarangSupplierController extends Controller
             ->join('purchase_order', 'purchase_order_detail.idPurchaseOrder', '=', 'purchase_order.id')
             ->join('Item', 'purchase_order_detail.idItem', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->join('transaction_gudang_barang_detail', 'purchase_order_detail.id', '=', 'transaction_gudang_barang_detail.purchaseOrderDetailID')
             ->where('purchase_order.approved', 1)
             ->where('purchase_order.hapus', 0)
             ->where('purchase_order.proses', 1)
             ->where(function ($query) use ($terimaBarangSupplier) {
                 $query->when(request('transaction_gudang_barang_detail.transactionID', $terimaBarangSupplier->id), function ($q, $data) {
-                    return $q->where(DB::raw('jumlahProses'), '<', DB::raw('jumlah'))
-                        ->orWhere(DB::raw('jumlahProses - transaction_gudang_barang_detail.jumlah'), '<', DB::raw('jumlah'));
+                    return $q->where(DB::raw('purchase_order_detail.jumlahProses'), '<', DB::raw('purchase_order_detail.jumlah'))
+                        ->orWhere(DB::raw('purchase_order_detail.jumlahProses - transaction_gudang_barang_detail.jumlah'), '<', DB::raw('purchase_order_detail.jumlah'));
                 });
             })
             //->where(DB::raw('jumlahProses'), '<', DB::raw('jumlah'))
@@ -748,35 +750,25 @@ class TerimaBarangSupplierController extends Controller
                     array(
                         'TransactionID' => $dataTransactionID[0]->TransactionID,
                         'ItemID' => request()->get('itemId')[$i],
-                        'MGudangID' => $data['MGudangIDTujuan'],
+                        'MGudangID' => request()->get('MGudangIDTujuan'),
                         'UnitID' => $dataItem[0]->unit,
                         'UnitPrice' => $dataPOD[0]->harga,
                         'Quantity' => request()->get('itemJumlah')[$i],
                         'TotalUnitPrice' => $dataPOD[0]->harga * request()->get('itemJumlah')[$i],
                     )
                 );
-            /* DB::table('ItemInventoryTransactionLine')
-                ->where('TransactionID', $dataTransactionID[0]->TransactionID)
-                ->update(array(
-                    'ItemID' => $data['itemId'][$i],  
-                    'MGudangID' => $data['MGudangIDTujuan'],  
-                    'UnitID' => $dataItem[0]->unit,  
-                    'UnitPrice' => $dataPOD[0]->harga,  
-                    'Quantity' => $data['itemJumlah'][$i],  
-                    'TotalUnitPrice' => $data['itemHarga'][$i] * $data['itemJumlah'][$i],  
-                )
-            );*/
+
         }
 
         //otomatis proses selesai. $data['poID']
         $dataPODAuto = DB::table('purchase_order_detail')
-            ->where('idPurchaseOrder', $data['poID'])
+            ->where('idPurchaseOrder', request()->get('poID'))
             ->get();
 
         foreach ($dataPODAuto as $pod) {
             if ($pod->jumlah > $pod->jumlahProses) {
                 DB::table('purchase_order')
-                    ->where('id', $data['poID'])
+                    ->where('id', request()->get('poID'))
                     ->update(array(
                         'proses' => 1,
                     ));

@@ -103,14 +103,14 @@ class SuratJalanController extends Controller
         $date = date("Y-m-d");
 
         $dataReportUntukStok = DB::table('ItemInventoryTransactionLine') //dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
-            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
+            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', DB::raw('SUM(ItemInventoryTransactionLine.Quantity) as Quantity'), 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
             ->join('MGudang', 'ItemInventoryTransactionLine.MGudangID', '=', 'MGudang.MGudangID')
             ->join('Item', 'ItemInventoryTransactionLine.ItemID', '=', 'Item.ItemID')
             ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
-            ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransaction.Date')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
             ->get();
 
-
+//dd($dataReportUntukStok);
         $user = Auth::user();
         $check = $this->checkAccess('suratJalan.create', $user->id, $user->idRole);
         if ($check) {

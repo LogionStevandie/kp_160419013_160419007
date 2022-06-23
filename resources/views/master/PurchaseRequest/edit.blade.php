@@ -334,7 +334,7 @@ Ubah Nota Permintaan Pembelian
 
       $('.keteranganVal:eq(' + indexSama + ')').html($('.cekKeterangan:eq(' + indexSama + ')').val());
       $('.jumlahVal:eq(' + indexSama + ')').html(($('.cekJumlah:eq(' + indexSama + ')').val()));
-      $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + (parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * parseFloat(hargaBarang)) + ',-');
+      $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + (parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * parseFloat(hargaBarang)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-');
       //$('.hargaVal:eq(' + indexSama + ')').val("Rp. " + (parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * parseFloat(hargaBarang)) + ',-');
 
       //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');

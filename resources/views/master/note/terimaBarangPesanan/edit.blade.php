@@ -236,8 +236,8 @@ Ubah Nota Terima Barang Pesanan
                                                                 <input type="hidden" id="cekJumlah" class="cekJumlah" name="itemJumlah[]" value="{{$data->jumlah}}">
                                                                 <input type="hidden" class="cekKeterangan" name="itemKeterangan[]" value="{{$data->keterangan}}">
                                                                 <input type="hidden" class="cekPrd" name="itemPRDID[]" value="{{$data->idPRD}}">
-                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="'+jumlahBarang+'">({{$data->jumlah}})</small> </h6>
-                                                                <small class="text-muted keteranganVal" value="'+keteranganBarang+'">{{$data->keterangan}}</small><br>
+                                                                <h6 class="my-0">{{$data->itemName}}<small class="jumlahVal" value="jumlahBarang[]">({{$data->jumlah}})</small> </h6>
+                                                                <small class="text-muted keteranganVal" value="keteranganBarang[]">{{$data->keterangan}}</small><br>
                                                             </div>
                                                             <div>
                                                                 <button class="btn btn-primary copyKe" type="button" id="copyKe">
@@ -452,7 +452,7 @@ Ubah Nota Terima Barang Pesanan
 
             $.each(suratJalanDetail, function(key, value) {
                 if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
-                    maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProsesTerima);
+                    maxAngka = parseFloat(value.jumlah) + parseFloat(value.jumlahProsesTerima);
 
                     $.each(dataDetail, function(k, v) {
                         if (v.idPRD.toString() == value.PurchaseRequestDetailID.toString() && value.ItemID.toString() == v.ItemID.toString()) {

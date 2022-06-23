@@ -33,7 +33,7 @@ Ubah Penyesuaian Stok Barang
                 </div>
                 <div class="form-group">
                     <label for="lastName">Tanggal Pembuatan</label>
-                    <input required name="tanggalDibuat" type="date" class="form-control" id="tanggalDibuat" placeholder="" required="" value="{{$adjustmentStock->Tanggal}}">
+                    <input readonly name="tanggalDibuat" type="date" class="form-control" id="tanggalDibuat" placeholder="" required="" value="{{$adjustmentStock->Tanggal}}">
                     <!--<div class="invalid-feedback"> Valid last name is required. </div>-->
                 </div>
 

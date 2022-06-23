@@ -560,7 +560,7 @@ Ubah Nota Purchase Order
                 $('.jumlahVal:eq(' + indexSama + ')').html(($('.cekJumlah:eq(' + indexSama + ')').val()));
                 //$('.cekPrd:eq('+indexSama+')').attr("sekarang",1);
 
-                $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ((parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * (parseFloat(hargaBarang) - parseFloat(diskonBarang))) * (100.0 + taxPercent) / 100.0) + ',-');
+                $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ((parseFloat($('.cekJumlah:eq(' + indexSama + ')').val()) * (parseFloat(hargaBarang) - parseFloat(diskonBarang))) * (100.0 + taxPercent) / 100.0).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-');
 
                 var maxAngka = parseFloat($("#jumlahBarang").attr("max")) - parseFloat(jumlahBarang);
                 //alert(maxAngka);

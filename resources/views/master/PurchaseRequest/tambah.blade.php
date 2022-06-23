@@ -329,7 +329,7 @@ Pembuatan Nota Permintaan Pembelian
 
       $('.keteranganVal:eq(' + indexSama + ')').html($('.cekKeterangan:eq(' + indexSama + ')').val());
       $('.jumlahVal:eq(' + indexSama + ')').html(($('.cekJumlah:eq(' + indexSama + ')').val()));
-      $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ($('.cekJumlah:eq(' + indexSama + ')').val() * hargaBarang) + ',-');
+      $('.hargaVal:eq(' + indexSama + ')').html("Rp. " + ($('.cekJumlah:eq(' + indexSama + ')').val() * hargaBarang).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',-');
 
       //var totalHargaKeranjang = $('#TotalHargaKeranjang').html().replace('.','');
       var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');

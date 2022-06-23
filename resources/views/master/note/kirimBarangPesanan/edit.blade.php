@@ -404,7 +404,7 @@ Ubah Nota Kirim Barang Pesanan
             $.each(suratJalanDetail, function(key, value) {
                 if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
                     maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProsesKirim); //ini error
-                    alert(maxAngka);
+                    //alert(maxAngka);
                     $.each($('.cekPrd'), function(idx, val) {
                         if (val.value == value.PurchaseRequestDetailID) {
                             var jumlahBarang = $('.cekJumlah:eq(' + idx + ')').val();

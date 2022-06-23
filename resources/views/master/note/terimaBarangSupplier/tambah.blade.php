@@ -46,7 +46,7 @@ Pembuatan Nota Terima Barang Supplier
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="lastName">Tanggal Datang</label>
-                                            <input name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="" required="">
+                                            <input readonly name="tanggalDatang" type="date" class="form-control" id="lastName" placeholder="" value="{{$date}}" required="">
                                             <div class="invalid-feedback"> Valid last name is required. </div>
                                         </div>
 

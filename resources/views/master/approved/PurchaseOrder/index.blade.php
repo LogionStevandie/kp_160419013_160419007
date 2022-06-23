@@ -87,7 +87,7 @@ Persetujuan Order
                             <tr>
                                 <th scope="row" name='id'>{{$purchaseOrder->id}}</th>
                                 <td>{{$purchaseOrder->name}}</td>
-                                <td id="dengan-rupiah">{{$purchaseOrder->totalHarga}}</td>
+                                <td id="dengan-rupiah">{{number_format($purchaseOrder->totalHarga,2)}}</td>
                                 <td>{{$purchaseOrder->supplierName}}</td>
                                 <td>{{$purchaseOrder->supplierAlamat}}</td>
                                 <td>{{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</td>
