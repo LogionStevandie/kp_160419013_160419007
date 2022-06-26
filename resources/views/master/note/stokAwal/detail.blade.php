@@ -22,9 +22,8 @@ Detail Stok Awal Barang
     <!-- Page Heading -->
     <div class="card card-primary">
         <!-- form start -->
-        <form action="{{route('stokAwal.show')}}" method="POST">
-            @csrf
-            @method('PUT')
+        <form action="{{route('stokAwal.index')}}">
+
             <div class="card-body">
                 <div class="form-group">
                     <label for="title">Nama</label>

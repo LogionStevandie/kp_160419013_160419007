@@ -22,9 +22,8 @@ Tambah Users
     <!-- Page Heading -->
     <div class="card card-primary">
         <!-- form start -->
-        <form action="{{route('users.show', [$userss->id])}}" method="POST">
-            @csrf
-            @method("PUT")
+        <form action="{{route('users.index')}}" >
+
             <div class="card-body">
 
                 <div class="form-group">

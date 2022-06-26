@@ -148,6 +148,12 @@ Detail item
                         </div>-->
             </div>
             <!-- /.card-body -->
+             <!-- /.card-body -->
+            <div class="card-footer">
+                    <a class="btn btn-default bg-info" href="{{route('item.index')}}">
+                    Kembali
+                    </a>
+                </div>
 
         </form>
     </div>

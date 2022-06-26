@@ -22,7 +22,7 @@ Detail Penyesuaian Stok Barang
     <!-- Page Heading -->
     <div class="card card-primary">
         <!-- form start -->
-        <form action="{{route('adjustmentStock.index')}}" method="">
+        <form action="{{route('adjustmentStock.index')}}">
             <div class="card-body">
                 <div class="form-group">
                     <label for="lastName">Name</label>

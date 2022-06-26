@@ -497,11 +497,11 @@ Ubah Nota Terima Barang Pesanan
         var keteranganBarang = $('.cekKeterangan:eq(' + i + ')').val();
         var diskonBarang = $('.cekDiskon:eq(' + i + ')').val();
 
-        $("#barang").val(idBarang);
+        $("#barang").val(idBarang).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#keteranganBarang").val(keteranganBarang);
 
-        //$('.selectpicker').selectpicker('refresh');
+        $('.selectpicker').selectpicker('refresh');
 
     });
 
@@ -520,9 +520,9 @@ Ubah Nota Terima Barang Pesanan
         });
         $(this).parent().parent().remove();
         var totalSekarang = $('#totalBarangnya').attr("value");
-        totalSekarang -= 1
-        $('#totalBarangnya').val(totalSekarang);
-        $('#totalBarangnya').html(totalSekarang);
+        totalSekarang = parseFloat(totalSekarang) - 1.0;
+        $('#totalBarangnya').attr("value",totalSekarang);
+        $('#totalBarangnya').html(parseFloat(totalSekarang));
     });
 
     $('body').on('click', '#tambahKeranjang', function() {
@@ -591,9 +591,9 @@ Ubah Nota Terima Barang Pesanan
 
             $('#keranjang').append(htmlKeranjang);
             var totalSekarang = $('#totalBarangnya').attr("value");
-            totalSekarang += 1
-            $('#totalBarangnya').val(totalSekarang);
-            $('#totalBarangnya').html(totalSekarang);
+            totalSekarang = parseFloat(totalSekarang) + 1.0;
+            $('#totalBarangnya').attr("value",totalSekarang);
+            $('#totalBarangnya').html(parseFloat(totalSekarang));
 
         }
 

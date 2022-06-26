@@ -17,9 +17,8 @@ Detail Nota Kirim Barang Pesanan
 @endsection
 
 @section('content')
-<form action="{{route('kirimBarangPesanan.index')}}" method="POST">
-    @csrf
-    @method('PUT')
+<form action="{{route('kirimBarangPesanan.index')}}" >
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">

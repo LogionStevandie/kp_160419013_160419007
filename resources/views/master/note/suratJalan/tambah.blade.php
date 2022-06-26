@@ -420,8 +420,7 @@ Pembuatan Surat Jalan
                 $.each(dataReportUntukStok, function(key, value) {
                     if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
                         //$("#stokAwalBarang").val(value.totalQuantity);     
-                        maxAngka = maxAngka + parseFloat(value.Quantity);
-                       
+                        maxAngka = maxAngka + parseFloat(value.Quantity);          
                     }
                 });
 
@@ -471,11 +470,11 @@ Pembuatan Surat Jalan
         var keteranganBarang = $('.cekKeterangan:eq(' + i + ')').val();
         var diskonBarang = $('.cekDiskon:eq(' + i + ')').val();
 
-        $("#barang").val(idBarang);
+        $("#barang").val(idBarang).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#keteranganBarang").val(keteranganBarang);
 
-        //$('.selectpicker').selectpicker('refresh');
+        $('.selectpicker').selectpicker('refresh');
 
     });
 

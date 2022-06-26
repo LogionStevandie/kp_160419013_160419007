@@ -377,16 +377,17 @@ class PurchaseOrderController extends Controller
 
         //data Purchase Request yang disetujui
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
-            ->select('purchase_request_detail.*', 'purchase_request.name as prName', 'Item.ItemName as ItemName', 'Unit.Name as UnitName') //'purchase_order_detail.jumlah as podJumlah')//
+            ->select('purchase_request_detail.*', 'purchase_request.name as prName', 'Item.ItemName as ItemName', 'Unit.Name as UnitName', 'purchase_order_detail.jumlah as podJumlah')//
             ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=', 'purchase_request.id')
             ->join('Item', 'purchase_request_detail.ItemID', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
-            //->leftjoin('purchase_order_detail','purchase_request_detail.id','=','purchase_order_detail.idPurchaseRequestDetail')
+            ->leftjoin('purchase_order_detail','purchase_request_detail.id','=','purchase_order_detail.idPurchaseRequestDetail')
             ->where('purchase_request.approved', 1)
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //error disini
+            ->orWhere('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah + purchase_order_detail.jumlah')) //error disini
             ->get();
         //dd($dataPurchaseRequestDetail);
         $dataDetail = DB::table('purchase_order_detail')

@@ -129,13 +129,13 @@ Ubah Penyesuaian Stok Barang
             $('.selectpicker').selectpicker('refresh');*/
 
 
-            var idItem = $("#ItemID option:selected").val();
+            /*var idItem = $("#ItemID option:selected").val();
             var dataReportDetailStokAwal = <?php echo json_encode($dataReportDetailStokAwal); ?>;
             $.each(dataReportDetailStokAwal, function(key, value) {
-                if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString()) {
+                if (value.ItemID.toString() == idItem.toString() && value.MGudangID.toString() == idGudang.toString()) {
                     $("#stokAwalBarang").val(value.totalQuantity);
                 }
-            });
+            });*/
 
 
 
@@ -206,11 +206,17 @@ Ubah Penyesuaian Stok Barang
                     var datePembuatan = $("#tanggalDibuat").val();
 
                     var dataReportUntukStok = <?php echo json_encode($dataReportUntukStok); ?>;
+                    var adjustmentStockDetail = <?php echo json_encode($adjustmentStockDetail); ?>;
 
                     $.each(dataReportUntukStok, function(key, value) {
                         if (value.ItemID.toString() == id.toString() && value.MGudangID.toString() == idGudang.toString() && value.Date <= datePembuatan) {
                             //$("#stokAwalBarang").val(value.totalQuantity);     
-                            total = total + parseFloat(value.Quantity);
+                            total = parseFloat(total) + parseFloat(value.Quantity);       
+                        }
+                    });
+                    $.each(adjustmentStockDetail, function(k, v) {
+                        if(v.ItemID.toString() == id.toString() && v.MGudangID.toString() == idGudang.toString()){
+                            total = parseFloat(total) - parseFloat(v.Selisih);                         
                         }
                     });
                     $("#stokAwalBarang").val(total);

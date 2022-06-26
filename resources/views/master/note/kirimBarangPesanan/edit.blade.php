@@ -400,10 +400,16 @@ Ubah Nota Kirim Barang Pesanan
             var optionnya = '';
             var maxAngka = 0.0;
             var suratJalanDetail = <?php echo json_encode($suratJalanDetail); ?>;
+            var dataTotalDetail = <?php echo json_encode($dataTotalDetail); ?>;
 
             $.each(suratJalanDetail, function(key, value) {
                 if (value.PurchaseRequestDetailID.toString() == idPrdId.toString() && value.ItemID.toString() == id.toString() && value.suratJalanID.toString() == suratJalan.toString()) {
                     maxAngka = parseFloat(value.jumlah) - parseFloat(value.jumlahProsesKirim); //ini error
+                    $.each(dataTotalDetail, function(k, v) {
+                        if(value.PurchaseRequestDetailID.toString() == v.PurchaseRequestDetailID.toString() && v.ItemID.toString() == id.toString()){
+                            maxAngka = parseFloat(maxAngka) + parseFloat(v.jumlah);
+                        }
+                    });
                     //alert(maxAngka);
                     $.each($('.cekPrd'), function(idx, val) {
                         if (val.value == value.PurchaseRequestDetailID) {
@@ -441,11 +447,11 @@ Ubah Nota Kirim Barang Pesanan
         var hargaBarang = $('.cekHarga:eq(' + i + ')').val();
         var keteranganBarang = $('.cekKeterangan:eq(' + i + ')').val();
 
-        $("#barang").val(idBarang);
+        $("#barang").val(idBarang).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#keteranganBarang").val(keteranganBarang);
 
-        //$('.selectpicker').selectpicker('refresh');
+        $('.selectpicker').selectpicker('refresh');
 
     });
 
@@ -464,7 +470,7 @@ Ubah Nota Kirim Barang Pesanan
         });
         $(this).parent().parent().remove();
         var totalSekarang = $('#totalBarangnya').attr("value");
-        totalSekarang -= 1
+        totalSekarang = parseFloat(totalSekarang) - 1.0;
         $('#totalBarangnya').val(totalSekarang);
         $('#totalBarangnya').html(totalSekarang);
     });
@@ -535,7 +541,7 @@ Ubah Nota Kirim Barang Pesanan
 
             $('#keranjang').append(htmlKeranjang);
             var totalSekarang = $('#totalBarangnya').attr("value");
-            totalSekarang += 1
+            totalSekarang = parseFloat(totalSekarang) + 1.0;
             $('#totalBarangnya').val(totalSekarang);
             $('#totalBarangnya').html(totalSekarang);
 

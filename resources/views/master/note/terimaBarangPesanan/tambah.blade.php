@@ -415,11 +415,11 @@ Pembuatan Nota Terima Barang Pesanan
         var keteranganBarang = $('.cekKeterangan:eq(' + i + ')').val();
         var diskonBarang = $('.cekDiskon:eq(' + i + ')').val();
 
-        $("#barang").val(idBarang);
+        $("#barang").val(idBarang).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#keteranganBarang").val(keteranganBarang);
 
-        //$('.selectpicker').selectpicker('refresh');
+        $('.selectpicker').selectpicker('refresh');
 
     });
 

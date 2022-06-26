@@ -118,12 +118,12 @@ Ubah Terima Barang Supplier
                                     <option value=""> 
                                           --Pilih Purchase Order--
                                       </option>
-                                     @foreach($dataPurchaseOrder as $key => $data)
-                                        @if($data->idSupplier == $transactionGudangBarang->SupplierID)
-                                            @if($data->id == $transactionGudangBarang->PurchaseOrderID)
-                                             <option selected name="idPO" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}-({{$data->tanggalDibuat}})</option>
+                                     @foreach($dataPurchaseOrder as $key => $d)
+                                        @if($d->idSupplier == $transactionGudangBarang->SupplierID)                                   
+                                            @if($d->id == $transactionGudangBarang->PurchaseOrderID)
+                                             <option selected name="idPO" value="{{$d->id}}"{{$d->name == $d->id? 'selected' :'' }}>{{$d->name}}-({{$d->tanggalDibuat}})</option>
                                             @else
-                                             <option name="idPO" value="{{$data->id}}"{{$data->name == $data->id? 'selected' :'' }}>{{$data->name}}-({{$data->tanggalDibuat}})</option>
+                                             <option name="idPO" value="{{$d->id}}"{{$d->name == $d->id? 'selected' :'' }}>{{$d->name}}-({{$d->tanggalDibuat}})</option>
                                             @endif
                                         @endif
                                     @endforeach
@@ -403,13 +403,13 @@ Ubah Terima Barang Supplier
                         $.each(dataDetail, function( k, v ){
                             if(v.purchaseOrderDetailID.toString() == value.id.toString() && value.idItem.toString() == v.ItemID.toString()){
                                 //alert("masuk minus");
-                                maxAngka -= parseFloat(v.jumlah);
+                                maxAngka += parseFloat(v.jumlah);
                             }
                         });
                         $.each($('.cekPod'), function(idx, val) {
                             if(val.value == value.id){
                                 var jumlahBarang = $('.cekJumlah:eq('+idx+')').val();
-                                maxAngka = parseFloat(maxAngka) + parseFloat(jumlahBarang);
+                                maxAngka = parseFloat(maxAngka) - parseFloat(jumlahBarang);
                             }
                         });
                         //alert(maxAngka);
@@ -441,11 +441,13 @@ Ubah Terima Barang Supplier
         var keteranganBarang = $('.cekKeterangan:eq('+i+')').val();
         var diskonBarang = $('.cekDiskon:eq('+i+')').val();
 
-        $("#barang").val(idBarang);
+        $("#barang").val(idBarang).change();
+        $('.selectpicker').selectpicker('refresh');
+
         $("#jumlahBarang").val(jumlahBarang);
         $("#keteranganBarang").val(keteranganBarang);
 
-        //$('.selectpicker').selectpicker('refresh');
+       
         
     });
 
@@ -464,8 +466,8 @@ Ubah Terima Barang Supplier
         }); 
         $(this).parent().parent().remove();
         var totalSekarang = $('#totalBarangnya').attr("value");
-        totalSekarang -= 1
-        $('#totalBarangnya').val(totalSekarang);
+        totalSekarang = parseFloat(totalSekarang)-1.0;
+        $('#totalBarangnya').attr("value",totalSekarang);
         $('#totalBarangnya').html(totalSekarang);
     });
 
@@ -538,8 +540,8 @@ Ubah Terima Barang Supplier
 
             $('#keranjang').append(htmlKeranjang);
             var totalSekarang = $('#totalBarangnya').attr("value");
-            totalSekarang += 1
-            $('#totalBarangnya').val(totalSekarang);
+            totalSekarang = parseFloat(totalSekarang)+1.0;
+            $('#totalBarangnya').attr("value",totalSekarang);
             $('#totalBarangnya').html(totalSekarang);
 
         }

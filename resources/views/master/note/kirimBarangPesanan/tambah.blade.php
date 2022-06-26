@@ -394,11 +394,11 @@ Pembuatan Nota Kirim Barang Pesanan
         var hargaBarang = $('.cekHarga:eq(' + i + ')').val();
         var keteranganBarang = $('.cekKeterangan:eq(' + i + ')').val();
 
-        $("#barang").val(idBarang);
+        $("#barang").val(idBarang).change();
         $("#jumlahBarang").val(jumlahBarang);
         $("#keteranganBarang").val(keteranganBarang);
 
-        //$('.selectpicker').selectpicker('refresh');
+        $('.selectpicker').selectpicker('refresh');
 
     });
 

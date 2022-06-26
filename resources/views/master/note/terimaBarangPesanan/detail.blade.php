@@ -17,9 +17,7 @@ Detail Nota Terima Barang Pesanan
 @endsection
 
 @section('content')
-<form action="{{route('terimaBarangPesanan.index')}}" method="POST">
-    @csrf
-    @method('PUT')
+<form action="{{route('terimaBarangPesanan.index')}}" >
     <section class="content">
         <div class="container-fluid">
             <div class="row">

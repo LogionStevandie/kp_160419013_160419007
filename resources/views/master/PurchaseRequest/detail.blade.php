@@ -17,9 +17,7 @@ Detail Nota Permintaan Pembelian
 @endsection
 
 @section('content')
-<form action="{{route('purchaseRequest.index')}}" method="POST">
-  @csrf
-  @method('PUT')
+<form action="{{route('purchaseRequest.index')}}">
   <section class="content">
     <div class="container-fluid">
       <div class="row">

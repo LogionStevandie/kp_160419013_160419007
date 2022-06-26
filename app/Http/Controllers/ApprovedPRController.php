@@ -49,7 +49,17 @@ class ApprovedPRController extends Controller
                 ->WhereIn('MGudang.cidp', $arrmanager)
                 ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
                 ->paginate(10);
-            //dd($prKeluar);
+        
+
+            if($prKeluar == null || count($prKeluar) <= 0){
+                $prKeluar = DB::table('purchase_request')
+                    ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
+                    ->where('approved', 0)
+                    ->where('hapus', 0)
+                    ->whereIn('purchase_request.MGudangID', $arrkepala)
+                    ->orderByDesc('purchase_request.tanggalDibuat', 'purchase_request.id')
+                    ->paginate(10);
+            }
         } else if (count($kepalaGudang) > 0) {
             $arrkepala = array();
             foreach ($kepalaGudang as $val) {
@@ -84,6 +94,7 @@ class ApprovedPRController extends Controller
 
 
 
+        //dd($prKeluar);
         $user = Auth::user();
 
         $check = $this->checkAccess('approvedPurchaseRequest.index', $user->id, $user->idRole);

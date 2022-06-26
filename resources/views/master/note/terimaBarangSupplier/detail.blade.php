@@ -17,9 +17,8 @@ Detail Terima Barang Supplier
 @endsection
 
 @section('content')
-<form action="{{route('terimaBarangSupplier.index')}}" method="POST">
-    @csrf
-    @method('PUT')
+<form action="{{route('terimaBarangSupplier.index')}}">
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">

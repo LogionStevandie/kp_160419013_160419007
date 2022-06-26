@@ -441,10 +441,14 @@ class KirimBarangPesananController extends Controller
             ->join('purchase_request_detail', 'surat_jalan_detail.PurchaseRequestDetailID', '=', 'purchase_request_detail.id')
             ->join('Item', 'surat_jalan_detail.ItemID', '=', 'Item.ItemID')
             ->join('Unit', 'Item.UnitID', '=', 'Unit.UnitID')
+            ->leftjoin('transaction_gudang_barang', 'surat_jalan.id', '=', 'transaction_gudang_barang.SuratJalanID')
+            ->join('transaction_gudang_barang_detail', 'transaction_gudang_barang.id', '=', 'transaction_gudang_barang_detail.transactionID')
             ->where('surat_jalan.hapus', 0)
+            ->whereIn('transaction_gudang_barang.isMenerima', ["",0])
             ->where('surat_jalan_detail.jumlahProsesKirim', '<', DB::raw('surat_jalan_detail.jumlah')) //errorr disini
+            ->orWhere('surat_jalan_detail.jumlahProsesKirim', '<', DB::raw('surat_jalan_detail.jumlah + transaction_gudang_barang_detail.jumlah')) //errorr disini
             ->get();
-
+        dd($suratJalanDetail);
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
             ->select('purchase_request_detail.*', 'purchase_request.name', 'Item.ItemName as ItemName', 'Unit.Name as UnitName') //
             ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=', 'purchase_request.id')

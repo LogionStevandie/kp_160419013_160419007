@@ -17,9 +17,8 @@ Detail Surat Jalan
 @endsection
 
 @section('content')
-<form action="{{route('suratJalan.index')}}" method="POST">
-    @csrf
-    @method('PUT')
+<form action="{{route('suratJalan.index')}}" >
+
     <section class="content">
         <div class="container-fluid">
             <div class="row">

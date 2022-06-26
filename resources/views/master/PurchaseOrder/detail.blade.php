@@ -17,9 +17,7 @@ Detail Nota Purchase Order
 @endsection
 
 @section('content')
-<form action="{{route('purchaseOrder.index')}}" method="POST">
-    @csrf
-    @method('PUT')
+<form action="{{route('purchaseOrder.index')}}">
     <section class="content">
         <div class="container-fluid">
             <div class="row">

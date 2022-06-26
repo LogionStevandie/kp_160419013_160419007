@@ -72,8 +72,9 @@ class SuratJalanController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            ->where('purchase_request_detail.jumlahDiterima', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
+        //dd($dataPurchaseRequestDetail);
         $dataPurchaseRequest = DB::table('purchase_request')
             ->select('purchase_request.*', 'MPerusahaan.MPerusahaanID as cidp')
             ->join('MGudang', 'purchase_request.MGudangID', '=', 'MGudang.MGudangID')
@@ -309,7 +310,7 @@ class SuratJalanController extends Controller
             ->where('purchase_request.approvedAkhir', 1)
             ->where('purchase_request.hapus', 0)
             ->where('purchase_request.proses', 1)
-            ->where('purchase_request_detail.jumlahProses', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
+            ->where('purchase_request_detail.jumlahDiterima', '<', DB::raw('purchase_request_detail.jumlah')) //errorr disini
             ->get();
         $dataPurchaseRequest = DB::table('purchase_request')
             ->select('purchase_request.*', 'MPerusahaan.MPerusahaanID as cidp')

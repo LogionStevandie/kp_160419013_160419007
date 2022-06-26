@@ -267,6 +267,7 @@ class AdjustmentStockController extends Controller
             ->get();
 
 
+
         $user = Auth::user();
 
         $check = $this->checkAccess('adjustmentStock.show', $user->id, $user->idRole);
@@ -331,6 +332,7 @@ class AdjustmentStockController extends Controller
             //->where('ItemInventoryTransaction.AdjustmentID','!=', $adjustmentStock['ItemAdjustmentID'])
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName')
             ->get();
+        //dd($dataReport);
 
         $dataReportDetailStokAwal = DB::table('ItemInventoryTransactionLine') //dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
             ->select(
@@ -348,7 +350,6 @@ class AdjustmentStockController extends Controller
             ->get();
 
         //dd($dataReportDetailStokAwal);
-        //dd($dataReport);
         $adjustmentStockDetail = DB::table('ItemAdjustmentDetail')
             ->where('ItemAdjustmentID', $adjustmentStock['ItemAdjustmentID'])
             ->get();
@@ -362,7 +363,14 @@ class AdjustmentStockController extends Controller
             ->where('ItemInventoryTransaction.AdjustmentID', '!=', $adjustmentStock['ItemAdjustmentID'])
             ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransaction.Date')
             ->get();
-
+        
+        $dataReportUntukStok = DB::table('ItemInventoryTransactionLine') //dibuat untuk check barang di gudang tersebut apaan yang perlu dibeneri stok nya
+            ->select('MGudang.cname as gudangName', 'ItemInventoryTransactionLine.MGudangID', DB::raw('SUM(ItemInventoryTransactionLine.Quantity) as Quantity'), 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransaction.Date')
+            ->join('MGudang', 'ItemInventoryTransactionLine.MGudangID', '=', 'MGudang.MGudangID')
+            ->join('Item', 'ItemInventoryTransactionLine.ItemID', '=', 'Item.ItemID')
+            ->join('ItemInventoryTransaction', 'ItemInventoryTransactionLine.TransactionID', '=', 'ItemInventoryTransaction.TransactionID')
+            ->groupBy('ItemInventoryTransactionLine.MGudangID', 'MGudang.cname', 'ItemInventoryTransactionLine.ItemID', 'Item.ItemName', 'ItemInventoryTransactionLine.Quantity', 'ItemInventoryTransaction.Date')
+            ->get();
 
 
 
