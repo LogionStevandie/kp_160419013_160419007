@@ -61,7 +61,7 @@ Satuan
                 <div class="input-group">
                     <select class="form-control selectpicker col-md-8" data-live-search="true" data-show-subtext="true" style="width: 100%;" id="idGudangTujuan" name="searchperusahaan">
                         <option value="">
-                            --Semua Gudang--
+                            --Semua Perusahaan--
                         </option>
                         @foreach($dataPerusahaan as $data)
                         <option name="idPerusahaan" value="{{$data->MPerusahaanID}}" {{$data->cname == $data->MPerusahaanID? 'selected' :'' }}>{{$data->cname}}</option>

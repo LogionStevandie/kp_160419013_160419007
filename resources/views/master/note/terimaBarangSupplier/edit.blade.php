@@ -62,7 +62,7 @@ Ubah Terima Barang Supplier
                                             @if($data->MGudangID == $transactionGudangBarang->MGudangIDTujuan)
                                                 <option selected name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
                                             @else
-                                                <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                                <!--<option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}"{{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>-->
                                             @endif
                                         @endforeach
                                 
@@ -187,7 +187,7 @@ Ubah Terima Barang Supplier
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                         @endforeach-->
                                     </select>
-                                    <input id="jumlahBarang" value="1" min="1"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                    <input id="jumlahBarang" value="1" min="0.01"  type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                                 </div>
 
                                     <div class="form-group " id="ket">
@@ -376,7 +376,7 @@ Ubah Terima Barang Supplier
                 if(value.idPurchaseOrder.toString() == id.toString()){
                     //alert('masuk'); 
                     //alert("masuk cek");
-                    optionnya += '<option id="namaBarang" namaBarang='+value.ItemName +' harga='+ value.harga +' idPodId='+ value.id +' value="'+value.idItem+'">'+value.ItemName+'<nbsp>('+value.UnitName+')</option>\n';
+                    optionnya += '<option id="namaBarang" namaBarang='+value.ItemName +' harga='+ value.harga +' idPodId='+ value.id +' value="'+value.idItem+'">'+value.ItemName.substring(0, 30)+'<nbsp>('+value.UnitName+')</option>\n';
                     //alert(optionnya);         
                 }
             });
@@ -415,7 +415,7 @@ Ubah Terima Barang Supplier
                         //alert(maxAngka);
                         $("#jumlahBarang").attr({
                             "max" : maxAngka,        
-                            "min" : 1,
+                            "min" : 0.01,
                             "placeholder" : "Jumlah Barang (Maksimal: " + maxAngka + ")",       
                             "value" : "",   
                         }); 
@@ -460,7 +460,7 @@ Ubah Terima Barang Supplier
         //alert(jumlah);
         $("#jumlahBarang").attr({
             "max" : parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah),        
-            "min" : 1,
+            "min" : 0.01,
             "placeholder" : "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",       
             "value" : "",         
         }); 

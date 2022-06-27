@@ -161,7 +161,7 @@ Ubah Surat Jalan
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                         @endforeach-->
                                                         </select>
-                                                        <input id="jumlahBarang" value="1" min="1" type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                                        <input id="jumlahBarang" value="1" min="0.01" type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                                                     </div>
 
                                                     <div class="form-group " id="ket">
@@ -346,7 +346,7 @@ Ubah Surat Jalan
                 if (value.idPurchaseRequest.toString() == id.toString()) {
                     //alert('masuk'); 
                     //alert("masuk cek");
-                    optionnya += '<option id="namaBarang" namaBarang=' + value.ItemName + ' idPrdId=' + value.id + ' value="' + value.ItemID + '">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
+                    optionnya += '<option id="namaBarang" namaBarang=' + value.ItemName + ' idPrdId=' + value.id + ' value="' + value.ItemID + '">' + value.ItemName.substring(0, 30) + '<nbsp>(' + value.UnitName + ')</option>\n';
                     //alert(optionnya);         
                 }
             });
@@ -392,14 +392,14 @@ Ubah Surat Jalan
             if (maxAngka > 0) {
                 $("#jumlahBarang").attr({
                     "max": maxAngka,
-                    "min": 1,
+                    "min": 0.01,
                     "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                     "value": "",
                 });
             } else {
                 $("#jumlahBarang").attr({
-                    "max": 0,
-                    "min": 0,
+                    "max": 0.01,
+                    "min": 0.01,
                     "placeholder": "Tidak ada barang di gudang",
                     "value": "",
                 });
@@ -423,8 +423,8 @@ Ubah Surat Jalan
             var maxAngka = 0;
             if (id == "pilih" || id == "") {
                 $("#jumlahBarang").attr({
-                    "max": 0,
-                    "min": 0,
+                    "max": 0.01,
+                    "min": 0.01,
                     "placeholder": "Belum memilih barang",
                     "value": "",
                 });
@@ -453,14 +453,14 @@ Ubah Surat Jalan
                 if (maxAngka > 0) {
                     $("#jumlahBarang").attr({
                         "max": maxAngka,
-                        "min": 1,
+                        "min": 0.01,
                         "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                         "value": "",
                     });
                 } else {
                     $("#jumlahBarang").attr({
-                        "max": 0,
-                        "min": 0,
+                        "max": 0.01,
+                        "min": 0.01,
                         "placeholder": "Tidak ada barang di gudang",
                         "value": "",
                     });
@@ -481,8 +481,8 @@ Ubah Surat Jalan
             var id = $("#ItemID option:selected").val();
             if (id == "pilih" || id == "") {
                 $("#jumlahBarang").attr({
-                    "max": 0,
-                    "min": 0,
+                    "max": 0.01,
+                    "min": 0.01,
                     "placeholder": "Belum memilih barang",
                     "value": "",
                 });
@@ -518,14 +518,14 @@ Ubah Surat Jalan
                 if (maxAngka > 0) {
                     $("#jumlahBarang").attr({
                         "max": maxAngka,
-                        "min": 1,
+                        "min": 0.01,
                         "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                         "value": "",
                     });
                 } else {
                     $("#jumlahBarang").attr({
-                        "max": 0,
-                        "min": 0,
+                        "max": 0.01,
+                        "min": 0.01,
                         "placeholder": "Tidak ada barang di gudang",
                         "value": "",
                     });
@@ -572,7 +572,7 @@ Ubah Surat Jalan
         //alert(jumlah);
         $("#jumlahBarang").attr({
             "max": parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah),
-            "min": 1,
+            "min": 0.01,
             "placeholder": "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",
             "value": "",
         });

@@ -99,6 +99,14 @@ class UserController extends Controller
         $data = $request->collect();
         $user = Auth::user();
 
+        $dataUserAll = DB::table('users')
+            ->where('email', $data['email'])
+            ->get();
+
+        if(count($dataUserAll) > 0){
+           return redirect()->route('users.create')->with('message',  'NIP '.$data['email'].' sudah digunakan');
+        }
+
         $idUsers = DB::table('users')
             ->insertGetId(
                 array(
@@ -269,6 +277,17 @@ class UserController extends Controller
         //
         $data = $request->collect();
         $usero = Auth::user();
+
+        $dataUserAll = DB::table('users')
+            ->where('email', $data['email'])
+            ->where('email', '!=', $user['email'])
+            ->get();
+
+        if(count($dataUserAll) > 0){
+           return redirect('/users/'.$user['id'].'/edit/')->with('message', 'NIP '.$data['email'].' sudah digunakan');
+        }
+
+
         //dd($users);
         if ($data['password'] == "" || $data['password'] == null) {
             DB::table('users')

@@ -448,7 +448,7 @@ class KirimBarangPesananController extends Controller
             ->where('surat_jalan_detail.jumlahProsesKirim', '<', DB::raw('surat_jalan_detail.jumlah')) //errorr disini
             ->orWhere('surat_jalan_detail.jumlahProsesKirim', '<', DB::raw('surat_jalan_detail.jumlah + transaction_gudang_barang_detail.jumlah')) //errorr disini
             ->get();
-        dd($suratJalanDetail);
+        //dd($suratJalanDetail);
         $dataPurchaseRequestDetail = DB::table('purchase_request_detail')
             ->select('purchase_request_detail.*', 'purchase_request.name', 'Item.ItemName as ItemName', 'Unit.Name as UnitName') //
             ->join('purchase_request', 'purchase_request_detail.idPurchaseRequest', '=', 'purchase_request.id')

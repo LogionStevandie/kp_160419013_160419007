@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Needed | Dashboard</title>
+  <title>Sadhana Arifnusa | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -180,16 +180,16 @@
                 <table class="table table-striped table-bordered">
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Nama Barang</th>
-                      <th>Jumlah</th>
-                      <th>Harga</th>
-                      <th>Pajak</th>
-                      <th>Diskon</th>
-                      <th>Harga Diskon</th>
-                      <th>PPN</th>
-                      <th>Harga PPN</th>
-                      <th>Total Harga</th>
+                      <th class="text-center">#</th>
+                      <th class="text-center"  colspan="3">Nama Barang</th>
+                      <th class="text-center">Jumlah</th>
+                      <th class="text-center">Harga</th>
+                      <!--<th>Pajak</th>-->
+                      <th class="text-center">Diskon</th>
+                      <th class="text-center">Harga Diskon</th>
+                      <!--<th>PPN</th>-->
+                      <th class="text-center">Harga PPN</th>
+                      <th class="text-center" >Total Harga</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -201,10 +201,10 @@
                     @foreach($dataDetail as $data)
                     <tr>
                       @if($data->idPurchaseOrder==$purchaseOrder->id)
-                      <th scope="row">{{ $loop->index + 1 }}</th>
+                      <th scope="row" >{{ $loop->index + 1 }}</th>
                       @foreach($dataBarang as $dataBrg)
                       @if($data->idItem==$dataBrg->ItemID)
-                      <th scope="row">
+                      <th scope="row" colspan="3">
                         {{$dataBrg->ItemName}}<br>
                         <small><span style="white-space: pre-line">{{$data->keterangan}}</span></small>
                       </th>
@@ -212,22 +212,22 @@
                       @endif
                       @endforeach
 
-                      <td>{{$data->jumlah}}</td>
-                      <td class="text-right">@php echo "Rp " . number_format($data->harga,2,',','.'); @endphp</td>
+                      <td class="text-right" >{{$data->jumlah}}</td>
+                      <td class="text-right">@php echo number_format($data->harga,2,',','.'); @endphp</td>
 
-                      @foreach($dataTax as $dataTx)
+                      <!--@foreach($dataTax as $dataTx)
                       @if($data->idTax==$dataTx->TaxID)
                       <td>{{$dataTx->Name}}</td>
                       @endif
-                      @endforeach
+                      @endforeach-->
 
 
-                      <td class="text-right">@php echo "Rp " . number_format($data->diskon,2,',','.'); @endphp</td>
+                      <td class="text-right">@php echo number_format($data->diskon,2,',','.'); @endphp</td>
                       <!--<td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah),2,',','.'); @endphp</td>-->
-                      <td class="text-right">@php echo "Rp " . number_format((((float)$data->diskon) * $data->jumlah),2,',','.'); @endphp</td>
-                      <td class="text-right">{{$data->TaxPercent}} %</td>
-                      <td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * ((float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>
-                      <td class="text-right">@php echo "Rp " . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>
+                      <td class="text-right">@php echo number_format((((float)$data->diskon) * $data->jumlah),2,',','.'); @endphp</td>
+                      <!--<td class="text-right">{{$data->TaxPercent}} %</td>-->
+                      <td class="text-right">@php echo number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * ((float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>
+                      <td class="text-right">@php echo "Rp." . number_format((((float)$data->harga- (float)$data->diskon) * $data->jumlah) * (100.0 + (float)$data->TaxPercent) / 100.0,2,',','.'); @endphp</td>
                       @php
                       $totalHarga += (float)$data->harga * $data->jumlah;
                       $totalHargaDiskon += $data->diskon * $data->jumlah;
@@ -240,23 +240,28 @@
                   </tbody>
                   <thead class="thead-light justify-content-center">
                     <tr>
-                      <th scope="col" colspan="8"></th>
-                      <th scope="col" colspan="1"> Total Harga</th>
+                      <!--<th scope="col" colspan="6"></th>-->
+                      <th scope="col" colspan="7" class="text-right"> Total Harga</th>
                       <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($totalHarga,2,',','.'); @endphp </th>
                     </tr>
                     <tr>
-                      <th scope="col" colspan="8"></th>
-                      <th scope="col" colspan="1"> Total Harga Diskon </th>
+                      <!--<th scope="col" colspan="6"></th>-->
+                      <th scope="col" colspan="7" class="text-right"> Total Harga Diskon </th>
                       <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($totalHargaDiskon,2,',','.'); @endphp </th>
                     </tr>
                     <tr>
-                      <th scope="col" colspan="8"></th>
-                      <th scope="col" colspan="1"> Total Harga PPN </th>
+                      <!--<th scope="col" colspan="6"></th>-->
+                      <th scope="col" colspan="7" class="text-right"> DPP </th>
+                      <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($totalHarga - $totalHargaDiskon,2,',','.'); @endphp </th>
+                    </tr>
+                    <tr>
+                      <!--<th scope="col" colspan="6"></th>-->
+                      <th scope="col" colspan="7" class="text-right"> Total Harga PPN </th>
                       <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($totalHargaPPN,2,',','.'); @endphp </th>
                     </tr>
                     <tr>
-                      <th scope="col" colspan="8"></th>
-                      <th scope="col" colspan="1"> Total Keseluruhan </th>
+                      <!--<th scope="col" colspan="6"></th>-->
+                      <th scope="col" colspan="7" class="text-right"> Total Keseluruhan </th>
                       <th scope="col" colspan="10" class="text-right"> @php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp </th>
                     </tr>
                   </thead>
@@ -344,4 +349,6 @@
     rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
     return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
   }
+
+ 
 </script>

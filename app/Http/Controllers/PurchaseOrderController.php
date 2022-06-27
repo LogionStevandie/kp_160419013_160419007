@@ -30,11 +30,12 @@ class PurchaseOrderController extends Controller
             ->get();
 
         $data = DB::table('purchase_order')
-            ->select('purchase_order.*')
+            ->select('purchase_order.*','MSupplier.Name as supplierName')
             ->join('users', 'purchase_order.created_by', '=', 'users.id')
             ->join('MGudang', 'users.MGudangID', '=', 'MGudang.MGudangID')
             ->join('MKota', 'MGudang.cidkota', '=', 'MKota.cidkota')
             ->join('MPerusahaan', 'MGudang.cidp', '=', 'MPerusahaan.MPerusahaanID')
+            ->leftjoin('MSupplier', 'purchase_order.idSupplier', '=', 'MSupplier.SupplierID')
             ->where('purchase_order.hapus', '=', 0)
             //->where('MPerusahaan.MPerusahaanID', $getPerusahaan[0]->MPerusahaanID)  
             ->orderByDesc('purchase_order.tanggalDibuat', 'purchase_order.id')

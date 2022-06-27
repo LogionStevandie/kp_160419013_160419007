@@ -97,7 +97,7 @@ Pembuatan Penyesuaian Stok Barang
 
                     if (value.MGudangID.toString() == id.toString()) {
 
-                        optionnya += '<option value="' + value.ItemID + '">' + value.ItemName + '</option>\n';
+                        optionnya += '<option value="' + value.ItemID + '">' + value.ItemName.substring(0, 30) + '</option>\n';
                         //alert(optionnya);         
                     }
                 });

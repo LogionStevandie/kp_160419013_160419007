@@ -51,7 +51,7 @@ Pembuatan Stok Awal Barang
                         --Pilih Barang--
                     </option>
                     @foreach($dataBarang as $key => $data)
-                        <option name="idItem" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}</option>
+                        <option name="idItem" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{substr($data->ItemName,0,30)}}</option>
                     @endforeach
                 </select>
             </div>

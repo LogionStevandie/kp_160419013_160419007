@@ -90,7 +90,7 @@ Penyesuaian Stok Barang
                             <tr >
                             <th scope="row" name='id'>{{$d->ItemAdjustmentID}}</th>
                             <td>{{$d->Name}}</td>
-                            <td>{{$d->Tanggal}}</td>   
+                            <td>{{date("d-m-Y", strtotime($d->Tanggal))}}</td>   
                             <td>{{$d->gudangName}}</td>
                             <td>{{$d->itemName}}<nbsp>({{$d->unitName}})</td>
                             <td>{{$d->QuantityAwal}}</td>                 

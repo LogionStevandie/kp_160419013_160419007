@@ -57,7 +57,7 @@ Ubah Nota Kirim Barang Pesanan
                                                     @if($data->MGudangID == $transactionGudangBarang->MGudangIDAwal)
                                                     <option selected name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}" {{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
                                                     @else
-                                                    <option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}" {{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>
+                                                    <!--<option name="idGudang" singkatan="{{$data->ccode}}" value="{{$data->MGudangID}}" {{$data->cname == $data->MGudangID? 'selected' :'' }}>{{$data->cname}}</option>-->
                                                     @endif
                                                     @endforeach
 
@@ -191,7 +191,7 @@ Ubah Nota Kirim Barang Pesanan
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                         @endforeach-->
                                                         </select>
-                                                        <input id="jumlahBarang" value="1" min="1" type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                                        <input id="jumlahBarang" value="1" min="0.01" type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                                                     </div>
 
                                                     <div class="form-group " id="ket">
@@ -380,7 +380,7 @@ Ubah Nota Kirim Barang Pesanan
                 if (value.idPR.toString() == pr.toString()) {
                     //alert('masuk'); 
                     //alert("masuk cek");
-                    optionnya += '<option id="namaBarang" namaBarang=' + value.itemName + ' idPrdId=' + value.PurchaseRequestDetailID + ' value="' + value.ItemID + '">' + value.itemName + '<nbsp>(' + value.unitName + ')</option>\n';
+                    optionnya += '<option id="namaBarang" namaBarang=' + value.itemName + ' idPrdId=' + value.PurchaseRequestDetailID + ' value="' + value.ItemID + '">' + value.itemName.substring(0, 30) + '<nbsp>(' + value.unitName + ')</option>\n';
                     //alert(optionnya);         
                 }
             });
@@ -422,7 +422,7 @@ Ubah Nota Kirim Barang Pesanan
                     //alert(maxAngka);
                     $("#jumlahBarang").attr({
                         "max": maxAngka,
-                        "min": 1,
+                        "min": 0.01,
                         "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                         "value": "",
                     });
@@ -464,7 +464,7 @@ Ubah Nota Kirim Barang Pesanan
         //alert(jumlah);
         $("#jumlahBarang").attr({
             "max": (parseFloat($("#jumlahBarang").prop("max")) + parseFloat(jumlah)),
-            "min": 1,
+            "min": 0.01,
             "placeholder": "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",
             "value": "",
         });
@@ -494,7 +494,7 @@ Ubah Nota Kirim Barang Pesanan
             }
         }
 
-        if (idBarang == "" || namaBarang == "--Pilih Barang--" || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == "") {
+        if (idBarang == "" || namaBarang == "--Pilih Barang--" || namaBarang == "undefined" || namaBarang == null || jumlahBarang <= 0 || jumlahBarang.toString() == "NaN" || jumlahBarang == null || keteranganBarang == "") {
             alert('Harap lengkapi atau isi data Barang dengan benar');
             die;
         } else if (jumlahBarang > $("#jumlahBarang").attr("max")) {

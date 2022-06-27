@@ -177,7 +177,7 @@ Ubah Nota Purchase Order
                                         <option id="namaBarang" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}<nbsp>({{$data->unitName}})</option>
                                         @endforeach-->
                                                         </select>
-                                                        <input id="jumlahBarang" value="1" min="1" max="2" type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
+                                                        <input id="jumlahBarang" value="1" min="0.01" max="2" type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" />
                                                     </div>
                                                     <div class="form-group" id="harga">
                                                         <label for="Harga">Harga (Rupiah)</label>
@@ -373,7 +373,7 @@ Ubah Nota Purchase Order
                 //alert(value.ItemName);
                 if (value.idPurchaseRequest.toString() == id.toString()) {
                     //alert('masuk');
-                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '" namaItem="'+value.ItemName+'">' + value.ItemName + '<nbsp>(' + value.UnitName + ')</option>\n';
+                    optionnya += '<option id="namaBarang" idPr=' + value.ItemID + ' value="' + value.id + '" namaItem="'+value.ItemName+'">' + value.ItemName.substring(0, 30) + '<nbsp>(' + value.UnitName + ')</option>\n';
                 }
             });
             //alert(optionnya);
@@ -421,7 +421,7 @@ Ubah Nota Purchase Order
                     //alert(maxAngka);
                     $("#jumlahBarang").attr({
                         "max": maxAngka,
-                        "min": 1,
+                        "min": 0.01,
                         "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                         "value": "",
                     });
@@ -478,7 +478,7 @@ Ubah Nota Purchase Order
         //alert(jumlah);
         $("#jumlahBarang").attr({
             "max": parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah),
-            "min": 1,
+            "min": 0.01,
             "placeholder": "Jumlah Barang (Maksimal: " + (parseFloat($("#jumlahBarang").attr("max")) + parseFloat(jumlah)) + ")",
             "value": "",
         });
@@ -566,7 +566,7 @@ Ubah Nota Purchase Order
                 //alert(maxAngka);
                 $("#jumlahBarang").attr({
                     "max": maxAngka,
-                    "min": 0,
+                    "min": 0.01,
                     "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                     "value": "",
                 });
@@ -576,11 +576,13 @@ Ubah Nota Purchase Order
                     $('#jumlahBarang').prop('readonly', false);
                 }
 
-                var totalHargaKeranjang = $('#TotalHargaKeranjang').attr('jumlahHarga').replaceAll('.', '');
+                var totalHargaKeranjang = parseFloat($('#TotalHargaKeranjang').attr('jumlahHarga'));
 
-                totalHarga = ((hargaBarang - diskonBarang) * jumlahBarang) * ((100.0 + taxPercent) / 100.0);
+                totalHarga = ((parseFloat(hargaBarang) - parseFloat(diskonBarang)) * parseFloat(jumlahBarang)) * ((100.0 + parseFloat(taxPercent)) / 100.0);
                 $('#TotalHargaKeranjang').attr('jumlahHarga', parseFloat(totalHargaKeranjang) + parseFloat(totalHarga));
                 $('#TotalHargaKeranjang').html("Rp." + $('#TotalHargaKeranjang').attr('jumlahHarga').toString().replace(/\B(?=(\d{3})+(?!\d))/g, "."));
+
+
 
                 $("#pReq").val("").change();
                 $("#barang").val("").change();
@@ -636,7 +638,7 @@ Ubah Nota Purchase Order
                 //alert(maxAngka);
                 $("#jumlahBarang").attr({
                     "max": maxAngka,
-                    "min": 0,
+                    "min": 0.01,
                     "placeholder": "Jumlah Barang (Maksimal: " + maxAngka + ")",
                     "value": "",
                 });

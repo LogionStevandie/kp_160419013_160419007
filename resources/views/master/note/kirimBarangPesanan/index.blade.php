@@ -87,7 +87,7 @@ Nota Kirim Barang Pesanan
                             <tr >
                             <th scope="row" name='id'>{{$d->id}}</th>
                             <td>{{$d->name}}</td>
-                            <td>{{$d->tanggalDibuat}}</td>
+                            <td>{{date("d-m-Y", strtotime($d->tanggalDibuat))}}</td>
                             @foreach($dataGudang as $gudang)
                                 @if($gudang->MGudangID == $d->MGudangIDAwal)
                                     <td>{{$gudang->cname}}</td>

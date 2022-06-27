@@ -75,6 +75,7 @@ Nota Permintaan Pembelian
                              <tr>
                                 <th>ID</th>
                                 <th>Nama</th>
+                                <th>Tanggal Dibuat</th>
                                 <th>Gudang</th>
                                 <th>Total Harga</th>
                                 <th>Disetujui</th>   
@@ -88,6 +89,7 @@ Nota Permintaan Pembelian
                              <tr>
                                 <th>{{$d->id}}</th>
                                 <td>{{$d->name}}</td>
+                                <td>{{date("d-m-Y", strtotime($d->tanggalDibuat))}}</td>
                                 <td>{{$d->gudangName}}</td>
                                 <td> @php echo "Rp " . number_format($d->totalHarga,2,',','.'); @endphp </td>
                                 <td>
@@ -169,6 +171,7 @@ Nota Permintaan Pembelian
                             <tr>
                                 <th>ID</th>
                                 <th>Nama</th>
+                                <th>Tanggal Dibuat</th>
                                 <th>Gudang</th>
                                 <th>Total Harga</th>
                                 <th>Disetujui</th>   

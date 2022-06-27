@@ -75,6 +75,8 @@ Purchase Order
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
+                                <th scope="col">Tanggal Dibuat</th>
+                                <th scope="col">Supplier</th>
                                 <th scope="col">Total Harga</th>
                                 <th scope="col">Proses</th>
                                 <th scope="col">Status Approved</th>
@@ -87,6 +89,10 @@ Purchase Order
                             <tr>
                                 <th scope="row" name='id'>{{$purchaseOrder->id}}</th>
                                 <td>{{$purchaseOrder->name}}</td>
+                                <td>{{date("d-m-Y", strtotime($purchaseOrder->tanggalDibuat))}}</td>
+                                <td>
+                                    {{$purchaseOrder->supplierName}}
+                                </td>
                                 <td>@php echo "Rp " . number_format($purchaseOrder->totalHarga,2,',','.'); @endphp</td>
                                 <td>
                                     @if($purchaseOrder->proses == 0)
@@ -163,6 +169,7 @@ Purchase Order
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Nama</th>
+                                <th scope="col">Tanggal Dibuat</th>
                                 <th scope="col">Total Harga</th>
                                 <th scope="col">Proses</th>
                                 <th scope="col">Status Approved</th>

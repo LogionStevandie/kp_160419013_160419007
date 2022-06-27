@@ -31,7 +31,7 @@ Tambah Users
                     <input required type="text" name="name" maxlength="255" class="form-control" value="{{old('name','')}}">
                 </div>
                 <div class="form-group">
-                    <label for="title">NIK</label>
+                    <label for="title">NIP</label>
                     <input required type="text" name="email" maxlength="12" class="form-control" value="{{old('email','')}}">
                 </div>
                 <div class="form-group">

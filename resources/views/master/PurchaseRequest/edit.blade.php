@@ -135,7 +135,7 @@ Ubah Nota Permintaan Pembelian
                             <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
                               <option value="pilih">--Pilih barang--</option>
                               @foreach($dataBarang as $key => $data)
-                              <option id="namaBarang" value="{{$data->ItemID}}" {{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}
+                              <option id="namaBarang" value="{{$data->ItemID}}" {{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{substr($data->ItemName,0,30)}}
                                 <nbsp>({{$data->unitName}})
                               </option>
                               @endforeach
@@ -147,7 +147,7 @@ Ubah Nota Permintaan Pembelian
 
                           <div class="form-group" id="harga">
                             <label for="Harga">Harga</label>
-                            <input type="text" step=".01" id="tanpa-rupiah" class="form-control" value="{{old('harga','')}}">
+                            <input type="text" min="0.01" step=".01" id="tanpa-rupiah" class="form-control" value="{{old('harga','')}}">
                             <input type="hidden" id="hargaBarang" value="">
                           </div>
 

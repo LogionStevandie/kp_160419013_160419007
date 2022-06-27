@@ -63,9 +63,9 @@ Ubah Stok Awal Barang
                     </option>
                     @foreach($dataBarang as $key => $data)
                         @if($data->ItemID == $stokAwal->ItemID)
-                            <option selected name="idItem" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}</option>
+                            <option selected name="idItem" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{substr($data->ItemName,0,30)}}</option>
                         @else
-                            <option name="idItem" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}</option>
+                            <option name="idItem" value="{{$data->ItemID}}"{{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{substr($data->ItemName,0,30)}}</option>
                         @endif
                     @endforeach
                 </select>

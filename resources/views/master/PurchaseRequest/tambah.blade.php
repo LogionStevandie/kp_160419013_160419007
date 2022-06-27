@@ -137,13 +137,13 @@ Pembuatan Nota Permintaan Pembelian
                                 <select class="form-control selectpicker" id="barang" data-live-search="true" data-show-subtext="true">
                                   <option value="pilih">--Pilih barang--</option>
                                   @foreach($dataBarang as $key => $data)
-                                  <option id="namaBarang" value="{{$data->ItemID}}" {{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{$data->ItemName}}
+                                  <option id="namaBarang" value="{{$data->ItemID}}" {{$data->ItemName == $data->ItemID? 'selected' :'' }}>{{substr($data->ItemName,0,30)}}
                                     <nbsp>({{$data->unitName}})
                                   </option>
                                   @endforeach
                                 </select>
                                 <br>
-                                <input min=1 type="number" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" id="jumlahBarang" />
+                                <input min=1 type="number" min="0.01" step=".01" class="form-control" placeholder="Jumlah barang" aria-label="Recipient's username" aria-describedby="basic-addon2" id="jumlahBarang" />
                               </div>
 
 

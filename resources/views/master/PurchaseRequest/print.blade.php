@@ -1,7 +1,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Needed | Dashboard</title>
+  <title>Sadhana Arifnusa | Dashboard</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -93,10 +93,18 @@
                       <nbsp> ({{$purchaseRequest->MGudangID}}) <br>
                         @endif
                         @endforeach
-                        Jenis permintaan : {{$purchaseRequest->jenisProses}} <br>
+                        @if($purchaseRequest->jenisProses == 1)
+                        Jenis permintaan : Permintaan Pembelian ke Pusat <br> <!--asd-->
+                        @else
+                        Jenis permintaan : - <br> <!--asd-->
+                        @endif
                         Tanggal dibutuhkan : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDibutuhkan))}}<br>
                         Tanggal batas akhir : {{date("d-m-Y", strtotime($purchaseRequest->tanggalAkhirDibutuhkan))}}<br>
+                        @if($purchaseRequest->tanggalDiterima == "" || $purchaseRequest->tanggalDiterima == null)
                         Tanggal Diterima : {{date("d-m-Y", strtotime($purchaseRequest->tanggalDiterima))}}
+                        @else
+                        Tanggal Diterima : -
+                        @endif
                       </Status>
                     </th>
                   </tr>
@@ -194,7 +202,7 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th colspan="3">Approval 1 :<br><br><br><br><br><br><br>
+                    <th colspan="3">Approval 1 :<br><br><br><br><br><br>Tanda tangan <br>
                       @foreach($dataUser as $user)
                       @if($user->id == $purchaseRequest->approved_by)
                       {{$user->name}}

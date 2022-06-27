@@ -87,7 +87,7 @@ Stok Awal Barang
                             <tr>
                                 <th scope="row" name='id'>{{$d->id}}</th>
                                 <td>{{$d->name}}</td>
-                                <td>{{$d->tanggalDibuat}}</td>
+                                <td>{{date("d-m-Y", strtotime($d->tanggalDibuat))}}</td>
                                 <td>{{$d->gudangName}}</td>
                                 <td>{{$d->itemName}}
                                     <nbsp>({{$d->unitName}})
